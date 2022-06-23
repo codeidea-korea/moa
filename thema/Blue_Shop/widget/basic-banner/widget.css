@@ -1,0 +1,38 @@
+@charset "utf-8";
+
+.basic-banner.div-carousel.carousel .carousel-control {
+    display: block !important;
+    background-color: #fff;
+    background-image: none !important;
+	width: 20px;
+    height: 18px;
+    text-align: center;
+    line-height: 18px !important;
+    font-size: 12px;
+    color: #999;
+	margin-top:0px !important;
+    filter: alpha(opacity=100);
+    opacity: 1;
+	text-shadow: none !important;
+	border:1px solid #999;
+	color:#000 !important;
+}
+.basic-banner.div-carousel.carousel .left.carousel-control {
+    left: auto;
+    right: 35px;
+	top: 15px;
+}
+.basic-banner.div-carousel.carousel .right.carousel-control {
+    right: 15px;
+    top: 15px;
+	border-left:0px;
+}
+.basic-banner.div-carousel.carousel .carousel-control:hover, 
+.basic-banner.div-carousel.carousel .carousel-control:focus {
+    color: #000;
+    text-decoration: none;
+    filter: alpha(opacity=100);
+    opacity: 1;
+    font-size: 12px !important;
+	background:#f5f5f5;
+}

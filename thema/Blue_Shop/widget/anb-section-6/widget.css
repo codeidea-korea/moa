@@ -1,0 +1,17 @@
+@charset "utf-8";
+
+
+/* Choose us block */
+.section-6 .choose-us-block { padding-top: 60px; }
+.section-6 .choose-us-block h4 { margin-bottom: 35px; }
+.section-6 .choose-us-block h4 a { color: #1ea9e3; }
+.section-6 .choose-us-block .panel-group { padding-top: 50px; }
+.section-6 .choose-us-block .panel-default { border-radius: 0 !important; border: none; background: none; margin-bottom: 0 !important; padding-bottom: 14px; }
+.section-6 .choose-us-block .panel-default > .panel-heading { border: none; background: none; padding: 0; }
+.section-6 .choose-us-block .panel-default > .panel-heading + .panel-collapse .panel-body { border: none; padding: 0 0 0 32px; }
+.section-6 .choose-us-block .panel-default h5 { font: 300 19px "Open Sans", Arial, sans-serif; padding: 0; margin: 0 0 5px; }
+.section-6 .choose-us-block .panel-default .accordion-toggle:before { content: ""; width: 21px; height: 21px; display: inline-block; background: #e54a1a url(./img/toggle-icons.png) no-repeat 6px 10px; border-radius: 50% !important; margin-right: 10px; position: relative; top: 4px; }
+.section-6 .choose-us-block .panel-default .collapsed:before { background: #495764 url(./img/toggle-icons.png) no-repeat 6px -148px; }
+.section-6 .choose-us-block .panel-default .panel-title:hover .collapsed:before { background-color: #e54a1a; }
+.section-6 .choose-us-block .panel-default .accordion-toggle, .choose-us-block .panel-default .accordion-toggle:focus, .choose-us-block .panel-default .accordion-toggle:hover, .choose-us-block .panel-default .accordion-toggle:active { color: #1ea9e3; text-decoration: none; }
+.section-6 .choose-us-block .panel-default .collapsed { color: #5f6f7e; }

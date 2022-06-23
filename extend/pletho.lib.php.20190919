@@ -1,0 +1,1281 @@
+<?php
+if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
+
+
+/******************************************************************************************
+***  본 파일은  플래토의  저작물입니다.                                                  ***
+***  본 파일의 내용을 허가업이 도용 / 사용할경우 저작권법에 위배됩니다.                     ***
+***  허가한 사용자/업체만 사용가능하고, 다른용도로 사용/배포는 불가합니다.                  ***
+***  본내용을 다른 용도를 원하실경우 저작자인 플래토 에게 구입하여 사용하시기 바랍니다.      ***
+***                                                                                    ***
+***                                                                                    ***
+***  연락처 => 이메일 :   pletho@gmail.com   , 텔레그램 : @pletho , 카카오톡 : @pletho    ***
+******************************************************************************************/
+
+
+function get_album($no) {
+	global $g5;
+
+	if (!$no)
+		return;
+	$sql = "SELECT * from {$g5['album_table']}
+			where no = '{$no}' "
+			;
+	$row = sql_fetch($sql);
+	return $row;
+}
+
+
+function get_adju_album($no) {
+	global $g5;
+
+	if (!$no)
+		return;
+	$sql = "SELECT * from {$g5['adju_album_table']}
+			where no = '{$no}' "
+			;
+	$row = sql_fetch($sql);
+	return $row;
+}
+
+
+function get_adju_basic($no) {
+	global $g5;
+
+	if (!$no)
+		return;
+	$sql = "SELECT * from {$g5['adju_basic_table']}
+			where no = '{$no}' "
+			;
+	$row = sql_fetch($sql);
+	return $row;
+}
+
+function get_adju_data($no) {
+	global $g5;
+
+	if (!$no)
+		return;
+	$sql = "SELECT * from {$g5['adju_data_table']}
+			where no = '{$no}' "
+			;
+	$row = sql_fetch($sql);
+	return $row;
+}
+
+function get_adju_data_rows($album_no) {
+	global $g5;
+
+	if (!$album_no)
+		return;
+	$sql = "SELECT * from {$g5['adju_data_table']}
+			where album_no = '{$album_no}' "
+			;
+	$list = array();
+	$result = sql_query($sql);
+	for ($i = 0; $row = sql_fetch_array($result);$i++) {
+		$list[$i] = $row;
+	}
+
+	return $list;
+}
+
+
+function get_singer_rows() {
+	global $g5;
+
+	$sql = "SELECT * from {$g5['member_table']}
+			where mb_level = '2' "
+			;
+	$list = array();
+	//echo $sql."<BR>";
+	$result = sql_query($sql);
+	for ($i = 0; $row = sql_fetch_array($result);$i++) {
+		$list[$i] = $row;
+	}
+
+	return $list;
+}
+
+
+function get_album_song_rows($ablum_no ) {
+	global $g5;
+	if (!$ablum_no)
+			return;
+	$sql = "SELECT * from {$g5['album_song_table']} a
+			where album_no = '{$ablum_no}' ";
+	//echo $sql."<BR>";
+	$list = array();
+	$result = sql_query($sql);
+	for ($i = 0; $row = sql_fetch_array($result);$i++) {
+		$list[$i] = $row;
+	}
+
+	return $list;
+}
+
+
+function get_adju_alblum_singer_rows($ablum_no ) {
+	global $g5;
+	if (!$ablum_no)
+			return;
+	$sql = "SELECT * from {$g5['adju_album_singer_table']} a
+			where album_no = '{$ablum_no}' ";
+	//echo $sql."<BR>";
+	$list = array();
+	$result = sql_query($sql);
+	for ($i = 0; $row = sql_fetch_array($result);$i++) {
+		$list[$i] = $row;
+	}
+
+	return $list;
+}
+
+
+function getMonthSet() {
+	global $g5;
+
+	$sql = "SELECT substr(DATE(CURDATE() - INTERVAL 2 MONTH),1,7) startm, 
+ 			substr(DATE(CURDATE() - INTERVAL 1 MONTH),1,7) endm ";
+ 	return sql_fetch($sql);
+}
+
+
+
+
+
+
+function procAlbumSong($datas) {
+    global $g5, $member;
+    if (isset($datas['artist']) && is_array($datas['artist']) )
+        $datas['artist_name'] = $datas['artist'][0];
+    
+    //print_r2($datas);    //exit;
+
+    $no = isset($datas['no'])?$datas['no']:'';
+    $ord = isset($datas['ord'])?is_array($datas['tracknumber'])?$datas['tracknumber'][0]:$datas['ord']:'';
+    $title = isset($datas['title'])?is_array($datas['title'])?$datas['title'][0]:$datas['title']:'';
+    $title = addslashes($title);
+    $genre = isset($datas['genre'])?is_array($datas['genre'])?$datas['genre'][0]:$datas['genre']:'';
+    $album = isset($datas['album'])?is_array($datas['album'])?$datas['album'][0]:$datas['album']:'';
+    $album = addslashes($album);
+    $w = $datas['w'];
+    $ord = isset($datas['ord'])?$datas['ord']:'';
+    $album_no = isset($datas['album_no'])?$datas['album_no']:'';
+    $artist_name = isset($datas['artist_name'])?$datas['artist_name']:'';
+    $length = isset($datas['length'])?$datas['length']:'';
+    $content = isset($datas['content'])?$datas['content']:'';
+    $catalog_num = isset($datas['catalog_num'])?$datas['catalog_num']:'';
+    $filename = isset($datas['filename'])?$datas['filename']:'';
+
+    $ord = ($ord)?$ord:0;
+    if (!$album_no) {
+        $sql = "SELECT * from {$g5['album_table']}  
+                WHERE catalog_num = '{$catalog_num}' ";
+        $row = sql_fetch($sql);
+        //echo $sql."<BR>";
+        if ($row && $row['catalog_num']) {
+            $album_no = $row['no'];
+            echo "album no : ".$album_no."<BR>";
+        }
+        else {
+
+            $datas['album_name'] = $album;
+            $aldata = $datas;
+            $aldata['w'] = '';
+            $aldata['genre'] = $genre;
+            $album_no = procAlbum($aldata);
+        }   
+    }
+    if($album_no) {
+    	$sql = "SELECT * from {$g5['album_song_table']}  
+    			where title = '{$title}'
+                    and genre = '{$genre}'
+                    and artist_name = '{$artist_name}'
+                    ";
+        $row = sql_fetch($sql);
+        if ($row['title']) {
+        	$w = 'u';
+        	$no = $row['no'];
+        }
+    }
+
+    $sql_common = "  
+                    ord = '{$ord}',
+                    title = '{$title}',
+                    genre = '{$genre}',
+                    artist_name = '{$artist_name}',
+                    album_no = '{$album_no}',
+                    length = '{$length}',
+                    content = '{$content}',
+                    filename = '{$filename}'
+                ";
+
+    if ($w == '')
+    {
+        $insql = " INSERT into {$g5['album_song_table']}  
+                    set  regdate = now(), 
+                        mb_id = '{$member['mb_id']}',
+                         {$sql_common} ";
+    }
+    else if ($w == 'u')
+    {
+
+        $insql = " UPDATE {$g5['album_song_table']} 
+                    set {$sql_common}
+                         , regdate = now()
+                    where no = '{$no}' ";
+    }
+    else
+        alert('제대로 된 값이 넘어오지 않았습니다.');
+    sql_query($insql);
+    if ($w == '')
+        $no = sql_insert_id();
+    return $no;
+}
+
+function procAlbum($datas) {
+    global $g5, $member;
+
+    $w = $datas['w'];
+    $no = isset($datas['no'])?$datas['no']:'';
+    $catalog_num = isset($datas['catalog_num'])?$datas['catalog_num']:'';
+    $album_name = isset($datas['album_name'])?$datas['album_name']:'';
+    $artist_name = isset($datas['artist_name'])?$datas['artist_name']:'';
+    $album_content = isset($datas['album_content'])?$datas['album_content']:'';
+    $album_basic = isset($datas['album_basic'])?$datas['album_basic']:'';
+    $genre = isset($datas['genre'])?$datas['genre']:'';
+    $price = isset($datas['price'])?$datas['price']:'';
+    $flac88 = isset($datas['flac88'])?$datas['flac88']:'';
+    $flac176 = isset($datas['flac176'])?$datas['flac176']:'';
+    $flac256 = isset($datas['flac256'])?$datas['flac256']:'';
+    $dsd64 = isset($datas['dsd64'])?$datas['dsd64']:'';
+    $dsd128 = isset($datas['dsd128'])?$datas['dsd128']:'';
+    $dsd256 = isset($datas['dsd256'])?$datas['dsd256']:'';
+    $flac88_price = isset($datas['flac88_price'])?$datas['flac88_price']:'';
+    $flac176_price = isset($datas['flac176_price'])?$datas['flac176_price']:'';
+    $flac256_price = isset($datas['flac256_price'])?$datas['flac256_price']:'';
+    $dsd64_price = isset($datas['dsd64_price'])?$datas['dsd64_price']:'';
+    $dsd128_price = isset($datas['dsd128_price'])?$datas['dsd128_price']:'';
+    $dsd256_price = isset($datas['dsd256_price'])?$datas['dsd256_price']:'';
+    $price_flac88 = isset($datas['price_flac88'])?$datas['price_flac88']:'';
+    $price_flac176 = isset($datas['price_flac176'])?$datas['price_flac176']:'';
+    $price_flac256 = isset($datas['price_flac256'])?$datas['price_flac256']:'';
+    $price_dsd64 = isset($datas['price_dsd64'])?$datas['price_dsd64']:'';
+    $price_dsd128 = isset($datas['price_dsd128'])?$datas['price_dsd128']:'';
+    $price_dsd256 = isset($datas['price_dsd256'])?$datas['price_dsd256']:'';
+
+    $sql_common = "  
+                    catalog_num = '{$catalog_num}',
+                    artist_name = '{$artist_name}',
+                    album_name = '{$album_name}',
+                    album_content = '{$album_content}',
+                    album_basic = '{$album_basic}',
+                    genre = '{$genre}',
+                    price = '{$price}',
+                    flac88 = '{$flac88}',
+                    flac176 = '{$flac176}',
+                    flac256 = '{$flac256}',
+                    dsd64 = '{$dsd64}',
+                    dsd128 = '{$dsd128}',
+                    dsd256 = '{$dsd256}',
+                    flac88_price = '{$flac88_price}',
+                    flac176_price = '{$flac176_price}',
+                    flac256_price = '{$flac256_price}',
+                    dsd64_price = '{$dsd64_price}',
+                    dsd128_price = '{$dsd128_price}',
+                    dsd256_price = '{$dsd256_price}',
+                    price_flac88 = '{$price_flac88}',
+                    price_flac176 = '{$price_flac176}',
+                    price_flac256 = '{$price_flac256}',
+                    price_dsd64 = '{$price_dsd64}',
+                    price_dsd128 = '{$price_dsd128}',
+                    price_dsd256 = '{$price_dsd256}'
+
+                ";
+
+    if ($w == '')
+    {
+        $insql = " INSERT into {$g5['album_table']}  
+                    set  regdate = now(), 
+                        mb_id = '{$member['mb_id']}',
+                         {$sql_common} ";
+    }
+    else if ($w == 'u')
+    {
+
+        $insql = " UPDATE {$g5['album_table']} 
+                    set {$sql_common}
+                         , regdate = now()
+                    where no = '{$no}' ";
+    }
+    else
+        alert('제대로 된 값이 넘어오지 않았습니다.');
+    sql_query($insql);
+    //echo $insql."<BR>";
+    if ($w == '')
+        $no = sql_insert_id();
+    return $no;
+}
+
+
+function procAlbum2Item($album_no) {
+    global $g5;
+    //echo "album_no : ".$album_no."<BR>";
+    if (!$album_no)
+        return false;
+    $sql = "SELECT * from {$g5['album_table']} where no = '{$album_no}'";
+    $album = sql_fetch($sql);
+    $vals['ca_id'] = '10';   // 카테고리는 기본 카테고리.. 추후 장르에 따라. 분류 나중에..
+    $flactype = array("flac88", "flac176", "flac256", "dsd64", "dsd128", "dsd256");
+    $ptype = array();
+    $x=0;
+    foreach($flactype as $key => $value) {
+        if ($album[$value]) {
+            $ptype[$value]=$album["price_".$value];
+            $x++;
+        }
+    }
+    //$vals['tmp'] = str_replace("lac","",$k);
+    $x=0;
+    foreach($ptype as $k => $v) {
+        $vals = array();
+        $genre = $album['genre'];
+        $sqlc = "SELECT * from {$g5['g5_shop_category_table']} a
+                 where ca_name like '%{$genre}%' 
+                 order by length(ca_id) 
+                 desc limit 1 ";
+        //echo $genre."<BR>".$sqlc."<BR>";
+        $rows = sql_fetch($sqlc);
+        $ca_id = $rows['ca_id'];
+        $vals['ca_id'] = $ca_id;   // 카테고리는 장르에 따라. 
+        $chkit = true;
+        if ($album[$k."_id"]){
+            $vals['it_id'] = $album[$k."_id"];
+            $vals['procType'] = 'update';
+            $it = get_it_item($vals['it_id']);
+            if ($it['it_id']) {
+                $chkit = false;
+            }
+        }
+        
+        if ($chkit)
+        {
+            $vals['it_id'] = "Album_".(time()+$x);
+            $vals['procType'] = 'new';
+        }
+        $x++;
+
+        $vals['it_price'] = ($ptype[$k])?$ptype[$k]:100000;   // 0원이면 기본 10만원으로
+        $vals['it_name'] = $album['album_name'];
+        $vals['it_model'] = $album['catalog_num'];
+        $vals['it_explan'] = $album['album_content'];
+        $vals['it_basic'] = $album['album_basic'];
+        $vals['it_brand'] = $it_basic = $album['artist_name'];
+        $vals['it_use'] = '1';
+        $vals['genre'] = $album['genre'];
+        $vals['pt_tag'] = $album['genre'];
+        $vals['it_1'] = 'album';
+        $vals['it_2'] = $album['no'];
+        $vals['it_3'] = $k;
+
+        if ($vals['it_id']) {
+            $it = procItemAdd($vals);
+            if ($it['it_id']) {
+                $upsql = "UPDATE {$g5['album_table']} 
+                              SET ".$k."_id = '{$vals['it_id']}'
+                              where no = '{$album['no']}'  ";
+                sql_query($upsql);
+                echo $upsql."<BR>";
+            }
+        }
+        
+    }
+    //exit;
+    return $vals['it_id'];
+
+}
+
+function prodSong2Item($album_no) {
+    global $g5;
+    //echo 'song album_no : '.$album_no."<BR>";
+    if (!$album_no)
+        return false;
+    $sql = "SELECT * from {$g5['album_table']} where no = '{$album_no}'";
+    $album = sql_fetch($sql);
+    $flactype = array("flac88", "flac176", "flac256", "dsd64", "dsd128", "dsd256");
+    $ptype = array();
+    $x=0;
+    foreach($flactype as $key => $value) {
+        if ($album[$value]) {
+            $ptype[$value]=$album[$value."_price"];
+            $x++;
+        }
+    }
+    //print_r2($flactype);
+    $sql2 = "SELECT * from {$g5['album_song_table']} where album_no = '{$album_no}'";
+    $result2 = sql_query($sql2); 
+    $its = array();
+    $n = 0;
+    //echo $sql2."<BR>";
+    for ($i=1; $song = sql_fetch_array($result2);$i++) {
+    //print_r2($ptype);
+        foreach($ptype as $k => $v) {
+            $vals = array();
+            $genre = $album['genre'];
+            $sqlc = "SELECT * from {$g5['g5_shop_category_table']} a
+                     where ca_name like '%{$genre}%' 
+                     order by length(ca_id) 
+                     desc limit 1 ";
+            //echo $genre."<BR>".$sqlc."<BR>";
+            $rows = sql_fetch($sqlc);
+            $ca_id = $rows['ca_id'];
+            $vals['ca_id'] = $ca_id;   // 카테고리는 장르에 따라. 
+            $chkit = true;
+            if ($song[$k]){
+                $vals['it_id'] = $song[$k];
+                $vals['procType'] = 'update';
+               $it = get_it_item($vals['it_id']);
+                if ($it['it_id']) {
+                    $chkit = false;
+                }
+            }
+            
+            if ($chkit)
+            {
+                $tmp = str_replace("lac","",$k);
+                $vals['it_id'] = "S".$tmp."_".(time()+$i);
+                $vals['procType'] = 'new';
+            }
+
+            $vals['it_price'] = ($v)?$v:100000;   // 0원이면 기본 10만원으로
+            $vals['it_name'] = $song['title'];
+            $vals['it_model'] = $album['catalog_num'];
+            $vals['it_explan'] = $song['content'];
+            $vals['it_origin'] = $song['length'];
+            $vals['it_brand'] = $it_basic = $song['artist_name'];
+            $vals['it_use'] = '1';
+            $vals['genre'] = $album['genre'];
+            $vals['pt_tag'] = $album['genre'];
+            //print_r2($vals);
+            $vals['it_1'] = 'song';
+            $vals['it_2'] = $song['no'];
+            $vals['it_3'] = $k;
+    
+            if ($vals['it_id']) {
+                procItemAdd($vals);
+                $its[$n++] = $vals['it_id'];
+
+                $upsql = "UPDATE {$g5['album_song_table']} 
+                          SET it_id = '{$vals['it_id']}'
+                            , genre='{$vals['genre']}'
+                            , {$k} = '{$vals['it_id']}'
+                          where no = '{$song['no']}'  ";
+                sql_query($upsql);
+                echo $upsql."<BR>";
+            }
+        }
+    }
+    return $its;
+
+}
+
+
+function getFlacList($itmodel, $flactype) {
+    global $g5;
+    if (!$flactype)
+        return false;
+    $rsql = "SELECT replace(SUBSTR(it_id, 2,4),'_','') flag, a.* 
+             from {$g5['g5_shop_item_table']} a
+             where it_model = '{$itmodel}' 
+             and it_id like 'S".$flactype."%' ";
+    //echo $rsql."<BR>";
+    $rresult = sql_query($rsql);
+    $list = array();
+    for ($i=0;$row=sql_fetch_array($rresult);$i++) {
+        $list[$i] = $row;
+    }
+    //print_r2($list);
+    return $list;
+}
+
+function getFlacs($itmodel) {
+    global $g5;
+    if (!$itmodel)
+        return false;
+    $rsql = "SELECT distinct replace(SUBSTR(it_id, 2,4),'_','') flag 
+             from {$g5['g5_shop_item_table']} a
+             where it_model = '{$itmodel}' 
+             and it_id like 'S%' ";
+    //echo $rsql."<BR>";
+    $rresult = sql_query($rsql);
+    $list = array();
+    for ($i=0;$row=sql_fetch_array($rresult);$i++) {
+        $list[$i] = $row;
+    }
+    //print_r2($list);
+    return $list;
+}
+
+
+
+function gerRelationAlbum($ca_id, $it_id) {
+    global $g5;
+
+    $sql = "SELECT * from {$g5['g5_shop_item_table']} 
+            where ca_id = '{$ca_id}'
+            and it_id <> '{$it_id}'
+            and it_id like 'Al%'
+            and it_use = '1'
+            ";
+    $result = sql_query($sql);
+    $list = array();
+    for ($i = 0; $row = sql_fetch_array($result); $i++) {
+        $list[$i] = $row;
+    }
+    return $list;
+}
+
+
+
+
+function get_it_item($it_id) {
+    global $g5;
+    $sql = "SELECT * from {$g5['g5_shop_item_table']} where it_id = '{$it_id}'";
+    $result = sql_query($sql);
+    return sql_fetch_array($result);
+}
+
+
+
+
+function get_it_item_album($it2,$it3) {
+    global $g5;
+    $sql = "SELECT * 
+            from {$g5['g5_shop_item_table']} 
+            where it_1='album'
+            and it_2 = '{$it2}'
+            and it_3 = '{$it3}'
+            ";
+        echo $sql."<BR>";
+    $result = sql_query($sql);
+    return sql_fetch_array($result);
+}
+
+function getPayedFlacList($mb_id) {
+    global $g5;
+    $sql = "SELECT c.*, a.it_id, a.ct_history, b.it_2, b.it_3 ,'' able, '' buyday
+        FROM g5_shop_cart a, g5_shop_item b, deb_album_song c
+        WHERE ct_status = '완료'
+        AND a.it_id = b.it_id
+        AND b.it_1 = 'album'
+        AND b.it_2 = c.album_no
+        and a.mb_id = '{$mb_id}'
+        UNION ALL
+        SELECT c.*, a.it_id, a.ct_history, b.it_2, b.it_3 ,'' able, '' buyday
+        FROM g5_shop_cart a, g5_shop_item b, deb_album_song c
+        WHERE ct_status = '완료'
+        AND a.it_id = b.it_id
+        AND b.it_1 = 'song'
+        AND b.it_2 = c.no
+        and a.mb_id = '{$mb_id}'
+        ";
+    $result = sql_query($sql);
+    $list = array();
+    for ($i=0;$row = sql_fetch_array($result);$i++) {
+        if ($row['ct_history']){
+            $sd = explode("|", $row['ct_history']);
+            $scnt = count($sd);
+            //print_r2($sd);
+            //echo $scnt."<BR>";
+            for ($j=0;$j < $scnt;$j++) {
+                //echo $sd[$j]."<BR>";
+                if (trim($sd[$j]) == "완료") {
+                    //echo "여기에";
+                    $k = $j+2;
+                    $bdate = $sd[$k];
+                    //echo $bdate."<BR>";
+                    $csql = "SELECT if(CURDATE() <= date(DATE('".$bdate."') + INTERVAL 30 day), 1, 0) able, DATE('".$bdate."') buyday ";
+                    $chk = sql_fetch($csql);
+                    $row['able'] = $chk['able'];
+                    $row['buyday'] = $chk['buyday'];
+
+                }
+            }
+        }
+        $list[$i] = $row;
+        //echo $list[$i]['buyday']."<BR>";
+    }
+    return $list;
+
+}
+
+
+function getDownloadPayedFlacList($mb_id,$sno) {
+    global $g5;
+    $sql = "SELECT * from (
+                SELECT c.*, a.it_id, a.ct_history, b.it_2, b.it_3, d.catalog_num,'' able, '' buyday
+                FROM g5_shop_cart a, g5_shop_item b, deb_album_song c, deb_album d
+                WHERE ct_status = '완료'
+                    AND a.it_id = b.it_id
+                    AND b.it_1 = 'album'
+                    AND b.it_2 = c.album_no
+                    and c.album_no = d.no
+                    and a.mb_id = '{$mb_id}'
+                UNION ALL
+                SELECT c.*, a.it_id, a.ct_history, b.it_2, b.it_3, d.catalog_num,'' able, '' buyday
+                FROM g5_shop_cart a, g5_shop_item b, deb_album_song c, deb_album d
+                WHERE ct_status = '완료'
+                    AND a.it_id = b.it_id
+                    AND b.it_1 = 'song'
+                    AND b.it_2 = c.no
+                    and c.album_no = d.no
+                    and a.mb_id = '{$mb_id}'
+            ) x
+            where x.no = '{$sno}'
+            ";
+    //echo $sql."<BR>";
+    $song = sql_fetch($sql);
+    
+    return $song;
+
+}
+
+
+
+function getfiles($dir, $default_path=UHD_DATA_PATH, $ftype = "flac88") {
+    global $g5;
+
+    $flac_file_path = $default_path.'/'.$dir.'/'.$ftype.'/';
+    //echo $flac_file_path."<BR>";
+
+    if (is_dir)
+    $handle = opendir($flac_file_path);
+    $files = array();
+    //return;
+    $cnt = 1;
+    if ($handle) {
+        while (($filename = readdir($handle)) !== false)   {
+            if ($filename == "." || $filename == "..") {   }
+            else {
+                if (is_file($flac_file_path."/".$filename) ) {
+                    $files[] = $filename;
+                    //echo $cnt."<BR>";
+                    $cnt++;
+                }
+            }
+        }
+    }
+    //echo "------------";
+
+    closedir($handle);
+    return $files;
+}
+
+
+
+
+function getFlacDir($dir, $default_path=UHD_DATA_PATH) {
+    global $g5;
+
+    $flac_file_path = $default_path.'/'.$dir.'/'.$ftype.'/';
+    //echo $flac_file_path."<BR>";
+
+    $handle = opendir($flac_file_path);
+    $files = array();
+    //return;
+    $cnt = 1;
+    $rtn = "";
+    while (($filename = readdir($handle)) !== false)   {
+        if ($filename == "." || $filename == "..") {   }
+        else {
+            if (strrpos($filename,"flac")!==false) {
+                $rtn = $filename;
+                break;
+            }
+            
+        }
+    }
+    //echo "------------";
+
+    closedir($handle);
+    return $rtn;
+}
+
+
+
+
+// 환전요청
+function request_point($mb_id, $point, $content='', $po_status='',$po_desc='')
+{
+    global $config;
+    global $g5;
+    global $is_admin;
+
+    // 포인트 사용을 하지 않는다면 return
+    if (!$config['cf_use_point']) { return 0; }
+
+    // 포인트가 없다면 업데이트 할 필요 없음
+    if ($point == 0) { return 0; }
+
+    // 회원아이디가 없다면 업데이트 할 필요 없음
+    if ($mb_id == '') { return 0; }
+    $mb = sql_fetch(" SELECT mb_id from {$g5['member_table']} where mb_id = '$mb_id' ");
+    if (!$mb['mb_id']) { return 0; }
+
+    // 회원포인트
+    $mb_point = get_point_sum($mb_id);
+
+    // 이미 등록된 내역이라면 건너뜀 - 반복기능 추가  --확인할방법없음
+    /*
+    if (!$repeat && ($rel_table || $rel_id || $rel_action))
+    {
+        $sql = " SELECT count(*) as cnt from {$g5['exchange_table']}
+                  where mb_id = '$mb_id'
+                    and po_rel_table = '$rel_table'
+                    and po_rel_id = '$rel_id'
+                    and po_rel_action = '$rel_action' ";
+        $row = sql_fetch($sql);
+        if ($row['cnt'])
+            return -1;
+    }
+    */
+    if ($mb_point < $point) return 0;  // 소유한 Cel보다 화전요구한게 많으면 취소
+    
+    $po_mb_point = $mb_point + $point;
+    $money = $point * 100;
+    $sql = " INSERT INTO {$g5['exchange_table']}
+                set mb_id = '$mb_id',
+                    po_datetime = '".G5_TIME_YMDHIS."',
+                    po_content = '".addslashes($content)."',
+                    po_cel = '$point',
+                    po_money = '$money',
+                    po_use_point = '0',
+                    po_mb_point = '$po_mb_point',
+                    po_status = '$po_status',
+                    po_desc = '$po_desc' ";
+    sql_query($sql);
+
+    // XP UPDATE
+    //update_xp($mb_id, $point, $content, $rel_table, $rel_action);
+
+    return 1;
+}
+
+
+
+
+// 환전 포인트 부여
+function insert_point_ex($mb_id, $point, $content='', $rel_table='', $rel_id='', $rel_action='', $expire=0, $repeat=0)
+{
+    global $config;
+    global $g5;
+    global $is_admin;
+
+    $receive = "<pre>";
+    $receive .=" mb_id : ".$mb_id."<BR>";
+    $receive .=" point : ".$point."<BR>";
+    $receive .=" content : ".$content."<BR>";
+    $receive .=" rel_table : ".$rel_table."<BR>";
+    $receive .=" rel_id : ".$rel_id."<BR>";
+    $receive .=" rel_action : ".$rel_action."<BR>";
+    $receive .="</pre>";    
+    //echo $receive;
+    // 포인트 사용을 하지 않는다면 return
+    //if (!$config['cf_use_point']) { return 0; }
+    //echo "1"."<BR>";
+    // 포인트가 없다면 업데이트 할 필요 없음
+    if ($point == 0) { return 0; }
+//echo "2"."<BR>";
+    // 회원아이디가 없다면 업데이트 할 필요 없음
+    if ($mb_id == '') { return 0; }
+    $mb = sql_fetch(" SELECT mb_id from {$g5['member_table']} where mb_id = '$mb_id' ");
+    if (!$mb['mb_id']) { return 0; }
+//echo "3"."<BR>";
+    // 회원포인트
+    $mb_point = get_point_sum($mb_id);
+//echo "4"."<BR>";
+    // 이미 등록된 내역이라면 건너뜀 - 반복기능 추가
+    if (!$repeat && ($rel_table || $rel_id || $rel_action))
+    {
+        $sql = " SELECT count(*) as cnt from {$g5['point_table']}
+                  where mb_id = '$mb_id'
+                    and po_rel_table = '$rel_table'
+                    and po_rel_id = '$rel_id'
+                    and po_rel_action = '$rel_action' ";
+        $row = sql_fetch($sql);
+        //echo "<pre>".$sql."<BR>"."</pre>";    
+        if ($row['cnt']){
+            //echo "<pre> cnt : ".$row['cnt']."<BR>"."</pre>";    
+            return -1;
+        }
+    }
+//echo "5"."<BR>";
+    // 포인트 건별 생성
+    $po_expire_date = '9999-12-31';
+    if($config['cf_point_term'] > 0) {
+        if($expire > 0)
+            $po_expire_date = date('Y-m-d', strtotime('+'.($expire - 1).' days', G5_SERVER_TIME));
+        else
+            $po_expire_date = date('Y-m-d', strtotime('+'.($config['cf_point_term'] - 1).' days', G5_SERVER_TIME));
+    }
+//echo "6"."<BR>";
+    $po_expired = 0;
+    if($point < 0) {
+        $po_expired = 1;
+        $po_expire_date = G5_TIME_YMD;
+    }
+//echo "7"."<BR>";    
+    $po_mb_point = $mb_point + $point;
+
+    $sql = " INSERT INTO {$g5['point_table']}
+                set mb_id = '$mb_id',
+                    po_datetime = '".G5_TIME_YMDHIS."',
+                    po_content = '".addslashes($content)."',
+                    po_point = '$point',
+                    po_use_point = '0',
+                    po_mb_point = '$po_mb_point',
+                    po_expired = '$po_expired',
+                    po_expire_date = '$po_expire_date',
+                    po_rel_table = '$rel_table',
+                    po_rel_id = '$rel_id',
+                    po_rel_action = '$rel_action' ";
+    //echo "<pre>".$sql."<BR>"."</pre>";    
+    sql_query($sql);
+//echo "8"."<BR>";
+    // 포인트를 사용한 경우 포인트 내역에 사용금액 기록
+    if($point < 0) {
+        insert_use_point($mb_id, $point);
+    }
+//echo "9"."<BR>";
+    // 포인트 UPDATE
+    $sql = " update {$g5['member_table']} set mb_point = '$po_mb_point' where mb_id = '$mb_id' ";
+    sql_query($sql);
+//echo "10"."<BR>";
+    // XP UPDATE
+    update_xp($mb_id, $point, $content, $rel_table, $rel_action);
+//echo "11"."<BR>";
+    return 1;
+}
+
+
+
+
+// 회원 정보를 얻는다.
+function get_member_email($mb_id, $fields='*')
+{
+    global $g5;
+
+    //$mb_id = preg_replace("/[^0-9a-z_]+/i", "", $mb_id);
+
+    return sql_fetch(" select $fields from {$g5['member_table']} where mb_id = TRIM('$mb_id') ");
+}
+
+
+
+
+// 상태 옵션을 얻음
+function get_status_option($bo_table='', $status='')
+{
+    global $g5, $board, $is_admin, $aslang;
+
+    $statuses = array("신청","확인중","유효","정지","탈퇴");
+    $str = "";
+    for ($i=0; $i<count($statuses); $i++) {
+        $this_status = trim($statuses[$i]);
+        if (!$this_status) continue;
+        if (!$is_admin && $i > 0)
+            break;
+
+        $str .= "<option value=\"$statuses[$i]\"";
+        if ($this_status == $status) {
+            $str .= ' selected="selected"';
+        }
+        $str .= ">$statuses[$i]</option>\n";
+    }
+
+    return $str;
+}
+
+
+// BBS 를 Item으로 변환하는 기능 
+function procWrite2Item($bo_table, $wr_id) {
+    global $g5;
+    //echo "album_no : ".$album_no."<BR>";
+    if (!$bo_table || !$wr_id)
+        return false;
+    $write_table = $g5['write_prefix'].$bo_table;
+    $sql = "SELECT * from {$write_table} where wr_id = '{$wr_id}'";
+    $lec = sql_fetch($sql);
+    $vals['ca_id'] = '10';   // 카테고리는 기본 카테고리.. 추후 장르에 따라. 분류 나중에..
+    $x=0;
+    //foreach($ptype as $k => $v) {
+        $vals = array();
+        $genre = "수업";
+        $sqlc = "SELECT * from {$g5['g5_shop_category_table']} a
+                 where ca_name like '%{$genre}%' 
+                 order by length(ca_id) 
+                 desc limit 1 ";
+        //echo $genre."<BR>".$sqlc."<BR>";
+        $rows = sql_fetch($sqlc);
+        $ca_id = $rows['ca_id'];
+        $vals['ca_id'] = $ca_id;   // 카테고리는 '수업' 기본 
+        $chkit = true;
+        //print_r2($lec);
+        //exit;
+        if ($lec['wr_10']){
+            $vals['it_id'] = $lec['wr_10'];
+            $vals['procType'] = 'update';
+            $it = get_it_item($vals['it_id']);
+
+            if ($it['it_id']) {
+                $chkit = false;
+            }
+        }
+        
+        if ($chkit)
+        {
+            $vals['it_id'] = "Lec_".(time()+$x);
+            $vals['procType'] = 'new';
+        }
+        $x++;
+
+        $vals['it_price'] = ($lec['wr_2'])?$lec['wr_2']:100000;   // 0원이면 기본 10만원으로
+        $vals['it_name'] = $lec['wr_subject'];
+        $vals['it_model'] = $lec['wr_3'];
+        $vals['it_explan'] = $lec['wr_content'];
+        $vals['it_basic'] = $lec['wr_content'];
+        $vals['it_brand'] = $it_basic = $lec['wr_name'];
+        $vals['it_use'] = '1';
+        $vals['pt_tag'] = $lec['as_tag'];
+        $vals['pt_id'] = $lec['mb_id'];
+        $vals['it_1'] = 'lec';
+        $vals['it_2'] = $lec['wr_id'];
+        $vals['it_3'] = $bo_table;
+        
+
+        if ($vals['it_id']) {
+            $it = procItemAdd($vals);
+            if ($vals['it_id']) {
+                $upsql = "UPDATE {$write_table} 
+                              SET wr_10 = '{$vals['it_id']}'
+                              where wr_id = '{$wr_id}'  ";
+                sql_query($upsql);
+                //echo $upsql."<BR>";
+            }
+            procOptionAdd($vals);
+
+        }
+        
+    //}
+    //exit;
+    return $vals['it_id'];
+
+}
+
+
+// Item을 조건에 따라 추가하는 기능 
+function procItemAdd($vals) {
+    global $g5;
+    //print_r2($vals);
+
+    foreach( $vals as $key=>$val ){
+        //echo $key."<BR>";
+        $$key = isset($vals[$key]) ? strip_tags($vals[$key]) : '';
+        //echo $$key."<BR>";
+
+    }
+    $sqlc = "SELECT * from {$g5['g5_shop_category_table']} a
+             where ca_name like '%{$genre}%' order by length(ca_id) desc limit 1 ";
+    $rows = sql_fetch($sqlc);
+    $ca_id2 = '';
+    if ($rows && $rows['ca_id'])
+        $ca_id2 = $rows['ca_id'];
+    $sql_common = " ca_id               = '10',
+                    ca_id2              = '$ca_id2',
+                    it_name             = '$it_name',
+                    it_brand            = '$it_brand',
+                    it_model            = '$it_model',
+                    it_basic            = '$it_basic',
+                    it_info_gubun            = 'digital_contents',
+                    it_option_subject            = '일자',
+                    it_explan           = '$it_explan',
+                    it_price            = '$it_price',
+                    it_origin           = '$it_origin',
+                    it_use              = '$it_use',
+                    it_ip               = '{$_SERVER['REMOTE_ADDR']}',
+                    it_order            = '$it_order',
+                    pt_tag              = '$pt_tag',
+                    it_sc_type          = '1',
+                    it_stock_qty        = '99999',
+                    it_1 = '{$it_1}',
+                    it_2 = '{$it_2}',
+                    it_3 = '{$it_3}',
+                    pt_id = '{$pt_id}'
+
+                    "; // APMS : 2014.07.20
+ 
+
+       
+        $t_it_id = preg_replace("/[A-Za-z0-9\-_]/", "", $it_id);
+        if($t_it_id)
+            alert('코드는 영문자, 숫자, -, _ 만 사용할 수 있습니다.');
+
+        $pt_num = time();
+        $sql_common .= " , it_time = '".G5_TIME_YMDHIS."' ";
+        $sql_common .= " , it_update_time = '".G5_TIME_YMDHIS."' ";
+        if ($vals['procType'] == 'new') {
+            $sql = " insert {$g5['g5_shop_item_table']} 
+                    set it_id = '$it_id',
+                        pt_num = '$pt_num',
+                        $sql_common ";
+        }
+        else if ($vals['procType'] == "update") {
+            $sql = " update  {$g5['g5_shop_item_table']} 
+                    set pt_num = '$pt_num',
+                        $sql_common 
+                    where it_id = '$it_id' ";
+        }
+
+
+        //echo $sql."<BR>";
+        if (!trim($it_id)) {
+            alert('코드가 없으므로 추가하실 수 없습니다.');
+        }
+
+        if ($it_name)
+            sql_query($sql);
+        return $it_id;
+    //}
+}
+
+
+
+// Item Option 추가하는 기능 
+function procOptionAdd($vals) {
+    global $g5;
+    //print_r2($vals);
+
+    foreach( $vals as $key=>$val ){
+        //echo $key."<BR>";
+        $$key = isset($vals[$key]) ? strip_tags($vals[$key]) : '';
+        //echo $$key."<BR>";
+
+    }
+    $sqlc = "SELECT * from {$g5['class_item_table']} a
+             where bo_table = '{$it_3}'and wr_id ='{$it_2}' order by cls_no ";
+             echo $sqlc."<BR>";
+    $result = sql_query($sqlc);
+    for ($i=0; $row = sql_fetch_array($result);$i++) {
+        //day
+        //time
+        //content
+        //tot
+        $io_id = substr($row['day'],0,4).".".substr($row['day'],4,2).".".substr($row['day'],6,2).". ".$row['time'];
+        $io_price = 0;
+        $io_stock_qty = $row['tot'];
+        $io_noti_qty = ($row['tot'] - 2 > 0)?$row['tot']-2:$row['tot'];
+        $sqlio = "SELECT count(*) cnt from {$g5['g5_shop_item_option_table']} 
+                  where io_id = '{$io_id}' and it_id ='{$it_id}'";
+        //echo $sqlio."<BR>";
+        $chkio = sql_fetch($sqlio);
+       
+        $sql_add1 = " io_id               = '{$io_id}' ";
+        $sql_add2 = " it_id             = '{$it_id}' ";
+
+        $sql_common = " io_type              = '0',
+                        io_use              = '1',
+                        io_stock_qty            = '{$io_stock_qty}',
+                        io_noti_qty            = '{$io_noti_qty}',
+                        io_price            = '{$io_price}'
+                        "; // APMS : 2019.09.05
+        
+        if ($chkio['cnt'] == 0)  {
+            $sql = " INSERT {$g5['g5_shop_item_option_table']} 
+                    set $sql_add1 , $sql_add2, $sql_common ";
+        
+        }
+        else if ($vals['procType'] == "update") {
+            $sql = " UPDATE  {$g5['g5_shop_item_option_table']} 
+                    set $sql_common 
+                    where $sql_add1 and $sql_add2 ";
+        }
+        //echo $sql."<BR>";
+        sql_query($sql);
+    }
+    //exit;
+       
+}
+
+
+
+
+// 기본적으로 수업정보 추출 
+// 사용방법 
+//  $view = get_bbs($wr_id);
+function get_bbs($wr_id, $bo_table = 'class') {
+    global $g5;
+    if (!$wr_id)
+        return false;
+    return get_write($bo_table, $wr_id);
+}
+
+// 상품기본정보 추출 
+// 사용방법
+// $it = get_item_info($it_id)
+function get_item_info($it_id) {
+    global $g5;
+    if (!$it_id)
+        return false;
+    $sql = "SELECT * from {$g5['g5_shop_item_table']} 
+            where it_id = '{$it_id}' ";
+
+    return sql_fetch($sql);
+}
+
+// 수업의 상세 정보 추출 
+
+function get_item_detail($it_id) {
+    global $g5;
+    if (!$it_id)
+        return false;
+
+    $sql = "SELECT a.* from {$g5['class_item_table']} a, {$g5['g5_shop_item_table']} b
+            where a.wr_id = b.it_2
+            and a.bo_table = b.it_3
+            and b.it_id = '{$it_id}'
+            order by cls_no";
+    $list = array();
+    $result = sql_query($sql);
+    for ($i=0; $row = sql_fetch_array($result);$i++) {
+        $list[$i] = $row;
+    }
+    return $list;
+}
+
+function checkProfile($mb_id) {
+    global $g5;
+    if (!$mb_id)
+        return false;
+    $bo_table = 'teachers';
+    $write_table = "g5_write_".$bo_table;
+    $sql = "SELECT count(*) cnt  from $write_table 
+            where mb_id = '{$mb_id}'";
+
+    //echo $sql."<BR>";
+    $row = sql_fetch($sql);
+    return ($row['cnt'] > 0)?true:false;
+}
+
+function get_portfolio($mb_id) {
+    global $g5;
+    if (!$mb_id)
+        return false;
+    $bo_table = 'teachers';
+    $write_table = "g5_write_".$bo_table;
+    $sql = "SELECT * from $write_table 
+            where mb_id = '{$mb_id}'";
+
+    //echo $sql."<BR>";
+    $row = sql_fetch($sql);
+    $file = get_file2($bo_table, $row['wr_id']);
+    $list = array();
+    $sql3 = "SELECT * from {$g5['teacher_history_table']}
+             where wr_id = '{$row['wr_id']}' and bo_table = 'teachers' order by bh_no";
+    $result3 = sql_query($sql3);
+    $list['info'] = array();
+    $list['info'] = $row;
+    $list['profile'] = $file;
+    $list['history'] = array();
+    for ($i = 0; $rows = sql_fetch_array($result3);$i++) {
+        $list['history'][$i] = array();
+        $list['history'][$i] = $rows;
+    }
+    return $list;
+}
+
+function get_history($mb_id) {
+    global $g5;
+    if (!$mb_id)
+        return false;
+    $bo_table = 'teachers';
+    $write_table = "g5_write_".$bo_table;
+    $sql = "SELECT * from $write_table 
+            where mb_id = '{$mb_id}'";
+
+    //echo $sql."<BR>";
+    $row = sql_fetch($sql);
+    $file = get_file2($bo_table, $row['wr_id']);
+    $list = array();
+    $sql3 = "SELECT * from {$g5['teacher_history_table']}
+             where wr_id = '{$row['wr_id']}' and bo_table = 'teachers' order by bh_no";
+    $result3 = sql_query($sql3);
+    $list['info'] = array();
+    $list['info'] = $row;
+    $list['profile'] = $file;
+    $list['history'] = array();
+    for ($i = 0; $rows = sql_fetch_array($result3);$i++) {
+        $list['history'][$i] = array();
+        $list['history'][$i] = $rows;
+    }
+    return $list;
+}
+
+
+function get_portid($mb_id) {
+    global $g5,$member;
+    if (!$mb_id)
+        alert('적상적으로 접근하세요!');
+    $bo_table = 'teachers';
+    $write_table = "g5_write_".$bo_table;
+    $sql = "SELECT wr_id from $write_table 
+            where mb_id = '{$mb_id}'";
+    $row = sql_fetch($sql);
+    return $row['wr_id'];
+}
+
+
+function get_myportfolio() {
+    global $g5,$member;
+    if (!$member['mb_id'])
+        alert('로그인후 시도하세요!');
+    
+    $wr_id = get_portid($member['mb_id']);
+    if (!$wr_id)
+        $str = "";
+    else
+        $str = G5_BBS_URL."/board.php?bo_table=teachers&wr_id=".$wr_id;
+    return $str;
+}
+
+
+
+// Get Tag
+function bbs_get_tag($it_tag, $opt='') {
+
+    $it_tag = apms_get_text($it_tag);
+
+    if(!$it_tag) return;
+
+    $tag = array();
+    $tag = explode(",", $it_tag);
+
+    if($opt) { //해시태그
+        $hash1 = '<span class="hash-tag">#';
+        $hash2 = '</span>'; 
+    } else {
+        $hash1 = '';
+        $hash2 = '';
+    }
+
+    $sec = ', ';
+    $list = '';
+    foreach($tag as $val) {
+        $val = trim($val);
+        $list .= '<a href="'.G5_BBS_URL.'/board.php?bo_table=class&sfl=as_tag&stx='.urlencode($val).'" rel="tag">'.$hash1.$val.$hash2.'</a>'.$sec;
+    }
+
+    $list = substr($list, 0, strlen($list)-strlen($sec));
+
+    return $list;
+}

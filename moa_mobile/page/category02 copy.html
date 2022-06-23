@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="../js/calendar.js"></script>
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <title>MOA</title>
+</head>
+<body class="h100">
+    <div class="header">
+        <button class="prev"></button>
+        <h2 class="pageTit">카테고리</h2>
+    </div>
+    <div class="wrapper">
+        <!-- tab영역 -->
+        <div class="s_content">
+            <div class="select_area">
+                <div class="cate_sel">
+                    <div class="cla_cho slctRgn">
+                        <button onclick="$('#calendar').addClass('on')">지역선택</button>
+                    </div>
+                </div>
+                <a href=""><img src="../images/icon_magnifier_1.svg" alt=""></a>   
+            </div>
+        </div>
+
+        <div class="s_content mt10">
+            <div class="area_c">
+                <div class="city">
+                    <ul>
+                        <li>
+                            <a href="">
+                                <span class="on">서울</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <span>경기</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <span>강원</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <span>부산</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <span>경상</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <span>충청</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <span>전라</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <span>제주</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="district">
+                    <ul>
+                        <li>
+                            <a href="">
+                                <span>강남구</span>
+                                <img src="../images/r_arrow_o.svg" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <span>성동 · 광진</span>
+                                <img src="../images/r_arrow_o.svg" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <span>잠실 · 신천(잠실새내)</span>
+                                <img src="../images/r_arrow_o.svg" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <span>영등포 · 여의도</span>
+                                <img src="../images/r_arrow_o.svg" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <span>강남 · 역삼 · 삼성 · 논현</span>
+                                <img src="../images/r_arrow_o.svg" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <span>노원 · 강북 · 도봉 · 중랑</span>
+                                <img src="../images/r_arrow_o.svg" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <span>동대문 · 성북</span>
+                                <img src="../images/r_arrow_o.svg" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <span>송파 · 강동</span>
+                                <img src="../images/r_arrow_o.svg" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <span>용산구</span>
+                                <img src="../images/r_arrow_o.svg" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <span>종로 · 중구</span>
+                                <img src="../images/r_arrow_o.svg" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <span>마포 · 서대구 · 은평</span>
+                                <img src="../images/r_arrow_o.svg" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <span>강서 · 금천 · 양천</span>
+                                <img src="../images/r_arrow_o.svg" alt="">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <nav>
+        <ul>
+            <li>
+                <a class="" href="">
+                    <span class="mn_home"></span>
+                    홈
+                </a>
+            </li>
+            <li>
+                <a class="on" href="">
+                    <span class="mn_ctgry"></span>
+                    카테고리
+                </a>
+            </li>
+            <li>
+                <a class="" href="">
+                    <span class="mn_cmnty"></span>
+                    커뮤니티
+                </a>
+            </li>
+            <li>
+                <a class="" href="">
+                    <span class="mn_location"></span>
+                    위치
+                </a>
+            </li>
+            <li>
+                <a class="" href="">
+                    <span class="mn_my"></span>
+                    마이페이지
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <script src="../js/common.js"></script>
+</body>
+</html>

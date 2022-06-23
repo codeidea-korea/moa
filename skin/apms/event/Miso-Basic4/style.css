@@ -1,0 +1,6 @@
+@charset "utf-8";
+
+/* Event */
+.ev-img { max-width:100%; margin:0px auto; }
+.ev-none { margin:0px; padding:80px 0px; text-align:center; color:#888; }
+.ev-page { margin:20px 0px 0px; }

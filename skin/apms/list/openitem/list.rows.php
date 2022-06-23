@@ -1,0 +1,143 @@
+<?php
+if (!defined('_GNUBOARD_')) {
+
+	include_once('../../../../common.php');
+
+	define('THEMA', $lt);
+	define('THEMA_PATH', G5_PATH.'/thema/'.$lt);
+	define('THEMA_URL', G5_URL.'/thema/'.$lt);
+	define('IS_SHOP', true);
+
+	include_once(G5_SHOP_PATH.'/list.rows.php');
+
+	$list_skin_path = G5_SKIN_PATH.'/apms/list/'.$ls;
+	$list_skin_url = G5_SKIN_URL.'/apms/list/'.$ls;
+
+	//썸네일
+	$wset['thumb_w'] = (isset($wset['thumb_w']) && $wset['thumb_w'] > 0) ? $wset['thumb_w'] : 400;
+	$wset['thumb_h'] = (isset($wset['thumb_h']) && ($wset['thumb_h'] > 0 || $wset['thumb_h'] == "0")) ? $wset['thumb_h'] : 200;
+}
+
+// 새상품
+$wset['new'] = (isset($wset['new']) && $wset['new']) ? $wset['new'] : 'red';
+$new_item = (isset($wset['newtime']) && $wset['newtime']) ? $wset['newtime'] : 24;
+
+// 별점
+$wset['star'] = (isset($wset['star']) && $wset['star']) ? $wset['star'] : '1';
+$is_star = ($wset['star'] != "1") ? true : false;
+
+// 포인트
+$wset['pbg'] = (isset($wset['pbg']) && $wset['pbg']) ? $wset['pbg'] : 'navy';
+
+// 숨김항목
+$is_buy = (isset($wset['buy']) && $wset['buy']) ? false : true;
+$is_cmt = (isset($wset['cmt']) && $wset['cmt']) ? false : true;
+$is_good = (isset($wset['good']) && $wset['good']) ? false : true;
+
+// 보임항목
+$is_use = (isset($wset['use']) && $wset['use']) ? true : false;
+$is_qa = (isset($wset['qa']) && $wset['qa']) ? true : false;
+$is_hit = (isset($wset['hit']) && $wset['hit']) ? true : false;
+
+$is_info = ($is_star || $is_use || $is_qa || $is_buy || $is_cmt || $is_good || $is_hit) ? true : false;
+
+// 그림자
+$is_shadow = (isset($wset['shadow']) && $wset['shadow']) ? apms_shadow($wset['shadow']) : '';
+
+$list_cnt = count($list);
+
+for ($i=0; $i < $list_cnt; $i++) { 
+
+	$item_label = $dc = '';
+	if($list[$i]['it_cust_price'] > 0 && $list[$i]['it_price'] > 0) {
+		$dc = round((($list[$i]['it_cust_price'] - $list[$i]['it_price']) / $list[$i]['it_cust_price']) * 100);
+	}
+
+	$is_now = '';
+	if($it_id == $list[$i]['it_id']) {
+		$is_now = ' now';
+		$item_label = '<div class="label-cap bg-navy">Now</div>';	
+	} else if($dc || $list[$i]['it_type5']) {
+		//$item_label = '<div class="label-cap bg-red">DC</div>';	
+	} else if($list[$i]['pt_num'] >= (G5_SERVER_TIME - ($new_item * 3600))) {
+		$item_label = '<div class="label-cap bg-'.$wset['new'].'">New</div>';
+	}
+//print_r2($list[$i]);
+	// 이미지
+//print_r2($list[$i])."<BR>";
+	//$list[$i]['img'] = deb_list_it_thumbnail($list[$i], $wset['thumb_w'], $wset['thumb_h'], true, true);
+	$view = get_bbs($list[$i]['it_2']);
+	$list[$i]['img'] = $view['as_thumb'];
+	// 아이콘
+	$item_icon = item_icon($list[$i]);
+?>
+	<div class="column col-3 col-md-6 col-xs-12">
+		<?php if($is_info) { ?>
+			<?php if ($is_rank) { ?>
+				<span class="rank-icon en bg-<?php echo $is_rank;?>"><?php echo $rank;?></span>	
+			<?php } ?>
+			<?php if($is_star) { ?>
+				<span class="item-star"><?php echo apms_get_star($list[$i]['it_use_avg'], $wset['star']); //평균별점 ?></span>
+			<?php } ?>
+		<?php } ?>
+		
+			<div class="card">
+				<a href="/shop/<?php echo $list[$i]['href'];?>">
+				<div class="item_label"><?php echo $item_label;?></div>
+				<div class="card-image">
+					<img class="img-responsive" src="<?php echo $list[$i]['img'];?>" alt="강의 썸네일">
+				</div>
+				</a>
+				<div class="card-header" >
+					<button class="btn btn-sm float-right" onClick="apms_wishlist('<?php echo $list[$i]['it_id'];?>');">
+					<i class="icon icon-flag"></i>
+					<span>찜</span>
+					<em><?php echo number_format($list[$i]['pt_good']);?></em>
+				</button>
+				<a href="/shop/<?php echo $list[$i]['href'];?>">
+				<div class="card-title text-ellipsis"><?php echo $list[$i]['it_name']; ?></div>
+				<div class="card-subtitle text-gray text-ellipsis"><?php echo $list[$i]['it_brand'];?> 선생님</div>
+				</a>
+			</div>
+			<div class="card-body text-clip"><?php echo ($list[$i]['it_basic']) ? $list[$i]['it_basic'] : apms_cut_text($list[$i]['it_explan'], 120); ?></div>
+			<div class="card-footer">
+				<?php 
+				// 태그영역입니다.
+				if($list[$i]['pt_tag']) {
+					$tag_list = bbs_get_tag($list[$i]['pt_tag']);
+					if($tag_list) $is_tag = true;
+				}
+				if($is_tag) { 
+					?>
+					<span class="label">
+
+						<?php echo $tag_list;?>
+					</span>
+				<?php } ?>
+			</div>
+		</div>
+	
+</div>
+<?php } ?>
+<script>
+	// Wishlist
+	function apms_wishlist(it_id) {
+		if(!it_id) {
+			alert("코드가 올바르지 않습니다.");
+			return false;
+		}
+
+		$.post("/shop/itemwishlist.php", { it_id: it_id },	function(error) {
+			if(error != "OK") {
+				alert(error.replace(/\\n/g, "\n"));
+				return false;
+			} else {
+				if(confirm("찜리스트에 담겼습니다.\n\n바로 확인하시겠습니까?")) {
+					document.location.href = "/shop/wishlist.php";
+				}
+			}
+		});
+
+		return false;
+	}
+</script>

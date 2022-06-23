@@ -1,0 +1,42 @@
+<?php
+if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
+?>
+
+<!-- 전체 리스트 -->
+<section class="detail_con">
+    <div class="s_con_bg">
+        <ul class="a_layout last_list">
+            <!-- 인증 후 소속 인증 없어야함 -->
+            <li>
+                <a href="<?php echo MOA_LOGIN_URL?>/certification.php">
+                    <p>소속(직장/프리랜서) 인증하기</p>
+                    <span><img src="../images/r_arrow_o.svg" alt=""></span>
+                </a>
+            </li>
+            <li>
+                <a href="<?php echo $hostlink;?>">
+                    <p>호스트 <?php echo ($host)?"관리모드":"지원하기";?></p>
+                    <span><img src="../images/r_arrow_o.svg" alt=""></span>
+                </a>
+            </li>
+            <li style="display:n one;">
+                <a href="<?php echo MOA_DETAIL_URL;?>/d_p_history01.php">
+                    <p>결제 내역 보기</p>
+                    <span><img src="../images/r_arrow_o.svg" alt=""></span>
+                </a>
+            </li>
+            <li style="display:n one;">
+                <a href="<?php echo MOA_MY_URL;?>/my_participated.php">
+                    <p>참여한 모임</p>
+                    <span><img src="../images/r_arrow_o.svg" alt=""></span>
+                </a>
+            </li>
+            <li>
+                <a href="<?php echo MOA_MY_URL;?>/my_setting03.php">
+                    <p>설정</p>
+                    <span><img src="../images/r_arrow_o.svg" alt=""></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</section>

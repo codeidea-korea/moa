@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="../js/calendar.js"></script>
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <title>MOA</title>
+</head>
+<body>
+    <!-- header -->
+    <div class="header">
+        <div class="app_header">
+            <a href=""><img src="../images/moa_logo.svg" alt=""></a>
+            <div class="ic_area">
+                <a href=""><img src="../images/icon_bell.png" alt=""></a>
+                <a href="" class="on"><img src="../images/icon_chat.png" alt=""></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <!-- 메인 슬라이드 -->
+        <div class="swiper-container main_slide">
+            <div class="swiper1">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <a href="#">
+                            <div class="title_area">
+                                <div class="t_text">
+                                    스페셜
+                                </div>
+                                <div class="text_area">
+                                    <p>빵순이 심장을 저격하는<br/>
+                                        <span>일대일 베이킹 클래스</span>
+                                    </p>
+                                    <p>
+                                        내가 좋아하는 것만 담은<br/>취향 저격 빵 만들기!
+                                    </p>
+                                </div>
+                            </div>
+                            <img src="../images/visual_img/main_img01.svg" alt="">
+                        </a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="#">
+                            <div class="title_area">
+                                <div class="t_text">
+                                    스페셜
+                                </div>
+                                <div class="text_area">
+                                    <p>빵순이 심장을 저격하는<br/>
+                                        <span>일대일 베이킹 클래스</span>
+                                    </p>
+                                    <p>
+                                        내가 좋아하는 것만 담은<br/>취향 저격 빵 만들기!
+                                    </p>
+                                </div>
+                            </div>
+                            <img src="../images/visual_img/main_img01.svg" alt="">
+                        </a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="#">
+                            <div class="title_area">
+                                <div class="t_text">
+                                    스페셜
+                                </div>
+                                <div class="text_area">
+                                    <p>빵순이 심장을 저격하는<br/>
+                                        <span>일대일 베이킹 클래스</span>
+                                    </p>
+                                    <p>
+                                        내가 좋아하는 것만 담은<br/>취향 저격 빵 만들기!
+                                    </p>
+                                </div>
+                            </div>
+                            <img src="../images/visual_img/main_img01.svg" alt="">
+                        </a>
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+
+        <div class="">
+            <!-- 메뉴 슬라이드 -->
+            <div class="swiper-container s_nav_sw">
+                <div class="swiper2">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                        <a href="" class="on">전체</a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">액티비티</a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">자기계발</a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">힐링</a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">문화예술</a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">쿠킹/베이킹</a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">소셜링</a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">뷰티</a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">커리어</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 메인 검색 -->
+            <div class="s_content">
+                <div class="m_search">
+                    <input type="text" placeholder="클래스를 검색하세요">     
+                </div>
+            </div>
+        </div>
+        <!-- 해시테그 슬라이드 -->
+        <div class="swiper-container sw_button">
+            <div class="swiper3">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                    <a href="" class="on"># 재태크</a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href=""># 예술</a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href=""># 자기개발</a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href=""># 다이어트</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Moa’s 기획전! -->
+        <div class="s_content mt35">
+            <!-- 타이틀 -->
+            <div class="main_tit">
+                <h1>Moa’s 기획전!</h1>
+                <a href="">더보기</a>
+            </div>
+             <!-- Moa’s 기획전! 슬라이드 -->
+            <div class="swiper-container plan">
+                <div class="swiper4">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <a href="">
+                                <div class="bsw">
+                                    <div class="title_area">
+                                        <div class="t_text">
+                                            혹시 나도 피카소?
+                                        </div>
+                                        <div class="text_area">
+                                            <p>나만의 작품<br/>
+                                                만들기
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <img src="../images/visual_img/기획전이미지.png" alt="">
+                                    <div class="con_txt">
+                                        <span>서울&#183;전체</span>
+                                        <p>나만의 예술 작품 만드는 모임 보러가기</p>
+                                    </div>
+                                    <div class="t_badge">
+                                        기획전
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">
+                                <div class="bsw">
+                                    <div class="title_area">
+                                        <div class="t_text">
+                                            혹시 나도 피카소?
+                                        </div>
+                                        <div class="text_area">
+                                            <p>나만의 작품<br/>
+                                                만들기
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <img src="../images/visual_img/기획전이미지.png" alt="">
+                                    <div class="con_txt">
+                                        <span>서울&#183;전체</span>
+                                        <p>나만의 예술 작품 만드는 모임 보러가기</p>
+                                    </div>
+                                    <div class="t_badge">
+                                        기획전
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">
+                                <div class="bsw">
+                                    <div class="title_area">
+                                        <div class="t_text">
+                                            혹시 나도 피카소?
+                                        </div>
+                                        <div class="text_area">
+                                            <p>나만의 작품<br/>
+                                                만들기
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <img src="../images/visual_img/기획전이미지.png" alt="">
+                                    <div class="con_txt">
+                                        <span>서울&#183;전체</span>
+                                        <p>나만의 예술 작품 만드는 모임 보러가기</p>
+                                    </div>
+                                    <div class="t_badge">
+                                        기획전
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Moa’s pick -->
+        <div class="s_content mt35">
+             <!-- 타이틀 -->
+            <div class="main_tit">
+                <h1>Moa’s pick</h1>
+            </div>
+            <!-- Moa’s pick 슬라이드-->
+            <div class="swiper-container pick">
+                <div class="swiper5">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <a href="">
+                                <div class="title_area">
+                                    <div class="t_text">
+                                        나만의 작은<br/> 홈베이커리 만드려구요!
+                                    </div>
+                                </div>
+                                <img src="../images/visual_img/pick01.png" alt="">
+                                <div class="t_badge">
+                                    1
+                                </div>
+                            </a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">
+                                <div class="title_area">
+                                    <div class="t_text">
+                                        어렸을 때부터 가지던<br/>
+                                        제 꿈을 이뤘어요 
+                                    </div>
+                                </div>
+                                <img src="../images/visual_img/pick02.png" alt="">
+                                <div class="t_badge">
+                                    2
+                                </div>
+                            </a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">
+                                <div class="title_area">
+                                    <div class="t_text">
+                                        어렸을 때부터 가지던<br/>
+                                        제 꿈을 이뤘어요 
+                                    </div>
+                                </div>
+                                <img src="../images/visual_img/pick02.png" alt="">
+                                <div class="t_badge">
+                                    3
+                                </div>
+                            </a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">
+                                <div class="title_area">
+                                    <div class="t_text">
+                                        어렸을 때부터 가지던<br/>
+                                        제 꿈을 이뤘어요 
+                                    </div>
+                                </div>
+                                <img src="../images/visual_img/pick02.png" alt="">
+                                <div class="t_badge">
+                                    4
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- New 모임 -->
+        <div class="s_content mt35">
+            <!-- 타이틀 -->
+            <div class="main_tit">
+                <h1>New 모임</h1>
+                <a href="#">더보기</a>
+            </div>
+            <!-- New 모임 슬라이드 -->
+            <div class="swiper-container meeting">
+                <div class="swiper6">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <a href="">
+                                <div class="title_area">
+                                    <div class="t_text">
+                                        나만의 작품<br/>만들기
+                                    </div>
+                                    <span class="location_area">
+                                        강남구 대치동
+                                    </span>
+                                </div>
+                                <img src="../images/visual_img/모임01.png" alt="">
+                            </a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">
+                                <div class="title_area">
+                                    <div class="t_text">
+                                        나만의 작품<br/>만들기
+                                    </div>
+                                    <span class="location_area">
+                                        강남구 대치동
+                                    </span>
+                                </div>
+                                <img src="../images/visual_img/모임02.png" alt="">
+                            </a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">
+                                <div class="title_area">
+                                    <div class="t_text">
+                                        나만의 작품<br/>만들기
+                                    </div>
+                                    <span class="location_area">
+                                        강남구 대치동
+                                    </span>
+                                </div>
+                                <img src="../images/visual_img/모임03.png" alt="">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top 랭킹 모임 -->
+        <div class="s_content mt35">
+             <!-- 타이틀 -->
+            <div class="main_tit">
+                <h1>Top 랭킹 모임</h1>
+                <a href="#">더보기</a>
+            </div>
+            <!-- Top 랭킹 모임 리스트 -->
+            <ul class="rank_list">
+                <li>
+                    <a href="">
+                        <div class="thumb_box">
+                            <div></div>
+                        </div>
+                        <div class="lctn">성동 • 마포 • 서대문</div>
+                        <div class="ttl">[홍대] 방송댄스&재즈댄스 도전기</div>
+                        <div class="rated">
+                            <span class="on"></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <p>후기 38개</p> 
+                        </div>
+                        
+                        <p class="sale">13,500원</p>
+                        <div class="dsc_price">
+                            <span class="disp">10%</span><span>15,000원</span>
+                        </div>
+                    </a>    
+                </li>
+                <li>
+                    <a href="">
+                        <div class="thumb_box">
+                            <div></div>
+                        </div>
+                        <div class="lctn">성동 • 마포 • 서대문</div>
+                        <div class="ttl">[홍대] 방송댄스&재즈댄스 도전기</div>
+                        <div class="rated">
+                            <span class="on"></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <p>후기 38개</p> 
+                        </div>
+                        
+                        <p class="sale">13,500원</p>
+                        <div class="dsc_price">
+                            <span class="disp">10%</span><span>15,000원</span>
+                        </div>
+                    </a>    
+                </li>
+                <li>
+                    <a href="">
+                        <div class="thumb_box">
+                            <div></div>
+                        </div>
+                        <div class="lctn">성동 • 마포 • 서대문</div>
+                        <div class="ttl">[홍대] 방송댄스&재즈댄스 도전기</div>
+                        <div class="rated">
+                            <span class="on"></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <p>후기 38개</p> 
+                        </div>
+                        
+                        <p class="sale">13,500원</p>
+                        <div class="dsc_price">
+                            <span class="disp">10%</span><span>15,000원</span>
+                        </div>
+                    </a>    
+                </li>
+                <li>
+                    <a href="">
+                        <div class="thumb_box">
+                            <div></div>
+                        </div>
+                        <div class="lctn">성동 • 마포 • 서대문</div>
+                        <div class="ttl">[홍대] 방송댄스&재즈댄스 도전기</div>
+                        <div class="rated">
+                            <span class="on"></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <p>후기 38개</p> 
+                        </div>
+                        
+                        <p class="sale">13,500원</p>
+                        <div class="dsc_price">
+                            <span class="disp">10%</span><span>15,000원</span>
+                        </div>
+                    </a>    
+                </li>
+            </ul>
+        </div>
+
+        <!-- 메인 중간 배너 -->
+        <div class="mdlbnr">
+            <a href="#"><img src="../images/visual_img/메인중간배너.png" alt=""></a>
+        </div>
+
+        <!-- 인기 모임 모아보기 -->
+        <div class="s_content mt35">
+            <!-- 타이틀 -->
+            <div class="main_tit">
+                <h1>인기 모임 모아보기</h1>
+            </div>
+        </div>
+        <!-- 메뉴 슬라이드 -->
+        <div class="swiper-container pplrgthrn">
+            <div class="swiper7">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                    <a href="" class="on">액티비티</a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="">자기계발</a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="">힐링</a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="">쿠킹/베이킹</a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="">소셜링</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 인기 모임 리스트 -->
+        <div class="s_content mt25">
+            <ol class="ppl_list">
+                <li>
+                    <a href="">
+                        <span class="num item1">1</span>
+                        <div class="item2">
+                            <div class="ppl_img"></div>
+                        </div>
+                        <div class="item3">
+                            <p class="lctn">성동 • 마포 • 서대문</p>
+                            <p class="ttl">[홍대] 나만의 콘서트 도전기</p>
+                            <p class="dsc_price">
+                                <span>1회</span>15,000원
+                            </p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <span class="num item1">1</span>
+                        <div class="item2">
+                            <div class="ppl_img"></div>
+                        </div>
+                        <div class="item3">
+                            <p class="lctn">성동 • 마포 • 서대문</p>
+                            <p class="ttl">[홍대] 나만의 콘서트 도전기</p>
+                            <p class="dsc_price">
+                                <span>1회</span>15,000원
+                            </p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <span class="num item1">1</span>
+                        <div class="item2">
+                            <div class="ppl_img"></div>
+                        </div>
+                        <div class="item3">
+                            <p class="lctn">성동 • 마포 • 서대문</p>
+                            <p class="ttl">[홍대] 나만의 콘서트 도전기</p>
+                            <p class="dsc_price">
+                                <span>1회</span>15,000원
+                            </p>
+                        </div>
+                    </a>
+                </li>
+            </ol>
+        </div>
+
+        <!-- 최근에 찜한 모임 -->
+        <div class="s_content">
+            <!-- 타이틀 -->
+            <div class="main_tit">
+                <h1>최근에 찜한 모임</h1>
+                <a href="#">더보기</a>
+            </div>
+            <!-- 최근에 찜한 모임 리스트-->
+            <ul class="stmng">
+                <li>
+                    <a href="">
+                        <div class="st_img"></div>
+                        <div class="st_textarea">
+                            [강남구]<br/>
+                            체스 한판 하실래요?
+                        </div>
+                    </a>
+                    <button class="lick_btn on"></button>
+                </li>
+                <li>
+                    <a href="">
+                        <div class="st_img"></div>
+                        <div class="st_textarea">
+                            [강남구]<br/>
+                            체스 한판 하실래요?
+                        </div>
+                    </a>
+                    <button class="lick_btn"></button>
+                </li>
+                <li>
+                    <a href="">
+                        <div class="st_img">
+
+                        </div>
+                        <div class="st_textarea">
+                            [강남구]<br/>
+                            체스 한판 하실래요?
+                        </div>
+                    </a>
+                    <button class="lick_btn"></button>
+                </li>
+                <li>
+                    <a href="">
+                        <div class="st_img">
+
+                        </div>
+                        <div class="st_textarea">
+                            [강남구]<br/>
+                            체스 한판 하실래요?
+                        </div>
+                    </a>
+                    <button class="lick_btn"></button>
+                </li>
+            </ul>
+        </div>
+        <!-- BEST 후기 -->
+        <div class="s_content mt8">
+             <!-- 타이틀 -->
+            <div class="main_tit">
+                <h1>BEST 후기</h1>
+                <a href="">더보기</a>
+            </div>
+            <!-- BEST 후기 슬라이드-->
+            <div class="swiper-container best">
+                <div class="swiper8">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="bsw">
+                                <a href="">
+                                    <div class="id_area">
+                                        <span></span> <p>lucky_seven</p>
+                                    </div>
+                                    <img src="../images/visual_img/베스트.png" alt="">
+                                    <div class="con_txt">
+                                        <span>[제주도] 당일치기 맛집투어 </span>
+                                        <p>너무너무 즐거운 시간이었어요!<br/>
+                                            다음에 또 할라구용~</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="bsw">
+                                <a href="">
+                                    <div class="id_area">
+                                        <span></span> <p>lucky_seven</p>
+                                    </div>
+                                    <img src="../images/visual_img/베스트.png" alt="">
+                                    <div class="con_txt">
+                                        <span>[제주도] 당일치기 맛집투어 </span>
+                                        <p>너무너무 즐거운 시간이었어요!<br/>
+                                            다음에 또 할라구용~</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="bsw">
+                                <a href="">
+                                    <div class="id_area">
+                                        <span></span>
+                                        <p>lucky_seven</p>
+                                    </div>
+                                    <img src="../images/visual_img/베스트.png" alt="">
+                                    <div class="con_txt">
+                                        <span>[제주도] 당일치기 맛집투어 </span>
+                                        <p>너무너무 즐거운 시간이었어요!<br/>
+                                            다음에 또 할라구용~</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="bsw">
+                                <a href="">
+                                    <div class="id_area">
+                                        <span></span>
+                                        <p>lucky_seven</p>
+                                    </div>
+                                    <img src="../images/visual_img/베스트.png" alt="">
+                                    <div class="con_txt">
+                                        <span>[제주도] 당일치기 맛집투어 </span>
+                                        <p>너무너무 즐거운 시간이었어요!<br/>
+                                            다음에 또 할라구용~</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </div>
+        <!-- 하단배너 -->
+        <div class="btlbnr mt35">
+            <a href="#"><img src="../images/visual_img/하단배너.png" alt=""></a>
+        </div>
+    </div>
+    <nav>
+        <ul>
+            <li>
+                <a class="on" href="">
+                    <span class="mn_home"></span>
+                    홈
+                </a>
+            </li>
+            <li>
+                <a class="" href="">
+                    <span class="mn_ctgry"></span>
+                    카테고리
+                </a>
+            </li>
+            <li>
+                <a class="" href="">
+                    <span class="mn_cmnty"></span>
+                    커뮤니티
+                </a>
+            </li>
+            <li>
+                <a class="" href="">
+                    <span class="mn_location"></span>
+                    위치
+                </a>
+            </li>
+            <li>
+                <a class="" href="">
+                    <span class="mn_my"></span>
+                    마이페이지
+                </a>
+            </li>
+        </ul>
+    </nav>
+</body>
+<script src="../js/common.js"></script>
+</html>

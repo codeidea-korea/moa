@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="../js/calendar.js"></script>
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <title>MOA</title>
+</head>
+<body>
+    <div class="header">
+        <h2 class="pageTit">팝업모음</h2>
+    </div>
+
+    <div class="wrapper" style="height:100vh">
+        <div class="content">
+            <!-- style1 -->
+            <div class="p45">
+                <button class="inactive on" onclick="$('#alert01').addClass('on')">가입하기</button>
+            </div>
+
+            <!-- style2 -->
+            <div class="p45">
+                <button class="inactive on" onclick="$('#alert02').addClass('on')">둘러보기</button>
+            </div>
+
+            <!-- style3 -->
+            <div class="p45">
+                <button class="inactive on" onclick="$('#alert03').addClass('on')">Moa 알림</button>
+            </div>
+
+            <!-- style4 -->
+            <div class="p45">
+                <button class="inactive on" onclick="$('#alert04').addClass('on')">회원가입완료</button>
+            </div>
+
+            <!-- style5 -->
+            <div class="p45">
+                <button class="inactive on" onclick="$('#alert05').addClass('on')">공유하기</button>
+            </div>
+
+            <!-- style6 -->
+            <div class="p45">
+                <button class="inactive on" onclick="$('#alert06').addClass('on')">채팅방 나가기</button>
+            </div>
+
+            <!-- style7 -->
+            <div class="p45">
+                <button class="inactive on" onclick="$('#alert07').addClass('on')">결제완료</button>
+            </div>
+
+            <!-- style8 -->
+            <div class="p45">
+                <button class="inactive on" onclick="$('#alert08').addClass('on')">문의 등록 완료</button>
+            </div>
+
+            <!-- style9 -->
+            <div class="p45">
+                <button class="inactive on" onclick="$('#alert09').addClass('on')">수정/삭제/닫기</button>
+            </div>
+
+            <!-- style10 -->
+            <div class="p45">
+                <button class="inactive on" onclick="$('#alert10').addClass('on')">신고하기</button>
+            </div>
+
+            <!-- style11 -->
+            <div class="p45">
+                <button class="inactive on" onclick="$('#alert11').addClass('on')">초대하기</button>
+            </div>
+
+             <!-- style12 -->
+             <div class="p45">
+                <button class="inactive on" onclick="$('#alert12').addClass('on')">탈퇴하기</button>
+            </div>
+
+             <!-- style13 -->
+             <div class="p45">
+                <button class="inactive on" onclick="$('#alert13').addClass('on')">로그아웃</button>
+            </div>
+
+            <!-- style14 -->
+            <div class="p45">
+                <button class="inactive on" onclick="$('#alert14').addClass('on')">프로필수정</button>
+            </div>
+        </div>
+    </div>
+
+    
+        <!-- style1 -->
+        <div class="alert" id="alert01">
+            <div class="layerBody">
+                <div class="confirm">
+                    <div class="mentBox">
+                        <img src="../images/comp_ic.svg" alt=""><br/><br/>
+                        <p class="t_bold">
+                            [회원가입 완료]<br/> 
+                            김모아님,<br/>
+                             moa에 오신걸 환영합니다!.</p>
+                        <div class="p17">
+                            <button class="inactive on h45" onclick="$('#alert01').removeClass('on')">확인</button>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- style2 -->
+        <div class="alert02" id="alert02">
+            <div class="layerBody">
+                <div class="confirm">
+                    <div class="mentBox">
+                        <p class="t_bold">[둘러보기 완료]</p>
+                        <span>더 많은 내용은 로그인 및<br/>
+                            회원가입 후 확인해 보실 수 있습니다.</span>
+                        <div class="btn_area">
+                            <button class="gy" onclick="$('#alert02').removeClass('on')">로그인</button>
+                            <button class="gn" onclick="$('#alert02').removeClass('on')">회원가입</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- style3 -->
+        <div class="alert02" id="alert03">
+            <div class="layerBody">
+                <div class="confirm">
+                    <div class="mentBox">
+                        <p class="t_bold">[Moa 알림]</p>
+                        <span>수신동의시 이벤트, 핫딜 등 다양한 혜택과<br/>
+                            정보에 대한 알림을 받아 보실 수 있습니다. </span>
+                        <div class="btn_area">
+                            <button class="gy" onclick="$('#alert03').removeClass('on')">허용안함</button>
+                            <button class="be" onclick="$('#alert03').removeClass('on')">허용</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- style4 -->
+        <div class="alert02" id="alert04">
+            <div class="layerBody">
+                <div class="confirm">
+                    <div class="mentBox">
+                        <p class="t_bold">[회원가입 완료]</p>
+                        <span>최초 1회 로그인시 추가 정보를 입력해주세요!</span>
+                        <div class="btn_area">
+                            <button class="gn w100" onclick="$('#alert04').removeClass('on')">추가 정보 입력하기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- style5 -->
+        <div class="alert02" id="alert05">
+            <div class="layerBody">
+                <div class="confirm">
+                    <div class="mentBox">
+                        <p class="t_bold">공유하기</p>
+                        <span>친구에게 모임을 공유하세요!</span>
+                        <ul>
+                            <li>
+                                <img src="../images/kakao_s.svg" alt="">
+                                <p>카카오톡</p>
+                            </li>
+                            <li>
+                                <img src="../images/sms_s.svg" alt="">
+                                <p>SMS</p>
+                            </li>
+                            <li>
+                                <img src="../images/code_s.svg" alt="">
+                                <p>코드복사하기</p>
+                            </li>
+                        </ul>
+                        <div class="close_btn">
+                            <button onclick="$('#alert05').removeClass('on')"><img src="../images/close_ic_.svg" alt=""></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- style6 -->
+        <div class="i_laypop" id="alert06">
+            <div class="layerBody">
+                <div class="confirm">
+                    <div class="mentBox">
+                        <button class="bgr color_blue" onclick="$('#alert06').removeClass('on')">채팅방 나가기</button>
+                        <button class="color_blue" onclick="$('#alert06').removeClass('on')">취소</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- style7 -->
+        <div class="alert02" id="alert07">
+            <div class="layerBody">
+                <div class="confirm">
+                    <div class="mentBox">
+                        <span class="mt40">결제가 완료 되었습니다</span>
+                        <div class="btn_area">
+                            <button class="gn w100" onclick="$('#alert07').removeClass('on')">확인</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- style8 -->
+        <div class="alert02" id="alert08">
+            <div class="layerBody">
+                <div class="confirm">
+                    <div class="mentBox">
+                        <p class="t_bold">[문의 등록 완료]</p>
+                        <span class="">문의 등록이 완료되었습니다</span>
+                        <div class="btn_area">
+                            <button class="gn w100" onclick="$('#alert08').removeClass('on')">확인</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- style9 -->
+        <div class="i_laypop" id="alert09">
+            <div class="layerBody">
+                <div class="confirm">
+                    <div class="mentBox">
+                        <button class="color_blue" onclick="$('#alert09').removeClass('on')">수정</button>
+                        <button class="color_blue" onclick="$('#alert09').removeClass('on')">삭제</button>
+                        <button class="bgr color_dg" onclick="$('#alert09').removeClass('on')">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- style10 -->
+        <div class="i_laypop" id="alert10">
+            <div class="layerBody">
+                <div class="confirm">
+                    <div class="mentBox">
+                        <button class="bgr color_red" onclick="$('#alert10').removeClass('on')">신고하기</button>
+                        <button class="color_dg" onclick="$('#alert10').removeClass('on')">닫기</button>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- style11 -->
+        <div class="alert02" id="alert11">
+            <div class="layerBody">
+                <div class="confirm">
+                    <div class="mentBox">
+                        <p class="t_bold">코드로 친구 초대하기</p>
+                        <span>친구에게 추천코드 공유하기!</span>
+                        <ul>
+                            <li>
+                                <img src="../images/kakao_s.svg" alt="">
+                                <p>카카오톡</p>
+                            </li>
+                            <li>
+                                <img src="../images/sms_s.svg" alt="">
+                                <p>SMS</p>
+                            </li>
+                            <li>
+                                <img src="../images/code_s.svg" alt="">
+                                <p>코드복사하기</p>
+                            </li>
+                        </ul>
+                        <div class="close_btn">
+                            <button onclick="$('#alert11').removeClass('on')"><img src="../images/close_ic_.svg" alt=""></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+         <!-- style12 -->
+         <div class="alert02" id="alert12">
+            <div class="layerBody">
+                <div class="confirm">
+                    <div class="mentBox">
+                        <p class="t_bold">탈퇴 하시겠습니까?</p>
+                        <span class="">*탈퇴시 기존에 데이터는 모두 삭제되며,<br/>
+                            재 가입은 1일 뒤 가능합니다.<br/><br/>
+                            
+                            [탈퇴 시 유의사항 안내] <br/>
+                            - 탈퇴 후 보유하신 혜택 (쿠폰, 포인트 등) 사용 할 수 없습니다. <br/>
+                            - 작성하신 글/댓글/리뷰 모두 삭제 처리 됩니다. <br/><br/>
+                            
+                            - 또한 환불 신청 후 환불 처리가 완료 되기 전 <br/>
+                            탈퇴 하실 경우 환불이 불가합니다.</span>
+                        <div class="btn_area">
+                            <button class="gy" onclick="$('#alert12').removeClass('on')">취소</button>
+                            <button class="re" onclick="$('#alert12').removeClass('on')">탈퇴</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- style13 -->
+        <div class="alert02" id="alert13">
+            <div class="layerBody">
+                <div class="confirm">
+                    <div class="mentBox">
+                        <p class="t_bold">로그아웃 하시겠습니까?</p>
+                        <div class="btn_area">
+                            <button class="gy" onclick="$('#alert13').removeClass('on')">취소</button>
+                            <button class="gn" onclick="$('#alert13').removeClass('on')">확인</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- style14 -->
+        <div class="alert02" id="alert14">
+            <div class="layerBody">
+                <div class="confirm">
+                    <div class="mentBox">
+                        <span class="mt40">프로필 수정이 완료되었습니다</span>
+                        <div class="btn_area">
+                            <button class="gy" onclick="$('#alert02').removeClass('on')">취소</button>
+                            <button class="gn" onclick="$('#alert02').removeClass('on')">확인</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+</html>

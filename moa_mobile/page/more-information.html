@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="../js/calendar.js"></script>
+    <script src="../js/rolldate.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+
+    <title>MOA</title>
+</head>
+<body>
+    <div class="header">
+        <button class="prev"></button>
+        <h2 class="pageTit">추가 정보</h2>
+    </div>
+    <div class="wrapper">
+        <div class="content">
+            <div class="con_area">
+                <div class="info_list">
+                    <ul>
+                        <li>
+                            <p>직군</p>
+                            <div class="select_st">
+                                <select name="" id="">
+                                    <option value="">디자이너 &gt;</option>
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <p>직무</p>
+                            <div class="select_st">
+                                <select name="" id="">
+                                    <option value="">모바일 디자이너 &gt;</option>
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <p>기업명</p>
+                            <div class="info_ent serch">
+                                <a href="#">회사명을 입력해주세요</a>
+                            </div>
+                        </li>
+
+                        <!-- 생년월일 --> 
+                        <li>
+                            <p>생년월일</p>
+                            <div class="info_ent">
+                                <input readonly type="text" id="date_picker" placeholder="생년월일을 입력해주세요">
+                            </div>
+                            
+                        </li>
+                        <li>
+                            <p>성별</p>
+                            <div class="radio_area">
+                                <span class="info_radio">
+                                    <input type="radio" name="dd1" id="radio1">
+                                    <label for="radio1">남</label>
+                                </span>
+                                <span class="info_radio">
+                                    <input type="radio" name="dd1" id="radio2">
+                                    <label for="radio2">여</label>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- 경력슬라이더 --> 
+                <div class="slider_area">
+                    <p>총 경력</p>
+                    <div class="slider-container">
+                        <input type="text" id="slider2" class="slider" />
+                    </div>
+                </div>
+                <div class="infock_area">
+                    <ul>
+                        <li>
+                            <p>관심사선택<br/>(2개 이상)</p>
+                            <div class="infock_list">
+                                <ul>
+                                    <li>
+                                        <input type="checkbox" id="box_01">
+                                        <label for="box_01">액티비티</label>
+                                        <input type="checkbox" id="box_02">
+                                        <label for="box_02">커리어</label>
+                                    </li>
+                                    <li>
+                                        <input type="checkbox" id="box_03">
+                                        <label for="box_03">쿠킹/베이킹</label>
+                                        <input type="checkbox" id="box_04">
+                                        <label for="box_04">소셜링</label>
+                                    </li>
+                                    <li>
+                                        <input type="checkbox" id="box_05">
+                                        <label for="box_05">문화예술</label>
+                                        <input type="checkbox" id="box_06">
+                                        <label for="box_06">힐링</label>
+                                    </li>
+                                    <li>
+                                        <input type="checkbox" id="box_07">
+                                        <label for="box_07">뷰티</label>
+                                        <input type="checkbox" id="box_08">
+                                        <label for="box_08">자기계발</label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="invite_code">
+                    <p>초대코드</p>
+                    <div class="common_input">
+                        <input type="text" placeholder="초대코드를 입력하세요">
+                    </div>
+                </div>
+                <!--
+                <div class="info_terms">
+                    <p>약관동의</p>
+                    <ul>
+                        <li class="border_bttom">
+                            <p>모두동의</p>
+                            <input type="checkbox" id="check_01">
+                            <label for="check_01">check</label>
+                        </li>
+                        <li>
+                            <p>[필수] 모아 서비스 이용약관 동의</p>
+                            <input type="checkbox" id="check_02">
+                            <label for="check_02">check</label>
+                        </li>
+                        <li>
+                            <p>[필수] 개인정보 수집 및 이용에 대한 동의</p>
+                            <input type="checkbox" id="check_03">
+                            <label for="check_03">check</label>
+                        </li>
+                        <li>
+                            <p>[필수] 위치기반 서비스 동의</p>
+                            <input type="checkbox" id="check_04">
+                            <label for="check_04">check</label>
+                        </li>
+                        <li>
+                            <p>[선택] 할인소식, 혜택 등 마케팅 전체 수신 동의</p>
+                        <input type="checkbox" id="check_05">
+                        <label for="check_05">check</label>
+                        </li>
+                    </ul>
+                    <div class="terms_cho">
+                        <input type="checkbox" id="check_06">
+                        <label for="check_06">앱 푸쉬</label>
+                        <input type="checkbox" id="check_07">
+                        <label for="check_07">문자</label>
+                        <input type="checkbox" id="check_08">
+                        <label for="check_08">이메일</label>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+        <div class="btwbtn_layout">
+            <button class="inactive">취소</button>
+            <button class="inactive on">완료</button>
+        </div>
+    </div>
+
+    <script src="../js/common.js"></script>
+
+    <!-- 경력 script -->
+    <script>
+        (function () {
+            'use strict';
+
+            var init = function () {                
+
+                var slider2 = new rSlider({
+                    target: '#slider2',
+                    values: [1, 2, 3, 4, 5],
+                    range: false,
+                    set: [2],
+                    tooltip: false,
+                    onChange: function (vals) {
+                        console.log(vals);
+                    }
+                });
+            };
+            window.onload = init;
+        })();
+    </script>
+    
+    <!-- 생년월일 script -->
+    <script>
+		new Rolldate({
+            el: '#date_picker',
+            format: 'YYYY-MM-DD',
+            beginYear: 1970,
+            endYear: 2003,
+            lang: { 
+                title: '생년월일', 
+                cancel: '닫기', 
+                confirm: '입력', 
+                year: '', 
+                month: '', 
+                day: '', 
+            }
+        })
+	</script>
+</body>
+</html>
