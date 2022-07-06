@@ -16,7 +16,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 <label for="up_profile" class="upload-btn"><img src="../images/up_profile.svg" alt=""></label>
             </div>
             <p class="p_id"><?php echo $member['mb_id']; ?></p>
-            <a href="" class="connect">네이버 계정 연결</a>
+<!--            <a href="" class="connect">네이버 계정 연결</a>-->
             <div class="my_ment">
                 회원님은 <b>반가운 분</b>입니다. <span><?php echo $member['grade']; ?></span>
             </div>
@@ -29,9 +29,20 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 <div class="input_flex">
                     <input type="text" name="mb_nick" value="<?php echo $member['mb_nick']; ?>" placeholder="닉네임">
                 </div>
-                <span class="inform02 p12">
-                    ·닉네임 변경은 1회/3개월 가능합니다.
-                </span>
+            </div>
+
+            <div class="mt15">
+                <p class="m_title">비밀번호</p>
+                <div class="input_flex">
+                    <input type="password" name="mb_password" value="" placeholder="비밀번호 입력">
+                </div>
+            </div>
+
+            <div class="mt15">
+                <p class="m_title">비밀번호 확인</p>
+                <div class="input_flex">
+                    <input type="password" name="mb_password2" value="" placeholder="비밀번호 입력 확인">
+                </div>
             </div>
 
             <div class="mt15">

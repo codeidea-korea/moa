@@ -20,10 +20,11 @@ include_once (G5_ADMIN_PATH.'/admin.head.php');
 // <li><a href="#anc_scf_index">쇼핑몰 초기화면</a></li>
 // <li><a href="#anc_mscf_index">모바일 초기화면</a></li>
 // <li><a href="#anc_scf_delivery">배송설정</a></li>
-// <li><a href="#anc_scf_etc">기타설정</a></li>
+// 
 $pg_anchor = '<ul class="anchor">
 <li><a href="#anc_scf_info">사업자정보</a></li>
 <li><a href="#anc_scf_payment">결제설정</a></li>
+<li><a href="#anc_scf_etc">기타설정</a></li>
 <li><a href="#anc_scf_sms">SMS설정</a></li>
 </ul>';
 
@@ -1113,9 +1114,9 @@ if(!isset($default['de_listtype_list_skin'])) {
 
 <div class="mt40"></div>
 
-<div class="boxContainer none">
+<div class="boxContainer n one">
 
-<section id="anc_scf_etc" class="none">
+<section id="anc_scf_etc" cl ass="none">
     <h2 class="h2_frm">기타 설정</h2>
     <?php echo $pg_anchor; ?>
 
@@ -1913,11 +1914,11 @@ if($default['de_iche_use'] || $default['de_vbank_use'] || $default['de_hp_use'] 
             echo '</script>'.PHP_EOL;
         }
 
-        if (!function_exists('mcrypt_module_open')) {
-            echo '<script>'.PHP_EOL;
-            echo 'alert("MCRYPT 관련 함수를 사용할 수 없습니다.\n서버 관리자에게 문의해 주십시오.");'.PHP_EOL;
-            echo '</script>'.PHP_EOL;
-        }
+        // if (!function_exists('mcrypt_module_open')) {
+        //     echo '<script>'.PHP_EOL;
+        //     echo 'alert("MCRYPT 관련 함수를 사용할 수 없습니다.\n서버 관리자에게 문의해 주십시오.");'.PHP_EOL;
+        //     echo '</script>'.PHP_EOL;
+        // }
 
         $log_path = G5_SHOP_PATH.'/inicis/log';
 

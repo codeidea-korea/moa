@@ -48,8 +48,8 @@ if ($sca || $stx || $stx === '0') {     //검색이면
     if (!$spt) $spt = $min_spt;
 
     $sql_search .= " and (wr_num between {$spt} and ({$spt} + {$config['cf_search_part']})) ";
+    if($bo_table == 'class') { $sql_search .= " and (moa_status = 1) "; }
 
-    if($bo_table == 'class') { $sql_search .= " and moa_status <> '2' "; }
 	if($sql_apms_where) $sql_search .= $sql_apms_where;
 
     // 원글만 얻는다. (코멘트의 내용도 검색하기 위함)
@@ -63,8 +63,11 @@ if ($sca || $stx || $stx === '0') {     //검색이면
     $total_count = sql_num_rows($result);
     */
 } else {
-    $sql_search = "";
-    $total_count = $board['bo_count_write'];
+    $sql_search = "(1)";
+    if($bo_table == 'class') { $sql_search .= " and (moa_status = 1)"; }
+    $sql = " SELECT COUNT(DISTINCT `wr_parent`) AS `cnt` FROM {$write_table} WHERE {$sql_search}";
+    $row = sql_fetch($sql);
+    $total_count = $row['cnt'];
 }
 
 if(G5_IS_MOBILE) {
@@ -175,11 +178,13 @@ if ($sst) {
 }
 
 if ($is_search_bbs) {
+    if($bo_table == 'class') { $sql_search .= " and (moa_status = 1) "; }
     $sql = " select distinct wr_parent from {$write_table} where {$sql_search} {$sql_order} limit {$from_record}, $page_rows ";
 } else {
-    $sql = " select * from {$write_table}  a where wr_is_comment = 0 {$sql_apms_where} ";
+    $sql = " select * from {$write_table} a where wr_is_comment = 0 {$sql_apms_where} ";
+    if($bo_table == 'class') { $sql .= " and (moa_status = 1) "; }
     if(!$is_notice_list && $notice_count)
-        $sql .= " and wr_id not in (".implode(', ', $arr_notice).") ";
+        $sql .= " and wr_id not in (".implode(', ', $arr_notice).")";
     $sql .= " {$sql_order} limit {$from_record}, $page_rows ";
 }
 // 페이지의 공지개수가 목록수 보다 작을 때만 실행

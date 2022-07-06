@@ -84,16 +84,16 @@ $subject = $ma['ma_subject'];
         $content = preg_replace("/{링크}/", $to_link, $content);
 
         $content = $content . "<hr size=0><p><span style='font-size:9pt; font-familye:굴림'>▶ 더 이상 정보 수신을 원치 않으시면 [<a href='".G5_BBS_URL."/email_stop.php?mb_id={$mb_id}&amp;mb_md5={$mb_md5}' target='_blank'>수신거부</a>] 해 주십시오.</span></p>";
-
-        // echo $config['cf_admin_email_name']." : ". $config['cf_admin_email']." : ".  $to_email." : ".  $subject." : ".  $content." <br>";
-        mailer($config['cf_admin_email_name'], $config['cf_admin_email'], $to_email, $subject, $content, 1);
-       
+        $receiver = '[{"name":"'.$nick.'", "email":"'.$to_email.'", "mobile":"", "note1":"", "note2":"", "note3":"", "note4":"", "note5":""}]';
+//        $content = 'test';
+//         die( $config['cf_admin_email_name']." : ". $config['cf_admin_email']." : ".  $to_email." : ".  $subject." : ".  $content." <br>");
+        sendDirectMail($subject, $content, $config['cf_admin_email'], $config['cf_admin_email_name'], $receiver, 0, 'NORMAL');
         // echo "<script> document.all.cont.innerHTML += '$cnt. $to_email ($mb_id : $name)<br>'; </script>\n";
         //echo "+";
         flush();
         ob_flush();
         ob_end_flush();
         usleep($sleepsec);
-        //$texts = $to_email.$subject;
+//        $texts = $to_email.$subject;
         $texts = '';
-       alert("인증용 메일이 발송되었습니다. {$texts} ",G5_URL);
+       alert("인증용 메일이 발송되었습니다.");

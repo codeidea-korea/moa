@@ -1,5 +1,5 @@
 <div class="wrapper">
-    <div class="s_content">
+    <div class="s_content mt16">
         <div class="in_code">
             <p>나의 초대코드</p>
             <p><?php echo $member['invite_code'] ?></p>

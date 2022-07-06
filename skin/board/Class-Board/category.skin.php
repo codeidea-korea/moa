@@ -39,11 +39,13 @@ $cate_w = ($boset['ctype'] == "2") ? apms_bunhal($ca_cnt + 1, $boset['bunhal']) 
 				<?php
 			}
 			?>
+			
 		</select>
 	</div>
-	<div class="input-wrapper">
-		<input type="text" type="text" name="stx"  placeholder="검색어를 입력해주세요." value="<?php echo $stx;?>">
-		<button type="submit" class="btn btn-<?php echo $btn2;?> btn-sm btn-block c_search">검색</button>
+				
+	<div class="m_search to_layout p0">
+		<input type="text" type="text" name="stx"  placeholder="검색어를 입력하세요." value="<?php echo $stx;?>">
+		<button type="submit" class="c_search">검색</button>
 	</div>
 </div>
 	<!-- 최근 검색어 -->
@@ -93,11 +95,15 @@ $cate_w = ($boset['ctype'] == "2") ? apms_bunhal($ca_cnt + 1, $boset['bunhal']) 
             </div>
 			<?php for ($i=0; $i < $ca_cnt; $i++) { ?>
 				<div  class="swiper-slide">
-					<a href="./board.php?bo_table=<?php echo $bo_table;?>&amp;sca=<?php echo urlencode($categories[$i]);?>" class="<?php echo ($categories[$i] === $sca) ? 'on' : '';?>""><?php echo $cate_w;?>
+					<a href="./board.php?bo_table=<?php echo $bo_table;?>&amp;sca=<?php echo urlencode($categories[$i]);?>" class="<?php echo ($categories[$i] === $sca) ? 'on' : '';?>"><?php echo $cate_w;?>
 						<?php echo $categories[$i];?><?php if($categories[$i] === $sca) echo '('.number_format($total_count).')';?>
 					</a>
 				</div>
 			<?php } ?>
+				<!-- <div  class="swiper-slide">
+					<a href="./board.php?bo_table=<?php echo $bo_table;?>&amp;sca=as_tag" class="<?php echo ("as_tag"=== $sca) ? 'on' : '';?>">해시태그
+					</a>
+				</div> -->
         </div>
     </div>
 </section>

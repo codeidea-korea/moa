@@ -267,6 +267,7 @@ foreach($admurl as $k => $v) {
     }
 
 }
+echo $sql;
 
 $skin_url = "/shop/partner/skin/board/Basic-Board";
 $skin_path = G5_PATH."/shop/partner/skin/board/Basic-Board";

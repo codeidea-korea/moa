@@ -93,7 +93,7 @@ $view_subject = get_text($view['wr_subject']);
 		</div>
 
 		<div class="view-padding">
-
+			
 			<?php if ($is_torrent) echo apms_addon('torrent-basic'); // 토렌트 파일정보 ?>
 
 			<?php

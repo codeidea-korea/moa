@@ -3,7 +3,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 ?>
 
 <!-- 알람 세팅 -->
-<section class="detail_con">
+<section class="detail_con ptcnt bg_gray">
     <div class="s_con_bg">
         <p class="noti_stit">게스트 알림 설정</p>
         <ul class="noti_list">
@@ -47,7 +47,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
     </div>
 </section>
 
-<section class="detail_con">
+<section class="detail_con ptcnt bg_gray">
     <div class="s_con_bg">
         <p class="noti_stit">호스트 알림 설정</p>
         <ul class="noti_list">
@@ -82,7 +82,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
     </div>
 </section>
 
-<section class="detail_con last_cnt">
+<section class="detail_con ptcnt last_cnt">
     <div class="s_con_bg">
     <p class="noti_stit">할인쿠폰/이벤트 알림 설정</p>
         <ul class="noti_list">

@@ -91,7 +91,7 @@ if($view['as_icon']) {
 					<i class="fa fa-bars"></i><span class="hidden-xs"> 목록</span>
 				</a>
 			<?php } ?>
-			<?php if ($reply_href) { ?>
+			<?php if ($bo_table !="notice" && $reply_href) { ?>
 				<a role="button" href="<?php echo $reply_href ?>" class="btn btn-<?php echo $btn1;?> btn-sm"<?php echo $modal_target;?>>
 					<i class="fa fa-commenting"></i><span class="hidden-xs"> 답변</span>
 				</a>

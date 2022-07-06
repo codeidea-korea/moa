@@ -24,7 +24,7 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 						<?php echo get_text($list[$i]['cp_subject']); ?>
 					</td>
 					<td class="text-right"><?php echo number_format($list[$i]['dc']); ?></td>
-					<td class="text-center"><button type="button" class="od_cp_apply btn btn-black btn-xs">적용</button></td>
+					<td class="text-center"><button data-dismiss="modal" type="button" class="od_cp_apply btn btn-black btn-xs">적용</button></td>
 				</tr>
 			<?php }	?>
 			</tbody>
@@ -36,8 +36,12 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 
 	<br>
 
-    <div class="text-center">
-        <button type="button" id="od_coupon_close" class="btn btn-black btn-sm">닫기</button>
-    </div>
+<!--    <div class="text-center">-->
+<!--        <button type="button" id="od_coupon_close" class="btn btn-black btn-sm">닫기</button>-->
+<!--    </div>-->
 </div>
 <!-- } 쿠폰 선택 끝 -->
+
+<script>
+
+</script>

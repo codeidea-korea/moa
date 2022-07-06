@@ -106,7 +106,7 @@ $listall = '<a href="?ap=plist" class="ov_listall">전체목록</a>';
 <label for="sfl" class="sound_only">검색대상</label>
 <select name="sfl" id="sfl">
     <option value="b.mb_nick"<?php echo get_selected($sfl, "b.mb_nick"); ?>>닉네임</option>
-    <option value="a.pt_name"<?php echo get_selected($sfl, "a.pt_name"); ?>>담당자</option>
+    <option value="a.pt_name"<?php echo get_selected($sfl, "a.pt_name"); ?>>이름</option>
 	<option value="a.pt_id"<?php echo get_selected($sfl, "a.pt_id"); ?>>아이디</option>
 </select>
 <label for="stx" class="sound_only">검색어<strong class="sound_only"> 필수</strong></label>
@@ -143,9 +143,9 @@ $listall = '<a href="?ap=plist" class="ov_listall">전체목록</a>';
 		</th>
 		<th scope="col"><?php echo apms_sort_link('a.pt_type') ?>유형</a></th>
 		<th scope="col"><?php echo apms_sort_link('b.mb_id') ?>닉네임</a></th>
-        <th scope="col"><?php echo apms_sort_link('a.pt_name') ?>담당자</a></th>
-        <th scope="col"><?php echo apms_sort_link('a.pt_hp') ?>담당자 연락처</a></th>
-        <th scope="col"><?php echo apms_sort_link('a.pt_email') ?>담당자 이메일</a></th>
+        <th scope="col"><?php echo apms_sort_link('a.pt_name') ?>이름</a></th>
+        <th scope="col"><?php echo apms_sort_link('a.pt_hp') ?>연락처</a></th>
+        <th scope="col"><?php echo apms_sort_link('a.pt_email') ?>이메일</a></th>
         <th scope="col"><?php echo apms_sort_link('a.pt_company') ?>정산</a></th>
         <th scope="col"><?php echo apms_sort_link('a.pt_bank_limit') ?>출금</a></th>
         <th scope="col">관리</th>

@@ -67,7 +67,7 @@ $from_record = ($page - 1) * $rows; // 시작 열을 구함
 		<tbody>
 		<?php
 		$sql = " select * from {$g5['g5_shop_banner_table']} $sql_search
-			  order by bn_order, bn_id desc
+			  order by bn_order asc
 			  limit $from_record, $rows  ";
 		$result = sql_query($sql);
 		for ($i=0; $row=sql_fetch_array($result); $i++) {
@@ -108,16 +108,16 @@ $from_record = ($page - 1) * $rows; // 시작 열을 구함
 		?>
 
 		<tr class="">
-			<td><?php echo $row['bn_id']; ?></td>
+			<td><?php echo $row['bn_order']; ?></td>
 			<td><?php echo $bn_img; ?></td>
 			<td><?php echo $row['bn_alt']; ?></td>
 			<td><?php echo $bn_begin_time; ?> ~ <?php echo $bn_end_time; ?></td>
-			<td>2022.03.14 13:22</td>
+			<td><?php echo date('Y-m-d H:i', strtotime($row['bn_time'])); ?></td>
 			<td>대기</td><!-- [대기,진행,종료] -->
 			<td>
 				<div class="flex flex-center">
-					<button type="button" class="order-up">위로</button>
-					<button type="button" class="order-down">아래로</button>
+					<button type="button" data-bn_id="<?php echo $row['bn_id']; ?>" class="order-up">위로</button>
+					<button type="button" data-bn_id="<?php echo $row['bn_id']; ?>" class="order-down">아래로</button>
 				</div>
 			</td>
 			<td headers="th_mng" class="td_mng td_mns_m">
@@ -208,7 +208,7 @@ $from_record = ($page - 1) * $rows; // 시작 열을 구함
     <tbody>
     <?php
     $sql = " select * from {$g5['g5_shop_banner_table']} $sql_search
-          order by bn_order, bn_id desc
+          order by bn_order asc
           limit $from_record, $rows  ";
     $result = sql_query($sql);
     for ($i=0; $row=sql_fetch_array($result); $i++) {
@@ -286,6 +286,25 @@ jQuery(function($) {
     $(".sbn_img_view").on("click", function() {
         $(this).closest(".td_img_view").find(".sbn_image").slideToggle();
     });
+
+    $('.order-up').click(function(){
+        orderUpDown('up', $(this).data('bn_id'));
+    })
+
+    $('.order-down').click(function(){
+        orderUpDown('down', $(this).data('bn_id'));
+    })
+
+    function orderUpDown(order, bn_id) {
+        $.ajax({
+            type: "POST",
+            data: {order: order, bn_id: bn_id},
+            url: '/ajax/bannerOrder.php',
+            success: function(data) {
+                location.reload();
+            }
+        });
+    }
 });
 </script>
 

@@ -17,7 +17,6 @@ if($header_skin)
 
 <!-- 회원정보 입력/수정 시작 { -->
 <div class="mbskin" id="register_member">
-
     <script src="<?php echo G5_JS_URL ?>/jquery.register_form.js"></script>
     
     <!-- 새로가입 시작 -->
@@ -40,7 +39,7 @@ if($header_skin)
 				<div class="clearfix"></div>
 			</div>
 			<div id="agreeOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="agreeheadingOne">
-				<div class="panel-body">
+				<div class="panel-body" style="border:0">
 					<?php if($provision) { ?>
 						<div class="register-term">
 							<?php echo $provision; ?>
@@ -62,7 +61,7 @@ if($header_skin)
 				<div class="clearfix"></div>
 			</div>
 			<div id="agreeTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="agreeheadingTwo">
-				<div class="panel-body">
+				<div class="panel-body" style="border-bottom:8px solid #F8F8F9">
 					<table class="table" style="border-top:0px; border-bottom:1px solid #ddd; margin-bottom:10px;">
 						<colgroup>
 							<col width="40%">
@@ -95,60 +94,70 @@ if($header_skin)
 							</div>
 						</div>
 					<?php } ?>
+					<div class="infock_list pb20">
+						<input type="checkbox" id="box_01" name="chk_all" value="1">
+						<label for="box_01">전체약관에 동의합니다</label>
+					</div>
+					<!-- <div class="panel panel-info">
+						<div class="panel-heading">
+							<label class="checkbox-inline" for="chk_all">
+								<input type="checkbox" name="chk_all" value="1" id="chk_all"> <strong>전체약관에 동의합니다.</strong>
+							</label>
+						</div>
+					</div> -->
 				</div>
 			</div>
 		</div>
-		<div class="panel panel-info">
-			<div class="panel-heading">
-				<label class="checkbox-inline" for="chk_all">
-					<input type="checkbox" name="chk_all" value="1" id="chk_all"> <strong>전체약관에 동의합니다.</strong>
-				</label>
-			</div>
-		</div>
+		
 	</div>
 
 	<div class="panel panel-default">
+
 		<div class="panel-heading"><strong><i class="fa fa-user fa-lg"></i> 개인정보 입력</strong></div>
 		<div class="panel-body">
 
+		<div class="signup_area">
+			<div class="join_title">회원가입</div>
 			<div class="form-group has-feedback">
-				<label class="col-sm-2 control-label" for="reg_mb_name"><b>이름</b><strong class="sound_only">필수</strong></label>
-				<div class="col-sm-3">
-					<input type="text" id="reg_mb_name" name="mb_name" value="<?php echo $user_name;?>" required class="form-control input-sm" size="10">
+				<label class="col-sm-2 control-label" for="reg_mb_name"><strong class="sound_only">필수</strong></label>
+				<div class="col-sm-3 common_input">
+					<input type="text" id="reg_mb_name" placeholder="이름" name="mb_name" value="<?php echo $user_name;?>" required class="form-control input-sm" size="10">
 					<span class="fa fa-check form-control-feedback"></span>
 				</div>
 			</div>
 
 			<div class="form-group has-feedback">
-				<label class="col-sm-2 control-label" for="reg_mb_nick"><b>닉네임</b><strong class="sound_only">필수</strong></label>
-				<div class="col-sm-3">
-					<input type="text" name="mb_nick" value="<?php echo $user_nick; ?>" id="reg_mb_nick" required class="form-control input-sm" size="10" maxlength="20">
+				<label class="col-sm-2 control-label" for="reg_mb_nick"><strong class="sound_only">필수</strong></label>
+				<div class="col-sm-3 common_input">
+					<input type="text" name="mb_nick" placeholder="닉네임" value="<?php echo $user_nick; ?>" id="reg_mb_nick" required class="form-control input-sm" size="10" maxlength="20">
 					<span class="fa fa-user form-control-feedback"></span>
 				</div>
-				<div class="col-sm-7">
+				<!-- <div class="col-sm-7">
 					<p class="form-control-static" style="padding-bottom:0;">
 						공백없이 한글,영문,숫자만 가능 (한글2자, 영문4자 이상, 가입 후 <?php echo (int)$config['cf_nick_modify'] ?>일 이내 변경 불가)
 					</p>
-				</div>
+				</div> -->
 			</div>
 
 			<div class="form-group has-feedback text-gap">
-				<label class="col-sm-2 control-label" for="reg_mb_email"><b>E-mail</b><strong class="sound_only">필수</strong></label>
-				<div class="col-sm-5">
-					<input type="text" name="mb_email" value="<?php echo $user_email; ?>" id="reg_mb_email" required class="form-control input-sm email" size="70" maxlength="100" placeholder="이메일을 입력해주세요." >
+				<label class="col-sm-2 control-label" for="reg_mb_email"><strong class="sound_only">필수</strong></label>
+				<div class="col-sm-5 common_input">
+					<input type="text" name="mb_email" placeholder="이메일" value="<?php echo $user_email; ?>" id="reg_mb_email" required class="form-control input-sm email" size="70" maxlength="100" placeholder="이메일을 입력해주세요." >
 					<span class="fa fa-envelope form-control-feedback"></span>
 					<?php if($email_msg) { ?>
 						<div class="help-block"><?php echo $email_msg; ?></div>
 					<?php } ?>
 				</div>
 			</div>
+		</div>
+			
 
 		</div>
 	</div>
-
-	<div class="text-center" style="margin:30px 0px;">
-		<button type="submit" id="btn_submit" class="btn btn-color" accesskey="s">회원가입</button>
-		<a href="<?php echo G5_URL ?>" class="btn btn-black" role="button">취소</a>
+	
+	<div class="btwbtn_layout02" style="margin:30px 0px;">
+		<button type="submit" id="btn_submit" class="inactive on" accesskey="s">가입하기</button>
+		<a href="<?php echo G5_URL ?>" class="inactive" role="button">취소</a>
 	</div>
 
     </form>

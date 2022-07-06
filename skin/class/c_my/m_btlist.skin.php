@@ -7,15 +7,23 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
     <div class="s_con_bg">
         <ul class="a_layout last_list">
             <!-- 인증 후 소속 인증 없어야함 -->
+            <?php
+            $sql = "SELECT 
+IF((SELECT count(*) cnt FROM deb_certi_mail WHERE mb_id = '{$member['mb_id']}') > 0 OR (SELECT count(*) cnt FROM deb_certi_image WHERE mb_id = '{$member['mb_id']}') > 0, '1', '0') as cnt,
+IF((SELECT cert_yn cnt FROM deb_certi_mail WHERE mb_id = '{$member['mb_id']}') > 1 OR (SELECT cert_yn FROM deb_certi_image WHERE mb_id = '{$member['mb_id']}') > 1, '1', '0') as cert_yn";
+            $result = sql_fetch($sql);
+
+            if($result['cnt'] <= 0 && $result['cert_yn'] == 0) { ?>
             <li>
                 <a href="<?php echo MOA_LOGIN_URL?>/certification.php">
                     <p>소속(직장/프리랜서) 인증하기</p>
                     <span><img src="../images/r_arrow_o.svg" alt=""></span>
                 </a>
             </li>
+            <?php } ?>
             <li>
                 <a href="<?php echo $hostlink;?>">
-                    <p>호스트 <?php echo ($host)?"관리모드":"지원하기";?></p>
+                    <p>호스트 <?php echo $host ? '관리모드' : '지원하기'?></p>
                     <span><img src="../images/r_arrow_o.svg" alt=""></span>
                 </a>
             </li>

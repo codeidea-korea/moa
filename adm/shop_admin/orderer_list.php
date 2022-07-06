@@ -39,7 +39,7 @@ $subject = sql_fetch($subject_sql);
 
 <div class="tbl-basic outline th-h5">
 	<div class="tbl-header">
-		<?php echo $subject['wr_subject']; ?> <?php echo date('Y-m-d', strtotime($subject['date'])) . ' ' . date('H:i', strtotime($subject['time'])); ?>(<?php echo $subject['cls_no']; ?>회차)
+		<?php echo $subject['wr_subject']; ?> <?php echo date('Y-m-d', strtotime($subject['day'])) . ' ' . date('H:i', strtotime($subject['time'])); ?>(<?php echo $subject['cls_no']; ?>회차)
 	</div>
     <div class="tbl-header">
         모임 참여자 목록<br>

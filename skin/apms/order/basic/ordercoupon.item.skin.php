@@ -35,9 +35,5 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
     <?php } ?>
 
 	<br>
-
-	<div class="text-center">
-        <button type="button" id="cp_close" class="btn btn-black btn-sm">닫기</button>
-    </div>
 </div>
 <!-- } 쿠폰 선택 끝 -->

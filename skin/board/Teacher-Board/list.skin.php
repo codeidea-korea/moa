@@ -240,7 +240,7 @@ if (checkProfile($member['mb_id']))
 						<div class="text-center">
 							<h4 id="myModalLabel"><i class="fa fa-search fa-lg"></i> Search</h4>
 						</div>
-						<form name="fsearch" method="get" role="form" class="form" style="margin-top:20px;">
+						<form name="fsearch" method="get" role="form" class="form" style="margin-top:20px;m">
 							<input type="hidden" name="bo_table" value="<?php echo $bo_table ?>">
 							<input type="hidden" name="sca" value="<?php echo $sca ?>">
 							<div class="row row-15">

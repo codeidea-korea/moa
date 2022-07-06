@@ -94,7 +94,7 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
 					<option value="pt_id" <?php echo get_selected($sfl, 'a.pt_id'); ?>>파트너 아이디</option>
 				<?php } ?>
 			</select>
-			<input type="text" name="stx" id="stx" value="<?php echo $stx; ?>" required class="span300 required" placeholder="검색어">
+			<input type="text" name="stx" id="stx" value="<?php echo $stx; ?>" class="span300" placeholder="검색어">
 			<button type="submit" class="btnSearch">검색</button>
 			<a href="#" class="btnReset">초기화</a>
 		</div>
@@ -139,7 +139,7 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
     <?php
     for ($i=0; $row=sql_fetch_array($result); $i++) {
         $href = G5_SHOP_URL.'/item.php?it_id='.$row['it_id'];
-        $name = get_sideview($row['mb_id'], get_text($row['is_name']), $row['mb_email'], $row['mb_homepage']);
+//        $name = get_sideview($row['mb_id'], get_text($row['is_name']), $row['mb_email'], $row['mb_homepage']);
         $is_content = get_view_thumbnail(conv_content($row['is_content'], 1), 300);
 
         $bg = 'bg'.($i%2);
@@ -163,8 +163,8 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
                 <?php echo $is_content; ?>
             </div>
 		</td>
-		<td class="td_name"><?php echo $name; ?></td>
-		<td>2018.11.21 15:54:55</td>
+		<td class="td_name"><?php echo get_text($row['is_name']); ?></td>
+		<td><?php echo date('Y-m-d H:i', strtotime($row['is_time'])); ?></td>
 		<td>200p</td>
 		<td>12</td>
         <td class="td_select">

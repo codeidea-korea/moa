@@ -7,38 +7,24 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
     <!-- 리스트 시작 -->
     <div class="s_content mt25">
         <ul class="last_list">
+            <?php while($row = sql_fetch_array($result)) { ?>
             <li class="best other">
                 <div class="bsw">
-                    <a href="<?php echo MOA_DETAIL_URL;?>/d_best_review02.php">
+                    <a href="<?php echo MOA_DETAIL_URL;?>/d_best_review02.php?it_id=<?php echo $row['it_id']?>">
                         <div class="id_area">
-                            <span></span> <p>lucky_seven</p>
+                            <span><?php echo get_member_profile_img($row['it_id']) ?></span> <p><?php echo $row['is_name']?></p>
                         </div>
                         <div class="img_area img_ct">
-                            <img src="../images/visual_img/베스트.png" alt="">
+                           <img src="<?php echo $row['as_thumb']?>" width="100%" />
                         </div>
                         <div class="con_txt">
-                            <span class="ellipsis1">[제주도] 당일치기 맛집투어 </span>
-                            <p class="ellipsis2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                            <span class="ellipsis1"><?php echo $row['it_name'] ?> </span>
+                            <p class="ellipsis2"><?php echo $row['is_content'] ?></p>
                         </div>
                     </a>
                 </div>
             </li>
-            <li class="best other">
-                <div class="bsw">
-                    <a href="<?php echo MOA_DETAIL_URL;?>/d_best_review02.php">
-                        <div class="id_area">
-                            <span></span> <p>lucky_seven</p>
-                        </div>
-                        <div class="img_area img_ct">
-                            <img src="../images/visual_img/베스트.png" alt="">
-                        </div>
-                        <div class="con_txt">
-                            <span class="ellipsis1">[제주도] 당일치기 맛집투어 </span>
-                            <p class="ellipsis2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                        </div>
-                    </a>
-                </div>
-            </li>
+            <?php } ?>
         </ul>
     </div>
 </section>

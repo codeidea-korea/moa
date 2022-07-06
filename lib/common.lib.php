@@ -115,6 +115,17 @@ function goto_url($url)
 // 세션변수 생성
 function set_session($session_name, $value)
 {
+    static $check_cookie = null;
+
+	if( $check_cookie === null ){
+		$cookie_session_name = session_name();
+		if( ! ($cookie_session_name && isset($_COOKIE[$cookie_session_name]) && $_COOKIE[$cookie_session_name]) && ! headers_sent() ){
+			@session_regenerate_id(false);
+		}
+
+		$check_cookie = 1;
+	}
+    
     if (PHP_VERSION < '5.3.0')
         session_register($session_name);
     // PHP 버전별 차이를 없애기 위한 방법
@@ -1066,6 +1077,7 @@ function get_sql_search($search_ca_name, $search_field, $search_text, $search_op
                         $str .= "INSTR($field[$k], '$search_str')";
                     break;
             }
+            $str .= " or instr(as_tag,  '$search_str') ";
             $op2 = " or ";
         }
         $str .= ")";
@@ -1230,7 +1242,7 @@ function get_category_option($bo_table='', $ca_name='')
     $str = "";
     for ($i=0; $i<count($categories); $i++) {
         $category = trim($categories[$i]);
-        if (!$category) continue;
+        if (!$category || $category == '인기글') continue;
 
         $str .= "<option value=\"$categories[$i]\"";
         if ($category == $ca_name) {

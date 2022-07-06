@@ -19,29 +19,31 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 				$self_url = G5_BBS_URL."/login.php";
 
 				//새창을 사용한다면
-				if( G5_SOCIAL_USE_POPUP ) {
+				if( social_service_check('naver') || social_service_check('kakao') ) {
 					$self_url = G5_SOCIAL_LOGIN_URL.'/popup.php';
 				}
 			?>
             <div class="login_button">
                 <button  class="login_btn">로그인</button>
 			    <?php if( social_service_check('kakao') ) {     //카카오 로그인을 사용한다면 ?>	
-                    <button type="button" class="kakao_btn" onClick="location.href='<?php echo $self_url;?>?provider=kakao&amp;url=<?php echo $urlencode;?>';">카카오톡으로 계속하기</button>
+                    <button type="button" class="kakao_btn sns-wrap social_link" onClick="winSocial('<?php echo $self_url;?>?provider=kakao');">카카오톡으로 계속하기</button>
 			    <?php }     //end if ?>
                 <?php if( social_service_check('naver') ) {     //네이버 로그인을 사용한다면 ?>
-                    <button href="javascript:" class="naver_btn" onclick="location.href='<?php echo $self_url;?>?provider=naver&amp;url=<?php echo $urlencode;?>'">네이버로 계속하기</button>
+                    <button  type="button" class="naver_btn sns-wrap social_link" onClick="winSocial('<?php echo $self_url;?>?provider=naver')">네이버로 계속하기</button>
                 <?php }     //end if ?>
                 <!-- <button class="Apple_btn">Apple로 계속하기</button> -->
             </div>
-            <?php if( G5_SOCIAL_USE_POPUP && !$social_pop_once ){
+            <?php 
+            //if( G5_SOCIAL_USE_POPUP && !$social_pop_once ){
+            if(  !$social_pop_once ){
                 $social_pop_once = true;
                 ?>
                 <script>
-                    jQuery(function($){
-                        $(".sns-wrap").on("click", "a.social_link", function(e){
-                            e.preventDefault();
+                    function winSocial(href) {
+                        //$(".sns-wrap").on("click", function(e){
+                          //  e.preventDefault();
 
-                            var pop_url = $(this).attr("href");
+                            var pop_url = href;
                             var newWin = window.open(
                                 pop_url, 
                                 "social_sing_on", 
@@ -52,8 +54,8 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                                     alert('브라우저에서 팝업이 차단되어 있습니다. 팝업 활성화 후 다시 시도해 주세요.');
 
                             return false;
-                        });
-                    });
+                        //});
+                    }
                 </script>
                 <?php } ?>
             <?php } ?>
@@ -66,7 +68,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 <span></span>
                 <a href="<?php echo G5_BBS_URL.'/password_lost.php'?>" class="win_password_lost" target="_blank">비밀번호 찾기</a>
             </div>
-            <p class="recent_login">최근 로그인은 카카오톡입니다.</p>
+<!--            <p class="recent_login">최근 로그인은 카카오톡입니다.</p>-->
             <div class="look">
                 <a href="/c_main/main.php">둘러보기</a>
             </div>

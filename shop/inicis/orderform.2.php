@@ -19,13 +19,13 @@ if($default['de_tax_flag_use']) {
 <input type="hidden" name="oid"         value="<?php echo $od_id; ?>">
 <input type="hidden" name="goodname"    value="<?php echo $goods; ?>">
 <input type="hidden" name="price"       value="<?php echo $tot_price; ?>">
-<input type="hidden" name="buyername"   value="">
-<input type="hidden" name="buyeremail"  value="">
-<input type="hidden" name="parentemail" value="">
-<input type="hidden" name="buyertel"    value="">
-<input type="hidden" name="recvname"    value="">
-<input type="hidden" name="recvtel"     value="">
-<input type="hidden" name="recvaddr"    value="">
+<input type="hidden" name="buyername"   value="<?php echo get_text($member['mb_name']); ?>">
+<input type="hidden" name="buyeremail"  value="<?php echo $member['mb_email']; ?>">
+<input type="hidden" name="parentemail" value="<?php echo $member['mb_email']; ?>">
+<input type="hidden" name="buyertel"    value="<?php echo get_text($member['mb_hp']); ?>">
+<input type="hidden" name="recvname"    value="<?php echo get_text($member['mb_name']); ?>">
+<input type="hidden" name="recvtel"     value="<?php echo get_text($member['mb_hp']); ?>">
+<input type="hidden" name="recvaddr"    value="<?php echo $member['mb_email']; ?>">
 <input type="hidden" name="recvpostnum" value="">
 
 <!-- 기타설정 -->

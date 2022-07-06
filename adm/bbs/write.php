@@ -522,7 +522,8 @@ $moa_adm_bbs_path = G5_PATH."/adm/bbs/";
 @include_once ('./board_head.php');
 @include_once ($board_skin_path.'/board.skin.php');
 
-$action_url = https_url(G5_BBS_DIR)."/write_update.php";
+//$action_url = https_url(G5_BBS_DIR)."/write_update.php";
+$action_url = https_url(G5_ADMIN_DIR."/bbs")."/write_update.php";
 
 echo '<!-- skin : '.(G5_IS_MOBILE ? $board['bo_mobile_skin'] : $board['bo_skin']).' -->';
 include_once ($board_skin_path.'/write.skin.php');

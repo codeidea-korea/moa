@@ -11,7 +11,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
             <span>로그인 및 소속 인증이 되지 않았습니다.<br>소속 인증을 진행해주세요.</span>
         </p>
         <?php } ?>
-        <div class="m_idarea mt20">
+        <div class="m_idarea">
             <?php if (!$member['mb_id']) {?>
         
             <div class="id_txt">

@@ -13,7 +13,7 @@ auth_check($auth[$sub_menu], 'r');
 
 
 $sql_common = " from g5_member where (1) ";
-$sql_search = '';
+$sql_search = " AND mb_status <> '승인'";
 if($mb_name) {
     $sql_search .= " AND mb_name like '%{$mb_name}%'";
 }
@@ -80,7 +80,7 @@ $colspan = ($is_membership) ? 17 : 16;
 				<select name="mb_level">
 					<option value="">전체</option>
 					<option value="3" <?php echo $mb_level == '3' ? 'selected' : ''; ?>>호스트</option>
-					<option value="2" <?php echo $mb_level == '1' ? 'selected' : ''; ?>>게스트</option>
+					<option value="2" <?php echo $mb_level == '2' ? 'selected' : ''; ?>>게스트</option>
 				</select>
 			</div>
 		</div>
@@ -97,7 +97,7 @@ $colspan = ($is_membership) ? 17 : 16;
 		</div>
 		<div class="btnSet">
 			<button type="submit" class="btnSearch">조회</button>
-			<a href="#" class="btnReset">초기화</a>
+			<button type="button" class="btnReset">초기화</button>
 		</div>
 	</div>
 	</form>
@@ -138,7 +138,7 @@ $colspan = ($is_membership) ? 17 : 16;
 				<tr>
 					<td><input type="checkbox" name="chk[]" class="chk_btn" value="<?php echo $row['mb_id'] ?>" id="chk_<?php echo $i ?>"></td>
 					<td><?php echo $i; ?></td>
-					<td><a href="#" class="color-blue underline"><?php echo $row['mb_name']; ?></a></td>
+					<td><a href="/adm/member_form.php?w=u&mb_id=<?php echo $row['mb_id']; ?>" class="color-blue underline"><?php echo $row['mb_name']; ?></a></td>
 					<td><?php echo $row['mb_id']; ?></td>
 					<td><?php echo $row['mb_level'] > 2 ? '호스트' : '게스트'; ?></td>
 					<td><?php echo $row['job_kind']; ?></td>
@@ -237,6 +237,14 @@ $(function() {
         } else {
             return false;
         }
+    })
+
+    $('.btnReset').click(function(){
+        $('select').val(' ');
+        $('input[name="mb_name"]').val('');
+        $('input[name="mb_id"]').val('');
+        $('input[name="sch_startdt"]').val('');
+        $('input[name="sch_enddt"]').val('');
     })
 });
 function fmemberlist_submit(f)

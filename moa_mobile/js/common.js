@@ -7,7 +7,7 @@
 
   var swiper = new Swiper(".swiper2", {
     slidesPerView: 'auto',
-    spaceBetween: 0,
+    spaceBetween: 20,
     freeMode: true,
     pagination: {
       clickable: true,

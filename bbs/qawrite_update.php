@@ -8,7 +8,7 @@ $w == u : 수정
 ==========================*/
 
 if($is_guest)
-    alert('회원이시라면 로그인 후 이용해 보십시오.', './login.php?url='.urlencode(G5_BBS_URL.'/qalist.php'));
+    alert('회원이시라면 로그인 후 이용해 보십시오.', './login.php?url='.urlencode(G5_URL.'/shop/item.php?it_id=' . $_POST['it_id']));
 
 $msg = array();
 
@@ -20,15 +20,15 @@ if (chk_multiple_admin($member['mb_id'], $qaconfig['as_admin'])) {
 	$is_admin = 'super'; 
 }
 
-if(trim($qaconfig['qa_category'])) {
-    if($w != 'a') {
-        $category = explode('|', $qaconfig['qa_category']);
-        if(!in_array($qa_category, $category))
-            alert('분류를 올바르게 지정해 주십시오.');
-    }
-} else {
-    alert('1:1문의 설정에서 분류를 설정해 주십시오');
-}
+//if(trim($qaconfig['qa_category'])) {
+//    if($w != 'a') {
+//        $category = explode('|', $qaconfig['qa_category']);
+//        if(!in_array($qa_category, $category))
+//            alert('분류를 올바르게 지정해 주십시오.');
+//    }
+//} else {
+//    alert('1:1문의 설정에서 분류를 설정해 주십시오');
+//}
 
 // e-mail 체크
 $qa_email = '';
@@ -468,7 +468,7 @@ else
     $result_url = G5_BBS_URL.'/qalist.php'.preg_replace('/^&amp;/', '?', $qstr);
 
 if ($file_upload_msg)
-    alert($file_upload_msg, $result_url);
+    alert($file_upload_msg, '/shop/item.php?it_id=' . $_POST['it_id']);
 else
-    goto_url($result_url);
+    goto_url('/shop/item.php?it_id=' . $_POST['it_id']);
 ?>

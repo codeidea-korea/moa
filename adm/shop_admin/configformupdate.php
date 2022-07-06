@@ -222,7 +222,7 @@ $check_sanitize_keys = array(
 'de_root_index_use',			// 인덱스 루트
 'as_point',						// 포인트 결제
 );
-print_r2($_POST);exit;
+//print_r2($_POST);exit;
 foreach( $check_sanitize_keys as $key ){
     $$key = isset($_POST[$key]) ? strip_tags($_POST[$key]) : '';
 }

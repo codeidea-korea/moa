@@ -511,8 +511,7 @@ $skin_path = G5_PATH."/shop/partner/skin/Basic";
 
 if ($chks) {
 
-    include_once(G5_ADMIN_PATH.'/admin.head.sub.php');
-    include_once($skin_path.'/_head.php');
+    include_once (G5_ADMIN_PATH.'/admin.head.php');
 
 }
 else
@@ -534,7 +533,7 @@ include_once ($board_skin_path.'/write.skin.php');
 
 //if ($chks) {
 
-include_once(G5_PATH.'/shop/partner/skin/Basic/_tail.php');
+include_once (G5_ADMIN_PATH.'/admin.tail.php');
 //
 include_once(G5_BBS_PATH.'./board_tail.php');
 //}

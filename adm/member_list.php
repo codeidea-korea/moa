@@ -27,27 +27,12 @@ $sql_common = " from {$g5['member_table']} a
 	";
 
 $sql_search = " where (1) ";
-if ($stx) {
-    $sql_search .= " and ( ";
-    switch ($sfl) {
-        case 'mb_point' :
-            $sql_search .= " ({$sfl} >= '{$stx}') ";
-            break;
-        case 'mb_level' :
-            $sql_search .= " ({$sfl} = '{$stx}') ";
-            break;
-        case 'mb_tel' :
-        case 'mb_hp' :
-            $sql_search .= " ({$sfl} like '%{$stx}') ";
-            break;
-        default :
-            $sql_search .= " ({$sfl} like '{$stx}%') ";
-            break;
-    }
-    $sql_search .= " ) ";
-}
+
 if ($sch_startdt) {
-	$sql_search .=" and date(mb_datetime) between '{$sch_startdt}' and '{$sch_enddt}' ";
+	$sql_search .=" and date(a.mb_datetime) between '{$sch_startdt}' and '{$sch_enddt}' ";
+}
+if($stx) {
+    $sql_search .= " and (a.mb_hp like '%$stx%' or a.mb_name like '%$stx%')";
 }
 
 if ($is_admin != 'super')
@@ -96,7 +81,7 @@ $row = sql_fetch($sql);
 $intercept_count = $row['cnt'];
 
 $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목록</a>';
-
+$excel_download_url = '/adm/memberListExcelDownload.php?sch_startdt='.$sch_startdt.'&amp;sch_enddt='.$sch_enddt.'&amp;sca='.$sca.'&amp;save_stx='.$stx.'&amp;stx='.$stx;
 $g5['title'] = '회원관리';
 include_once('./admin.head.php');
 
@@ -113,7 +98,6 @@ $sql = " SELECT
 		 {$sql_search} 
 		 {$sql_order} 
 		 limit {$from_record}, {$rows} ";
-
 //echo nl2br($sql)."<BR>";
 $result = sql_query($sql);
 
@@ -197,20 +181,20 @@ $colspan = ($is_membership) ? 17 : 16;
 					</select>
 				</div>
 			</div>
-            <div class="wr-list  flex-top">
+            <div class="wr-list  flex-top none">
 				<div class="wr-list-label">관심분야</div>
 				<div class="wr-list-con">
 					<p>
-						<label class="checkbox-wrap"><input type="checkbox" name="" value="" /><span></span>액티비티</label>
-						<label class="checkbox-wrap"><input type="checkbox" name="" value="" checked /><span></span>자기계발</label>
-						<label class="checkbox-wrap"><input type="checkbox" name="" value="" /><span></span>커리어</label>
-						<label class="checkbox-wrap"><input type="checkbox" name="" value="" /><span></span>소셜링</label>
+						<label class="checkbox-wrap"><input type="checkbox" name="mo" value="액티비티" /><span></span>액티비티</label>
+						<label class="checkbox-wrap"><input type="checkbox" name="mo" value="자기계발" checked /><span></span>자기계발</label>
+						<label class="checkbox-wrap"><input type="checkbox" name="mo" value="커리어" /><span></span>커리어</label>
+						<label class="checkbox-wrap"><input type="checkbox" name="mo" value="소셜링" /><span></span>소셜링</label>
 					</p>
 					<p>
-						<label class="checkbox-wrap"><input type="checkbox" name="" value="" /><span></span>쿠킹베이킹</label>
-						<label class="checkbox-wrap"><input type="checkbox" name="" value=""  /><span></span>문화예술</label>
-						<label class="checkbox-wrap"><input type="checkbox" name="" value="" /><span></span>뷰티</label>
-						<label class="checkbox-wrap"><input type="checkbox" name="" value="" checked /><span></span>힐링</label>
+						<label class="checkbox-wrap"><input type="checkbox" name="mo" value="쿠킹베이킹" /><span></span>쿠킹베이킹</label>
+						<label class="checkbox-wrap"><input type="checkbox" name="mo" value="문화예술"  /><span></span>문화예술</label>
+						<label class="checkbox-wrap"><input type="checkbox" name="mo" value="뷰티" /><span></span>뷰티</label>
+						<label class="checkbox-wrap"><input type="checkbox" name="mo" value="힐링" checked /><span></span>힐링</label>
 					</p>
 				</div>
             </div>
@@ -230,7 +214,7 @@ $colspan = ($is_membership) ? 17 : 16;
 					<a href="javascript:" onclick="setdate(4);"  class="dl year1 ">1년</a>	
 					<a href="javascript:" onclick="setdate(5);"  class="dl year5">5년</a>
 				</div>
-                <input type="text" name="stx" value="<?php echo $stx?>" class="span280 ml10" placeholder="전화번호/이름">
+
 				<script>
 				var today = "<?php echo $rday['today'];?>";
 				var month1ago = "<?php echo $rday['month1ago'];?>";
@@ -280,11 +264,15 @@ $colspan = ($is_membership) ? 17 : 16;
 				});
 				</script>
 			</div>
+            <div class="wr-list">
+                <div class="wr-list-label">검색어</div>
+                <input type="text" name="stx" value="<?php echo $stx?>" class="span280 ml10" placeholder="전화번호/이름">
+            </div>
 		</div>
 	</div>
 	<div class="btnSet flex-center">
 		<button type="submit" class="btnSearch">조회</button>
-		<a href="#" class="btnReset">초기화</a>
+		<button type="button" class="btnReset">초기화</button>
 	</div>
 </div>
 </form>
@@ -296,7 +284,7 @@ $colspan = ($is_membership) ? 17 : 16;
 	<a href="#" class="btn span110 reverse gray none">로그인 정보</a>
 	<a href="#" class="btn span110 gray none">회원등록</a><!-- 아마도 사용하지 않을 버튼들.... -->
 	<div class="right">
-		<a href="#" class="btn span150">엑셀 다운로드</a>
+		<a href="<?php echo $excel_download_url ?>" class="btn span150">엑셀 다운로드</a>
 		<select class="" title="">
 			<option>최신순 / 과거순</option>
 			<option>OOO</option>
@@ -607,6 +595,12 @@ $colspan = ($is_membership) ? 17 : 16;
 </div>
 
 <script>
+    $('.btnReset').click(function(){
+        $('select').val('');
+        $('input[name="stx"]').val('');
+        $('input[name="sch_startdt"]').val('');
+        $('input[name="sch_enddt"]').val('');
+    })
 function fmemberlist_submit(f)
 {
     if (!is_checked("chk[]")) {

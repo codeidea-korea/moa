@@ -1,5 +1,5 @@
 <?php
-$sub_menu = "450200";
+$sub_menu = '400420';
 include_once('./_common.php');
 
 auth_check($auth[$sub_menu], 'r');
@@ -11,10 +11,10 @@ auth_check($auth[$sub_menu], 'r');
 //     $stx2 = $days;
 
 
-$sql_common = " from deb_class_item a join g5_shop_item b on a.it_id = b.it_id join g5_write_class c on b.it_2 = c.wr_id 
-                ";
+$sql_common = " FROM deb_class_item a join g5_shop_item b on a.it_id = b.it_id join g5_write_class c on b.it_2 = c.wr_id 
+               ";
 
-$sql_order = " order by a.it_id desc ";
+$sql_order = " group by c.wr_id order by a.it_id desc ";
 
 $sql = " select count(*) as cnt {$sql_common} {$sql_order} ";
 $row = sql_fetch($sql);
@@ -31,7 +31,7 @@ $from_record = ($page - 1) * $rows; // 시작 열을 구함
 $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목록</a>';
 
 $g5['title'] = '신청한 모임 승인관리';
-include_once('./admin.head.php');
+include_once (G5_ADMIN_PATH.'/admin.head.php');
 
 $sql = " select * {$sql_common} {$sql_order} limit {$from_record}, {$rows} ";
 $result = sql_query($sql);
@@ -85,8 +85,8 @@ $result = sql_query($sql);
 					<td><?php echo $row['wr_subject']; ?></td>
 					<td><?php echo $row['moa_onoff']; ?></td>
 					<td><?php echo $row['cls_no'] ? $row['cls_no'] : 1; ?>회차</td>
-					<td><?php echo date('Y-m-d', strtotime($row['day'])) . ' ' . date('H시', strtotime($row['time'])); ?></td>
-					<td><?php echo number_format($row['it_cust_price'] - $row['it_price']); ?>원</td>
+					<td><?php echo date('Y-m-d', strtotime($row['day'])) . ' confirm_moa_list.php' . date('H시', strtotime($row['time'])); ?></td>
+					<td><?php echo number_format($row['it_price']); ?>원</td>
 <!--					<td>2022.03.14 ~ 2022.05.14</td>-->
 <!--                    --><?php //$apply_info = countAplyerMoaClass($row['it_id']);
 //                        echo print_r($apply_info);
@@ -240,5 +240,5 @@ $('.moa_status').change(function(){
 </script>
 
 <?php
-include_once ('./admin.tail.php');
+include_once('./admin.tail.php');
 ?>

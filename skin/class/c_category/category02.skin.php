@@ -7,7 +7,7 @@ $moa_onoff = $_GET['moa_onoff'];
 <!-- 카테고리 지역선택 화면 -->
 <section class="wrapper01">
     <div class="s_content">
-        <div class="select_area">
+        <div class="select_area s_con_search">
             <div class="cate_sel">
                 <div class="slctRgn">
                     <button class="cla_btn">지역선택</button>
@@ -20,7 +20,7 @@ $moa_onoff = $_GET['moa_onoff'];
 .catarea {display:none}
 .areaspan {}
 </style>
-    <div class="s_content mt10">
+    <div class="s_content">
         <div class="area_c">
             <div class="city">
                 <ul>

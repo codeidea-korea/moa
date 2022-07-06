@@ -24,20 +24,15 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 <img id="imgArea" src="../images/Photo_default.svg" alt=""  onerror="imgAreaError()">
             </div>
     
-            <div class="btw_btn p10">
+            <div class="btw_btn02 p10">
                 <!-- 이미지 업로드 -->
                 <input type="file" accept="image/*" name="bf_file" id="namecard" style="display:none">
-                <button type="button" onclick="onCamera('up');">이미지 업로드</button>
-                
-                <!-- 카메라 호출 -->
-                <input type="file" accept="image/*" name="camera" id="camera" style="display:none">
-                        
-                <button type="button" onclick="onCamera('c');" >촬영</button>
+                <button type="button" onclick="onCamera();">이미지 업로드/카메라</button>
             </div>
         </div>
     </div>
     <div class="lowbtn_layout mt25">
-        <input type="submit" class="inactive on" oncl ick="location.href='<?php echo MOA_LOGIN_URL;?>/certification_loading.php'" value="완료" >
+        <input type="submit" class="inactive on" onclick="location.href='<?php echo MOA_LOGIN_URL;?>/certification_loading.php'" value="완료" >
     </div>
     </form>
 </section>
@@ -45,18 +40,11 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
 
 <script type="text/javascript">
-function onCamera(type) {
-    if (type=='c') {
-        $("#namecard").attr("capture","camera");
-        $("#f_kind").val("free-file");
-
+    function onCamera() {
+        $("#namecard").removeAttr("capture");
+        $("#f_kind").val("name-file");
+        document.all.bf_file.click();
     }
-    else {
-        $("#namecard").attr("capture","");
-        $("#f_kind").val("free-camera");
-    }
-    document.all.bf_file.click();
-}
 	// 콘텐츠 수정 :: 사진 수정 시 이미지 미리보기
 	function readURL(input) {
 		if (input.files && input.files[0]) {

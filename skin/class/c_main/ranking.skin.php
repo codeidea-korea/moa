@@ -36,11 +36,18 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                         <p>후기 <?php echo ($rate['cnt'])?$rate['cnt']:0;?>개</p>
                     </div>
 
+                    <?php if(($row['it_cust_price'] - $row['it_price']) > 0) { ?>
                     <p class="sale"><?php echo number_format($row['it_cust_price']); ?>원</p>
                     <div class="dsc_price">
                         <?php $disp = ($row['it_cust_price'] - $row['it_price']) * 100 / $row['it_cust_price'] ?>
                         <span class="disp"><?php echo floor($disp); ?>%</span><span><?php echo number_format($row['it_price']); ?>원</span>
                     </div>
+                    <?php } else { ?>
+                        <p class="sale"></p>
+                        <div class="dsc_price">
+                            <span class="disp"><span><?php echo number_format($row['it_price']); ?>원</span>
+                        </div>
+                    <?php } ?>
                 </a>
             </li>
         <?php } ?>

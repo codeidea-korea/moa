@@ -1,9 +1,12 @@
 <?php
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
+
+$sql = "SELECT * FROM g5_shop_order WHERE od_id = '{$od_id}'";
+$result = sql_fetch($sql);
 ?>
 
 <!-- 결제 상세 내역 -->
-<section class="detail_con">
+<section class="detail_con bg_gray">
     <div class="s_con_bg">
         <div class="dt_h4">
             <h4>결제 정보</h4>
@@ -11,11 +14,11 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
         <div class="mt25">
             <div class="bothSides">
                 <p>쿠폰 할인금액</p>
-                <span>5,000원</span>
+                <span><?php echo number_format($result['od_coupon']); ?>원</span>
             </div>
             <div class="bothSides">
-                <p>신용카드/체크카드</p>
-                <span>20,000원</span>
+                <p><?php echo $result['od_settle_case']; ?></p>
+                <span><?php echo number_format($result['od_cart_price']); ?>원</span>
             </div>
         </div>
     </div>
@@ -26,7 +29,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
         <div class="dt_h4 layout_f">
             <h4>총 결제금액</h4>
             <div class="pay02">
-                30,000원
+                <?php echo number_format($result['od_receipt_price']); ?>원
             </div>
         </div>
 <!--        <div class="lowbtn_layout mt25">-->

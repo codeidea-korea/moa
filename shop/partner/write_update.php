@@ -295,7 +295,7 @@ if($ap == 'list') {
         alert('제목을 입력하여 주십시오.');
 
     if ($w == '' || $w == 'r') {
-
+		
         if ($member['mb_id']) {
             $mb_id = $member['mb_id'];
             $wr_name = addslashes(clean_xss_tags($board['bo_use_name'] ? $member['mb_name'] : $member['mb_nick']));
@@ -974,16 +974,22 @@ if($ap == 'list') {
             }
         }
     }
+	
     // 사용자 코드 실행
     @include_once($board_skin_path.'/write_update.skin.php');
+	
     @include_once($board_skin_path.'/write_update.tail.skin.php');
 
     delete_cache_latest($bo_table);
-
-    if ($file_upload_msg)
-        alert($file_upload_msg, G5_HTTP_BBS_URL.'/board.php?bo_table='.$bo_table.'&amp;wr_id='.$wr_id.$qstr);
-    else
-        goto_url(G5_HTTP_BBS_URL.'/board.php?bo_table='.$bo_table.'&amp;wr_id='.$wr_id.$qstr);
+    if($ap == 'moa_write')
+    {
+        goto_url(G5_URL . '/shop/partner/?ap=list');
+    } else {
+        if ($file_upload_msg)
+            alert($file_upload_msg, G5_HTTP_BBS_URL . '/board.php?bo_table=' . $bo_table . '&amp;wr_id=' . $wr_id . $qstr);
+        else
+            goto_url(G5_HTTP_BBS_URL . '/board.php?bo_table=' . $bo_table . '&amp;wr_id=' . $wr_id . $qstr);
+    }
 }
 ?>
 

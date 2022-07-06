@@ -578,8 +578,8 @@ function procWrite2Item($bo_table, $wr_id)
         }
         $x++;
 
-        $vals['it_cust_price'] = ($moa['wr_2']) ? $moa['wr_2'] : 0;   // 0원이면 기본 10만원으로
-        $vals['it_price'] = ($moa['wr_3']) ? $moa['wr_3'] : 0;   // 0원이면 기본 10만원으로
+        $vals['it_cust_price'] = ($moa['wr_3']) ? $moa['wr_3'] : 0;   // 0원이면 기본 10만원으로
+        $vals['it_price'] = ($moa['wr_4']) ? $moa['wr_4'] : 0;   // 0원이면 기본 10만원으로
         $vals['it_name'] = $moa['wr_subject'];
         $vals['it_model'] = $list[$i]['content'];
         $vals['it_explan'] = $moa['wr_content'];
@@ -1212,10 +1212,11 @@ function getHitCategory()
 
 // 인기 모임순  - 정보
 // 배열로 받아오기
-function getFavoriteClass($limit = 10)
+function getFavoriteClass($limit = 10, $ca_name)
 {
     global $g5;
-
+    $common = '';
+    if($ca_name || $ca_name != '') { $common = " WHERE ca_name = '{$ca_name}'"; }
     $sql = "SELECT * FROM (
                 SELECT
                     wr_id   
@@ -1254,7 +1255,7 @@ function getFavoriteClass($limit = 10)
                     , moa_latitude  -- 위치정보
                     , moa_longitude  -- 위치정보
                     
-                FROM g5_write_class a
+                FROM g5_write_class a {$common} 
                 ORDER BY wr_hit desc
             ) xx
             WHERE xx.it_id <> '' LIMIT 0, {$limit}";
@@ -1785,8 +1786,55 @@ function smsSend($sHp, $rHp, $msg)     {
 function getStrpointWr2($wr_id)
 {
     global $g5;
-    $sql = "select count(c.*) cnt, round(sum(c.is_score)) score from g5_write_class a join g5_shop_item b on a.wr_id = b.it_2 join g5_shop_item_use c on b.it_id = c.it_id
+    $sql = "select count(*) cnt, round(sum(c.is_score)) score from g5_write_class a join g5_shop_item b on a.wr_id = b.it_2 join g5_shop_item_use c on b.it_id = c.it_id
             where a.wr_id = '{$wr_id}'";
     $row = sql_fetch($sql);
     return $row;
+}
+
+if(! function_exists('sendDirectMail')) {
+    function sendDirectMail($subject, $body, $sender, $sender_name, $receiver, $bodytag, $mail_type)
+    {
+        $username = "codeidea";
+        $key = "mUJrCPVuyMOq02W";
+
+        $ch = curl_init();
+        $postvars = '"subject":"'.$subject.'"';
+        $postvars = $postvars.', "body":"'.$body.'"';
+        $postvars = $postvars.', "sender":"'.$sender.'"';
+        $postvars = $postvars.', "sender_name":"'.$sender_name.'"';
+        $postvars = $postvars.', "username":"'.$username.'"';
+        $postvars = $postvars.', "receiver":'.$receiver;
+
+        $postvars = $postvars.', "mail_type":"'.$mail_type.'"';
+        //$postvars = $postvars.', "bodytag":"'.$bodytag.'"';
+        $postvars = $postvars.', "key":"'.$key.'"';
+        $postvars = '{'.$postvars.'}';      //JSON 데이터
+
+        // URL
+        $url = "https://directsend.co.kr/index.php/api_v2/mail_change_word";
+
+        //헤더정보
+        $headers = array(
+            "cache-control: no-cache",
+            "content-type: application/json; charset=utf-8"
+        );
+
+        curl_setopt($ch,CURLOPT_URL, $url);
+        curl_setopt($ch,CURLOPT_POST, true);
+        curl_setopt($ch,CURLOPT_POSTFIELDS, $postvars);		//JSON 데이터
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch,CURLOPT_CONNECTTIMEOUT ,3);
+        curl_setopt($ch,CURLOPT_TIMEOUT, 60);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $response = curl_exec($ch);
+//        die($response);
+        if(curl_errno($ch)){
+            'Curl error: ' . curl_error($ch);
+        }else{
+            print_R($response);
+        }
+
+//        curl_close ($ch);
+    }
 }

@@ -44,9 +44,10 @@ if($is_mobile_order) {
 }
 
 // 새로운 주문번호 생성
-$od_id = get_uniqid();
+//$od_id = get_uniqid();
+$od_id = $s_cart_id = $tmp_cart_id;
 set_session('ss_order_id', $od_id);
-$s_cart_id = $tmp_cart_id;
+
 if($default['de_pg_service'] == 'inicis' || $default['de_inicis_lpay_use'])
     set_session('ss_order_inicis_id', $od_id);
 
@@ -266,7 +267,7 @@ for ($i=0; $row=sql_fetch_array($result); $i++) {
 } // for 끝
 
 if ($i == 0) {
-	alert('장바구니가 비어 있습니다.', G5_SHOP_URL.'/cart.php');
+	alert('결제 대상이 존재하지 않습니다.', G5_SHOP_URL.'/');
 } else {
 	// 배송비 계산
 	$send_cost = get_sendcost($s_cart_id);
@@ -655,7 +656,12 @@ if(!$is_mobile_order) include_once($skin_path.'/orderform.item.skin.php');
 	}
 ?>
 <script>
+// document.cookie = "safeCookie1=foo; SameSite=Lax";
+// document.cookie = "safeCookie2=foo";
+document.cookie = "crossCookie=ss_cart_direct; SameSite=None; Secure";
+document.cookie = "crossCookie=ss_direct; SameSite=None; Secure";
 var g5_url = "<?php echo G5_URL;?>";
+//alert("<?php echo get_session('ss_cart_direct');?>");
 <?php if($is_mobile_order) { ?>
 	$(function() {
 		$("#od_settle_bank").on("click", function() {

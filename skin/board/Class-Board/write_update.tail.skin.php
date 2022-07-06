@@ -28,7 +28,7 @@ if ($cls_content)	{
         $addsql .= " minite = '" . $cls_minute[$i] . "',";
         $addsql .= " timelimit = '" . $cls_limit[$i] . "',";
         $addsql .= " content = '".$cls_content[$i]."',";
-		$addsql .= " tot = '".$wr_1."',";
+		$addsql .= " tot = '".$wr_2."',";
 		$addsql .= " wr_id = '{$wr_id}',";
 		$addsql .= " bo_table = '{$bo_table}',";
 		$addsql .= " mb_id = '{$member['mb_id']}',";

@@ -39,8 +39,8 @@ if ($cls_day || $moa_form == "자율형")	{
 			//$addsql .= " content = '".$cls_content[$i]."',";
 		}
 		$addsql .= " moa_form = '".$moa_form."',";
-		$addsql .= " tot = '".$wr_1."',";
-		$addsql .= " min_tot = '".$wr_4."',";
+		$addsql .= " tot = '".$wr_2."',";
+		$addsql .= " min_tot = '".$wr_1."',";
 		$addsql .= " wr_id = '{$wr_id}',";
 		$addsql .= " bo_table = '{$bo_table}',";
 		$addsql .= " mb_id = '{$member['mb_id']}',";

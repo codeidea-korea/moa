@@ -29,13 +29,10 @@ if($word) {
     while($row = sql_fetch_array($query)) {
         $review = "select (SUM(b.is_score) / count(b.it_id)) as score, count(b.it_id) as cnt, a.it_id from g5_shop_item a join g5_shop_item_use b on a.it_id = b.it_id where a.it_2 = {$row['wr_id']}";
         $number = sql_fetch($review);
-        if($number['it_id'] != '') {
-            $list[$i] = $row;
-            $list[$i]['is_score'] = $number['score'] ? $number['score'] : 0;
-            $list[$i]['cnt'] = $number['cnt'] ? $number['cnt'] : 0;
-            $list[$i]['it_id'] = $number['it_id'];
-            $i++;
-        }
+        $list[$i] = $row;
+        $list[$i]['is_score'] = $number['score'] ? $number['score'] : 0;
+        $list[$i]['cnt'] = $number['cnt'] ? $number['cnt'] : 0;
+        $i++;
     }
 }
 //contents 영역

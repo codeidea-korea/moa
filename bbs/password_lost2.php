@@ -35,10 +35,10 @@ $mb_lost_certify = get_encrypt_string($change_password);
 //// 어떠한 회원정보도 포함되지 않은 일회용 난수를 생성하여 인증에 사용
 $mb_nonce = md5(pack('V*', rand(), rand(), rand(), rand()));
 // 인증 링크 생성
-$href = G5_BBS_URL.'/password_lost_certify.php?mb_no='.$mb['mb_no'].'&amp;mb_nonce='.$mb_nonce;
 //// 임시비밀번호와 난수를 mb_lost_certify 필드에 저장
 $sql = " update {$g5['member_table']} set mb_lost_certify = '$mb_nonce $mb_lost_certify' where mb_id = '{$mb['mb_id']}' ";
 $query = sql_query($sql);
+$href = G5_BBS_URL.'/password_lost_certify.php?mb_no='.$mb['mb_no'].'&amp;mb_nonce='.$mb_nonce;
 
 
 $subject = "[".$config['cf_title']."] 요청하신 회원정보 찾기 안내 메일입니다.";
@@ -70,7 +70,7 @@ $body = '<!doctype html>
 			<span style="display:inline-block;width:100px">회원아이디</span> '.$mb['mb_id'].'<br>
 			<span style="display:inline-block;width:100px">변경될 비밀번호</span> <strong style="color:#ff3061">'.$change_password.'</strong>
 		</p>
-		<a href="<?php echo $href;?>" target="_blank" style="display:block;padding:30px 0;background:#484848;color:#fff;text-decoration:none;text-align:center">비밀번호 변경</a>
+		<a href="'. $href .'" target="_blank" style="display:block;padding:30px 0;background:#484848;color:#fff;text-decoration:none;text-align:center">비밀번호 변경</a>
 	</div>
 </div>
 </body>

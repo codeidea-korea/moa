@@ -71,7 +71,7 @@ if($view['as_icon']) {
 			<?php } ?>
 			<?php if ($delete_href) { ?>
 				<a role="button" href="<?php echo $delete_href ?>" class="btn btn-<?php echo $btn1;?> btn-sm" title="삭제" onclick="<?php echo (APMS_PIM) ? 'modal_' : '';?>del(this.href); return false;">
-					<i class="fa fa-times"></i><span class="hidden-xs"> 삭제</span>
+					<i class="fa fa-times"></i><span class="hidden-xs"> 111삭제</span>
 				</a>
 			<?php } ?>
 			<?php if ($update_href) { ?>

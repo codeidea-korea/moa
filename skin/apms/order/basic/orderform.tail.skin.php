@@ -186,10 +186,10 @@ $(function() {
         $("#od_cp_price").text(number_format(String(price)));
         $("#sc_cp_price").text(0);
         calculate_order_price();
-        //$("#od_coupon_frm").remove();
-		$('#couponModal').modal('hide');
+        // $("#od_coupon_frm").remove();
+		$('#couponModal').modal('hidden');
         $("#od_coupon_btn").text("쿠폰변경").focus();
-        if(!$("#od_coupon_cancel").size())
+        if(!$("#od_coupon_cancel").size)
             $("#od_coupon_btn").after("<button type=\"button\" id=\"od_coupon_cancel\" class=\"btn btn-black btn-sm\">쿠폰취소</button>");
     });
 

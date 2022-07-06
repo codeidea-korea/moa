@@ -71,7 +71,7 @@ $write_table = $g5['write_prefix'].'class';
 $sql_common = " from {$g5['g5_shop_item_table']} a ,
                      {$g5['g5_shop_category_table']} b,
                      {$write_table} c
-                left outer join deb_class_item d on ( d.wr_id = c.wr_id {$sql_outersearch} )
+                right outer join deb_class_item d on ( d.wr_id = c.wr_id {$sql_outersearch} )
                where a.it_2 = c.wr_id
                 and (a.ca_id = b.ca_id ";
 
@@ -94,11 +94,10 @@ $sql_order = "order by a.pt_show, a.pt_num desc, a.it_id desc";
 
 //$sql  = " SELECT distinct a.*, b.ca_name, c.*, d.day, d.time, d.tot, d.min_tot, d.aply 
 $sql  = " SELECT distinct a.*, b.ca_name, c.*,  d.tot, d.min_tot, d.aply 
-           $sql_common
+           $sql_common group by c.wr_id 
            $sql_order
            limit $from_record, $rows ";
-           //printSql($sql);
-
+           //echo $sql;
 $result = sql_query($sql);
 for ($i=0; $row=sql_fetch_array($result); $i++) {
 	$list[$i] = $row;

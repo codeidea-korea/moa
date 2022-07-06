@@ -952,8 +952,12 @@ if($board['as_resize_kb'] > 0 && $board['as_resize'] > 0) {
 
 delete_cache_latest($bo_table);
 
+// if ($file_upload_msg)
+//     alert($file_upload_msg, G5_HTTP_BBS_URL.'/board.php?bo_table='.$bo_table.'&amp;wr_id='.$wr_id.$qstr);
+// else
+//     goto_url(G5_HTTP_BBS_URL.'/board.php?bo_table='.$bo_table.'&amp;wr_id='.$wr_id.$qstr);
+
 if ($file_upload_msg)
-    alert($file_upload_msg, G5_HTTP_BBS_URL.'/board.php?bo_table='.$bo_table.'&amp;wr_id='.$wr_id.$qstr);
+    alert($file_upload_msg, G5_ADMIN_URL.'/bbs/board.php?bo_table='.$bo_table.'&amp;wr_id='.$wr_id.$qstr);
 else
-    goto_url(G5_HTTP_BBS_URL.'/board.php?bo_table='.$bo_table.'&amp;wr_id='.$wr_id.$qstr);
-?>
+    goto_url(G5_ADMIN_URL.'/bbs/board.php?bo_table='.$bo_table.'&amp;wr_id='.$wr_id.$qstr);

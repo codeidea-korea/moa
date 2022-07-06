@@ -4,16 +4,16 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
 
 
-    <div class="wrapper detail_wrap pb0">
+    <div class="wrapper detail_wrap pb0 bg_gray">
         <!-- 결제정보 -->
         <div class="s_content detail_con">
-            <div class="dt_con1">
+            <!-- <div class="dt_con1">
                 <h3>
                     결제정보
                 </h3>
-            </div>
+            </div> -->
             <?php for($i=0; $i < count($item); $i++) { ?>
-            <div class="chat_infor mt25">
+            <div class="chat_infor">
                 <div class="chat_img img_ct">
                     <img src="<?php echo filter_var($item[$i]['as_thumb'], FILTER_VALIDATE_URL) != '' ? $item[$i]['as_thumb'] : G5_URL . "/images/moa_logo.svg" ?>" alt="">
                 </div>
@@ -57,7 +57,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                     쿠폰/포인트
                 </h3>
             </div>
-            <ul class="a_layout mt25">
+            <ul class="a_layout mt25 coupon_area">
                 <li>
                     <a href="javascript:">
                         <p>할인 쿠폰<span>

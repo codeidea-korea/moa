@@ -943,7 +943,7 @@ span.flatpickr-weekday{
     color:#3C1E1E;
 }
 .naver_btn{
-    background:url(../images/naver_ic.svg) 25% 53% no-repeat #5ABC38;
+    background:url(../images/naver_ic.svg) 25% 53% no-repeat #5ABC38 !important;
     color:#fff;
 }
 .Apple_btn{

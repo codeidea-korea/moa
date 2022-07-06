@@ -490,6 +490,7 @@ var win_zip = function(frm_name, frm_zip, frm_addr1, frm_addr2, frm_addr3, frm_j
                     complete_fn(data);
                 }
             }).open({
+                q: '경기도 파주시'
             });
             break;
         default :   //iframe을 이용하여 레이어 띄우기

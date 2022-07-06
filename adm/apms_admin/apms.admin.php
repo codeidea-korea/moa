@@ -16,7 +16,6 @@ switch($ap) {
 	case 'uselog'	: $sub_menu = '777007'; $g5['title'] = '이용내역'; break;
 
 	case 'basic'	: $sub_menu = '888001'; $g5['title'] = '기본설정'; break;
-	case 'plist'	: $sub_menu = '888002'; $g5['title'] = '호스트관리'; break;
 	case 'adjustlist'	: $sub_menu = '510002'; $g5['title'] = '정산내역관리'; break;
 	case 'pform'	: $sub_menu = '888002'; $g5['title'] = '호스트정보'; break;
 	case 'mlist'	: $sub_menu = '888003'; $g5['title'] = '마케터관리'; break;
@@ -62,7 +61,6 @@ if($mode) {
 		case 'uselog'	: $ap_file = './apms.uselog.php'; break;
 
 		case 'basic'	: $ap_file = './apms.basic.php'; break;
-		case 'plist'	: $ap_file = './apms.plist.php'; break;
 		case 'pform'	: $ap_file = './apms.pform.php'; break;
 		case 'mlist'	: $ap_file = './apms.mlist.php'; break;
 		case 'delivery'	: $ap_file = './apms.delivery.php'; break;
@@ -110,7 +108,6 @@ include_once(G5_ADMIN_PATH.'/admin.head.php');
 
 				case 'basic'	: $ap_file = './apms.basic.php'; break;
 				case 'update'	: $ap_file = './apms.sql.php'; break;
-				case 'plist'	: $ap_file = './apms.plist.php'; break;
 				case 'pform'	: $ap_file = './apms.pform.php'; break;
 				case 'mlist'	: $ap_file = './apms.mlist.php'; break;
 				case 'delivery'	: $ap_file = './apms.delivery.php'; break;

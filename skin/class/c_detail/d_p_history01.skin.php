@@ -4,7 +4,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
 <!-- 구매내역보기 -->
 <section class="s_content">
-    <ul class="last_list">
+    <ul class="last_list mt16">
         <?php for ($i=0; $i < count($list); $i++) { ?>
         <li class="p_history_area">
             <div class="p_history">

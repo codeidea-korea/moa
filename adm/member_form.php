@@ -177,7 +177,7 @@ add_javascript(G5_POSTCODE_JS, 0);    //다음 주소 js
     <tr>
         <th scope="row"><label for="mb_id">아이디<?php echo $sound_only ?></label></th>
         <td>
-            <input type="text" name="mb_id" value="<?php echo $mb['mb_id'] ?>" id="mb_id" <?php echo $required_mb_id ?> class="frm_input <?php echo $required_mb_id_class ?>" size="15" minlength="3" maxlength="20">
+            <input type="email" name="mb_id" value="<?php echo $mb['mb_id'] ?>" id="mb_id" <?php echo $required_mb_id ?> class="frm_input <?php echo $required_mb_id_class ?>" size="15" minlength="3" maxlength="20">
             <?php if (false&&$w=='u'){ ?><a href="./boardgroupmember_form.php?mb_id=<?php echo $mb['mb_id'] ?>">접근가능그룹보기</a><?php } ?>
         </td>
     </tr>
@@ -219,17 +219,17 @@ add_javascript(G5_POSTCODE_JS, 0);    //다음 주소 js
 		<th>회원등급</th>
 		<td>
 			<select name="mb_level">
-				<option value="2">일반게스트</option>
-				<option value="3">호스트</option>
-				<option value="5">수퍼호스트</option>
-                <?php if ($mb['mb_level']>5) {
+				<option <?php echo $mb['mb_level'] == '1' ? 'selected'  : ''; ?> value="1">일반게스트</option>
+				<option <?php echo $mb['mb_level'] == '2' ? 'selected'  : ''; ?> value="2">호스트</option>
+				<option <?php echo $mb['mb_level'] == '3' ? 'selected'  : ''; ?> value="3">수퍼호스트</option>
+                <?php if ($mb['mb_level']>3) {
                     ?>
                 <option value="<?php echo $mb['mb_level']?>">관리자레벨</option>
                 <?php 
                 }
                 if ($is_super) {?> {
                 ?>
-				<option value="10">관리자(직원)</option>
+				<option <?php echo $mb['mb_level'] == '4' ? 'selected'  : ''; ?> value="4">관리자(직원)</option>
                 <?php } ?>
 			</select>
 		</td>
@@ -321,7 +321,34 @@ this.form.mb_intercept_date.value=this.form.mb_intercept_date.defaultValue; }">
         <td scope="row">직무</td>
         <td><input type="text" name="job_kind" value="<?php echo $mb['job_kind'];?>" id="job_kind" class="span250"></td>
     </tr>
-   
+    <tr>
+        <td scope="row">인증 여부</td>
+        <td>
+            <?php $cert = array('대기', '완료');
+            $row = "SELECT file_path, bf_file, cert_yn, count(*) cnt FROM deb_certi_image WHERE mb_id = '{$mb['mb_id']}'";
+            $result = sql_fetch($row);
+            if($mb['com_cert_yn'] != null) {
+                $com_cert = $cert[$mb['com_cert_yn']];
+            } else if($result['cnt'] > 0) {
+                $com_cert = $cert[$result['cert_yn']];
+            } else {
+                $com_cert = '미신청';
+            } ?>
+            <input type="hidden" name="com_cert_yn" value="<?php echo $com_cert ?>" id="com_cert_yn" class="span250" />
+            <span><?php echo $com_cert; ?></span>
+        </td>
+    </tr>
+    <?php if($result['cnt'] > 0) {?>
+    <tr>
+        <td scope="row">
+            인증 사진
+        </td>
+        <td>
+            <img src="<?php echo $result['file_path'] ?>/<?php echo $result['bf_file']; ?>" width="200px" />
+        </td>
+    </tr>
+    <?php } ?>
+
 	<!----------------------------------------------------------------------------------------------------------------------------------------------------->
 	<!----------------------------------------------------------------------------------------------------------------------------------------------------->
 	<!----------------------------------------------------------------------------------------------------------------------------------------------------->

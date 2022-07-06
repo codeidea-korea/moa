@@ -148,12 +148,12 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                             </span>
                         </div>
 
-                        <div class="mt20">
+                        <div class="mt20" style="display:none;">
                             <p class="m_title">휴대폰 번호</p>
                             <div class="input_flex">
                                 <input type="number" pattern="\d*" name="pt_hp" id="pt_hp" placeholder="휴대폰 번호 (-없이 입력)" placeholder="휴대폰 번호 (-없이 입력)">
                                 <div class="cominput_btn02">
-                                    <button class="on">전송</button>
+                                    <button type="button" class="smsSend on">전송</button>
                                 </div>
                             </div>
                             <div class="input_flex mt10" style="display:none;">
@@ -227,7 +227,26 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
         </div>
     </div>
 <script>
-
+// $(".smsSend").click(function() {
+//     var hp_no = $("#pt_hp").val();
+//     if (hp_no) {
+//         $.ajax({
+//             url: "/ajax/sendSMSofFindEmail.php",
+//             type: "POST",
+//             data: {
+//                 "hp_no": hp_no
+//             },
+//             dataType: "text",
+//             async: false,
+//             cache: false,
+//             success: function(data) {
+//                 if (data) {
+//                     alert(data);
+//                 }
+//             }
+//         });
+//     }
+// });
 function nextStep() {
     $('input[name="tab_item04"]').click();
 }

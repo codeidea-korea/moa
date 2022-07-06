@@ -57,15 +57,14 @@ if (!$is_purchaser && !$is_auther) {
 if ($is_admin || $is_author || $is_purchaser) {
 	;
 } else {
-	if (!($it['ca_use'] && $it['it_use'])) {
-        alert('판매가능한 상품이 아닙니다.');
-	}
-
-	$it['pt_explan'] = $it['pt_mobile_explan'] = '';
+//	if (!($it['ca_use'] && $it['it_use'])) {
+//        alert('판매가능한 상품이 아닙니다.');
+//	}
+//
+//	$it['pt_explan'] = $it['pt_mobile_explan'] = '';
 }
 
 // ----------------------------------------------------------
-
 // 분류코드
 $ca_id = ($ca_id) ? $ca_id : $it['ca_id'];
 
@@ -271,8 +270,8 @@ if($ev_id) {
 $item_use_count = (int)$it['it_use_cnt'];
 
 // 상품문의의 개수를 얻음
-//$row = sql_fetch(" select count(*) as cnt from `{$g5['g5_shop_item_qa_table']}` where it_id = '{$it_id}' ");
-$item_qa_count = (int)$it['pt_qa'];
+$row = sql_fetch(" select count(*) as cnt from `{$g5['g5_shop_item_qa_table']}` where it_id = '{$it_id}' ");
+$item_qa_count = (int)$row['cnt'];
 
 // 관련상품의 개수를 얻음
 $item_relation_count = 0;
@@ -511,6 +510,7 @@ while ($row = sql_fetch_array($item_use)) {
     $i++;
 }
 $qna = sql_query("select * from g5_shop_item_qa where it_id = '{$it_id}' order by it_id desc");
+echo "select * from g5_shop_item_qa where it_id = '{$it_id}' order by it_id desc";
 
 // 분류 상단 코드가 있으면 출력하고 없으면 기본 상단 코드 출력
 if ($ca['ca_include_head'] && is_include_path_check($ca['ca_include_head']))

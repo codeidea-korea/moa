@@ -11,7 +11,7 @@ if(!$header_skin) {
 <div class="section-title"><?php echo $g5['title'] ?></div>
 <?php } ?>
 
-<div class="section-title">모임 <?php echo ($w=='u')?'수정':'등록'; ?></div>
+<!--<div class="section-title">모임 --><?php //echo ($w=='u')?'수정':'등록'; ?><!--</div>-->
 
 
 <!------------------------------------------------------------------------------------------------------------------------------------------------------------------>
@@ -22,6 +22,7 @@ if(!$header_skin) {
 <div class="boxContainer padding40">
 	<form name="fwrite" id="fwrite" action="<?php echo $action_url ?>" onsubmit="return fwrite_submit(this);" method="post" enctype="multipart/form-data" autocomplete="off" role="form" class="form-horizontal">
 	<input type="hidden" name="uid" value="<?php echo get_uniqid(); ?>">
+        <input type="hidden" name="ap" value="moa_write" />
 	<input type="hidden" name="w" value="<?php echo $w ?>">
 	<input type="hidden" name="bo_table" value="<?php echo $bo_table ?>">
 	<input type="hidden" name="wr_id" value="<?php echo $wr_id ?>">
@@ -51,11 +52,8 @@ if(!$header_skin) {
 						</p>										
 					</div>
 					<ul class="upImg-list mt5">
-						<!-- <li><img src="<?php echo $write_skin_url?>/temp/img01.png"><span class="del"></span></li>
-						<li><img src="<?php echo $write_skin_url?>/temp/img02.jpg"><span class="del"></span></li>
-						<li><img src="<?php echo $write_skin_url?>/temp/img03.jpg"><span class="del"></span></li>
-						<li><img src="<?php echo $write_skin_url?>/temp/img04.jpg"><span class="del"></span></li> -->
-						<li><label for="upload-01" class="upload-empty">사진 추가</label></li>
+                        <li><img src="<?php echo $write['as_thumb'] ?>"><span class="del"></span></li>
+                        <li><label for="upload-01" class="upload-empty">사진 추가</label></li>
 					</ul>
 				</div>
 			</div>
@@ -102,32 +100,50 @@ if(!$header_skin) {
 							</tr>
 						</thead>
 						<tbody class="last_none">
+                        <?php if($w == 'u') { ?>
+                        <?php for($j=0;$j<count($write['cls_no']);$j++) { ?>
 							<tr>
 								<th><span class="num">회차</span></th>
 								<td class="bg">
-									<label class="inp-wrap inline-label span"><input type="text" name="cls_day[]" value="" class="span datepicker" placeholder="날짜 선택"><span class="label-inline"></span></label>
+									<label class="inp-wrap inline-label span">
+                                        <input type="text" name="cls_day[]" value="<?php echo $write['cls_no'][$j]['day']; ?>" class="span datepicker" placeholder="날짜 선택">
+                                        <span class="label-inline"></span>
+                                    </label>
 								</td>
 								<td class="bg">
 									<div class="flex">
 										<select name="cls_time[]" class="" title="몇시">
-											<option value="">몇시</option>
+											<option value="0">몇시</option>
 											<?php for($i=1; $i<=24; $i++) {
 												$i = $i < 10 ? '0'.$i:$i;
-												echo '<option value="'.$i.'">'.$i.'시</option>';
+                                                $time = $write['cls_no'][$j]['time'] == $i ? 'selected' : '';
+												echo '<option value="'.$i.'"' . $time . ' >'.$i.'시</option>';
 											} ?>
 										</select>
 										<select name="cls_minute[]" class="" title="몇분">
-											<option value="">몇분</option>
+											<option value="0">몇분</option>
 											<?php for($i=0; $i<=59; $i+=10) {
 												$i = $i < 10 ? '0'.$i:$i;
-												echo '<option value="'.$i.'">'.$i.'분</option>';
+                                                $minute = $write['cls_no'][$j]['minute'] == $i ? 'selected' : '';
+												echo '<option value="'.$i.'" ' . $minute .' >'.$i.'분</option>';
 											} ?>
 										</select>
 									</div>
 								</td>
 								<td class="bg">
-									<label class="inp-wrap inline-label span"><input type="text" name="cls_timelimit[]" value="" class="span" min="10" maxlength="3"><span class="label-inline">분</span></label>									
+									<label class="inp-wrap inline-label span">
+                                        <input type="text" name="cls_timelimit[]" value="<?php echo $write['cls_no'][$j]['timelimit'] ?>" class="span" min="10" maxlength="3"><span class="label-inline">분</span></label>
 								</td>
+                                <script>
+                                    $('input[name="cls_timelimit[]"]').focusout(function(){
+                                        if (($(this).val() < 0 || !$.isNumeric($(this).val())) && $(this).val() != '') {
+                                            alert('숫자만 입력해주세요.');
+                                            $(this).val('');
+                                            $(this).focus();
+                                        }
+                                    });
+                                </script>
+
 								<!-- <td class="bg">
 									<div class="flex flex-middle">
 										<input type="text" name="cls_minman[]" value="" class="span80" placeholder="" data-label="최소" data-label-inline="명">
@@ -135,7 +151,57 @@ if(!$header_skin) {
 										<input type="text" name="cls_maxman[]" value="" class="span80" placeholder="" data-label="최대" data-label-inline="명">
 									</div>
 								</td> -->
+                                <?php if($j>0) { ?>
+                                <td class="bg">
+                                    <div class="flex flex-middle relative">
+                                        <span class="btn small gray del-list" style="">삭제</span>
+                                    </div>
+                                </td>
+                                <?php } ?>
 							</tr>
+                        <?php }
+                        } else { ?>
+                            <tr>
+                                <th><span class="num">회차</span></th>
+                                <td class="bg">
+                                    <label class="inp-wrap inline-label span">
+                                        <input type="text" name="cls_day[]" value="" class="span datepicker" placeholder="날짜 선택">
+                                        <span class="label-inline"></span>
+                                    </label>
+                                </td>
+                                <td class="bg">
+                                    <div class="flex">
+                                        <select name="cls_time[]" class="" title="몇시">
+                                            <option value="0">몇시</option>
+                                            <?php for($i=1; $i<=24; $i++) {
+                                                $i = $i < 10 ? '0'.$i:$i;
+                                                echo '<option value="'.$i.'" >'.$i.'시</option>';
+                                            } ?>
+                                        </select>
+                                        <select name="cls_minute[]" class="" title="몇분">
+                                            <option value="0">몇분</option>
+                                            <?php for($i=0; $i<=59; $i+=10) {
+                                                $i = $i < 10 ? '0'.$i:$i;
+                                                echo '<option value="'.$i.'" >'.$i.'분</option>';
+                                            } ?>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td class="bg">
+                                    <label class="inp-wrap inline-label span">
+                                        <input type="text" name="cls_timelimit[]" value="" class="span" min="10" maxlength="3"><span class="label-inline">분</span></label>
+                                </td>
+                                <script>
+                                    $('input[name="cls_timelimit[]"]').on('focusout',function(){
+                                        if (($(this).val() < 0 || !$.isNumeric($(this).val())) && $(this).val() != '') {
+                                            alert('숫자만 입력해주세요');
+                                            $(this).val('');
+                                            $(this).focus();
+                                        }
+                                    });
+                                </script>
+                            </tr>
+                        <?php }?>
 						</tbody>
 					</table>
 				</div>
@@ -150,55 +216,59 @@ if(!$header_skin) {
 		</div>
         <script>
             $('#moa_reglimittime').focusout(function(){
-               if($(this).val() < 0) {
-                   $(this).val(0);
-                   alert('0보다 큰 수를 입력해주세요.');
-                   $(this).focus();
-               }
+                if (($(this).val() < 0 || !$.isNumeric($(this).val())) && $(this).val() != '') {
+                   alert('숫자만 입력해주세요');
+                    $(this).val('');
+                    $(this).focus();
+                }
             });
         </script>
 		<?php 
 	$addkind = array(
-		1=>"모임정원", 
-		2=>"참가료",
-		3=>"할인참가료",
-		4=>"최소인원",
+        1=> "최소인원",
+		2=>"모임정원",
+		3=>"참가료",
+		4=>"할인참가료",
 		5=>"",
 		6=>"",
 		7=>"",
 		8=>"",
+		9=>"",
 	);
 	$addkind2 = array(
-		1=>"명", 
-		2=>"원",
+        1=>"명",
+		2=>"명",
 		3=>"원",
-		4=>"명",
+		4=>"원",
 		5=>"",
 		6=>"",
 		7=>"",
 		8=>"",
+		9=>"",
 	);
 	$addcnt = count($addkind);
-	for ($i=1; $is_link && $i<=$addcnt; $i++) { 
-		if ($i < 4) {
+	for ($i=1; $is_link && $i<=$addcnt; $i++) {
+		if ($i < 5) {
 			?>
 			<div class="wr-list" >
 					<div class="wr-list-label required"><?php echo $addkind[$i] ?></div>
 					<div class="wr-list-con">
 			
-					<input type="<?php if ($i < 4) {echo "number";} else { echo "text";} ?>" 
+					<input type="<?php if ($i < 5) {echo "number";} else { echo "text";} ?>"
 						name="wr_<?php echo $i ?>" value="<?php echo $write['wr_'.$i]; ?>" required 
-						id="wr_<?php echo $i ?>" 
-						min="1" 
-						max="<?php if ($i==1 || $i==4) { echo "100";} else { echo "1000000"; } ?>"
+						id="wr_<?php echo $i ?>"
+						max="<?php if ($i==2 || $i==5) { echo "100";} else { echo "1000000"; } ?>"
 						class="form-control input-sm  required "  style="width:<?php if ($i < 4) {echo "200";} else { echo "400";} ?>px" placehonder="<?php echo $addkind2[$i];?>">
+                        <?php if($i == '4') { ?>
+                            <small>실제 결제되는 금액입니다. (할인을 원치 않는 경우 참가료와 동일한 금액을 입력해 주세요. )</small>
+                        <?php } ?>
 				</div>
 			</div>
             <script>
-                $('#wr_<?php echo $i ?>').focusout(function(){
-                    if($(this).val() < 0) {
-                        $(this).val(0);
-                        alert('0보다 큰 수를 입력해주세요.');
+                $('#wr_<?php echo $i ?>').on('focusout', function(){
+                    if (($(this).val() < 0 || !$.isNumeric($(this).val())) && $(this).val() != '') {
+                        alert('숫자만 입력해주세요.');
+                        $(this).val('');
                         $(this).focus();
                     }
                 });
@@ -207,7 +277,8 @@ if(!$header_skin) {
 		} 
 		else { ?>
 			<input type="hidden" name="wr_<?php echo $i?>" value="<?php echo $write['wr_'.$i]?>" />
-			<?php
+
+        <?php
 		}
 	}
 	?>
@@ -275,20 +346,10 @@ if(!$header_skin) {
 <!--				<div class="mt10"><img src="--><?php //echo $write_skin_url?><!--/temp/tmp_map.png"></div>-->
 <!--			</div>-->
 <!--		</div>-->
-		<div class="wr-list">
-            <div class="wr-list-label">지역</div>
-            <div class="wr-list-con">
-                <input type="text" value="" id="moa_area1" name="moa_area1" readonly />
-                <small>주소 선택 시 자동으로 입력됩니다.</small>
-			</div>
-        </div>
-        <?php //} ?>
+
         <div class="wr-list">
-            <div class="wr-list-label">상세지역</div>
-            <div class="wr-list-con">
-                <input type="text" readonly value="" id="moa_area2" name="moa_area2" />
-                <small>주소 선택 시 자동으로 입력됩니다.</small>
-            </div>
+            <input type="hidden" value="" id="moa_area1" name="moa_area1" readonly />
+            <input type="hidden" readonly value="" id="moa_area2" name="moa_area2" />
             <div class="wr-list">
                 <div class="wr-list-label required">주소</div>
             <div>
@@ -670,9 +731,30 @@ function add_list() {
 	var $tr_last = $moim.find("tbody tr:last");
 	$tr_last.after(list);
 	$('select').selectpicker('refresh');
-    $(".datepicker").datepicker({
-        format: 'yyyy.mm.dd',
-        language: 'ko-KR'
+
+    $('input.datepicker').each(function(i) {
+        if(!$(this).parent().hasClass('inp-wrap')) $(this).wrap('<label class="inp-wrap"></label>');
+        if($(this).next('span').length == 0) $(this).after('<span></span>');
+        var is_autoPick = typeof $(this).attr('placeholder') !== typeof undefined && $(this).attr('placeholder') !== '' ? false : true;
+
+        $(this).datepicker({
+            language: 'ko-KR',
+            autoPick: is_autoPick,
+            format: 'yyyy-mm-dd',
+            startDate: $('input.datepicker').eq(i-1).val(),
+        }).on('change', function(e){
+            $(this).datepicker('hide');
+            $('input.datepicker').eq(i+1).val('');
+            $('input.datepicker').eq(i+1).datepicker('setStartDate', e.currentTarget.value);
+        })
+    });
+
+    $('input[name="cls_timelimit[]"]').on('focusout',function(){
+        if (($(this).val() < 0 || !$.isNumeric($(this).val())) && $(this).val() != '') {
+            alert('숫자만 입력해주세요');
+            $(this).val('');
+            $(this).focus();
+        }
     });
 }
 
@@ -887,10 +969,11 @@ function fwrite_submit(f) {
 		}
 	}
 
+
 	<?php echo $captcha_js; // 캡챠 사용시 자바스크립트에서 입력된 캡챠를 검사함  ?>
 
 	document.getElementById("btn_submit").disabled = "disabled";
-
+    alert('관리자 승인 완료 후 모임이 노출됩니다.');
 	return true;
 }
 

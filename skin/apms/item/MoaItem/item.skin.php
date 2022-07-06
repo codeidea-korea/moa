@@ -91,7 +91,10 @@ if($nav_title) {
 <!-- <link rel="stylesheet" href="/dist/spectre-icons.min.css"> -->
 <!-- <link rel="stylesheet" href="/dist/spectre-exp.min.css">
 <link rel="stylesheet" href="/dist/spectre.min.css"> -->
-    <div class="wrapper detail_wrap">
+<div class="top_detail_wrap">
+
+
+	<div class="wrapper detail_wrap detail_wrap02">
         <!-- 메인 슬라이드 -->
         <div class="swiper-container detail_slide">
             <div class="swiper9">
@@ -116,341 +119,332 @@ if($nav_title) {
                 <div class="swiper-pagination"></div>
             </div>
         </div>
-        <!-- 제목 -->
-        <div class="s_content detail_con">
-            <div class="dt_con1">
-                <h3>
-                    <?php echo $data['wr_subject'] ?>
-                </h3>
-                <span class="tit_chip"><?php echo $data['moa_onoff']; ?></span>
-            </div>
-            <div class="clctn_ic">
-                <div>
-                    <img src=".././images/meet_icon/위치.svg" alt="">
-                    <p><?php echo get_common_type($data['moa_area1'])['type_name'] ? get_common_type($data['moa_area1'])['type_name'] : $data['moa_area1']; ?></p>
-                    <span><?php echo get_common_code_name($data['moa_area1'], $data['moa_area2'])['cd_name'] ? get_common_code_name($data['moa_area1'], $data['moa_area2'])['cd_name'] : $data['moa_area2']; ?></span>
-                </div>
-                <div>
-                    <img src=".././images/meet_icon/clock_ic.svg" alt="">
-                    <p>1회당</p>
-                    <span><?php echo $it['timelimit'] ?>분</span>
-                </div>
-                <div>
-                    <img src=".././images/meet_icon/personnel_ic.svg" alt="">
-                    <p><?= $data['wr_1'] > 0 ? $data['wr_1'] : 0; ?>명</p>
-                    <span>최소 인원 <?php echo $data['wr_5'] < 0 ? $data['wr_5'] : 0; ?>명</span>
-                </div
-                <div>
-                    <img src=".././images/meet_icon/<?php echo $data['moa_type'] ?>.svg" alt="">
-                    <p><?php echo $data['moa_type']; ?></p>
-                </div>
-        </div>
+	</div>
+	<!-- 제목 -->
+	<div class="s_content detail_con">
+		<div class="dt_con1">
+			<h3>
+				<?php echo $data['wr_subject'] ?>
+			</h3>
+			<span class="tit_chip"><?php echo $data['moa_onoff']; ?></span>
+		</div>
+		<div class="clctn_ic">
+			<div>
+				<img src=".././images/meet_icon/위치.svg" alt="">
+				<p><?php echo $data['moa_area1'] ?></p>
+				<span><?php echo $data['moa_area2']; ?></span>
+			</div>
+			<div>
+				<img src=".././images/meet_icon/clock_ic.svg" alt="">
+				<p>1회당</p>
+				<span><?php echo $it['timelimit'] ?>분</span>
+			</div>
+			<div>
+				<img src=".././images/meet_icon/personnel_ic.svg" alt="">
+				<p><?= $data['wr_2'] > 0 ? $data['wr_2'] : 0; ?>명</p>
+				<span>최소 인원 <?php echo $data['wr_1'] > 0 ? $data['wr_1'] : 0; ?>명</span>
+			</div>
+			<div>
+				<img src=".././images/meet_icon/<?php echo $data['moa_type'] ?>.svg" alt="">
+				<p><?php echo $data['moa_type']; ?></p>
+			</div>
+		</div>
+	</div>
 
 
-<!--         모임 스케쥴-->
-        <div class="s_content detail_con">
-            <div class="dt_h4">
-                <h4>모임 스케쥴</h4>
-            </div>
-            <?php
-                $class = "select * from g5_write_class b join g5_shop_item a 
-                            on b.wr_id = a.it_2 join deb_class_item c 
-                            on a.it_id = c.it_id where a.it_2 = '{$data['wr_id']}'";
-                $schedules = sql_query($class);
-            ?>
-            <div class="schedule">
-                <ul>
-                    <?php
-                    while($schedule = sql_fetch_array($schedules)) { ?>
-                    <li>
-                        <span><?php echo date('m-d', strtotime($schedule['day'])) ?></span>
-                        <span><?php echo $schedule['cls_no'] + 1; ?>회차</span>
-                        <span><?php echo $schedule['wr_subject']; ?></span>
-                        <span><?php echo $schedule['time'] . ':' . $schedule['minute']; ?></span>
-                        <span>(<?php echo $schedule['timelimit']; ?>분)</span>
-                    </li>
-                    <?php if(sql_num_rows($schedules) > 1 && ($schedule['cls_no'] + 1) != sql_num_rows($schedules)) {?>
-                        <li><img src="../images/arrow-r.svg" alt=""></li>
-                    <?php }
-                    }?>
-                </ul>
-            </div>
-        </div>
-        <!-- 모집 현황 -->
-        <div class="s_content detail_con">
-            <div class="dt_h4">
-                <h4>모집 현황</h4>
-            </div>
-            <div class="owchip_area">
-                <div class="owchip_recru on">
-                    <span></span>
-                    <?php $arr = ['준비중','모집승인','반려','모집삭제', '모집취소','폐강']; ?>
-                    <span><?= $arr[$data['moa_status']]; ?></span>
-                    <p>(<?= getAplyCountIt($data['it_id']) ?>/<?= $data['wr_1'] > 0 ? $data['wr_1'] : 0; ?>명)</p>
-                </div>
-                <!--<div class="owchip_com">
-                    <span></span>
-                    <span>모집중</span>
-                    <p>18:00~20:00</p>
-                    <p>(2/4명)</p>
-                </div>-->
-            </div>
-        </div>
+	<!--모임 스케쥴-->
+	<div class="s_content detail_con">
+		<div class="dt_h4">
+			<h4>모임 스케쥴</h4>
+		</div>
+		<?php
+			$class = "select * from g5_write_class b join g5_shop_item a 
+						on b.wr_id = a.it_2 join deb_class_item c 
+						on a.it_id = c.it_id where a.it_2 = '{$data['wr_id']}'";
+			$schedules = sql_query($class);
+		?>
+		<div class="schedule">
+			<ul>
+				<?php
+				while($schedule = sql_fetch_array($schedules)) { ?>
+				<li>
+					<span><?php echo date('m-d', strtotime($schedule['day'])) ?></span>
+					<span><?php echo $schedule['cls_no'] + 1; ?>회차</span>
+					<span><?php echo $schedule['wr_subject']; ?></span>
+					<span><?php echo $schedule['time'] . ':' . $schedule['minute']; ?> (<?php echo $schedule['timelimit']; ?>분)</span>
+				</li>
+				<?php if(sql_num_rows($schedules) > 1 && ($schedule['cls_no'] + 1) != sql_num_rows($schedules)) {?>
+					<li><img src="../images/arrow-r.svg" alt=""></li>
+				<?php }
+				}?>
+			</ul>
+		</div>
+	</div>
+	<!-- 모집 현황 -->
+	<div class="s_content detail_con">
+		<div class="dt_h4">
+			<h4>모집 현황</h4>
+		<div class="owchip_area">
+			<div class="owchip_recru on">
+				<span></span>
+				<?php $arr = ['준비중','모집승인','반려','모집삭제', '모집취소','폐강']; ?>
+				<span><?= $arr[$data['moa_status']]; ?></span>
+				<p>(<?php echo getAplyCountIt($it['it_id']) ?>/<?php echo $data['wr_2'] > 0 ? $data['wr_2'] : 0; ?>명)</p>
+			</div>
+			<!--<div class="owchip_com">
+				<span></span>
+				<span>모집중</span>
+				<p>18:00~20:00</p>
+				<p>(2/4명)</p>
+			</div>-->
+		</div>
+	</div>
+	<!-- 호스트 소개 -->
+	<?php
+		$user = "select * from g5_member where mb_id = '{$data['mb_id']}'";
+		$result = sql_fetch($user);
+	?>
+	<div class="s_content detail_con" >
+		<div class="d_tit">
+			호스트 소개
+		</div>
+		<div class="host_info">
+			<div class="hpro_img"><?php echo ($result['as_photo']) ? '<img src="'.$result['as_photo'].'" alt="">' : '<span class="no-img"></span>'; //사진 ?></div>
+			<div class="t_area">
+				<?php $cnt = getDashBoardInfo($data['mb_id']); ?>
+				<p><?php echo $result['mb_nick']; ?><span>모임개수 <?php echo $cnt['moa_count']; ?></span><span>리뷰 <?php echo $cnt['moa_use'] ?>개</span></p>
+				<p class="txt">
+					<?php echo $result['mb_signature']; ?>
+				</p>
+				<?php $hash = explode(',', $result['hash_tag']); ?>
+				<?php if(count($hash) > 0 && $hash[0] != '') { ?>
+					<p class="h_hash">
+						<?php for($i=0;$i<count($hash);$i++) { ?>
+							<span>#<?php echo $hash[$i]; ?></span>
+						<?php } ?>
+					</p>
+				<?php }?>
+			</div>
+		</div>
+	</div>
+	<!-- 호스트 소개 끝 -->
 
-        <!-- tab영역 -->
-        <div class="s_content detail_con">
-            <div class="tabs">
-                <input id="dtl" type="radio" name="tab_item" checked>
-                <label class="tab_item" for="dtl">상세 정보</label>
-                <input id="review" type="radio" name="tab_item">
-                <label class="tab_item" for="review">후기 <span><?php echo $it_use_cnt;?></span></label>
-                <input id="qa" type="radio" name="tab_item">
-                <label class="tab_item" for="qa">Q&A <span><?= $it_qa_cnt; ?></span></label>
-                <input id="rfnd" type="radio" name="tab_item">
-                <label class="tab_item" for="rfnd">환불정책</label>
-                <hr>
-                <div class="tab_content" id="dtl_content">
-                    <div class="d_tit">
-                        모임 소개
-                    </div>
-                    <p>
-                        <?= $data['wr_content']; ?>
-                    </p>
+	<!-- tab영역 -->
+	<div class="s_content detail_con pr_pl">
+		<div class="tabs">
+			<input id="dtl" type="radio" name="tab_item" checked>
+			<label class="tab_item" for="dtl">상세 정보</label>
+			<input id="review" type="radio" name="tab_item">
+			<label class="tab_item" for="review">후기 <span><?php echo $it_use_cnt;?></span></label>
+			<input id="qa" type="radio" name="tab_item">
+			<label class="tab_item" for="qa">Q&A <span><?= $it_qa_cnt; ?></span></label>
+			<input id="rfnd" type="radio" name="tab_item">
+			<label class="tab_item" for="rfnd">환불정책</label>
+			<hr>
+			<div class="tab_content" id="dtl_content">
+				<div class="s_content detail_con">
+					<div class="d_tit">
+						모임 소개
+					</div>
+					<p>
+						<?= $data['wr_content']; ?>
+					</p>
 
-                    <!-- <?php $tags = explode(',', $data['as_tag']); ?>
-                    <span class="hash">
-                        <?php foreach($tags as $tag) {
-                            echo '#' . $tag;
-                        } ?>
-                    </span> -->
-                </div>
-                <div class="tab_content" id="review_content">
-                    <div class="more col_green">
-                        <button onclick="location.href='/c_detail/d_review.php?it_id=<?php echo $it_id ?>'">후기 작성하기</button>
-                    </div>
-                    <div class="re_txt">
-                        <p><?php echo $item_use_count;?>개의 후기</p>
-                        <?php for($i=0;$i<(floor($total_score / $item_use_count));$i++) { ?>
-                            <span class="on"></span>
-                        <?php } ?>
-                        <?php for($i=0;$i<(5-($total_score / $item_use_count));$i++) { ?>
-                            <span></span>
-                        <?php } ?>
-                        <p><?= $total_score / $item_use_count > 0 ? number_format(($total_score / $item_use_count), 1) : ''; ?></p>
-                    </div>
-                    <?php if(count($item) > 0) { ?>
-                        <?php for($j=0;$j<count($item);$j++) { ?>
-                            <div class="review">
-                                <div class="pro_img"><?= $item[$i]['mb_img']; ?></div>
-                                <div class="t_area">
-                                    <p><?= $item[$j]['is_name']; ?><span><?= date('y-m-d', strtotime($item[$j]['is_time'])); ?></span></p>
-                                    <div class="scope re_txt">
-                                        <?php for($i=0;$i<$item[$j]['is_score'];$i++) { ?>
-                                            <span class="on"></span>
-                                        <?php } ?>
-                                        <?php for($i=0;$i<(5 - $item[$j]['is_score']);$i++) { ?>
-                                            <span></span>
-                                        <?php } ?>
-                                        <p><?= number_format($item[$j]['is_score'], 1); ?></p>
-                                    </div>
-                                    <p class="txt">
-                                        <?= $item[$j]['is_content']; ?>
-                                    </p>
-                                </div>
-                            </div>
-                        <?php if($total > 3) { ?>
-                        <div class="more">
-                            <button>후기 더보기</button>
-                        </div>
-                        <?php }
-                        }
-                    } else { ?>
-                        <div class="review">
-                            <div class="t_area">
-                                <p>작성된 Q&A가 없습니다.</p>
-                            </div>
-                        </div>
-                    <?php } ?>
-                </div>
-                <div class="tab_content" id="qa_content">
-                    <div class="more col_green">
-                        <button>문의 작성하기</button>
-                    </div>
-                    <?php  if($it_qa_cnt > 0) {
-                    while($row = sql_fetch_array($qna)) { ?>
-                        <div class="review">
-                            <div class="pro_img"></div>
-                            <div class="t_area">
-                                <p><?= $row['mb_id']; ?><span><?= date('y-m-d', strtotime($row['iq_time'])); ?></span><i <?= $row['iq_answer'] != '' ? 'class="on"' : ''; ?>><?= $row['iq_answer'] != '' ? '답변 완료' : '답변 미완료' ?></i></p>
-                                <p class="txt">
-                                    <?php if($row['iq_secret']) { ?>
-                                        <span class="secret">비밀글입니다</span>
-                                    <?php } else { ?>
-                                        <?= $row['iq_question'] ?>
-                                    <?php } ?>
-                                    <?php if($row['iq_answer'] != '') { ?>
-                                        <div class="re">
-                                            <p><?= $row['pt_id'] ?></p>
-                                            <p class="re_text">
-                                                <?php if($row['iq_secret']) { ?>
-                                                    <span class="secret">비밀글입니다</span>
-                                                <?php } else { ?>
-                                                    <?= $row['iq_answer']; ?>
-                                                <?php } ?>
-                                            </p>
-                                        </div>
-                                    <?php } ?>
-                                </p>
-                            </div>
-                        </div>
-                    <?php }
-                    } else { ?>
-                        <div class="review">
-                            <div class="t_area">
-                                <p>작성된 Q&A가 없습니다.</p>
-                            </div>
-                        </div>
-                    <?php } ?>
-                </div>
-                <div class="tab_content" id="rfnd_content">
-                    <div class="tab_refund">
-                        <div class="refund_tit">환불정책</div>
-                        <ul>
-                            <li>1. 모임결제 후 1시간 이내 취소 시, 100% 환불(포인트/쿠폰 복원).</li>
-                            <li>2. 모임 6일 전 취소 시, 60% 환불</li>
-                            <li>3. 모임 5일 전 취소 시, 50% 환불</li>
-                            <li>4. 모임 4일 전 취소 시, 40% 환불</li>
-                            <li>5. 모임 3일 전 취소 시, 30% 환불</li>
-                            <li>6. 모임 2일 전 취소 시, 20% 환불</li>
-                            <li>7. 모임 1일 전 취소 시, 10% 환불</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+					<!-- <?php $tags = explode(',', $data['as_tag']); ?>
+					<span class="hash">
+						<?php foreach($tags as $tag) {
+							echo '#' . $tag;
+						} ?>
+					</span> -->
+					<p class="division"></p>
+				</div>
+				
 
-        <!-- 커리큘럼 -->
-        <div class="s_content detail_con none" >
-            <div class="curriculum">
-                <div class="d_tit">
-                    커리큘럼
-                </div>
-                <p>집행장소와 다른 특정장소에서 모여 이동하는 경우 집결장소에서 호스트와 만나게 됩니다.</p>
-                <div class="step">
-                    <ul>
-                        <li>
-                            <div>
-                                <span>10분</span>
-                                <p>오리엔테이션 및 간단 볼링 이론 소개</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div>
-                                <span>60분</span>
-                                <p>개인별 원포인트 레슨</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div>
-                                <span>10분</span>
-                                <p>질문 및 답변</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div>
-                                <span>10분</span>
-                                <p>자유볼링</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+				<!-- 커리큘럼 -->
+				<div class="s_content detail_con" >
+					<div class="curriculum">
+						<div class="d_tit">
+							커리큘럼
+						</div>
+						<p><?php echo nl2br($data['moa_curriculum'], 1); ?></p>
+					</div>
+					<p class="division"></p>
+				</div>
+				<!-- 커리큘러 끝 -->
 
-        <?php
-            $user = "select * from g5_member where mb_id = '{$data['mb_id']}'";
-            $result = sql_fetch($user);
-        ?>
-        <!-- 호스트 소개 -->
-        <div class="s_content detail_con" >
-            <div class="d_tit">
-                호스트 소개
-            </div>
-            <div class="host_info">
-                <div class="hpro_img"><?php echo ($result['as_photo']) ? '<img src="'.$result['as_photo'].'" alt="">' : '<span class="no-img"></span>'; //사진 ?></div>
-                <div class="t_area">
-                    <?php $cnt = getDashBoardInfo($data['mb_id']); ?>
-                    <p><?php echo $result['mb_nick']; ?><span>모임개수 <?php echo $cnt['moa_count']; ?></span><span>리뷰 <?php echo $cnt['moa_use'] ?>개</span></p>
-                    <p class="txt">
-                        <?php echo $result['mb_signature']; ?>
-                    </p>
-                    <?php $hash = explode(',', $result['hash_tag']); ?>
-                    <?php if(count($hash) > 0 && $hash[0] != '') { ?>
-                        <p class="h_hash">
-                            <?php for($i=0;$i<count($hash);$i++) { ?>
-                                <span>#<?php echo $hash[$i]; ?></span>
-                            <?php } ?>
-                        </p>
-                    <?php }?>
-<!--                    <div class="h_like">-->
-<!--                        <span>12</span>-->
-<!--                    </div>-->
-                </div>
-            </div>
-            <?php if($data['moa_nosupport']) { ?>
-                <div class="d_tit cr mt14">
-                    불포함 사항
-                    <div class="com_chip color_gray">
-                        <?php $nosupport = array_values(array_filter(explode(',', $data['moa_nosupport']))); ?>
-                        <?php for($i=0;$i<count($nosupport);$i++) { ?>
-                            <span>
-                                <?php echo $nosupport[$i]; ?>
-                            </span>
-                        <?php } ?>
-                    </div>
-                </div>
-            <?php } ?>
-            <?php if($data['moa_support']) { ?>
-                <div class="d_tit cr mt14">
-                    포함 사항
-                    <div class="com_chip color_green">
-                        <?php $support = array_values(array_filter(explode(',', $data['moa_support']))); ?>
-                        <?php for($i=0;$i<count($support);$i++) { ?>
-                            <span>
-                                <?php echo $support[$i]; ?>
-                            </span>
-                        <?php } ?>
-                    </div>
-                </div>
-            <?php } ?>
-            <?php if($data['moa_supplies']) { ?>
-                <div class="d_tit cr mt14">
-                    준비물
-                    <div class="com_chip color_red">
-                        <?php $supplies = array_values(array_filter(explode(',', $data['moa_supplies']))); ?>
-                        <?php for($i=0;$i<count($supplies);$i++) { ?>
-                            <span>
-                                <?php echo $supplies[$i]; ?>
-                            </span>
-                        <?php } ?>
-                    </div>
-                </div>
-            <?php } ?>
-            <!-- map -->
-            <div class="mt25">
-                <div id="map" style="width:700px;height:600px;"></div>
-            </div>
-        </div>
-    </div>
+				<!-- 포함 /불포함 지도-->
+				<div class="s_content detail_con" >
+					<?php if($data['moa_support']) { ?>
+						<div class="d_tit cr mt14">
+							포함 사항
+							<div class="com_chip color_green">
+								<?php $support = array_values(array_filter(explode(',', $data['moa_support']))); ?>
+								<?php for($i=0;$i<count($support);$i++) { ?>
+									<span>
+										<?php echo $support[$i]; ?>
+									</span>
+								<?php } ?>
+							</div>
+						</div>
+					<?php } ?>
+					<?php if($data['moa_nosupport']) { ?>
+						<div class="d_tit cr mt14">
+							불포함 사항
+							<div class="com_chip color_gray">
+								<?php $nosupport = array_values(array_filter(explode(',', $data['moa_nosupport']))); ?>
+								<?php for($i=0;$i<count($nosupport);$i++) { ?>
+									<span>
+										<?php echo $nosupport[$i]; ?>
+									</span>
+								<?php } ?>
+							</div>
+						</div>
+					<?php } ?>
+					<?php if($data['moa_supplies']) { ?>
+						<div class="d_tit cr mt14">
+							준비물
+							<div class="com_chip color_red">
+								<?php $supplies = array_values(array_filter(explode(',', $data['moa_supplies']))); ?>
+								<?php for($i=0;$i<count($supplies);$i++) { ?>
+									<span>
+										<?php echo $supplies[$i]; ?>
+									</span>
+								<?php } ?>
+							</div>
+						</div>
+					<?php } ?>
+					<!-- map -->
+					<div class="mt25">
+						<div id="map" style="width:700px;height:600px;"></div>
+					</div>
+				</div>
+				<!-- 포함 /불포함 지도 끝-->				
+			</div>
+			<div class="tab_content" id="review_content">
+				<div class="s_content detail_con">
+					<div class="more col_green">
+						<button onclick="location.href='/c_detail/d_review.php?it_id=<?php echo $it_id ?>'">후기 작성하기</button>
+					</div>
+					<div class="re_txt">
+						<p><?php echo $item_use_count;?>개의 후기</p>
+						<?php for($i=0;$i<(floor($total_score / $item_use_count));$i++) { ?>
+							<span class="on"></span>
+						<?php } ?>
+						<?php for($i=0;$i<(5-($total_score / $item_use_count));$i++) { ?>
+							<span></span>
+						<?php } ?>
+						<p><?= $total_score / $item_use_count > 0 ? number_format(($total_score / $item_use_count), 1) : ''; ?></p>
+					</div>
+					<?php if(count($item) > 0) { ?>
+						<?php for($j=0;$j<count($item);$j++) { ?>
+							<div class="review">
+								<div class="pro_img"><?= $item[$i]['mb_img']; ?></div>
+								<div class="t_area p_layout">
+									<div class="t_area02">
+										<p><?= $item[$j]['is_name']; ?><span><?= date('y-m-d', strtotime($item[$j]['is_time'])); ?></span></p>
+										<div class="scope re_txt">
+											<?php for($i=0;$i<$item[$j]['is_score'];$i++) { ?>
+												<span class="on"></span>
+											<?php } ?>
+											<?php for($i=0;$i<(5 - $item[$j]['is_score']);$i++) { ?>
+												<span></span>
+											<?php } ?>
+											<p><?= number_format($item[$j]['is_score'], 1); ?></p>
+										</div>
+									</div>
+									<p class="txt">
+										<?= $item[$j]['is_content']; ?>
+									</p>
+								</div>
+							</div>
+						<?php if($total > 3) { ?>
+						<div class="more">
+							<button>후기 더보기</button>
+						</div>
+						<?php }
+							}
+						} else { ?>
+							<div class="review">
+								<div class="t_area">
+									<p>작성된 후기가 없습니다.</p>
+								</div>
+							</div>
+						<?php } ?>
+				</div>
+			</div>
+			<div class="tab_content" id="qa_content">
+				<div class="s_content detail_con">
+					<div class="more col_green">
+						<button onclick="location.href='/c_detail/d_qna.php?it_id=<?php echo $it_id ?>'">문의 작성하기</button>
+					</div>
+					<?php if(sql_num_rows($qna) > 0) {
+					while($row = sql_fetch_array($qna)) { ?>
+						<div class="review">
+							<div class="pro_img"><?php echo moaMemberProfile($row['mb_id']); ?></div>
+							<div class="t_area">
+								<p><?= $row['mb_id']; ?><span><?= date('y-m-d', strtotime($row['iq_time'])); ?></span><i <?= $row['iq_answer'] != '' ? 'class="on"' : ''; ?>><?= $row['iq_answer'] != '' ? '답변 완료' : '답변 미완료' ?></i></p>
+								<p class="txt">
+									<?php if($row['iq_secret']) { ?>
+										<span class="secret">비밀글입니다</span>
+									<?php } else { ?>
+										<?php echo $row['iq_question'] ?>
+									<?php } ?>
+									<?php if($row['iq_answer'] != '') { ?>
+										<div class="re">
+											<p><?= $row['pt_id'] ?></p>
+											<p class="re_text">
+												<?php if($row['iq_secret']) { ?>
+													<span class="secret">비밀글입니다</span>
+												<?php } else { ?>
+													<?= $row['iq_answer']; ?>
+												<?php } ?>
+											</p>
+										</div>
+									<?php } ?>
+								</p>
+							</div>
+						</div>
+					<?php }
+					} else { ?>
+						<div class="review">
+							<div class="t_area">
+								<p>작성된 Q&A가 없습니다.</p>
+							</div>
+						</div>
+					<?php } ?>
+				</div>
+			</div>
+			<div class="tab_content" id="rfnd_content">
+				<div class="s_content detail_con">
+					<div class="tab_refund">
+						<div class="refund_tit">환불정책</div>
+						<ul>
+							<li>1. 모임결제 후 1시간 이내 취소 시, 100% 환불(포인트/쿠폰 복원).</li>
+							<li>2. 모임 6일 전 취소 시, 60% 환불</li>
+							<li>3. 모임 5일 전 취소 시, 50% 환불</li>
+							<li>4. 모임 4일 전 취소 시, 40% 환불</li>
+							<li>5. 모임 3일 전 취소 시, 30% 환불</li>
+							<li>6. 모임 2일 전 취소 시, 20% 환불</li>
+							<li>7. 모임 1일 전 취소 시, 10% 환불</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
     <div class="expected_cost none" >
         <div class="cost_area">
             <span class="ex_cost">예상비용</span>
-            <div class="cost"><?= number_format($data['wr_3']); ?>원<span>(회당)</span></div>
+            <div class="cost"><?= number_format($data['wr_4']); ?>원<span>(회당)</span></div>
         </div>
-        <button type="button" onclick="$('.btn_submit').click();">결제하기</button>
+        <?php if(number_format($data['wr_2']) > getAplyCountIt($it['it_id'])) { ?>
+            <button type="button" onclick="$('.btn_submit').click();">결제하기</button>
+        <?php } else { ?>
+            <button type="button" onclick="alert('인원이 초과 되었습니다.');" disabled>마감</button>
+        <?php } ?>
     </div>
-
+</div> 
 <div class="item-wrap container grid-lg" >
 
 	<?php echo $it_head_html; // 상단 HTML; ?>
@@ -466,7 +460,7 @@ if($nav_title) {
 
 	 ?>
 
-	<div class="class-info columns col-gapless" >
+	<div class="class-info columns col-gapless pay_area">
 
 		<div class="column col-8 col-md-12" style="display:none;">
 
@@ -578,6 +572,13 @@ if($nav_title) {
 				</div>
 			</div>
 			<div class="panel-body">
+				<div class="arrow_top">
+					<a>
+						<svg class="transforem" xmlns="http://www.w3.org/2000/svg" width="38.07" height="19.742" viewBox="0 0 38.07 19.742">
+						<path id="패스_20160" data-name="패스 20160" d="M-13998-18866.35l18.328-18.328,18.328,18.328" transform="translate(13998.707 18885.385)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+					</svg>
+					</a>
+				</div>
 				<dl class="panel_layout">
 					<dt style="font-size:12px;">모임일시</dt>
 					<dd style="font-size:12px;"><?php echo $it['day'] ? date('Y-m-d', strtotime($it['day'])) . ' ' . $it['time'] . ':' . $it['minute'] : ''; ?></dd>
@@ -591,8 +592,8 @@ if($nav_title) {
 					</dd>
                     <dt style="font-size:12px;">총 비용</dt>
                     <dd style="font-size:12px;color:red;">
-                        <?php echo number_format($it['it_cust_price'] - $it['it_price']);?>
-                    </dd>원
+                        <?php echo number_format($it['it_cust_price'] - $it['it_price']);?>원
+                    </dd>
 				</dl>
 				<div class="panel-desc none " ><?php echo nl2br(stripcslashes($it['it_6'])); ?></div>
 			</div>
@@ -734,15 +735,17 @@ if($nav_title) {
 				$aplystatus = checkAbleClassAply($it['it_id']);
 				//secho "'".$aplystatus."'<br>";
 				if ( $aplystatus) { ?>
-				<button class="btn btn-primary btn-lg btn-block"  onclick="document.pressed=this.value;" value="바로구매" 
-				style="    font-weight: 700;
-					font-size: 1.6rem;
-					color: #FFFFFF;
-					background: #D0DB23;
-					border-radius: 3px;
-					width: 100px;
-					height: 52px;
-					">모임신청</button>
+				<div class="make_payment">
+					<div class="pay">
+						<p>예상비용</p>
+						<p><?php echo number_format($it['it_price']);?></p>
+					</div>
+                    <?php if(number_format($data['wr_2']) > getAplyCountIt($it['it_id'])) { ?>
+                        <button class="btn btn-primary btn-lg btn-block application"  onclick="document.pressed=this.value;" value="바로구매">결제하기</button>
+                    <?php } else { ?>
+                        <button type="button" class="btn btn-lg btn-block application" onclick="alert('인원이 초과 되었습니다.');" disabled>마감</button>
+                    <?php } ?>
+				</div>
 				<?php } ?>
 				<?php //echo (chk_wishcnt($it['it_id'],$member['mb_id']))?'Y':'N';?>
 				<div class="btn-group btn-group-block">
@@ -1209,6 +1212,16 @@ function back_top()  {
     }
     scroll (0, 0);
 }
+
+// 펼치기 
+$(function() {
+	$('.panel_layout').hide();
+	$('.arrow_top > a').click(function(){
+		$('.panel_layout').slideToggle(500);
+		$('.panel_layout').css('display', 'flex');
+		$('.arrow_top > a > svg').toggleClass('transform');
+	});
+});
 </script>
 
 

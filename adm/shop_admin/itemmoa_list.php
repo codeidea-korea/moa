@@ -30,13 +30,13 @@ for ($i=0; $row=sql_fetch_array($result); $i++)
 $where = " and ";
 $sql_search = "";
 if ($stx != "") {
-    $sql_search .= " $where $sfl like '%$stx%' ";
+    $sql_search .= " $where (a.mb_id like '%$stx%' or c.it_name like '%$stx%') ";
     $where = " and ";
     if ($save_stx != $stx)
         $page = 1;
 }
 
-if ($sfl == "")  $sfl = "it_name";
+//if ($sfl == "")  $sfl = "it_name";
 
 if($offline != '') {
     $sql_search .= " AND moa_onoff = '" . $offline . "'";
@@ -84,7 +84,7 @@ $sql  = " select *
            limit $from_record, $rows ";
 $result = sql_query($sql);
 //$qstr  = $qstr.'&amp;sca='.$sca.'&amp;page='.$page;
-$qstr  = $qstr.'&amp;sca='.$sca.'&amp;page='.$page.'&amp;save_stx='.$stx;
+$qstr  = $qstr.'&amp;sca='.$sca.'&moa_kind='. $moa_kind.'&offline='.$offline.'&amp;page='.$page.'&amp;save_stx='.$stx.'&sch_startdt='.$sch_startdt.'&sch_enddt='.$sch_enddt;
 
 $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목록</a>';
 
@@ -103,11 +103,11 @@ include_once(G5_ADMIN_PATH.'/_add/pop.cancel-class.php'); //폐강처리
 	<div class="fx-list">
 		<div class="fx-list-label">검색</div>
 		<div class="fx-list-con">
-			<select name="sfl">
-				<option value="mb_name" <?php echo $sca == 'mb_name' ? 'selected' : ''; ?>>호스트명</option>
-				<option value="it_name" <?php echo $sca == 'it_name' ? 'selected' : ''; ?>>모임명</option>
-				<option value="it_id" <?php echo $sca == 'it_id' ? 'selected' : ''; ?>>모임ID</option>
-			</select>
+<!--			<select name="sfl">-->
+<!--				<option value="mb_name" --><?php //echo $sca == 'mb_name' ? 'selected' : ''; ?><!--호스트명</option>-->
+<!--				<option value="it_name" --><?php //echo $sca == 'it_name' ? 'selected' : ''; ?><!--모임명</option>-->
+<!--				<option value="it_id" --><?php //echo $sca == 'it_id' ? 'selected' : ''; ?><!--모임ID</option>-->
+<!--			</select>-->
 			<input type="text" name="stx" value="<?php echo $stx; ?>" class="span160" placeholder="모임명/호스트명"><!--<a href="#" class="btn reverse span70">조회</a>-->
 		</div>
 	</div>
@@ -196,7 +196,7 @@ include_once(G5_ADMIN_PATH.'/_add/pop.cancel-class.php'); //폐강처리
 	</div>
 	<div class="btnSet">
 		<button type="submit" class="btnSearch">조회</button>
-		<a href="/adm/shop_admin/itemmoa_list.php" class="btnReset">초기화</a>
+		<button type="button" class="btnReset">초기화</button>
 	</div>
 </div>
 </form>
@@ -247,7 +247,7 @@ include_once(G5_ADMIN_PATH.'/_add/pop.cancel-class.php'); //폐강처리
 <!--	<button type="button" data-onoff="오프라인" class="btn_onoff btn span110">오프라인</button>-->
 <!--    <button type="button" data-onoff="온라인" class="btn_onoff btn span110 gray">온라인</button> 비활성화는 gray -->
         <a href="#" class=ight">
-		<a href="/bbs/write.php?bo_table=class" target="_blank" class="btn span150">모임 등록</a>
+		<a href="/adm/shop_admin/moa_write.php?bo_table=class" target="_blank" class="btn span150">모임 등록</a>
 		<select name="page_su" id="page_count">
 			<option value="10" <?php echo $page_su == '10' ? 'selected' : ''; ?>>10개</option>
 			<option value="15" <?php echo $page_su == '15' ? 'selected' : ''; ?>>15개</option>
@@ -264,7 +264,7 @@ include_once(G5_ADMIN_PATH.'/_add/pop.cancel-class.php'); //폐강처리
         <th scope="col" ><?php echo subject_sort_link('it_id', 'sca='.$sca); ?>모임ID</a></th>
 		<th scope="col"  id="th_img">썸네일</th>
 		<th scope="col"  id="th_pc_title"><?php echo subject_sort_link('it_name', 'sca='.$sca); ?>모임명</a></th>
-<!--		<th scope="col"  id="th_category">모임유형</th>-->
+		<th scope="col"  id="th_category">모임유형</th>
 		<th scope="col"  id="th_category">모임유형</th>
 		<th scope="col">주소(위치)</th><!-- 오프라인 선택시에만 출력 -->
 		<th scope="col">호스트명</th>		
@@ -305,8 +305,8 @@ include_once(G5_ADMIN_PATH.'/_add/pop.cancel-class.php'); //폐강처리
             <?php echo $row['it_id']; ?>
         </td>
 		<td><a href="<?php echo $href; ?>"><img src="<?php echo $row['as_thumb']; ?>" width="30px" height="30px" /></a></td>
-		<td><a href="#" class="color-blue underline"><?php echo $row['it_name']; ?></a></td>
-<!--		<td>1회차</td>-->
+		<td><a href="<?php echo $href; ?>" class="color-blue underline"><?php echo $row['it_name']; ?></a></td>
+		<td><?php echo $row['moa_onoff'] ?></td>
 		<td><?php echo $row['moa_form']; ?></td>
 		<td class="cell-mainColor">
             <?php echo get_common_type($row['moa_area1'])['type_name']; ?>
@@ -474,6 +474,12 @@ $('.close_moim').click(function(){
     var wr_id = $(this).data('wr_id');
 
     $('#fregister').children('input[name="wr_id"]').val(wr_id);
+})
+
+$('.btnReset').click(function(){
+    $('input[name="stx"]').val('');
+    $('input[name="sch_startdt"]').val('');
+    $('input[name="sch_enddt"]').val('');
 })
 </script>
 

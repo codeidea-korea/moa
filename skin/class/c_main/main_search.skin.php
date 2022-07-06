@@ -3,8 +3,10 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 ?>
 <!-- 메인 검색 -->
 <section class="s_content">
-    <div class="m_search">
-        <input type="text" value="<?php echo $word; ?>" id="search_word" placeholder="클래스를 검색하세요">
+    <div class="m_search main_search">
+        <div class="search_input">
+            <input type="text" value="<?php echo $word; ?>" id="search_word" placeholder="클래스를 검색하세요">
+        </div>
         <button type="button" id="search_btn">검색</button>
     </div>
     <div class="search_area">
@@ -44,14 +46,14 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 <!-- 검색 리스트 검색 후 -->
 <section class="srchVlm s_content">
     <p>총 <?php echo count($list); ?>개</p>
-    <div>
+    <div style="display:none;">
         <button onclick="$('#calendar').addClass('on')">날짜</button>
         <button onclick="$('#s_filter').addClass('on')">필터</button>
     </div> 
 </section>
 
 <!-- 검색 리스트 날짜 팝업 -->
-<div class="calendar_pop" id="calendar">
+<div class="calendar_pop" id="calendar" style="display:none;">
     <div class="layerBody">
         <div class="confirm">
             <div class="mentBox">
@@ -76,7 +78,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 </div>
 
 <!-- 검색 리스트 필터 팝업 -->
-<div class="s_filter_pop" id="s_filter">
+<div class="s_filter_pop" id="s_filter" style="display:none;">
     <div class="layerBody">
         <div class="confirm">
             <div class="mentBox">

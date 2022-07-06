@@ -48,6 +48,7 @@ $num_notice = ($is_thumb) ? '*' : '<span class="wr-icon wr-notice"></span>';
     <ul class="community last_list">
 	<?php
 	for ($i=0; $i < $list_cnt; $i++) { 
+		
 
 		//아이콘 체크
 		$wr_icon = '';
@@ -99,13 +100,24 @@ $num_notice = ($is_thumb) ? '*' : '<span class="wr-icon wr-notice"></span>';
             <a href="<?php echo $list[$i]['href']; ?>">
                 <div>
                     <div class="com_tarea">
-                        <p><?php echo $list[$i]['subject']; ?><span><?php echo apms_date($list[$i]['date'], 'orangered', 'before', 'm.d', 'Y.m.d'); ?></span></p>
+                    <p>
+						<?php echo $list[$i]['subject']; ?>
+						<span><?php echo apms_date($list[$i]['date'], 'orangered', 'before', 'm.d', 'Y.m.d'); ?></span>
+					</p>
                         <p class="ellipsis2"><?php echo substr($list[$i]['content'],80);?></p>
                     </div>
                     <div class="info">
                         <p><?php echo $list[$i]['name']; ?></p>
                         <div class="com_img">
-                            <img src="../images/default_img.svg" alt="">
+						<?php 
+						$member = apms_member($list[$i]['mb_id']);
+						//print_r2($member);
+						if ($member['photo']) { ?>
+							<img src="<?php echo $member['photo'];?> " alt="">
+						<?php } 
+						else { ?>
+							<img src="../images/default_img.svg" alt="">
+						<?php } ?>
                         </div>
                     </div>
                 </div>

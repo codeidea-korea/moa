@@ -42,7 +42,7 @@ $cate_w = ($boset['ctype'] == "2") ? apms_bunhal($ca_cnt + 1, $boset['bunhal']) 
 		</select>
 	</div>
 	<div class="input-wrapper">
-		<input type="text" type="text" name="stx"  placeholder="검색어를 입력해주세요." value="<?php echo $stx;?>">
+		<input type="text" type="text" name="stx"  placeholder="검색어를 입력해주세요.ㅇㄹㅇㄹㅇ" value="<?php echo $stx;?>">
 		<button type="submit" class="btn btn-<?php echo $btn2;?> btn-sm btn-block c_search">검색</button>
 	</div>
 </div>

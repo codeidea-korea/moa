@@ -154,8 +154,8 @@ if ($w == '' || $w == 'u') {
         $old_email = $member['mb_email'];
     }
 
-    if ($msg = exist_mb_nick($mb_nick, $mb_id))     alert($msg, "", true, true);
-    if ($msg = exist_mb_email($mb_email, $mb_id))   alert($msg, "", true, true);
+//    if ($msg = exist_mb_nick($mb_nick, $mb_id))     alert($msg, "", true, true);
+//    if ($msg = exist_mb_email($mb_email, $mb_id))   alert($msg, "", true, true);
 }
 
 // 사용자 코드 실행
@@ -250,7 +250,8 @@ if ($w == '') {
                      agree5 = '{$agree5}',
                      agree6 = '{$agree6}',
                      agree7 = '{$agree7}',
-                     agree8 = '{$agree8}'
+                     agree8 = '{$agree8}',
+                     mb_status = '대기'
                      
                      {$sql_certify} ";
 

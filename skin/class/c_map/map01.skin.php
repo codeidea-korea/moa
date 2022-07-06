@@ -2,7 +2,7 @@
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 ?>
 <!-- 지도  -->
-<div class="s_content">
+<div class="s_content mt16">
     <div class="map_tit">
         <p>용산구</p> <span>주변 모임</span>
     </div>
@@ -44,8 +44,26 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
             var point = $('.hidden_area').eq(j).val();
             var imageSrc = $('.hidden_img').eq(j).val();
             var subject = $('.hidden_subject').eq(j).val();
-
+            var overlay = new kakao.maps.CustomOverlay({
+                content: '<div class="wrap">' +
+                    '    <div class="info">' +
+                    '        <div class="title">' + subject +
+                    '           <div class="close" onclick="overlay.setMap(null);" title="닫기">X</div>' +
+                    '        </div>' +
+                    '        <div class="body">' +
+                    '            <div class="img">' +
+                    '                <img src="'+ imageSrc +'" width="73" height="70">' +
+                    '           </div>' +
+                    '            <div class="desc">' +
+                    '                <div class="ellipsis">'+ point +'</div>' +
+                    '            </div>' +
+                    '        </div>' +
+                    '    </div>' +
+                    '</div>',
+                position: new kakao.maps.LatLng(37.49887, 127.026581)
+            })
             geocoder.addressSearch("'" + point + "'", function (result, status) {
+                console.log(result);
                 if (status === kakao.maps.services.Status.OK) {
 
                     var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
@@ -56,26 +74,6 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                         position: coords
                     });
                 }
-
-                var overlay = new kakao.maps.CustomOverlay({
-                    content: '<div class="wrap">' +
-                        '    <div class="info">' +
-                        '        <div class="title">' + subject +
-                        '           <div class="close" onclick="overlay.setMap(null);" title="닫기">X</div>' +
-                        '        </div>' +
-                        '        <div class="body">' +
-                        '            <div class="img">' +
-                        '                <img src="'+ imageSrc +'" width="73" height="70">' +
-                        '           </div>' +
-                        '            <div class="desc">' +
-                        '                <div class="ellipsis">'+ point +'</div>' +
-                        '            </div>' +
-                        '        </div>' +
-                        '    </div>' +
-                        '</div>',
-                    position: new kakao.maps.LatLng(37.49887, 127.026581)
-                })
-
                 kakao.maps.event.addListener(marker, 'click', function() {
                     overlay.setMap(map);
                 });

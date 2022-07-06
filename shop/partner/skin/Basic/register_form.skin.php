@@ -83,10 +83,10 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 					</td>
 				</tr>
 				<tr>
-					<th class="vertical-top"><label class="required">한줄 소개 작성</label></th>
+					<th class="vertical-top"><label>한줄 소개 작성</label></th>
 					<td>
 						<div class="relative span450">
-							<textarea name="mb_recommend" class="limited " placeholder="30글자 이내로 작성해주세요." maxlength="30" required data-max="30" style="height:90px"><?php echo $member['mb_recommend'] ?></textarea>
+							<textarea name="mb_recommend" class="limited " placeholder="30글자 이내로 작성해주세요." maxlength="30" data-max="30" style="height:90px"><?php echo $member['mb_recommend'] ?></textarea>
 							<div class="textCount-wrap"><span class="textCount">0</span> / 30</span></div>
 						</div>
 					</td>

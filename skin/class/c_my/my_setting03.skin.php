@@ -3,7 +3,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 ?>
 
 <!-- 설정 리스트 -->
-
+<div class="bg_gray set">
 <section class="detail_con">
     <div class="s_con_bg">
         <p class="set_tit">내 계정</p>
@@ -107,7 +107,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 </a>
             </li>
             <li>
-                <a href="">
+                <a class="deleteMember" data-mb_no="<?php echo $member['mb_no']; ?>">
                     <p>회원탈퇴</p>
                     <span><img src="../images/r_arrow_o.svg" alt=""></span>
                 </a>
@@ -137,3 +137,23 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
         </div>
     </div>
 </section>
+</div>
+<script>
+    $('.deleteMember').click(function(){
+        if(confirm('정말 탈퇴하시겠습니까?')) {
+            $.ajax({
+                type: "POST",
+                url: "/ajax/deleteMember.php",
+                data: { mb_no: $(this).data('mb_no') },
+                cache: false,
+                async: false,
+                success: function(data) {
+                    alert('회원 탈퇴 되었습니다.');
+                    location.href = '/c_login/logout.php';
+                }
+            })
+        } else {
+            return false;
+        }
+    })
+</script>

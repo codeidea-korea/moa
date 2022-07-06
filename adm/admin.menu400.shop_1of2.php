@@ -5,6 +5,8 @@ if ($_a != "y") {
     $menu['menu400'] = array ();
     $menu['menu400'][] = array('400000', '전체모임관리', G5_ADMIN_URL.'/shop_admin/', 'shop_config');
     $menu['menu400'][] = array('400410', '모임관리', G5_ADMIN_URL.'/shop_admin/itemmoa_list.php', 'scf_item_moa');
+    $menu['menu400'][] = array('400420', '신청한 모임 승인관리', ''.G5_ADMIN_URL.'/shop_admin/confirm_moa_list.php', 'confirm_moa_list');
+
 //    $menu['menu400'][] = array('400400', '참여자 목록', G5_ADMIN_URL.'/shop_admin/orderer_list.php', 'scf_orderer', 1);
     //$menu['menu400'][] = array('400650', '사용후기', G5_ADMIN_URL.'/shop_admin/itemuselist.php', 'scf_ps');
     

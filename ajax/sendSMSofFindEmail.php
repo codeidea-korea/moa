@@ -11,8 +11,6 @@ $send_hp = $mb_hp['mb_hp'];
 $hp_no = $_POST['hp_no'];
 $rtn = "";
 
-
-
 if ($hp_no) {
 
     
@@ -37,7 +35,7 @@ if ($hp_no) {
         // 수신번호
         $recv_hp = $mb['mb_hp'];
         // 인증번호
-        $msg = "MOA Email찾기 인증번호\n".$rnum."\n입니다";
+        $msg = "MOA Email 찾기 인증번호\n".$rnum."\n입니다";
         $chk = smsSend($send_hp, $recv_hp, $msg);
         if ($chk) {
 

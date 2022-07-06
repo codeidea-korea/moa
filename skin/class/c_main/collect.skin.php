@@ -3,7 +3,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 ?>
 
 <!-- 인기 모임 모아보기 -->
-<section>
+<section id="sec_ca_name">
     <div class="s_content mt35">
         <!-- 타이틀 -->
         <div class="main_tit">
@@ -16,9 +16,12 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
         <div class="swiper7">
             <div class="swiper-wrapper">
                 <?php $cats = getHitCategory(); ?>
+                <div class="swiper-slide">
+                    <button class="btn btn-primary ca_name_btn" data-ca_name="">전체</button>
+                </div>
                 <?php foreach($cats as $cat) { ?>
                     <div class="swiper-slide">
-                        <a href="/bbs/board.php?bo_table=class&moa_onoff=&moa_area1=&moa_area2=&sca=<?php echo $cat['ca_name'];?>" class="on"><?= $cat['ca_name']; ?></a>
+                        <button class="btn btn-primary ca_name_btn" data-ca_name="<?php echo $cat['ca_name']; ?>"><?= $cat['ca_name']; ?></button>
                     </div>
                 <?php } ?>
             </div>
@@ -28,7 +31,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
     <div class="s_content mt25">
         <ol class="ppl_list">
             <?php $cnt = 1; ?>
-            <?php $classes = getFavoriteClass(3); ?>
+            <?php $classes = getFavoriteClass(3, $_GET['ca_name']); ?>
             <?php foreach($classes as $class) { ?>
             <li>
                 <a href="/shop/item.php?it_id=<?php echo $class['it_id'] ?>">
@@ -55,3 +58,8 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
         </ol>
     </div>
 </section>
+<script>
+    $('.ca_name_btn').click(function(){
+        location.href = '?ca_name=' + $(this).data('ca_name') + '#sec_ca_name';
+    })
+</script>

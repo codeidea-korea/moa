@@ -223,7 +223,7 @@ $rate = getStrpointWr2($list[$i]['wr_id']);
 					<span class="<?php echo $classon;?>"></span>
 					<?php } ?>
 					
-					<p>후기 <?php echo ($rate['cnt'])?$rate['cnt']:0;?>개</p> 
+					<p>후기 <?php echo ($rate['cnt'])?$rate['cnt']:0;?>개</p>
 				</div>
 				<!--별점구현/후기구현-->
 				<?php 
@@ -236,7 +236,7 @@ $rate = getStrpointWr2($list[$i]['wr_id']);
 				<p class="sale"></p>	
 				<div class="dsc_price">
 					<!--금액구현-->
-					<span><?php echo $list[$i]['wr_3'] > 0 ? number_format($list[$i]['wr_3']) : 0; ?>원</span>
+					<span><?php echo number_format($list[$i]['wr_3']) ?>원</span>
 					<!--금액구현-->
 					<!--사용시점구현-->
 					<p>

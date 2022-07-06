@@ -45,14 +45,16 @@ $view_subject = get_text($view['wr_subject']);
 		<div>
 			<div class="com_img mt0">
 				<!-- 프로필 이미지 공간  -->
-				<img src="../images/default_img.svg" alt="">
-				<?php if ($channels) {
-					$channelinfo = getCelebInfo($channels['mb_id']);
-				?>
-				<div class="img-photo">
-					<?php echo ($channels['photo']) ? '<img src="'.$channels['photo'].'" alt="">' : '<img src="../images/default_img.svg" alt="">'; ?>
-				</div>
+				<?php 
+				$member = apms_member($view['mb_id']);
+				//print_r2($member);
+				if ($member['photo']) { ?>
+					<img src="<?php echo $member['photo'];?> " alt="">
+				<?php } 
+				else { ?>
+					<img src="../images/default_img.svg" alt="">
 				<?php } ?>
+				
 			</div>
 			<div class="com_dt">
 				<p>익명</p>

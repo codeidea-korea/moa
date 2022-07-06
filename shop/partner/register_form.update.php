@@ -6,129 +6,142 @@ if($is_guest) {
 	alert('회원만 이용가능합니다.', APMS_PARTNER_URL.'/login.php');
 }
 if($ap == 'register_form') {
+	if($_POST['mb_password'] != $_POST['mb_password2'] && $_POST['mb_password']) {
+		alert('비밀번호 확인이 일치하지 않습니다.');
+		return false;
+	} else {
 //파일등록
-	function apms_photo_upload($mb_id, $del_photo, $file) {
-		global $g5, $config, $xp;
+		function apms_photo_upload($mb_id, $del_photo, $file)
+		{
+			global $g5, $config, $xp;
 
-		if(!$mb_id) return;
+			if (!$mb_id) return;
 
-		//Photo Size
-		//$photo_w = (isset($xp['xp_photo']) && $xp['xp_photo']) ? $xp['xp_photo'] : 80;
-		//$photo_h = $photo_w;
+			//Photo Size
+			//$photo_w = (isset($xp['xp_photo']) && $xp['xp_photo']) ? $xp['xp_photo'] : 80;
+			//$photo_h = $photo_w;
 
-		$photo_w = (isset($config['cf_member_img_width']) && $config['cf_member_img_width']) ? $config['cf_member_img_width'] : 80;
-		$photo_h = (isset($config['cf_member_img_height']) && $config['cf_member_img_height']) ? $config['cf_member_img_height'] : 80;
+			$photo_w = (isset($config['cf_member_img_width']) && $config['cf_member_img_width']) ? $config['cf_member_img_width'] : 80;
+			$photo_h = (isset($config['cf_member_img_height']) && $config['cf_member_img_height']) ? $config['cf_member_img_height'] : 80;
 
-		$photo_dir = G5_DATA_PATH.'/member_image/'.substr($mb_id,0,2);
-		$temp_dir = G5_DATA_PATH.'/member_image/temp';
+			$photo_dir = G5_DATA_PATH . '/member_image/' . substr($mb_id, 0, 2);
+			$temp_dir = G5_DATA_PATH . '/member_image/temp';
 
-		//Delete Photo
-		if ($del_photo == "1") {
-			@unlink($photo_dir.'/'.$mb_id.'.gif');
-			sql_query(" update {$g5['member_table']} set as_photo = '0' where mb_id = '$mb_id' ", false);
-		}
+			//Delete Photo
+			if ($del_photo == "1") {
+				@unlink($photo_dir . '/' . $mb_id . '.gif');
+				sql_query(" update {$g5['member_table']} set as_photo = '0' where mb_id = '$mb_id' ", false);
+			}
 
-		//Upload Photo
-		if (is_uploaded_file($file['mb_icon2']['tmp_name'])) {
-			if (!preg_match("/(\.(gif|jpe?g|bmp|png))$/i", $file['mb_icon2']['name'])) {
-				alert(aslang('alert', 'is_image', array($file['mb_icon2']['name']))); //은(는) 이미지(gif/jpg/png) 파일이 아닙니다.
-			} else {
+			//Upload Photo
+			if (is_uploaded_file($file['mb_icon2']['tmp_name'])) {
+				if (!preg_match("/(\.(gif|jpe?g|bmp|png))$/i", $file['mb_icon2']['name'])) {
+					alert(aslang('alert', 'is_image', array($file['mb_icon2']['name']))); //은(는) 이미지(gif/jpg/png) 파일이 아닙니다.
+				} else {
 
-				if(!is_dir(G5_DATA_PATH.'/member_image')) {
-					@mkdir(G5_DATA_PATH.'/member_image', G5_DIR_PERMISSION);
-					@chmod(G5_DATA_PATH.'/member_image', G5_DIR_PERMISSION);
-				}
-
-				if(!is_dir($photo_dir)) {
-					@mkdir($photo_dir, G5_DIR_PERMISSION);
-					@chmod($photo_dir, G5_DIR_PERMISSION);
-				}
-
-				if(!is_dir($temp_dir)) {
-					@mkdir($temp_dir, G5_DIR_PERMISSION);
-					@chmod($temp_dir, G5_DIR_PERMISSION);
-				}
-
-				$filename  = $file['mb_icon2']['name'];
-				$filename  = preg_replace('/(<|>|=)/', '', $filename);
-				$filename = preg_replace("/\.(php|phtm|htm|cgi|pl|exe|jsp|asp|inc)/i", "$0-x", $filename);
-
-				$chars_array = array_merge(range(0,9), range('a','z'), range('A','Z'));
-				shuffle($chars_array);
-				$shuffle = implode('', $chars_array);
-				$filename = abs(ip2long($_SERVER['REMOTE_ADDR'])).'_'.substr($shuffle,0,8).'_'.replace_filename($filename);
-
-				$org_photo = $photo_dir.'/'.$mb_id.'.gif';
-				$temp_photo = $temp_dir.'/'.$filename;
-
-				move_uploaded_file($file['mb_icon2']['tmp_name'], $temp_photo) or die($file['mb_icon2']['error']);
-				chmod($temp_photo, G5_FILE_PERMISSION);
-				if(is_file($temp_photo)) {
-					$size = @getimagesize($temp_photo);
-
-					//Non Image
-					if (!$size[0]) {
-						@unlink($temp_photo);
-						alert(aslang('alert', 'is_photo')); //회원사진 등록에 실패했습니다. 이미지 파일이 정상적으로 업로드 되지 않았거나, 이미지 파일이 아닙니다.
+					if (!is_dir(G5_DATA_PATH . '/member_image')) {
+						@mkdir(G5_DATA_PATH . '/member_image', G5_DIR_PERMISSION);
+						@chmod(G5_DATA_PATH . '/member_image', G5_DIR_PERMISSION);
 					}
 
-					//Animated GIF
-					$is_animated = false;
-					if($size[2] == 1) {
-						$is_animated = is_animated_gif($temp_photo);
+					if (!is_dir($photo_dir)) {
+						@mkdir($photo_dir, G5_DIR_PERMISSION);
+						@chmod($photo_dir, G5_DIR_PERMISSION);
 					}
 
-					if($is_animated) {
-						@unlink($temp_photo);
-						alert(aslang('alert', 'is_photo_gif')); //움직이는 GIF 파일은 회원사진으로 등록할 수 없습니다.
-					} else {
-						$thumb = thumbnail($filename, $temp_dir, $temp_dir, $photo_w, $photo_h, true, true);
-						if($thumb) {
-							if ($size[2] == 2) { //jpg
-								$src = @imagecreatefromjpeg($temp_dir.'/'.$thumb);
-								@imagegif($src, $temp_dir.'/'.$thumb);
-							} else if ($size[2] == 3) { //png
-								$src = @imagecreatefrompng($temp_dir.'/'.$thumb);
-								@imagealphablending($src, true);
-								@imagegif($src, $temp_dir.'/'.$thumb);
-							}
-							chmod($temp_dir.'/'.$thumb, G5_FILE_PERMISSION);
-							copy($temp_dir.'/'.$thumb, $org_photo);
-							chmod($org_photo, G5_FILE_PERMISSION);
-							@unlink($temp_dir.'/'.$thumb);
+					if (!is_dir($temp_dir)) {
+						@mkdir($temp_dir, G5_DIR_PERMISSION);
+						@chmod($temp_dir, G5_DIR_PERMISSION);
+					}
+
+					$filename = $file['mb_icon2']['name'];
+					$filename = preg_replace('/(<|>|=)/', '', $filename);
+					$filename = preg_replace("/\.(php|phtm|htm|cgi|pl|exe|jsp|asp|inc)/i", "$0-x", $filename);
+
+					$chars_array = array_merge(range(0, 9), range('a', 'z'), range('A', 'Z'));
+					shuffle($chars_array);
+					$shuffle = implode('', $chars_array);
+					$filename = abs(ip2long($_SERVER['REMOTE_ADDR'])) . '_' . substr($shuffle, 0, 8) . '_' . replace_filename($filename);
+
+					$org_photo = $photo_dir . '/' . $mb_id . '.gif';
+					$temp_photo = $temp_dir . '/' . $filename;
+
+					move_uploaded_file($file['mb_icon2']['tmp_name'], $temp_photo) or die($file['mb_icon2']['error']);
+					chmod($temp_photo, G5_FILE_PERMISSION);
+					if (is_file($temp_photo)) {
+						$size = @getimagesize($temp_photo);
+
+						//Non Image
+						if (!$size[0]) {
 							@unlink($temp_photo);
-							sql_query(" update {$g5['member_table']} set as_photo = '1' where mb_id = '$mb_id' ", false);
+							alert(aslang('alert', 'is_photo')); //회원사진 등록에 실패했습니다. 이미지 파일이 정상적으로 업로드 되지 않았거나, 이미지 파일이 아닙니다.
+						}
+
+						//Animated GIF
+						$is_animated = false;
+						if ($size[2] == 1) {
+							$is_animated = is_animated_gif($temp_photo);
+						}
+
+						if ($is_animated) {
+							@unlink($temp_photo);
+							alert(aslang('alert', 'is_photo_gif')); //움직이는 GIF 파일은 회원사진으로 등록할 수 없습니다.
 						} else {
-							@unlink($temp_photo);
-							//회원사진 등록에 실패했습니다. 이미지 파일이 정상적으로 업로드 되지 않았거나, 이미지 파일이 아닙니다.
-							alert(aslang('alert', 'is_photo'), G5_BBS_URL.'/myphoto.php');
+							$thumb = thumbnail($filename, $temp_dir, $temp_dir, $photo_w, $photo_h, true, true);
+							if ($thumb) {
+								if ($size[2] == 2) { //jpg
+									$src = @imagecreatefromjpeg($temp_dir . '/' . $thumb);
+									@imagegif($src, $temp_dir . '/' . $thumb);
+								} else if ($size[2] == 3) { //png
+									$src = @imagecreatefrompng($temp_dir . '/' . $thumb);
+									@imagealphablending($src, true);
+									@imagegif($src, $temp_dir . '/' . $thumb);
+								}
+								chmod($temp_dir . '/' . $thumb, G5_FILE_PERMISSION);
+								copy($temp_dir . '/' . $thumb, $org_photo);
+								chmod($org_photo, G5_FILE_PERMISSION);
+								@unlink($temp_dir . '/' . $thumb);
+								@unlink($temp_photo);
+								sql_query(" update {$g5['member_table']} set as_photo = '1' where mb_id = '$mb_id' ", false);
+							} else {
+								@unlink($temp_photo);
+								//회원사진 등록에 실패했습니다. 이미지 파일이 정상적으로 업로드 되지 않았거나, 이미지 파일이 아닙니다.
+								alert(aslang('alert', 'is_photo'), G5_BBS_URL . '/myphoto.php');
+							}
 						}
 					}
 				}
 			}
 		}
-	}
+
 		$mb_nick = $_POST['mb_nick'];
 		$mb_email = $_POST['mb_email'];
 		$mb_hp = $_POST['mb_hp'];
 		$mb_recommend = $_POST['mb_recommend'];
 		$mb_sex = $_POST['mb_sex'];
+		$mb_password = get_encrypt_string($_POST['mb_password']);
 
 		if (!preg_match("/([0-9a-zA-Z_-]+)@([0-9a-zA-Z_-]+)\.([0-9a-zA-Z_-]+)/", $mb_email)) {
 			alert('이메일 주소가 형식에 맞지 않습니다.');
 		}
-		apms_photo_upload($member['mb_id'], '', $_FILES);
+		apms_photo_upload($member['mb_id'], '', $_FILES['bf_file']);
 		//정보등록
+		$common = '';
+		if($mb_password != '') {
+			$common = ", mb_password = '{$mb_password}'";
+		}
 		$sql = " UPDATE {$g5['member_table']}
 				set mb_nick = '{$mb_nick}',
 					mb_email = '{$mb_email}',
 					mb_hp = '{$mb_hp}',
 					mb_recommend = '{$mb_recommend}',
 					mb_sex = '{$mb_sex}'
+					{$common}
                     where mb_id = '{$member['mb_id']}' ";
 		sql_query($sql);
 
 		alert('회원정보수정이 완료되었습니다.');
+	}
 } else {
 	$is_seller = (isset($apms['apms_partner']) && $apms['apms_partner']) ? true : false;
 	$is_marketer = (isset($apms['apms_marketer']) && $apms['apms_marketer']) ? true : false;

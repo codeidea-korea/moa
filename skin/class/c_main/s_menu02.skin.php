@@ -4,7 +4,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 <!-- 기본 리스트 -->
 <section>
     <div class="s_content mt25">
-        <ul class="tab_list pb100">
+        <ul class="tab_list pb100 basic_list">
             <?php for($i=0;$i<count($list);$i++) { ?>
             <li>
                 <a href="/shop/item.php?it_id=<?php echo $list[$i]['it_id']; ?>">

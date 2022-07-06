@@ -21,24 +21,29 @@ include_once(CLASS_PATH."/head.php");
 //print_r2($_POST);
 //extract($_POST);
 $mb_id = $_POST['mb_id'];
-$mb_email = $_POST['mb_id'];
+$mb_email = $_POST['mb_email'];
 $mb_password = $_POST['mb_password'];
 $mb_password_re = $_POST['mb_password_re'];
 $mb_name = $_POST['mb_name'];
 $mb_nick = $_POST['mb_nick'];
-//print_r2($member);
-$emailchk = '@';
-$emailchk2 = '.';
-if (strrpos($mb_id,$emailchk) === false || strrpos($mb_id,$emailchk) === false)
-    alert("이메일ID로 가입하셔야 합니다.", G5_URL);
-
-$sql = "SELECT count(*) cnt from G5_MEMBER where mb_id = '{$mb_id}'";
+////print_r2($member);
+//$emailchk = '@';
+//$emailchk2 = '.';
+//if (strrpos($mb_id,$emailchk) === false || strrpos($mb_id,$emailchk) === false)
+//    alert("이메일ID로 가입하셔야 합니다.");
+$sql = "SELECT count(*) cnt from g5_member where mb_id = '{$mb_id}'";
 $row = sql_fetch($sql);
-if ($row['cnt'] > 0)
-    alert("이미 가입된 ID입니다. 다른ID로 가입하시거나 로그인해주세요!");
+if ($row['cnt'] > 0 || $row1['cnt'] > 0)
+    alert("이미 가입된 ID입니다.");
 //echo "--------------여기는--------<br>";
 if (strrpos($mb_password, $mb_password_re) === false)
     alert("비밀번호 확인이 불일치합니다.");
+
+$nick = "SELECT count(*) cnt from g5_member WHERE mb_nick = '{$mb_nick}'";
+$result = sql_fetch($nick);
+if($result['cnt'] > 0) {
+    alert('이미 등록된 닉네임입니다.');
+}
 
 if ($member['mb_id']){
     $mb_email = $member['mb_email'];

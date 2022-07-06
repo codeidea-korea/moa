@@ -63,23 +63,30 @@ $colspan = 12;
 	</div>
 
 	<div class="mt30"></div>
-
+    <?php
+        $partner = "SELECT count(*) cnt FROM g5_apms_partner WHERE pt_register = '' ";
+        $p_count = sql_fetch($partner);
+        $member = "SELECT count(*) cnt FROM g5_member WHERE mb_status = ''";
+        $m_count = sql_fetch($member);
+        $class = "SELECT count(*) cnt FROM g5_write_class WHERE moa_status in ('0','')";
+        $c_count = sql_fetch($class);
+    ?>
 	<div class="h6 mb10">승인 요청 [처리해야할 요청 사항 입니다]</div>
 	<div class="flex gap20 flex-stretch">
 		<div class="boxContainer flex1 flexCenter column">
 			<span class="fs18 color-gray noto500">게스트 승인 요청</span>
-			<span class="new-num">12</span>
+			<span class="new-num"><?php echo $m_count['cnt']; ?></span>
 			<a href="/adm/confirm_member_list.php" class="mt5 more">더보기<i class="ml5 arrow-right"></i></a>
 		</div>
 		<div class="boxContainer flex1 flexCenter column">
 			<span class="fs18 color-gray noto500">호스트 승인 요청</span>
-			<span class="new-num">20</span>
-			<a href="#" class="mt5 more">더보기<i class="ml5 arrow-right"></i></a>
+			<span class="new-num"><?php echo $p_count['cnt']; ?></span>
+			<a href="/adm/confirm_host_list.php" class="mt5 more">더보기<i class="ml5 arrow-right"></i></a>
 		</div>
 		<div class="boxContainer flex1 flexCenter column">
 			<span class="fs18 color-gray noto500">모임 승인 요청</span>
-			<span class="new-num">10</span>
-			<a href="#" class="mt5 more">더보기<i class="ml5 arrow-right"></i></a>
+			<span class="new-num"><?php echo $c_count['cnt']?></span>
+			<a href="/adm/shop_admin/itemmoa_list.php" class="mt5 more">더보기<i class="ml5 arrow-right"></i></a>
 		</div>
 		<div class="boxContainer flex1 flexCenter column">
 			<span class="fs18 color-gray noto500">프로필 수정 승인 요청</span>
@@ -92,7 +99,11 @@ $colspan = 12;
 
 	<div class="slide-toggle-wraper">
 		<div class="slide-toggle-list open">
-			<div class="slide-opener">최근 등록 모임 <span class="noto600">3건</span></div>
+            <?php
+            $sql1 = "select * from deb_class_item a join g5_shop_item b on a.it_id = b.it_id join g5_write_class c on b.it_2 = c.wr_id join g5_member d on c.mb_id = d.mb_id where moa_status != '반려' AND moa_status != '삭제' AND moa_status != '취소' order by a.it_id desc limit 0, 5";
+            $result1 = sql_query($sql1);
+            ?>
+			<div class="slide-opener">최근 등록 모임 <span class="noto600">5건</span></div>
 			<div class="slideCon">
 				<div class="tbl-basic white odd border">
 					<table>
@@ -118,10 +129,6 @@ $colspan = 12;
 								<th>등록 날짜</th>
 							</tr>
 						</thead>
-                        <?php
-                            $sql1 = "select * from deb_class_item a join g5_shop_item b on a.it_id = b.it_id join g5_write_class c on b.it_2 = c.wr_id join g5_member d on c.mb_id = d.mb_id where moa_status != '반려' AND moa_status != '삭제' AND moa_status != '취소' order by a.it_id desc limit 0, 5";
-                            $result1 = sql_query($sql1);
-                        ?>
 						<tbody>
                             <?php
                             $i = 1;

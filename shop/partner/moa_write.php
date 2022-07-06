@@ -38,7 +38,16 @@ if ($w == 'u' || $w == 'r') {
         alert("글이 존재하지 않습니다.\\n삭제되었거나 이동된 경우입니다.", G5_URL);
     }
 }
-
+$class = "SELECT day,time,minute,timelimit FROM deb_class_item WHERE wr_id = '{$write['wr_id']}'";
+$result = sql_query($class);
+$i = 0;
+while($row = sql_fetch_array($result)) {
+    $write['cls_no'][$i]['day'] = $row['day'];
+    $write['cls_no'][$i]['time'] = $row['time'];
+    $write['cls_no'][$i]['minute'] = $row['minute'];
+    $write['cls_no'][$i]['timelimit'] = $row['timelimit'];
+    $i++;
+}
 if ($w == '') {
     if ($wr_id) {
         alert('글쓰기에는 \$wr_id 값을 사용하지 않습니다.', G5_BBS_URL.'/board.php?bo_table='.$bo_table);

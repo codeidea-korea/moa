@@ -60,51 +60,88 @@ else {?>
 	</div>	
 </div>
 <div id="moa-header-space"></div>
-<?php } ?>
+<?php }
 
-<!-- 공유하기 팝업 -->
+$plugin_path = G5_PATH.'/plugin/gnuboard_plugin_view_sns_share';
+$plugin_url = G5_URL.'/plugin/gnuboard_plugin_view_sns_share';
+
+add_stylesheet('<link rel="stylesheet" href="'.$plugin_url.'/css/plugin.css?'.time().'" />', 0);
+
+//공유버튼 제목 등 설정
+$meta_title = $result['wr_subject'];
+$meta_description = $meta_title;
+$item_url = G5_URL . '/shop/item.php?it_id=' . $result['it_id'];
+$meta_image = '';
+$thumb = $result['as_thumb'];
+?>
+
 <div class="alert02" id="alert05">
-        <div class="sns-share-icon" style=";padding:15px;border:0.1px solid #AAA;margin-left:10px;margin-right:10px" >
-					<?php
-						$sns_url  = G5_SHOP_URL.'/item.php?it_id='.$it_id;
-						$sns_title = get_text($it['it_name'].' | '.$config['cf_title']);
-						$sns_img = $item_skin_url.'/img';
-						echo  get_sns_share_link('facebook', $sns_url, $sns_title, $sns_img.'/sns/facebook.png', $seometa['img']['src']).' ';
-						//echo  get_sns_share_link('twitter', $sns_url, $sns_title, $sns_img.'/sns_twt.png', $seometa['img']['src']).' ';
-						//echo  get_sns_share_link('googleplus', $sns_url, $sns_title, $sns_img.'/sns_goo.png', $seometa['img']['src']).' ';
-						echo  get_sns_share_link('kakaostory', $sns_url, $sns_title, $sns_img.'/sns/kakaostory.png', $seometa['img']['src']).' ';
-						echo  get_sns_share_link('kakaotalk', $sns_url, $sns_title, $sns_img.'/sns/kakaotalk.png', $seometa['img']['src']).' ';
-						echo  get_sns_share_link('naverband', $sns_url, $sns_title, $sns_img.'/sns/naverband.png', $seometa['img']['src']).' ';
-					?>
-				</div>
-<!--    <div class="layerBody">-->
-<!--        <div class="confirm">-->
-<!--            <div class="mentBox">-->
-<!--                <p class="t_bold">공유하기</p>-->
-<!--                <span>친구에게 모임을 공유하세요!</span>-->
-<!--                <ul>-->
-<!--                    <li>-->
-<!--                        <a href="--><?php //$sns_url; ?><!--">-->
-<!--                            <img src="../images/kakao_s.svg" alt="">-->
-<!--                            <p>카카오톡</p>-->
-<!--                        </a>-->
-<!--                    </li>-->
+    <div class="layerBody">
+        <div class="confirm">
+            <div class="mentBox">
+                <p class="t_bold">공유하기</p>
+                <span>친구에게 모임을 공유하세요!</span>
+                <ul>
+                    <li>
+                        <a class="kakao btn_sns" id="btn_kakao_<?php echo $result['wr_id'] ?>" href="javascript:;">
+                            <img src="../images/kakao_s.svg" alt="">
+                            <p>카카오톡</p>
+                        </a>
+                    </li>
 <!--                    <li>-->
 <!--                        <img src="../images/sms_s.svg" alt="">-->
 <!--                        <p>SMS</p>-->
 <!--                    </li>-->
-<!--                    <li>-->
-<!--                        <img src="../images/code_s.svg" alt="">-->
-<!--                        <p>코드복사하기</p>-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--                <div class="close_btn">-->
-<!--                    <button onclick="$('#alert05').removeClass('on')"><img src="../images/close_ic_.svg" alt=""></button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
+                    <li>
+                        <a class="item_copy" title="COPY" href="#" onclick="copyItemLink(); return false;">
+                            <img src="../images/code_s.svg" alt="">
+                            <p>코드복사하기</p>
+                            <input type="text" value="<?php echo $item_url ?>" id="input_copy_item_link" readonly style="position:absolute; top:-100px; width:1px; padding:0px; border:0px; display:inline-block;" />
+                        </a>
+                    </li>
+                </ul>
+                <div class="close_btn">
+                    <button onclick="$('#alert05').removeClass('on')"><img src="../images/close_ic_.svg" alt=""></button>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    //공유링크 복사 함수
+    function copyItemLink(){
+        var copyText = document.getElementById("input_copy_item_link");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999)
+        document.execCommand("copy");
+        alert("공유링크가 복사되었습니다.");
+    }
+</script>
+
+<?php if($config['cf_kakao_js_apikey']) { ?>
+    <script src="//developers.kakao.com/sdk/js/kakao.min.js" charset="utf-8"></script>
+    <script type='text/javascript'>
+        // 사용할 앱의 Javascript 키를 설정해 주세요.
+        Kakao.init("<?php echo $config['cf_kakao_js_apikey']; ?>");
+
+        Kakao.Link.createDefaultButton({
+            container: "#btn_kakao_<?php echo $result['wr_id'] ?>",
+            objectType: "feed",
+            content: {
+                title: "<?php echo strip_tags($result['wr_subject']); ?>",
+                description: "<?php echo strip_tags($result['wr_content']); ?>",
+                imageUrl: "<?php echo $thumb ?>",
+                link: {
+                    mobileWebUrl: "<?php echo $item_url ?>",
+                    webUrl: "<?php echo $item_url ?>"
+                }
+            }
+        });
+    </script>
+<?php } ?>
+
 
 <!-- 프로필 저장하기 팝업-->
 <div class="alert02" id="alert14">
