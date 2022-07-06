@@ -17,7 +17,7 @@ include_once(CLASS_PATH."/header.php");
 include_once(CLASS_PATH."/main_head.php");
 //contents 영역
 //$sql = "select si.*, wc.as_thumb, wc.wr_content, wc.wr_subject from g5_shop_item as si join g5_write_class as wc on si.it_2 = wc.wr_id where si.pt_plan = 1 order by wc.wr_id limit 0, 3";
-$sql = "select * from g5_shop_banner where bn_position = '메인' and (bn_begin_time <= '".date('Y-m-d H:i:s')."' and bn_end_time >= '".date('Y-m-d H:i:s')."') order by bn_id desc limit 0, 3";
+$sql = "select * from g5_shop_banner where bn_position = '메인' and (bn_begin_time <= '".date('Y-m-d H:i:s')."' and bn_end_time >= '".date('Y-m-d H:i:s')."') order by bn_order asc limit 0, 3";
 $main = sql_query($sql);
 include_once(MOA_MAIN_SKIN."/main_slide.skin.php");
 $query = "select * from g5_shop_category where ca_id LIKE '10%' order by ca_id";

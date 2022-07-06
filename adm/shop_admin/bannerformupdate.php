@@ -55,7 +55,7 @@ if ($w=="")
                     bn_end_time   = '$bn_end_time',
                     bn_time       = '$date',
                     bn_hit        = '0',
-                    bn_order      = '$bn_order',
+                    bn_order      = '0',
                     bn_bimg       = '$bn_bimg_url'";
     sql_query($sql);
 
@@ -72,7 +72,6 @@ else if ($w=="u")
                     bn_new_win    = '$bn_new_win',
                     bn_begin_time = '$bn_begin_time',
                     bn_end_time   = '$bn_end_time',
-                    bn_order      = '$bn_order',
                     bn_bimg       = '$bn_bimg_url'
               where bn_id = '$bn_id' ";
     sql_query($sql);
