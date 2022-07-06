@@ -236,8 +236,12 @@ include_once($skin_path.'/pop.moim-info.php'); //모임신청인원정보
 						<?php $su = countAplyerMoaClass($list[$i]['it_id']); ?>
 						<span data-href="#pop-moim-info" class="aplyInfo pop-inline color-blue" data-it_id="<?php echo $list[$i]['it_id']; ?>">
 						<?php echo $su['cnt'] ? $su['cnt'] : '0'; ?>/<?php echo $list[$i]['tot'];?>
-						</span></td>
-					<td><?php echo $list[$i]['moa_form'];?><sub class="block"><?php echo $list[$i]['day'].' '.$list[$i]['time'];?></sub></td><!-- [고정형, 자율형] -->
+						</span>
+					</td>
+					<td>
+						<!-- [고정형, 자율형] -->
+						<?php echo $list[$i]['moa_form'];?><sub class="block"><?php echo $list[$i]['day'].' '.$list[$i]['time'];?></sub>
+					</td>
 					<td><?php echo getStatusValue($list[$i]['moa_status']); ?></td><!-- [승인, 대기중, 반려] -->
 					<td class="td_mng td_mng_s">
 						<span data-href="#pop-cancel-class" data-wr_id="<?php echo $list[$i]['wr_id']; ?>" class="close_moim pop-inline btn mini span50">폐강</span>

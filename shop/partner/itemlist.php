@@ -123,3 +123,6 @@ $rday = getSearchDays();
 
 include_once($skin_path.'/itemlist.skin.php');
 ?>
+
+
+
