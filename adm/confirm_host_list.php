@@ -84,7 +84,7 @@ $from_record = ($page - 1) * $rows; // 시작 열을 구함
 $sql = " select a.*, b.mb_nick, b.mb_email, b.mb_homepage {$sql_common} where (1) {$sql_search} {$sql_order} limit {$from_record}, {$rows} ";
 $result = sql_query($sql);
 
-$listall = '<a href="?ap=plist" class="ov_listall">전체목록</a>';
+$listall = '<a href="/adm/confirm_host_list.php" class="ov_listall">전체목록</a>';
 $g5['title'] = '호스트 승인 관리';
 include_once('./admin.head.php');
 ?>
@@ -114,7 +114,7 @@ include_once('./admin.head.php');
 
 </form>
 
-<form name="fmemberlist" id="fmemberlist" action="./apms.admin.php" onsubmit="return fmemberlist_submit(this);" method="post">
+<form name="fmemberlist" id="fmemberlist" action="./confirm_host_list.php" onsubmit="return fmemberlist_submit(this);" method="post">
 <input type="hidden" name="ap" value="plist">
 <input type="hidden" name="mode" value="plist">
 <input type="hidden" name="sst" value="<?php echo $sst ?>">
@@ -178,7 +178,7 @@ include_once('./admin.head.php');
 		}
 
 		//수정
-		$p_mod = '<a href="./apms.admin.php?ap=pform&amp'.$qstr.'&amp;pt_id='.$row['pt_id'].'" class="btn btn_03">수정</a>';
+		$p_mod = '<a href="'. G5_ADMIN_URL.'/confirm_host_form.php?'.$qstr.'&amp;pt_id='.$row['pt_id'].'" class="btn btn_03">수정</a>';
 
         $bg = 'bg'.($i%2);
     ?>

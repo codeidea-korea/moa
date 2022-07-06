@@ -108,7 +108,6 @@ include_once(G5_ADMIN_PATH.'/admin.head.php');
 
 				case 'basic'	: $ap_file = './apms.basic.php'; break;
 				case 'update'	: $ap_file = './apms.sql.php'; break;
-				case 'pform'	: $ap_file = './apms.pform.php'; break;
 				case 'mlist'	: $ap_file = './apms.mlist.php'; break;
 				case 'delivery'	: $ap_file = './apms.delivery.php'; break;
 				case 'sendcost'	: $ap_file = './apms.sendcost.php'; break;
