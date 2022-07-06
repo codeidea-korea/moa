@@ -78,7 +78,7 @@ $colspan = ($is_membership) ? 17 : 16;
 			<div class="fx-list-label">회원구분</div>
 			<div class="fx-list-con">
 				<select name="mb_level">
-					<option value="">전체</option>
+					<option value="0">전체</option>
 					<option value="3" <?php echo $mb_level == '3' ? 'selected' : ''; ?>>호스트</option>
 					<option value="2" <?php echo $mb_level == '2' ? 'selected' : ''; ?>>게스트</option>
 				</select>
@@ -120,7 +120,7 @@ $colspan = ($is_membership) ? 17 : 16;
 			</colgroup>
 			<thead>
 				<tr>
-					<th>선택</th>
+					<th><input type="checkbox" class="chk_all_btn chk_btn"></th>
 					<th>NO</th>
 					<th>이름</th>
 					<th>이메일</th>
@@ -136,7 +136,7 @@ $colspan = ($is_membership) ? 17 : 16;
             <?php $i = 1; ?>
             <?php while($row = sql_fetch_array($result)) { ?>
 				<tr>
-					<td><input type="checkbox" name="chk[]" class="chk_btn" value="<?php echo $row['mb_id'] ?>" id="chk_<?php echo $i ?>"></td>
+					<td><input type="checkbox" name="chk[]" class="chk_btn check_box" value="<?php echo $row['mb_id'] ?>" id="chk_<?php echo $i ?>"></td>
 					<td><?php echo $i; ?></td>
 					<td><a href="/adm/member_form.php?w=u&mb_id=<?php echo $row['mb_id']; ?>" class="color-blue underline"><?php echo $row['mb_name']; ?></a></td>
 					<td><?php echo $row['mb_id']; ?></td>
@@ -240,11 +240,20 @@ $(function() {
     })
 
     $('.btnReset').click(function(){
-        $('select').val(' ');
+        $("select").val('default');
+        $("select").selectpicker("refresh");
         $('input[name="mb_name"]').val('');
         $('input[name="mb_id"]').val('');
         $('input[name="sch_startdt"]').val('');
         $('input[name="sch_enddt"]').val('');
+    })
+
+    $('.chk_all_btn').click(function(){
+        if(!$(this).is(':checked')) {
+            $('.check_box').prop('checked', false);
+        } else {
+            $('.check_box').prop('checked', true);
+        }
     })
 });
 function fmemberlist_submit(f)

@@ -79,18 +79,10 @@ $(document).ready(function(){
 		if($(this).next('span').length == 0) $(this).after('<span></span>');
 		var is_autoPick = typeof $(this).attr('placeholder') !== typeof undefined && $(this).attr('placeholder') !== '' ? false : true;
 
-		var today = new Date(),
-			y = today.getFullYear(),
-			m = today.getMonth()+1,
-			d = today.getDate();
-		var date = y + '-' + m + '-' + d
-		if(i > 0) {date = $(this).eq(i-1).val()}
-		console.log(date);
 		$(this).datepicker({
 			language: 'ko-KR',
 			autoPick: is_autoPick,
 			format: 'yyyy-mm-dd',
-			startDate: date,
 		}).on('change', function(e){
 			$(this).datepicker('hide');
 			$('input.datepicker').eq(i+1).datepicker('setStartDate', e.currentTarget.value);
