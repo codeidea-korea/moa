@@ -54,6 +54,7 @@ if ($opt == "1") { // 답변대기
 $sql_common = " from {$g5['g5_shop_item_qa_table']} a join {$g5['g5_shop_item_table']} b on (a.it_id=b.it_id) where $where ";
 
 $sql = " select count(*) as cnt " . $sql_common;
+echo $sql;
 $row = sql_fetch($sql);
 $total_count = $row['cnt'];
 
