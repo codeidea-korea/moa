@@ -967,9 +967,10 @@ if(!isset($default['de_listtype_list_skin'])) {
             <th scope="row">결제 테스트</th>
             <td>
                 <?php echo help("PG사의 결제 테스트를 하실 경우에 체크하세요. 결제단위 최소 1,000원"); ?>
-                <input type="radio" name="de_card_test" value="0" <?php echo $default['de_card_test']==0?"checked":""; ?> id="de_card_test1">
+                <input type="radio" name="de_card_test_onoff" id="de_card_test_off" value="0" <?php echo $default['de_card_test']==0?"checked":""; ?> id="de_card_test1" onClick="$('#de_card_test').val('0');">
                 <label for="de_card_test1">실결제 </label>
-                <input type="radio" name="de_card_test" value="1" <?php echo $default['de_card_test']==1?"checked":""; ?> id="de_card_test2">
+                <input type="radio" name="de_card_test_onoff"  id="de_card_test_on" value="1" <?php echo $default['de_card_test']==1?"checked":""; ?> id="de_card_test2"  onClick="$('#de_card_test').val('1');">
+                <input type="hidden" name="de_card_test" id="de_card_test" value="<?php echo $default['de_card_test']?>">
                 <label for="de_card_test2">테스트결제</label>
                 <div class="scf_cardtest kcp_cardtest">
                     <a href="http://admin.kcp.co.kr/" target="_blank" class="btn_frmline">실결제 관리자</a>
