@@ -1,6 +1,7 @@
 <div class="wrapper">
     <form name="fregister" id="fregister" action="/bbs/qa_update.php" method="post">
         <input name="it_id" value="<?php echo $it_id ?>" type="hidden" />
+        <input name="wr_id" value="<?php echo $data['wr_id'] ?>" type="hidden" />
         <div class="s_content">
             <p class="r_contxt">
                 모임정보 : <?php echo get_common_type($data['moa_area1'])['type_name'] ? '[' . get_common_type($data['moa_area1'])['type_name'] . ']' : ''; ?>
