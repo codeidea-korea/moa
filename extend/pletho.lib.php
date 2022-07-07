@@ -1432,7 +1432,7 @@ if ($member['mb_id'] != "" && $member['invite_code'] == "") {
 function procClassAplyer($mb_id, $it_id, $status = '신청') {
     global $g5;
     echo $it_id."<BR>";
-    $sql = "SELECT a.day, a.time, a.moa_form
+    $sql = "SELECT a.wr_id, a.day, a.time, a.moa_form
                 , b.*
             from 
                 {$g5['class_item_table']} a, 
