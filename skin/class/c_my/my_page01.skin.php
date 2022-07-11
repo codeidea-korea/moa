@@ -41,7 +41,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
             </a>
             <a class="m_coupon" href="<?php echo MOA_MY_URL;?>/my_coupon01.php">
                 <div>쿠폰</div>
-                <div>0 <span>장</span></div>
+                <div><?php echo $result['cnt']; ?><span>장</span></div>
             </a>
         </div>
         <div class="m_box mt10">

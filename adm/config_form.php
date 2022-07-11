@@ -57,6 +57,14 @@ if(!isset($config['cf_facebook_appid'])) {
                     ADD `cf_twitter_secret` VARCHAR(255) NOT NULL AFTER `cf_twitter_key` ", true);
 }
 
+if(!isset($config['cf_apple_bundle_id'])) {
+    sql_query(" ALTER TABLE `{$g5['config_table']}`
+                    ADD `cf_apple_bundle_id` VARCHAR(255) NOT NULL AFTER `cf_googl_shorturl_apikey`,
+                    ADD `cf_apple_team_id` VARCHAR(255) NOT NULL AFTER `cf_apple_bundle_id`,
+                    ADD `cf_apple_key_id` VARCHAR(255) NOT NULL AFTER `cf_apple_team_id`,
+                    ADD `cf_apple_key_file` VARCHAR(255) NOT NULL AFTER `cf_apple_key_id` ", true);
+}
+
 // uniqid 테이블이 없을 경우 생성
 if(!sql_query(" DESC {$g5['uniqid_table']} ", false)) {
     sql_query(" CREATE TABLE IF NOT EXISTS `{$g5['uniqid_table']}` (
@@ -271,15 +279,15 @@ $pg_anchor = '<ul class="anchor">
     <li><a href="#anc_cf_board">게시판기본</a></li>
     <li><a href="#anc_cf_join">회원가입</a></li>
     <li><a href="#anc_cf_cert">본인확인</a></li>
-    <li><a href="#anc_cf_mail">기본메일환경</a></li>
-    <li><a href="#anc_cf_article_mail">글작성메일</a></li>
     <li><a href="#anc_cf_join_mail">가입메일</a></li>
-    <li><a href="#anc_cf_vote_mail">투표메일</a></li>
+    <li><a href="#anc_cf_mail">기본메일환경</a></li>
     <li><a href="#anc_cf_sns">SNS</a></li>
-    <li><a href="#anc_cf_lay">레이아웃 추가설정</a></li>
     <li><a href="#anc_cf_sms">SMS</a></li>
     <li><a href="#anc_cf_extra">여분필드</a></li>
-</ul>';
+    </ul>';
+    // <li><a href="#anc_cf_article_mail">글작성메일</a></li>
+    // <li><a href="#anc_cf_vote_mail">투표메일</a></li>
+    // <li><a href="#anc_cf_lay">레이아웃 추가설정</a></li>
 
 if (!$config['cf_icode_server_ip'])   $config['cf_icode_server_ip'] = '211.172.232.124';
 if (!$config['cf_icode_server_port']) $config['cf_icode_server_port'] = '7295';
@@ -410,7 +418,7 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
             <th scope="row"><label for="cf_mobile_pages">모바일 페이지 표시 수<strong class="sound_only">필수</strong></label></th>
             <td><input type="text" name="cf_mobile_pages" value="<?php echo $config['cf_mobile_pages'] ?>" id="cf_mobile_pages" required class="required numeric frm_input" size="3"> 페이지씩 표시</td>
         </tr>
-        <tr>
+        <tr class="none">
             <th scope="row"><label for="cf_new_skin">최근게시물 스킨<strong class="sound_only">필수</strong></label></th>
             <td>
                 <?php echo help('/skin/new/') ?>
@@ -422,7 +430,7 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
 				<?php echo get_mobile_skin_select('new', 'cf_mobile_new_skin', 'cf_mobile_new_skin', $config['cf_mobile_new_skin'], 'required'); ?>
             </td>
         </tr>
-        <tr>
+        <tr class="none">
             <th scope="row"><label for="cf_search_skin">검색 스킨<strong class="sound_only">필수</strong></label></th>
             <td>
                 <?php echo help('/skin/search/') ?>
@@ -434,7 +442,7 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
 				<?php echo get_mobile_skin_select('search', 'cf_mobile_search_skin', 'cf_mobile_search_skin', $config['cf_mobile_search_skin'], 'required'); ?>
             </td>
         </tr>
-        <tr>
+        <tr class="none">
             <th scope="row"><label for="cf_connect_skin">접속자 스킨<strong class="sound_only">필수</strong></label></th>
             <td>
                 <?php echo help('/skin/connect/') ?>
@@ -446,7 +454,7 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
 				<?php echo get_mobile_skin_select('connect', 'cf_mobile_connect_skin', 'cf_mobile_connect_skin', $config['cf_mobile_connect_skin'], 'required'); ?>
             </td>
         </tr>
-        <tr>
+        <tr class="none">
             <th scope="row"><label for="cf_faq_skin">FAQ 스킨<strong class="sound_only">필수</strong></label></th>
             <td>
                 <?php echo help('/skin/faq/') ?>
@@ -458,7 +466,7 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
 				<?php echo get_mobile_skin_select('faq', 'cf_mobile_faq_skin', 'cf_mobile_faq_skin', $config['cf_mobile_faq_skin'], 'required'); ?>
             </td>
         </tr>
-        <tr>
+        <tr class="none">
             <th scope="row"><label for="as_tag_skin">태그 스킨<strong class="sound_only">필수</strong></label></th>
             <td>
                 <?php echo help('/skin/tag/') ?>
@@ -470,7 +478,7 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
 				<?php echo get_skin_select('tag', 'as_mobile_tag_skin', 'as_mobile_tag_skin', $config['as_mobile_tag_skin'], 'required'); ?>
             </td>
         </tr>
-		<tr>
+		<tr class="none">
             <th scope="row"><label for="cf_admin_skin">어드민 스킨</label></th>
             <td>
                 <?php echo help('/skin/admin/') ?>
@@ -497,11 +505,11 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
                 </select>
             </td>
 		</tr>
-        <tr>
+        <tr >
             <th scope="row"><label for="as_misc_skin">그밖에 스킨<strong class="sound_only">필수</strong></label></th>
             <td>
                 <?php echo help('/skin/misc/ : 이메일, 구글지도, 글안내 등') ?>
-				<?php echo get_skin_select('misc', 'as_misc_skin', 'as_misc_skin', $config['as_misc_skin'], 'required'); ?>
+				<?php echo get_skin_select('misc', 'as_misc_skin', 'as_misc_skin', $config['as_misc_skin'], ''); ?>
             </td>
             <th scope="row"><label for="as_lang">언어팩<strong class="sound_only">필수</strong></label></th>
             <td>
@@ -995,7 +1003,7 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
     </div>
 </section>
 
-<section id="anc_cf_article_mail">
+<section id="anc_cf_article_mail"  class="none">
     <h2 class="h2_frm">게시판 글 작성 시 메일 설정</h2>
     <?php echo $pg_anchor ?>
 
@@ -1047,7 +1055,7 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
     </div>
 </section>
 
-<section id="anc_cf_join_mail">
+<section id="anc_cf_join_mail" >
     <h2 class="h2_frm">회원가입 시 메일 설정</h2>
     <?php echo $pg_anchor ?>
 
@@ -1078,7 +1086,7 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
     </div>
 </section>
 
-<section id="anc_cf_vote_mail">
+<section id="anc_cf_vote_mail"  class="none">
     <h2 class="h2_frm">투표 기타의견 작성 시 메일 설정</h2>
     <?php echo $pg_anchor ?>
 
@@ -1142,7 +1150,7 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
                     <p><?php echo get_social_callbackurl('kakao', true); ?></p>
                     </div>
                 </div>
-                <div class="explain_box">
+                <div class="explain_box none">
                     <input type="checkbox" name="cf_social_servicelist[]" id="check_social_facebook" value="facebook" <?php echo option_array_checked('facebook', $config['cf_social_servicelist']); ?> >
                     <label for="check_social_facebook">페이스북 로그인을 사용합니다</label>
                     <div>
@@ -1159,6 +1167,14 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
                     </div>
                 </div>
                 <div class="explain_box">
+                    <input type="checkbox" name="cf_social_servicelist[]" id="check_social_google" value="apple" <?php echo option_array_checked('apple', $config['cf_social_servicelist']); ?> >
+                    <label for="check_social_google">Apple 로그인을 사용합니다</label>
+                    <div>
+                    <h3>Apple 승인된 리디렉션 URI</h3>
+                    <p><?php echo get_social_callbackurl('apple'); ?></p>
+                    </div>
+                </div>
+                <div class="explain_box none">
                     <input type="checkbox" name="cf_social_servicelist[]" id="check_social_twitter" value="twitter" <?php echo option_array_checked('twitter', $config['cf_social_servicelist']); ?> >
                     <label for="check_social_twitter">트위터 로그인을 사용합니다</label>
                     <div>
@@ -1166,7 +1182,7 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
                     <p><?php echo get_social_callbackurl('twitter'); ?></p>
                     </div>
                 </div>
-                <div class="explain_box">
+                <div class="explain_box none">
                     <input type="checkbox" name="cf_social_servicelist[]" id="check_social_payco" value="payco" <?php echo option_array_checked('payco', $config['cf_social_servicelist']); ?> >
                     <label for="check_social_payco">페이코 로그인을 사용합니다</label>
                     <div>
@@ -1186,7 +1202,7 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
                 <input type="text" name="cf_naver_secret" value="<?php echo $config['cf_naver_secret'] ?>" id="cf_naver_secret" class="frm_input" size="45">
             </td>
         </tr>
-        <tr>
+        <tr class="none">
             <th scope="row"><label for="cf_facebook_appid">페이스북 앱 ID</label></th>
             <td>
                 <input type="text" name="cf_facebook_appid" value="<?php echo $config['cf_facebook_appid'] ?>" id="cf_facebook_appid" class="frm_input" size="40"> <a href="https://developers.facebook.com/apps" target="_blank" class="btn_frmline">앱 등록하기</a>
@@ -1196,7 +1212,7 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
                 <input type="text" name="cf_facebook_secret" value="<?php echo $config['cf_facebook_secret'] ?>" id="cf_facebook_secret" class="frm_input" size="45">
             </td>
         </tr>
-        <tr>
+        <tr class="none">
             <th scope="row"><label for="cf_twitter_key">트위터 컨슈머 Key</label></th>
             <td>
                 <input type="text" name="cf_twitter_key" value="<?php echo $config['cf_twitter_key'] ?>" id="cf_twitter_key" class="frm_input" size="40"> <a href="https://dev.twitter.com/apps" target="_blank" class="btn_frmline">앱 등록하기</a>
@@ -1223,6 +1239,26 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
             </td>
         </tr>
         <tr>
+            <th scope="row"><label for="cf_apple_team_id">Apple Team ID</label></th>
+            <td>
+                <input type="text" name="cf_apple_team_id" value="<?php echo $config['cf_apple_team_id'] ?>" id="cf_apple_team_id" class="frm_input" size="40">
+            </td>
+            <th scope="row"><label for="cf_apple_bundle_id">Apple Bundle ID</label></th>
+            <td>
+                <input type="text" name="cf_apple_bundle_id" value="<?php echo $config['cf_apple_bundle_id'] ?>" id="cf_apple_bundle_id" class="frm_input" size="45">
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><label for="cf_apple_key_id">Apple Key ID</label></th>
+            <td>
+                <input type="text" name="cf_apple_key_id" value="<?php echo $config['cf_apple_key_id'] ?>" id="cf_apple_key_id" class="frm_input" size="40">
+            </td>
+            <th scope="row"><label for="cf_apple_key_file">Apple Key File</label></th>
+            <td>
+                <input type="text" name="cf_apple_key_file" value="<?php echo $config['cf_apple_key_file'] ?>" id="cf_apple_key_file" class="frm_input" size="45">
+            </td>
+        </tr>
+        <tr>
             <th scope="row"><label for="cf_kakao_rest_key">카카오 REST API 키</label></th>
             <td>
                 <input type="text" name="cf_kakao_rest_key" value="<?php echo $config['cf_kakao_rest_key'] ?>" id="cf_kakao_rest_key" class="frm_input" size="40"> <a href="https://developers.kakao.com/apps/new" target="_blank" class="btn_frmline">앱 등록하기</a>
@@ -1238,7 +1274,7 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
                 <input type="text" name="cf_kakao_js_apikey" value="<?php echo $config['cf_kakao_js_apikey'] ?>" id="cf_kakao_js_apikey" class="frm_input" size="45">
             </td>
         </tr>
-        <tr>
+        <tr class="none">
             <th scope="row"><label for="cf_payco_clientid">페이코 Client ID</label></th>
             <td>
                 <input type="text" name="cf_payco_clientid" value="<?php echo $config['cf_payco_clientid']; ?>" id="cf_payco_clientid" class="frm_input" size="40"> <a href="https://developers.payco.com/guide" target="_blank" class="btn_frmline">앱 등록하기</a>
@@ -1253,7 +1289,7 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
     </div>
 </section>
 
-<section id="anc_cf_lay">
+<section id="anc_cf_lay"  class="none">
     <h2 class="h2_frm">레이아웃 추가설정</h2>
     <?php echo $pg_anchor; ?>
     <div class="local_desc02 local_desc">

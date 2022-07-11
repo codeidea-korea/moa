@@ -337,7 +337,19 @@ if ($default['de_hope_date_use']) {
 }
 
 // 결제대행사별 코드 include (스크립트 등)
+echo $is_mobile_order."<BR>";
+echo $default['de_pg_service']."<BR>";
+
+echo "iche_use : ".$default['de_iche_use']."<BR>";
+echo "de_vbank_use : ".$default['de_vbank_use']."<BR>";
+echo "de_hp_use : ".$default['de_hp_use']."<BR>";
+echo "de_card_use : ".$default['de_card_use']."<BR>";
+echo "de_easy_pay_use : ".$default['de_easy_pay_use']."<BR>";
+
+
+
 if($is_mobile_order) {
+
 	echo '<div id="sod_approval_frm">'."\n";
 
 	ob_start();

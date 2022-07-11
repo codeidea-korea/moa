@@ -5,7 +5,7 @@ include_once('./_common.php');
 check_demo();
 
 auth_check($auth[$sub_menu], "w");
-
+print_r2($_POST);
 //check_admin_token();
 
 // 대표전화번호 유효성 체크
@@ -222,7 +222,7 @@ $check_sanitize_keys = array(
 'de_root_index_use',			// 인덱스 루트
 'as_point',						// 포인트 결제
 );
-//print_r2($_POST);exit;
+
 foreach( $check_sanitize_keys as $key ){
     $$key = isset($_POST[$key]) ? strip_tags($_POST[$key]) : '';
 }
@@ -409,7 +409,7 @@ $sql = " update {$g5['g5_shop_default_table']}
                 as_point					  = '{$as_point}'
 				";
 sql_query($sql);
-
+//echo nl2br($sql)."<BR>";exit;
 // 환경설정 > 포인트 사용
 sql_query(" update {$g5['config_table']} set cf_use_point = '{$cf_use_point}' ");
 

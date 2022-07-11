@@ -4,6 +4,9 @@ $mb = apms_partner($pt_id);
 if (!$mb['pt_id']) {
     alert('존재하지 않는 호스트입니다.');
 }
+// echo"<div style='margin-left:200px;margin-top:100px'>";
+// print_r3($mb);
+// echo "</div>";
 
 include_once(G5_ADMIN_PATH.'/admin.head.php');
 
@@ -11,6 +14,8 @@ include_once(G5_ADMIN_PATH.'/apms_admin/apms.admin.lib.php');
 include_once(G5_LIB_PATH.'/common.lib.php');
 check_token();
 
+$newis = ($mb['pt_register']=='')?true:false;
+echo '['.$mb['pt_register'].']'.$newis."<BR>";
 //삭제시
 if(isset($_POST['pt_del']) && $_POST['pt_del']) {
 
@@ -36,58 +41,70 @@ else {
         $_POST['pt_level'] = '3';
 }
 //업데이트
-$sql = " update {$g5['apms_partner']}
-                set pt_type					= '{$_POST['pt_type']}'
-					, pt_register			= '{$_POST['pt_register']}'
-					, pt_leave				= '{$_POST['pt_leave']}'
-					, pt_name				= '{$_POST['pt_name']}'
-					, pt_hp					= '{$_POST['pt_hp']}'
-					, pt_email				= '{$_POST['pt_email']}'
-					, pt_partner			= '{$_POST['pt_partner']}'
-					, pt_marketer			= '{$_POST['pt_marketer']}'
-					, pt_company			= '{$_POST['pt_company']}'
-					, pt_company_name		= '{$_POST['pt_company_name']}'
-					, pt_company_president	= '{$_POST['pt_company_president']}'
-					, pt_company_saupja		= '{$_POST['pt_company_saupja']}'
-					, pt_company_addr		= '{$_POST['pt_company_addr']}'
-					, pt_company_type		= '{$_POST['pt_company_type']}'
-					, pt_company_item		= '{$_POST['pt_company_item']}'
-					, pt_bank_name			= '{$_POST['pt_bank_name']}'
-					, pt_bank_account		= '{$_POST['pt_bank_account']}'
-					, pt_bank_holder		= '{$_POST['pt_bank_holder']}'
-					, pt_bank_limit			= '{$_POST['pt_bank_limit']}'
-					, pt_flag				= '{$_POST['pt_flag']}'
-					, pt_point				= '{$_POST['pt_point']}'
-					, pt_benefit			= '{$_POST['pt_benefit']}'
-					, pt_level				= '{$_POST['pt_level']}'
-					, pt_limit				= '{$_POST['pt_limit']}'
-					, pt_commission_1		= '{$_POST['pt_commission_1']}'
-					, pt_commission_2		= '{$_POST['pt_commission_2']}'
-					, pt_commission_3		= '{$_POST['pt_commission_3']}'
-					, pt_commission_4		= '{$_POST['pt_commission_4']}'
-					, pt_commission_5		= '{$_POST['pt_commission_5']}'
-					, pt_incentive_1		= '{$_POST['pt_incentive_1']}'
-					, pt_incentive_2		= '{$_POST['pt_incentive_2']}'
-					, pt_incentive_3		= '{$_POST['pt_incentive_3']}'
-					, pt_incentive_4		= '{$_POST['pt_incentive_4']}'
-					, pt_incentive_5		= '{$_POST['pt_incentive_5']}'
-					, pt_memo				= '{$_POST['pt_memo']}'
-					, pt_1					= '{$_POST['pt_1']}'
-					, pt_2					= '{$_POST['pt_2']}'
-					, pt_3					= '{$_POST['pt_3']}'
-					, pt_4					= '{$_POST['pt_4']}'
-					, pt_5					= '{$_POST['pt_5']}'
-					, pt_6					= '{$_POST['pt_6']}'
-					, pt_7					= '{$_POST['pt_7']}'
-					, pt_8					= '{$_POST['pt_8']}'
-					, pt_9					= '{$_POST['pt_9']}'
-					, pt_10					= '{$_POST['pt_10']}'
-					
-				where pt_id					= '{$pt_id}' ";
-sql_query($sql);
+if (isset($_POST['mode']) && $_POST['mode'] == 'pform') {
 
+
+    $sql = " update {$g5['apms_partner']}
+                    set pt_type					= '{$_POST['pt_type']}'
+                        , pt_register			= '{$_POST['pt_register']}'
+                        , pt_leave				= '{$_POST['pt_leave']}'
+                        , pt_name				= '{$_POST['pt_name']}'
+                        , pt_hp					= '{$_POST['pt_hp']}'
+                        , pt_email				= '{$_POST['pt_email']}'
+                        , pt_partner			= '{$_POST['pt_partner']}'
+                        , pt_marketer			= '{$_POST['pt_marketer']}'
+                        , pt_company			= '{$_POST['pt_company']}'
+                        , pt_company_name		= '{$_POST['pt_company_name']}'
+                        , pt_company_president	= '{$_POST['pt_company_president']}'
+                        , pt_company_saupja		= '{$_POST['pt_company_saupja']}'
+                        , pt_company_addr		= '{$_POST['pt_company_addr']}'
+                        , pt_company_type		= '{$_POST['pt_company_type']}'
+                        , pt_company_item		= '{$_POST['pt_company_item']}'
+                        , pt_bank_name			= '{$_POST['pt_bank_name']}'
+                        , pt_bank_account		= '{$_POST['pt_bank_account']}'
+                        , pt_bank_holder		= '{$_POST['pt_bank_holder']}'
+                        , pt_bank_limit			= '{$_POST['pt_bank_limit']}'
+                        , pt_flag				= '{$_POST['pt_flag']}'
+                        , pt_point				= '{$_POST['pt_point']}'
+                        , pt_benefit			= '{$_POST['pt_benefit']}'
+                        , pt_level				= '{$_POST['pt_level']}'
+                        , pt_limit				= '{$_POST['pt_limit']}'
+                        , pt_commission_1		= '{$_POST['pt_commission_1']}'
+                        , pt_commission_2		= '{$_POST['pt_commission_2']}'
+                        , pt_commission_3		= '{$_POST['pt_commission_3']}'
+                        , pt_commission_4		= '{$_POST['pt_commission_4']}'
+                        , pt_commission_5		= '{$_POST['pt_commission_5']}'
+                        , pt_incentive_1		= '{$_POST['pt_incentive_1']}'
+                        , pt_incentive_2		= '{$_POST['pt_incentive_2']}'
+                        , pt_incentive_3		= '{$_POST['pt_incentive_3']}'
+                        , pt_incentive_4		= '{$_POST['pt_incentive_4']}'
+                        , pt_incentive_5		= '{$_POST['pt_incentive_5']}'
+                        , pt_memo				= '{$_POST['pt_memo']}'
+                        , pt_1					= '{$_POST['pt_1']}'
+                        , pt_2					= '{$_POST['pt_2']}'
+                        , pt_3					= '{$_POST['pt_3']}'
+                        , pt_4					= '{$_POST['pt_4']}'
+                        , pt_5					= '{$_POST['pt_5']}'
+                        , pt_6					= '{$_POST['pt_6']}'
+                        , pt_7					= '{$_POST['pt_7']}'
+                        , pt_8					= '{$_POST['pt_8']}'
+                        , pt_9					= '{$_POST['pt_9']}'
+                        , pt_10					= '{$_POST['pt_10']}'
+                        
+                    where pt_id					= '{$pt_id}' ";
+    sql_query($sql);
+
+    //print_r3($sql);
+
+    $partner = apms_partner($pt_id);
+}
 if($_POST['pt_register']) { // 승인정보가 있을 경우
-    sql_query(" update {$g5['member_table']} set as_partner = '{$_POST['pt_partner']}', as_marketer = '{$_POST['pt_marketer']}' where mb_id = '$mb_id' ", false);
+   
+    sql_query(" update {$g5['member_table']} set as_partner = '{$_POST['pt_partner']}', as_marketer = '{$_POST['pt_marketer']}' where mb_id = '$pt_id' ", false);
+    if ($newis) {
+        doAssignPoint($pt_id,'hostreg');
+    }
+
 } else { // 없다면
     sql_query(" update {$g5['member_table']} set as_partner = '0', as_marketer = '0' where mb_id = '$pt_id' ", false);
 }
@@ -101,6 +118,7 @@ if ($file_upload_msg) {
 }
 
 $token = get_token();
+$mb = array_merge($mb,$partner);
 
 $mb['pt_name'] = get_text($mb['pt_name']);
 $mb['pt_email'] = get_text($mb['pt_email']);
@@ -124,6 +142,8 @@ $mb['pt_7'] = get_text($mb['pt_7']);
 $mb['pt_8'] = get_text($mb['pt_8']);
 $mb['pt_9'] = get_text($mb['pt_9']);
 $mb['pt_10'] = get_text($mb['pt_10']);
+
+//print_r3($mb);
 ?>
 
     <style>
@@ -134,7 +154,7 @@ $mb['pt_10'] = get_text($mb['pt_10']);
     <div class="boxContainer">
 
 
-        <form name="fmember" id="fmember" action="/apms_admin/apms.admin.php" onsubmit="return fmember_submit(this);" method="post" enctype="multipart/form-data">
+        <form name="fmember" id="fmember" action="/adm/confirm_host_form.php" onsubmit="return fmember_submit(this);" method="post" enctype="multipart/form-data">
             <input type="hidden" name="ap" value="pform">
             <input type="hidden" name="mode" value="pform">
             <input type="hidden" name="sfl" value="<?php echo $sfl ?>">
@@ -273,7 +293,8 @@ this.form.pt_leave.value=this.value; } else { this.form.pt_leave.value=this.form
                     <tr>
                         <th scope="row">정산유형</th>
                         <td>
-                            <select name="pt_company" required>
+                            <input type="hidden" name="pt_company" id="pt_company" value="<?php echo $mb['pt_company'];?>">
+                            <select name="pt_company_select" id="pt_company_select" required onChange="$('#pt_company').val($(this).val());">
                                 <option value="">선택해 주세요</option>
                                 <option value="개인(원천징수)"<?php if($mb['pt_company'] == '개인(원천징수)') echo ' selected';?>>개인(원천징수)</option>
                                 <option value="개인사업자(일반과세)"<?php if($mb['pt_company'] == '개인사업자(일반과세)') echo ' selected';?>>개인사업자(일반과세)</option>
@@ -285,7 +306,8 @@ this.form.pt_leave.value=this.value; } else { this.form.pt_leave.value=this.form
                         </td>
                         <th scope="row">정산방법</th>
                         <td>
-                            <select name="pt_flag" required>
+                            <input type="hidden" name="pt_flag" id="pt_flag" value="<?php echo $mb['pt_flag'];?>">
+                            <select name="pt_flag_select" id="pt_flag_select" required onChange="$('#pt_flag').val($(this).val())">
                                 <option value="">선택해 주세요</option>
                                 <option value="1"<?php if($mb['pt_flag'] == "1") echo ' selected';?>>신청금액</option>
                                 <option value="2"<?php if($mb['pt_flag'] == "2") echo ' selected';?>>신청금액 - 부가세</option>
@@ -294,6 +316,17 @@ this.form.pt_leave.value=this.value; } else { this.form.pt_leave.value=this.form
                             </select>
                         </td>
                     </tr>
+                    <script>
+                    $(function() {
+
+                        $('select').on('change', function(e){
+                            console.log(this.id,
+                                        this.options[this.selectedIndex].value,
+                                        $(this).find("option:selected").val(),);
+                        });
+
+                    });
+                    </script>
                     <tr>
                         <td colspan="4" style="padding-left:0px;padding-top:30px;">
                             <h2 class="h2_frm" style="margin:0px;padding:0px;">

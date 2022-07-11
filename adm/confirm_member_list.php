@@ -155,7 +155,8 @@ $colspan = ($is_membership) ? 17 : 16;
 
 	<div class="btn_list01 btn_list">
 		<input type="button" name="act_button" id="approval_btn" value="선택 승인" onclick="document.pressed=this.value" class="btn btn_02">
-		<input type="button" name="act_button" id="refuse_btn" value="선택 거절" onclick="document.pressed=this.value" class="btn btn_02">
+        <!--기존 onclick="document.pressed=this.value" -->
+		<input type="button" name="act_button" id="refuse_btn" value="선택 거절" class="btn btn_02">
 		<input type="button" name="act_button" id="all_approval_btn" value="모두 일괄 승인" onclick="document.pressed=this.value" class="btn btn_01">
 	</div>
 
@@ -169,9 +170,49 @@ $colspan = ($is_membership) ? 17 : 16;
 <?php echo get_paging(G5_IS_MOBILE ? $config['cf_mobile_pages'] : $config['cf_write_pages'], $page, $total_page, '?'.$qstr.'&amp;page='); ?>
 
 </div>
+    <div class="layer-popup" id="popup01">
+        <div class="popContainer">
+            <div class="pop-inner">
+                <span class="pop-closer">팝업닫기</span>
+                
+                <header class="pop-header">
+                    선택 거절
+                </header>
 
+                <div class="text_area">
+				    <textarea id="refuse_msg" placeholder="내용을 입력해 주세요."></textarea>
+			    </div>
+
+                <div class="btn_choice">
+                    <button class="btnSubmit popClose">확인</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="pop-bg"></div>
+    </div>
 <script>
 $(function() {
+    $('.btnSubmit').click(function(){
+        var chk = $('.chk_btn:checked').length;
+        var arr = [];
+        for (var i = 0; i < chk; i++) {
+            arr.push($('.chk_btn:checked').eq(i).val());
+        }
+          $.ajax({
+              type: "POST",
+              url: '/ajax/sendRefuseEmail.php',
+              data: {'ids': arr, 'host': 0, 'msg': $('#refuse_msg').val()},
+              cache: false,
+              async: false,
+              dataType: "json",
+              success: function (data) {
+                  console.log(data);
+                  alert('반려 메일이 발송되었습니다.');
+              }
+          })
+    });
+
     $('#all_approval_btn').click(function(){
         if(confirm('상태를 바꾸시겠습니까?')) {
             $.ajax({
@@ -192,6 +233,7 @@ $(function() {
     })
 
     $('#refuse_btn').click(function(){
+        $('#popup01').addClass('open');
         if(confirm('상태를 바꾸시겠습니까?')) {
             var chk = $('.chk_btn:checked').length;
             var arr = [];
@@ -207,7 +249,6 @@ $(function() {
                 dataType: "json",
                 success: function (data) {
                     alert('상태가 변경되었습니다.');
-                    location.reload();
                 }
             })
         } else {

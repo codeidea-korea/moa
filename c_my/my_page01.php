@@ -21,7 +21,13 @@ include_once(CLASS_PATH."/header.php");
 
 //main head(공통파일)
 include_once(CLASS_PATH."/head.php");
-
+$sql = " select count(*) cnt
+            from {$g5['g5_shop_coupon_table']}
+            where mb_id IN ( '{$member['mb_id']}', '전체회원' )
+              and cp_start <= '".G5_TIME_YMD."'
+              and cp_end >= '".G5_TIME_YMD."'
+            order by cp_no ";
+$result = sql_fetch($sql);
 //contents 영역
 include_once(MOA_MY_SKIN."/my_page01.skin.php");
 

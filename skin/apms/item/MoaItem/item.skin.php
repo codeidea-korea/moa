@@ -313,6 +313,19 @@ if($nav_title) {
 							</div>
 						</div>
 					<?php } ?>
+                    <?php if($data['as_tag']) { ?>
+                        <div class="d_tit cr mt14">
+                            해시태그
+                            <div class="com_chip color_gray">
+                                <?php $hash = array_values(array_filter(explode(',', $data['as_tag']))); ?>
+                                <?php for($i=0;$i<count($hash);$i++) { ?>
+                                    <span>
+										<?php echo $hash[$i]; ?>
+									</span>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    <?php } ?>
 					<!-- map -->
 					<div class="mt25">
 						<div id="map" style="width:700px;height:600px;"></div>

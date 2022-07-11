@@ -8,7 +8,7 @@ if( ! $config['cf_social_login_use']) {     //소셜 로그인을 사용하지 �
 // add_stylesheet('css 구문', 출력순서); 숫자가 작을 수록 먼저 출력됨
 add_stylesheet('<link rel="stylesheet" href="'.G5_JS_URL.'/remodal/remodal.css">', 11);
 add_stylesheet('<link rel="stylesheet" href="'.G5_JS_URL.'/remodal/remodal-default-theme.css">', 12);
-add_stylesheet('<link rel="stylesheet" href="'.get_social_skin_url().'/style.css">', 13);
+add_stylesheet('<link rel="stylesheet" href="'.get_social_skin_url().'/style.css?ver='.G5_CSS_VER.'">', 13);
 add_javascript('<script src="'.G5_JS_URL.'/remodal/remodal.js"></script>', 10);
 
 $email_msg = $is_exists_email ? '등록할 이메일이 중복되었습니다.다른 이메일을 입력해 주세요.' : '';
@@ -23,7 +23,7 @@ $email_msg = $is_exists_email ? '등록할 이메일이 중복되었습니다.�
     <form id="fregisterform" name="fregisterform" action="<?php echo $register_action_url; ?>" onsubmit="return fregisterform_submit(this);" method="post" enctype="multipart/form-data" autocomplete="off">
     <input type="hidden" name="w" value="<?php echo $w; ?>">
     <input type="hidden" name="url" value="<?php echo $urlencode; ?>">
-    <input type="hidden" name="mb_name" value="<?php echo $user_nick; ?>" >
+
     <input type="hidden" name="provider" value="<?php echo $provider_name;?>" >
     <input type="hidden" name="action" value="register">
 
@@ -57,6 +57,14 @@ $email_msg = $is_exists_email ? '등록할 이메일이 중복되었습니다.�
         <table>
         <caption>개인정보 입력</caption>
         <tbody>
+        <!-- 애플 로그인 Apple 애플 아이디로 로그인 시작 { -->
+        <tr>
+            <th scope="row"><label for="reg_mb_name">이름<strong class="sound_only">필수</strong></label></th>
+            <td>
+                <input type="text" name="mb_name" value="<?php echo $user_name ? $user_name : $user_nick ?>" id="reg_mb_name" required class="frm_input required" size="70" maxlength="100" placeholder="이름을 입력해주세요." >
+            </td>
+        </tr>
+        <!-- } 애플 로그인 Apple 애플 아이디로 로그인 끝 -->
         <tr>
             <th scope="row"><label for="reg_mb_email">E-mail<strong class="sound_only">필수</strong></label></th>
             <td>
