@@ -24,7 +24,7 @@ $sql = " select count(*) as cnt " . $sql_common;
 $row = sql_fetch($sql);
 $total_count = $row['cnt'];
 
-$sql = "select * $sql_common order by fa_order , fa_id ";
+$sql = "select * $sql_common order by fa_id ";
 $result = sql_query($sql);
 
 //김과장 추가
@@ -49,7 +49,7 @@ include_once (G5_ADMIN_PATH.'/admin.head.php');
 		<table>
 			<colgroup>
 				<col width="110">
-				<col width="110">
+				<!-- <col width="110"> -->
 				<col>
 				<col width="180">
 			</colgroup>
@@ -57,7 +57,7 @@ include_once (G5_ADMIN_PATH.'/admin.head.php');
 			<thead>
 				<tr>
 					<th scope="col">번호</th>
-					<th scope="col">순서</th>
+					<!-- <th scope="col">순서</th> -->
 					<th scope="col">제목</th>					
 					<th scope="col">관리</th>
 				</tr>
@@ -72,9 +72,8 @@ include_once (G5_ADMIN_PATH.'/admin.head.php');
 				?>
 				<tr>
 					<td class="td_num"><?php echo $num; ?></td>
-					<td class="td_num"><?php echo $row['fa_order']; ?></td>
+					<!-- <td class="td_num"><?php echo $row['fa_order']; ?></td> -->
 					<td class="td_left"><?php echo stripslashes($row['fa_subject']); ?></td>
-					
 					<td class="td_mng td_mng_m">
 						<a href="./faqform.php?w=u&amp;fm_id=<?php echo $row['fm_id']; ?>&amp;fa_id=<?php echo $row['fa_id']; ?>" class="btn btn_03"><span class="sound_only"><?php echo stripslashes($row['fa_subject']); ?> </span>내용수정</a>
 						<a href="./faqformupdate.php?w=d&amp;fm_id=<?php echo $row['fm_id']; ?>&amp;fa_id=<?php echo $row['fa_id']; ?>" onclick="return delete_confirm(this);" class="btn btn_02"><span class="sound_only"><?php echo stripslashes($row['fa_subject']); ?> </span>삭제</a>
@@ -85,7 +84,6 @@ include_once (G5_ADMIN_PATH.'/admin.head.php');
 				?>
 			</tbody>
 		</table>
-
 	</div>
 
 	<div class="btn_fixed_top">

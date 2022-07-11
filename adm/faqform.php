@@ -48,17 +48,20 @@ include_once (G5_ADMIN_PATH.'/admin.head.php');
         <col>
     </colgroup>
     <tbody>
-    <tr>
+    <!-- <tr>
         <th scope="row"><label for="fa_order">출력순서</label></th>
         <td>
             <?php echo help('숫자가 작을수록 FAQ 페이지에서 먼저 출력됩니다.'); ?>
             <input type="text" name="fa_order" value="<?php echo $fa['fa_order']; ?>" id="fa_order" class="frm_input" maxlength="10" size="10">
             <?php if ($w == 'u') { ?><a href="<?php echo G5_BBS_URL; ?>/faq.php?fm_id=<?php echo $fm_id; ?>" class="btn_frmline">내용보기</a><?php } ?>
         </td>
-    </tr>
+    </tr> -->
     <tr>
         <th scope="row">질문</th>
-        <td><?php echo editor_html('fa_subject', get_text(html_purifier($fa['fa_subject']), 0)); ?></td>
+        <td>
+            <?php //echo editor_html('fa_subject', get_text(html_purifier($fa['fa_subject']), 0)); ?>
+            <input type="text" name="fa_subject" value="<?php echo $fa['fa_subject']; ?>" id="fa_subject" class="frm_input" style="width:100%">
+        </td>
     </tr>
     <tr>
         <th scope="row">답변</th>
@@ -93,7 +96,7 @@ function frmfaqform_check(f)
         return false;
     }
 
-    <?php echo get_editor_js('fa_subject'); ?>
+    // <?php echo get_editor_js('fa_subject'); ?>
     <?php echo get_editor_js('fa_content'); ?>
 
     return true;
