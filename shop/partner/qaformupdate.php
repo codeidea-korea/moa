@@ -31,7 +31,7 @@ if (!$iq['iq_id'])
 	alert('등록된 자료가 없습니다.', './?ap=qalist');
 
 // 답변등록
-$sql = "update {$g5['g5_shop_item_qa_table']} set iq_answer = '$iq_answer' where iq_id = '$iq_id' ";
+$sql = "update {$g5['g5_shop_item_qa_table']} set iq_answer = '$iq_answer', pt_answer_time=now() where iq_id = '$iq_id' ";
 sql_query($sql);
 
 if(!$iq['iq_answer'] && trim($iq_answer)) {

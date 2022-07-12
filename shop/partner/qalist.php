@@ -42,7 +42,7 @@ if ($sca) {
 }
 
 if($sch_startdt) {
-	$where .= " and a.iq_time > '$sch_startdt%' and a.iq_time < '$sch_enddt%'";
+	$where .= " and a.iq_time >= '$sch_startdt 00:00:00' and a.iq_time <= '$sch_enddt 23:59:59'";
 }
 
 if ($opt == "1") { // 답변대기
@@ -54,6 +54,7 @@ if ($opt == "1") { // 답변대기
 $sql_common = " from {$g5['g5_shop_item_qa_table']} a join {$g5['g5_shop_item_table']} b on (a.it_id=b.it_id) where $where ";
 
 $sql = " select count(*) as cnt " . $sql_common;
+//echo $sql;
 $row = sql_fetch($sql);
 $total_count = $row['cnt'];
 

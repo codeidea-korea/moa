@@ -6,8 +6,10 @@ $menu['menu580'][] = array('580110', '이벤트관리', G5_ADMIN_URL.'/shop_admi
 $menu['menu580'][] = array('580120', '메인베너관리', G5_ADMIN_URL.'/shop_admin/bannerlist.php', 'scf_banner');
 $menu['menu580'][] = array('580220', '팝업관리', G5_ADMIN_URL.'/newwinlist.php', 'scf_popup', 1);
 $menu['menu580'][] = array('580400', 'FAQ관리',G5_ADMIN_URL.'/faqmasterlist.php', 'scf_item_qna');
+
 $menu['menu580'][] = array('580410', '후기관리', G5_ADMIN_URL.'/shop_admin/itemuselist.php', 'scf_ps');
 //$menu['menu580'][] = array('580430', '1:1문의사항', ''.G5_ADMIN_URL.'/qa_config.php', 'qa');
+
 //if ($_extMenu) {
 
     //$menu['menu580'][] = array('580210', '메인팝업', G5_ADMIN_URL.'/newwinlist.php', 'main_popup', 1);

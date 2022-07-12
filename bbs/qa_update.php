@@ -118,18 +118,20 @@ if($w == '' || $w == 'a' || $w == 'r') {
 
     if($w == '' || $w == 'r') {
         $qa_id = sql_insert_id();
-
         if($w == 'r' && $write['qa_related']) {
             $qa_related = $write['qa_related'];
         } else {
             $qa_related = $qa_id;
         }
 
+        $tsql = "select mb_id from g5_write_class where wr_id=".$_POST['wr_id'];
+        $trow = sql_fetch_array(sql_query($tsql));
+
         $sql = " update g5_shop_item_qa
                     set iq_answer   = '$iq_answer',
-                        pt_it  = '{$member['mb_no']}'
-                        pt_id  = '{$member['mb_id']}'
-                    where qa_id = '$qa_id' ";
+                        pt_it  = '', 
+                        pt_id  = '{$trow['mb_id']}'
+                    where iq_id = '$qa_id' ";
         sql_query($sql);
 
         //알림

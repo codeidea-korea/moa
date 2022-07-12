@@ -53,15 +53,46 @@ include_once($skin_path.'/pop.confirm-reservation.php'); //예약확정
 			<tbody>
                 <?php $i = 1; ?>
                 <?php while($row = sql_fetch_array($result)) { ?>
-                        <tr>
-                            <td><?php echo $i; ?></td>
-                            <td><?php echo date('Y-m-d H:i', strtotime($row['aplydate'] . " " . $row['aplytime'])); ?></td>
-                            <td><?php echo $row['mb_name'] ?></td>
-                            <td><?php echo number_format($row['pay']); ?></td>
-                            <td><?php echo date('Y-m-d', strtotime($row['regdate'])); ?></td>
-                            <td><?php echo $row['status']; ?></td>
-                            <td><span data-href="#pop-confirm-reservation" class="pop-inline btn small" data-idx="<?php echo $row['idx']; ?>">예약확정</span></td>
-                        </tr>
+					<?php 
+					// 영카트와 커스텀으로 들어간 테이블과 관계가 떨어져있음. 
+					// 첫 쿼리에서 조인을 할 수 있으나 비효율이라고 판단 따로 여기서 구함
+					// 결제시 모임? 상품? (알 수 없음 영카트만 사용하지 못하고 커스텀으로 들어간 테이블들이 난무함 그러면서 잘 연계되지도 않음)
+					// 의 it_id값을 업데이트하면 되지만 애초에 영카트에는 order테이블에 it_id 컬럼이 없음. 
+					// 영카트 특히 결제쪽은 가능하면 건들지 않는쪽으로 함. 
+					// 현재 모아는 장바구니 개념이 없음. (상품 여러개를 한번에 결제하지 않음) (22.07.07 박경호)
+					$aSql = "select od_status FROM g5_shop_order a, g5_shop_cart b WHERE a.od_id=b.od_id AND b.it_id='".$row['it_id']."' AND a.mb_id='".$row['uid']."'";
+					$aRow = sql_fetch_array(sql_query($aSql));
+					?>
+					<tr>
+						<td><?php echo $i; ?></td>
+						<td><?php echo $row['aplydate'] . " " . $row['aplytime'].':00'; ?></td>
+						<td><?php echo $row['mb_name'] ?></td>
+						<td><?php echo number_format($row['pay']); ?></td>
+						<td><?php echo date('Y-m-d', strtotime($row['regdate'])); ?></td>
+						<td>
+							<?php
+							// 상태값 참고 ~/shop.config.php
+							switch ($aRow['od_status']){
+								case '입금': echo '결제완료'; break;
+								case '배송': echo '결제완료'; break;
+								case '완료': echo '결제완료'; break;
+								case '취소': echo '결제완료'; break;
+								case '반품': echo '결제완료'; break;
+								case '품절': echo '결제완료'; break;
+								default : echo '결제완료'; break;
+							}
+							?>
+						</td>
+						<td>
+							<?php // 기획에 예약확정후의 내용도 없고 확정이외의 루트에 대한 내용도 없음. (22.07.07 박경호)?>
+							<?php if ($row['status'] == '예약확정'){?>
+								예약확정
+							<?php }else{?>
+								<span data-href="#pop-confirm-reservation" class="pop-inline btn small" data-idx="<?php echo $row['idx']; ?>">예약확정</span>
+							<?php }?>
+							
+						</td>
+					</tr>
                 <?php $i++;
                 } ?>
 			</tbody>

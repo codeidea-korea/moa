@@ -20,7 +20,7 @@ if ($w == "u")
 }
 else
 {
-    $html_title .= ' 입력';
+    $html_title .= ' 카테고리';
     $fm = array();
 }
 
@@ -51,24 +51,24 @@ include_once (G5_ADMIN_PATH.'/admin.head.php');
         <col>
     </colgroup>
     <tbody>
-    <tr>
+    <!-- <tr>
         <th scope="row"><label for="fm_order">출력순서</label></th>
         <td>
             <?php echo help('숫자가 작을수록 FAQ 분류에서 먼저 출력됩니다.'); ?>
             <input type="text" name="fm_order" value="<?php echo $fm['fm_order']; ?>" id="fm_order" class="frm_input" maxlength="10" size="10">
         </td>
-    </tr>
+    </tr> -->
     <tr>
-        <th scope="row"><label for="fm_subject">제목</label></th>
+        <th scope="row"><label for="fm_subject">카테고리</label></th>
         <td>
-            <input type="text" value="<?php echo get_text($fm['fm_subject']); ?>" name="fm_subject" id="fm_subject" required class="frm_input required"  size="70">
+            <input type="text" value="<?php echo get_text($fm['fm_subject']); ?>" name="fm_subject" id="fm_subject" required class="frm_input required" style="width:80%; margin-right:10px;">
             <?php if ($w == 'u') { ?>
-            <a href="<?php echo G5_BBS_URL; ?>/faq.php?fm_id=<?php echo $fm_id; ?>" class="btn_frmline">보기</a>
-            <a href="./faqlist.php?fm_id=<?php echo $fm_id; ?>" class="btn_frmline">상세보기</a>
+                <!-- <a href="<?php echo G5_BBS_URL; ?>/faq.php?fm_id=<?php echo $fm_id; ?>" class="btn_frmline">보기</a> -->
+                <a href="./faqlist.php?fm_id=<?php echo $fm_id; ?>" class="btn_frmline">상세보기</a>
             <?php } ?>
         </td>
     </tr>
-    <tr>
+    <!-- <tr>
         <th scope="row"><label for="fm_himg">상단이미지</label></th>
         <td>
             <input type="file" name="fm_himg" id="fm_himg">
@@ -139,7 +139,7 @@ include_once (G5_ADMIN_PATH.'/admin.head.php');
         <td>
             <?php echo editor_html('fm_mobile_tail_html', get_text(html_purifier($fm['fm_mobile_tail_html']), 0)); ?>
         </td>
-    </tr>
+    </tr> -->
     </tbody>
     </table>
 </div>

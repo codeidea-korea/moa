@@ -142,10 +142,18 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 				<tr>
 					<td><?=$list[$i]['iq_answer']?'답변완료':'답변대기'?></td>
 					<td><?=$list[$i]['iq_secret']?'비밀글':'공개글'?></td>
-					<td><?php echo $list[$i]['iq_subject']; ?></td>
+					<td><?php echo nl2br($list[$i]['iq_question']); ?></td>
 					<td><?php echo $list[$i]['iq_name']; ?></td>
 					<td><?php echo apms_datetime($list[$i]['iq_time'], 'Y-m-d');?></td>
-					<td>2022-03-01</td>
+					<td>
+						<?php 
+						if ($list[$i]['iq_answer']){
+							echo substr($list[$i]['pt_answer_time'],0,10);
+						}else{
+							echo "-";
+						}
+						?>
+					</td>
 					<td><a href="<?php echo $list[$i]['ans_href'];?>" class="btn small <?=$list[$i]['iq_answer']?'gray':''?>"><?=$list[$i]['iq_answer']?'답변수정':'답변하기'?></a></td>
 				</tr>
 				<?php } ?>
