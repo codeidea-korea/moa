@@ -82,6 +82,19 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 						<input type="number" value="<?php echo $member['mb_hp'] ?>" required pattern="\d*" name="mb_hp" id="mb_hp" class="span450" placeholder="휴대폰 번호 (-없이 입력)" placeholder="휴대폰 번호 (-없이 입력)">
 					</td>
 				</tr>
+                <tr>
+                    <th><label>정보 공개여부</label></th>
+                    <td>
+                        <span class="info_radio">
+                            <input type="radio" value="1" <?php echo $member['mb_open'] == '1' ? 'checked = "checked"' : ''; ?> name="mb_open" id="mb_open1">
+                            <label for="mb_open1">공개</label>
+                        </span>
+                        <span class="info_radio">
+                            <input type="radio" value="0" <?php echo $member['mb_open'] == '0' ? 'checked = "checked"' : ''; ?> name="mb_open" id="mb_open2">
+                            <label for="mb_open2">비공개</label>
+                        </span>
+                    </td>
+                </tr>
 				<tr>
 					<th class="vertical-top"><label>한줄 소개 작성</label></th>
 					<td>
