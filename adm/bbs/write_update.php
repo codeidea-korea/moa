@@ -959,5 +959,7 @@ delete_cache_latest($bo_table);
 
 if ($file_upload_msg)
     alert($file_upload_msg, G5_ADMIN_URL.'/bbs/board.php?bo_table='.$bo_table.'&amp;wr_id='.$wr_id.$qstr);
+else if ($bo_table == 'qa')
+    goto_url(G5_ADMIN_URL . '/bbs/board.php?bo_table=qa');
 else
     goto_url(G5_ADMIN_URL.'/bbs/board.php?bo_table='.$bo_table.'&amp;wr_id='.$wr_id.$qstr);

@@ -31,7 +31,7 @@ else if ($w == 'u')
 
     $mb['mb_name'] = get_text($mb['mb_name']);
     $mb['mb_nick'] = get_text($mb['mb_nick']);
-    $mb['mb_email'] = get_text($mb['mb_email']);
+    $mb['mb_email'] = get_text($mb['mb_id']);
     $mb['mb_homepage'] = get_text($mb['mb_homepage']);
     $mb['mb_birth'] = get_text($mb['mb_birth']);
     $mb['mb_tel'] = get_text($mb['mb_tel']);
@@ -177,7 +177,7 @@ add_javascript(G5_POSTCODE_JS, 0);    //다음 주소 js
     <tr>
         <th scope="row"><label for="mb_id">아이디<?php echo $sound_only ?></label></th>
         <td>
-            <input type="email" name="mb_id" value="<?php echo $mb['mb_id'] ?>" id="mb_id" <?php echo $required_mb_id ?> class="frm_input <?php echo $required_mb_id_class ?>" size="15" minlength="3" maxlength="20">
+            <input type="email" name="mb_id" value="<?php echo $mb['mb_id'] ?>" id="mb_id" <?php echo $required_mb_id ?> class="frm_input <?php echo $required_mb_id_class ?>" size="15" minlength="3" placeholder="이메일 형식으로 입력해주세요.">
             <?php if (false&&$w=='u'){ ?><a href="./boardgroupmember_form.php?mb_id=<?php echo $mb['mb_id'] ?>">접근가능그룹보기</a><?php } ?>
         </td>
     </tr>
@@ -189,10 +189,10 @@ add_javascript(G5_POSTCODE_JS, 0);    //다음 주소 js
         <th scope="row"><label for="mb_name">이름(실명)<strong class="sound_only">필수</strong></label></th>
         <td><input type="text" name="mb_name" value="<?php echo $mb['mb_name'] ?>" id="mb_name" required class="required frm_input" size="15" maxlength="20"></td>
     </tr>
-	<tr>
-        <th scope="row"><label for="mb_email">이메일<strong class="sound_only">필수</strong></label></th>
-        <td><input type="text" name="mb_email" value="<?php echo $mb['mb_email'] ?>" id="mb_email" maxlength="100" required class="required frm_input email" size="30"></td>
-    </tr>
+<!--	<tr>-->
+<!--        <th scope="row"><label for="mb_email">이메일<strong class="sound_only">필수</strong></label></th>-->
+<!--        <td><input type="text" name="mb_email" value="--><?php //echo $mb['mb_email'] ?><!--" id="mb_email" maxlength="100" required class="required frm_input email" size="30"></td>-->
+<!--    </tr>-->
 	<tr>
         <th scope="row">이메일 수신</th>
         <td>
