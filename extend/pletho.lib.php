@@ -1786,7 +1786,7 @@ function smsSend($sHp, $rHp, $msg)     {
 function getStrpointWr2($wr_id)
 {
     global $g5;
-    $sql = "select count(*) cnt, round(sum(c.is_score)) score from g5_write_class a join g5_shop_item b on a.wr_id = b.it_2 join g5_shop_item_use c on b.it_id = c.it_id
+    $sql = "select count(*) cnt, round(sum(c.is_score)/count(*)) score from g5_write_class a join g5_shop_item b on a.wr_id = b.it_2 join g5_shop_item_use c on b.it_id = c.it_id
             where a.wr_id = '{$wr_id}'";
     $row = sql_fetch($sql);
     return $row;

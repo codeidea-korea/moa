@@ -266,7 +266,6 @@ include_once('./admin.head.php');
         for (var i = 0; i < chk; i++) {
             arr.push($('.chk_btn:checked').eq(i).parent().prev('.pt_id').val());
         }
-        console.log(arr);
         $.ajax({
             type: "POST",
             url: '/ajax/sendRefuseEmail.php',

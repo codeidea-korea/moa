@@ -81,8 +81,7 @@ $result = sql_query($sql);
 			<th scope="col">노출순위</th>
 			<th scope="col">제목</th>
 			<th scope="col">기간</th>
-			<th scope="col">등록일</th>
-			<th scope="col">상태</th>
+			<th scope="col">노출 기기</th>
 			<th scope="col">순위조절</th>
 			<th scope="col">관리</th>
 		</tr>
@@ -106,10 +105,9 @@ $result = sql_query($sql);
 		?>
 		<tr>
 			<td><?php echo $row['nw_id']; ?></td>
-			<td><?php echo $row['nw_subject']; ?></td>
+            <td><a class="pop_btn" data-pop_id="<?php echo $row['nw_id']; ?>"><?php echo $row['nw_subject']; ?></a></td>
 			<td><?php echo substr($row['nw_begin_time'],2,14); ?> ~ <?php echo substr($row['nw_end_time'],2,14); ?></td>
-			<td>2022.03.14  13:22</td>
-			<td>대기</td><!-- [대기,진행,종료] -->
+			<td><?php echo $nw_device ?></td><!-- [대기,진행,종료] -->
 			<td>
 				<div class="flex flex-center">
 					<button type="button" class="order-up">위로</button>
@@ -139,7 +137,21 @@ $result = sql_query($sql);
 	<?php echo get_paging(G5_IS_MOBILE ? $config['cf_mobile_pages'] : $config['cf_write_pages'], $page, $total_page, "{$_SERVER['SCRIPT_NAME']}?$qstr&amp;page="); ?>
 
 </div>
+<div class="layer-popup" id="popup01">
+    <div class="popContainer">
+        <div class="pop-inner">
+            <span class="pop-closer">팝업닫기</span>
+            <header class="pop-header">
 
+            </header>
+            <div class="text_area pop_content">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="pop-bg"></div>
+</div>
 <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
@@ -208,7 +220,25 @@ $result = sql_query($sql);
     </tbody>
     </table>
 </div>
-
+<script>
+    $('.pop_btn').click(function(){
+        $('.pop-header').text('');
+        $('.pop_content').children().remove();
+        $.ajax({
+            type: "POST",
+            url: '/ajax/popContent.php',
+            data: {'id': $(this).data('pop_id')},
+            cache: false,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                $('.pop-header').text(data.nw_subject);
+                $('.pop_content').append(data.nw_content);
+                $('#popup01').addClass('open');
+            }
+        })
+    })
+</script>
 
 
 <?php
