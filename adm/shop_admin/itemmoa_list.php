@@ -284,7 +284,8 @@ include_once(G5_ADMIN_PATH.'/_add/pop.cancel-class.php'); //폐강처리
         <th scope="col" id="th_camt" class="none"><?php echo subject_sort_link('it_cust_price', 'sca='.$sca); ?>정상금액</a></th>
         <th scope="col" id="th_amt" class="none"><?php echo subject_sort_link('it_price', 'sca='.$sca); ?>할인금액</a></th>
         <th scope="col" class="none"><?php echo subject_sort_link('it_hit', 'sca='.$sca, 1); ?>조회</a></th>
-        <th scope="col" >관리</th>        
+        <th scope="col" >관리1</th>
+        <th scope="col" >관리2</th>
     </tr>
     </thead>
     <tbody>
@@ -379,11 +380,17 @@ include_once(G5_ADMIN_PATH.'/_add/pop.cancel-class.php'); //폐강처리
             <a href="<?php echo $href; ?>" class="btn btn_02"><span class="sound_only"><?php echo htmlspecialchars2(cut_str($row['it_name'],250, "")); ?> </span>보기</a>
         </td>
 		<td class="td_mng td_mng_s">
+            <select class="moim_picks" data-wr_id="<?php echo $row['wr_id']; ?>">
+                <option value="">선택</option>
+                <option value="기획전" <?php echo $row['moa_pick'] == '기획전' ? 'selected' : ''; ?>>기획전</option>
+                <option value="모아픽" <?php echo $row['moa_pick'] == '모아픽' ? 'selected' : ''; ?>>모아픽</option>
+            </select>
+		</td>
+        <td class="td_mng td_mng_s">
 			<a href="/adm/shop_admin/orderer_list.php?it_id=<?php echo $row['it_id']; ?>&page=<?php echo $page ? $page : 1; ?>" class="btn btn_02">참여자</a>
 			<a href="./itemmoa_form.php?w=u&amp;it_id=<?php echo $row['it_id']; ?>&amp;ca_id=<?php echo $row['ca_id']; ?>&amp;<?php echo $qstr; ?>" class="btn btn_03 none">수정</a><!-- 사용자페이지에서 등록 및 수정 가능 -->
 			<button type="button" class="del_class btn btn_01" data-wr_id="<?php echo $row['wr_id']; ?>">삭제</button>
 		</td>
-            
     </tr>
     <?php
     }
@@ -445,7 +452,25 @@ function excelform(url)
     window.open(url, "win_excel", opt);
     return false;
 }
-
+$('.moim_picks').change(function(){
+    var value = $(this).val();
+    if(confirm(value + '로 지정하시겠습니까?')) {
+        $.ajax({
+            type: "POST",
+            url: '/ajax/moaPick.php',
+            data: {'wr_id': $(this).data('wr_id'), 'pick': $(this).val() },
+            cache: false,
+            async: false,
+            dataType: "json",
+            success: function(data) {
+                alert('지정되었습니다.');
+                location.reload();
+            }
+        })
+    } else {
+        return false;
+    }
+})
 $('.del_class').click(function(){
     if(confirm('삭제하시겠습니까?')) {
         $.ajax({

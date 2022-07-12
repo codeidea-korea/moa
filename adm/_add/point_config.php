@@ -12,6 +12,10 @@ if ($w == 'u') {
 				set 
 					cf_use_point = '{$_POST['cf_use_point']}',
 					cf_point_term = '{$_POST['cf_point_term']}',
+					cf_review_point = '{$_POST['cf_review_point']}',
+					cf_use_host_reg = '{$_POST['cf_use_host_reg']}',
+					cf_use_review = '{$_POST['cf_use_review']}',
+					cf_host_reg_point = '{$_POST['cf_host_reg_point']}',
 					cf_register_point = '{$_POST['cf_register_point']}',
 					cf_use_recommend = '{$_POST['cf_use_recommend']}',
 					cf_recommend_point = '{$_POST['cf_recommend_point']}'
@@ -88,10 +92,30 @@ $config = sql_fetch("select * from {$g5['config_table']} ");
 								<th>추천인 포인트</th>
 								<td class="tleft">
 									<div class="flex mb10">
-										<label class="radio-wrap"><input type="radio" name="cf_use_recommend" value="1" id="cf_use_recommend" <?php echo $config['cf_use_recommend']?'checked':''; ?>><span></span>사용함</label>
-										<label class="radio-wrap ml30"><input type="radio" name="cf_use_recommend" value="0" id="cf_use_recommend" <?php echo !$config['cf_use_recommend']?'checked':''; ?>><span></span>사용안함</label>
+										<label class="radio-wrap"><input type="radio" name="cf_use_recommend" value="1" id="cf_use_recommend1" <?php echo $config['cf_use_recommend']?'checked':''; ?>><span></span>사용함</label>
+										<label class="radio-wrap ml30"><input type="radio" name="cf_use_recommend" value="0" id="cf_use_recommend2" <?php echo !$config['cf_use_recommend']?'checked':''; ?>><span></span>사용안함</label>
 									</div>
 									<input type="text" name="cf_recommend_point" value="<?php echo $config['cf_recommend_point'];?>" class="span160 ml5" placeholder="포인트 금액" data-label-right="point">
+								</td>
+							</tr>
+							<tr>
+								<th>리뷰 등록 포인트</th>
+								<td class="tleft">
+									<div class="flex mb10">
+										<label class="radio-wrap"><input type="radio" name="cf_use_review" value="1" id="cf_use_review1" <?php echo $config['cf_use_review']?'checked':''; ?>><span></span>사용함</label>
+										<label class="radio-wrap ml30"><input type="radio" name="cf_use_review" value="0" id="cf_use_review2" <?php echo !$config['cf_use_review']?'checked':''; ?>><span></span>사용안함</label>
+									</div>
+									<input type="text" name="cf_review_point" value="<?php echo $config['cf_review_point'];?>" class="span160 ml5" placeholder="포인트 금액" data-label-right="point">
+								</td>
+							</tr>
+							<tr>
+								<th>호스트 등록시 제공 포인트</th>
+								<td class="tleft">
+									<div class="flex mb10">
+										<label class="radio-wrap"><input type="radio" name="cf_use_host_reg" value="1" id="cf_use_host_reg1" <?php echo $config['cf_use_host_reg']?'checked':''; ?>><span></span>사용함</label>
+										<label class="radio-wrap ml30"><input type="radio" name="cf_use_host_reg" value="0" id="cf_use_host_reg0" <?php echo !$config['cf_use_host_reg']?'checked':''; ?>><span></span>사용안함</label>
+									</div>
+									<input type="text" name="cf_host_reg_point" value="<?php echo $config['cf_host_reg_point'];?>" class="span160 ml5" placeholder="포인트 금액" data-label-right="point">
 								</td>
 							</tr>
 						</tbody>			

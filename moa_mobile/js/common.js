@@ -69,7 +69,9 @@
   });
 
   $(".lick_btn").on("click", function () {
-    $(this).toggleClass("on")
+    if(!$(this).hasClass('on')) {
+      $(this).addClass("on")
+    }
   });
 
   $(".ic_area span").on("click", function () {

@@ -28,7 +28,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 <input type="email" placeholder="예) moa@moa.co.kr" oninvalid="this.setCustomValidity('이메일을 입력해주세요.')" oninput="this.setCustomValidity('')"  name="mb_id" value="<?php echo $member['mb_id'] ?>" id="reg_mb_id" required <?php echo $readonly ?> class="form-input half_input required <?php echo $readonly ?>" minlength="3" maxlength="150" >
                 <p>비밀번호</p>
                 <input type="password" type="password" name="mb_password" oninvalid="this.setCustomValidity('비밀번호를 입력해주세요.')" oninput="this.setCustomValidity('')" id="reg_mb_password" required
-                    placeholder="비밀번호">
+                    placeholder="8자 이상">
                 <p>비밀번호 확인</p>
                 <input class="error" type="password" name="mb_password_re" id="reg_mb_password_re" required
                     placeholder="비밀번호 확인">
@@ -37,9 +37,10 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 <input type="text" id="reg_mb_name" name="mb_name" oninvalid="this.setCustomValidity('이름을 입력해주세요.')" oninput="this.setCustomValidity('')" value="<?php echo get_text($member['mb_name']) ?>" required <?php echo $readonly; ?> class="form-input half_input required <?php echo $readonly ?>" size="10" placeholder="이름">
                 <p>닉네임</p>
                 <input type="hidden" name="mb_nick_default" value="<?php echo isset($member['mb_nick'])?get_text($member['mb_nick']):''; ?>">
-                            <input type="text" oninvalid="this.setCustomValidity('닉네임을 입력해주세요.')" oninput="this.setCustomValidity('')" name="mb_nick" value="<?php echo isset($member['mb_nick'])?get_text($member['mb_nick']):''; ?>" id="reg_mb_nick" required class="form-input required nospace  half_input" size="10" maxlength="20" placeholder="닉네임">
-                            <p class="form-input-hint" style="display:none"></p>
-                
+                <input type="text" oninvalid="this.setCustomValidity('닉네임을 입력해주세요.')" oninput="this.setCustomValidity('')" name="mb_nick" value="<?php echo isset($member['mb_nick'])?get_text($member['mb_nick']):''; ?>" id="reg_mb_nick" required class="form-input required nospace  half_input" size="10" maxlength="20" placeholder="닉네임">
+                <p class="form-input-hint" style="display:none"></p>
+                <button id="search_nick" type="button">중복검사</button>
+                <input type="hidden" value="" id="is_nick_search" />
             </div>
             <div class="p156">
                 <button class="inactive on" type="submit">다음</button>
@@ -65,11 +66,43 @@ $(function() {
         }
     });
 
+    $('#search_nick').click(function(){
+        var nick = $('#reg_mb_nick').val();
+        $.ajax({
+            type: "POST",
+            url: '/ajax/nickSearch.php',
+            data: {'nick': nick},
+            cache: false,
+            async: false,
+            dataType: "json",
+            success: function(data) {
+                if(data.cnt > 0) {
+                    alert('이미 존재하는 닉네임입니다.');
+                    $('#reg_mb_nick').val('');
+                    $('#reg_mb_nick').focus();
+                } else {
+                    alert('사용 가능한 닉네임입니다.');
+                    $('#is_nick_search').val(1);
+                }
+            }
+        });
+    })
+
     $('#fregisterform').submit(function(){
         var email = $('input[name="mb_id"]').val();
 
         var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+        var pass = $('#reg_mb_password').val();
+        if(pass.length < 8) {
+            alert('비밀번호는 8자 이상 입력하세요');
+            return false;
+        }
+
+        if(!$('#is_nick_search').val()){
+            alert('중복 검사를 실행해주세요.');
+            return false;
+        }
 
         if (!re.test(email)) {
             alert("올바른 이메일 주소를 입력하세요");

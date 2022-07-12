@@ -6,6 +6,10 @@ if(USE_G5_THEME && defined('G5_THEME_PATH')) {
     return;
 }
 
+if($member['mb_status'] != '승인' && !$member['mb_id']) {
+    alert('로그인 후 이용해주세요.', '/c_login/login.php');
+}
+
 include_once(G5_LIB_PATH.'/iteminfo.lib.php');
 
 //이벤트

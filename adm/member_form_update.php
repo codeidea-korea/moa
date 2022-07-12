@@ -33,7 +33,7 @@ if($_POST['mb_certify_case'] && $_POST['mb_certify']) {
 $mb_zip1 = substr($_POST['mb_zip'], 0, 3);
 $mb_zip2 = substr($_POST['mb_zip'], 3);
 
-$mb_email = isset($_POST['mb_email']) ? get_email_address(trim($_POST['mb_email'])) : '';
+$mb_email = isset($_POST['mb_id']) ? get_email_address(trim($_POST['mb_id'])) : '';
 $mb_nick = isset($_POST['mb_nick']) ? trim(strip_tags($_POST['mb_nick'])) : '';
 
 if ($msg = valid_mb_nick($mb_nick))     alert($msg, "", true, true);

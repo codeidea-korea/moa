@@ -129,9 +129,12 @@ if ($w == '' || $w == 'r') {
 
     // 쓰기 포인트 부여
     if ($w == '') {
+            doAssignPoint($mb_id,'review',$is_id);
 
-        insert_point($member['mb_id'], '1000', "리뷰 {$is_id} 글쓰기", 'g5_shop_item_use', $is_id, '쓰기');
-
+        // if ($config['cf_use_review']) {
+        //     insert_point($member['mb_id'], '1000', "리뷰 {$is_id} 글쓰기", 'g5_shop_item_use', $is_id, '쓰기');
+        //    // doAssignPoint($mb_id,'hostreg');
+        // }
     }
 
 }
@@ -143,4 +146,3 @@ if ($w == '' || $w == 'r') {
 delete_cache_latest($bo_table);
 
 alert('리뷰가 등록되었습니다.', '/shop/item.php?it_id=' . $it_id);
-?>

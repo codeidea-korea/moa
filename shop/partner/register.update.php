@@ -100,9 +100,9 @@ if ($ap == 'register_form_step2') {
 		alert('호스트명을 입력하세요.');
 	}
 
-	if(!$pt_hp) {
-		alert('연락처를 입력하세요.');
-	}
+//	if(!$pt_hp) {
+//		alert('연락처를 입력하세요.');
+//	}
 
 	$pt_partner = ($pt_partner) ? 1 : 0;
 	$pt_marketer = ($pt_marketer) ? 1 : 0;

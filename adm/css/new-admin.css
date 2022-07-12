@@ -871,3 +871,7 @@ table td .sv_wrap .sv_member .profile_img img{border-radius:50%;}
 
 .layer-popup .tbl-basic{margin-top:-15px;}
 .layer-popup .tbl-basic thead th{border-top:0}
+
+.text_area textarea{width: 100%;height: 6.25em;border:1px solid #ccc;resize: none;}
+.wzContents{margin-bottom:12px;}
+.btn_choice button {margin-top:20px;width:100%;height:46px;color:#2d2d2d;line-height:46px;background:var(--mainColor);font-weight:600;}

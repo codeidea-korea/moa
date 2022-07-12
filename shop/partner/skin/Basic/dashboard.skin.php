@@ -126,7 +126,7 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 			<div class="section-title">고객센터</div>
 			<div class="boxContainer flex1">
 				<a href="#" class="btn reverse gray span chat-link"  data-mb_id="admin">1:1 실시간 상담</a>
-				<a href="/shop/partner/bbs/board.php?bo_table=qa" class="btn reverse gray span mt10">문의 상담</a>
+				<a href="/c_my/my_service_center02.php" class="btn reverse gray span mt10">문의 상담</a>
 				<div class="span tcenter" style="position:absolute;bottom:30px;left:0;">
 					<p class="fs18">고객센터 0000-0000</p>
 					<p class="mt15 color-gray">

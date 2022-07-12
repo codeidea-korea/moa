@@ -228,15 +228,15 @@ $rate = getStrpointWr2($list[$i]['wr_id']);
 				<!--별점구현/후기구현-->
 				<?php 
 				//좋아요 기능구현
-				$likechk = checkLikeOn('class',$list[$i]['wr_id'],$member['mb_id']);
+                $likechk = checkLikeOn('class',$row['it_id'], $member['mb_id']);
 				$likeon = ($likechk)?"on":"";
 				$likenoon = ($likechk)?"":"";
 				?>
-				<button class="lick_btn <?php echo $likeon;?>" onclick="deb_apms_like('<?php echo $bo_table;?>', '<?php echo $list[$i]['wr_id'];?>', '<?php echo $likenoon;?>good', 'wr_<?php echo $likenoon;?>good'); return false;"></button>
+				<button class="lick_btn <?php echo $likeon;?>" onclick="deb_goods_like('<?php echo $row['it_id'] ?>', 'good'); return false;"></button>
 				<p class="sale"></p>	
 				<div class="dsc_price">
 					<!--금액구현-->
-					<span><?php echo number_format($list[$i]['wr_3']) ?>원</span>
+					<span><?php echo $list[$i]['wr_4'] > 0 ? number_format($list[$i]['wr_4']) . '원' : '무료' ?></span>
 					<!--금액구현-->
 					<!--사용시점구현-->
 					<p>

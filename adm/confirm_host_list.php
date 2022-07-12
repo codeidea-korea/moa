@@ -84,7 +84,7 @@ $from_record = ($page - 1) * $rows; // 시작 열을 구함
 $sql = " select a.*, b.mb_nick, b.mb_email, b.mb_homepage {$sql_common} where (1) {$sql_search} {$sql_order} limit {$from_record}, {$rows} ";
 $result = sql_query($sql);
 
-$listall = '<a href="?ap=plist" class="ov_listall">전체목록</a>';
+$listall = '<a href="/adm/confirm_host_list.php" class="ov_listall">전체목록</a>';
 $g5['title'] = '호스트 승인 관리';
 include_once('./admin.head.php');
 ?>
@@ -114,7 +114,7 @@ include_once('./admin.head.php');
 
 </form>
 
-<form name="fmemberlist" id="fmemberlist" action="./apms.admin.php" onsubmit="return fmemberlist_submit(this);" method="post">
+<form name="fmemberlist" id="fmemberlist" action="./confirm_host_list.php" onsubmit="return fmemberlist_submit(this);" method="post">
 <input type="hidden" name="ap" value="plist">
 <input type="hidden" name="mode" value="plist">
 <input type="hidden" name="sst" value="<?php echo $sst ?>">
@@ -178,16 +178,16 @@ include_once('./admin.head.php');
 		}
 
 		//수정
-		$p_mod = '<a href="./apms.admin.php?ap=pform&amp'.$qstr.'&amp;pt_id='.$row['pt_id'].'" class="btn btn_03">수정</a>';
+		$p_mod = '<a href="'. G5_ADMIN_URL.'/confirm_host_form.php?'.$qstr.'&amp;pt_id='.$row['pt_id'].'" class="btn btn_03">수정</a>';
 
         $bg = 'bg'.($i%2);
     ?>
 
     <tr class="<?php echo $bg; ?>">
         <td headers="mb_list_chk" class="td_chk" align="center">
-            <input type="hidden" name="pt_id[<?php echo $i ?>]" value="<?php echo $row['pt_id'] ?>" id="pt_id_<?php echo $i ?>">
+            <input type="hidden" name="pt_id[<?php echo $i ?>]" class="pt_id" value="<?php echo $row['pt_id'] ?>" id="pt_id_<?php echo $i ?>">
 			<?php if($is_check) { ?>
-	            <input type="checkbox" name="chk[]" value="<?php echo $i ?>" id="chk_<?php echo $i ?>">
+	            <input type="checkbox" name="chk[]" class="chk_btn" value="<?php echo $i ?>" id="chk_<?php echo $i ?>">
 			<?php } else { ?>
 				*
 			<?php } ?>
@@ -230,12 +230,57 @@ include_once('./admin.head.php');
 
 <div class="btn_fixed_top">
     <input type="submit" name="act_button" value="선택승인" onclick="document.pressed=this.value" class="btn btn_02">
+	<!--기존 onclick document.pressed=this.value; -->
+    <input class="pop-inline btn btn_02"  onclick="$('#popup01').addClass('open');" type="button" name="act_button" value="선택반려" />
     <input type="submit" name="act_button" value="일괄수정" onclick="document.pressed=this.value" class="btn_submit btn">
+</div>
+
+<div class="layer-popup" id="popup01">
+	<div class="popContainer">
+		<div class="pop-inner">
+			<span class="pop-closer">팝업닫기</span>
+			
+			<header class="pop-header">
+				반려사유
+			</header>
+
+			<div class="text_area">
+				<textarea id="refuse_msg" placeholder="반려 사유를 입력해 주세요."></textarea>
+			</div>
+
+			<div class="btn_choice">
+				<button class="btnSubmit popClose">확인</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="pop-bg"></div>
 </div>
 
 </form>
 
 <script>
+    $('.btnSubmit').click(function(){
+        var chk = $('.chk_btn:checked').length;
+        var arr = [];
+        for (var i = 0; i < chk; i++) {
+            arr.push($('.chk_btn:checked').eq(i).parent().prev('.pt_id').val());
+        }
+        console.log(arr);
+        $.ajax({
+            type: "POST",
+            url: '/ajax/sendRefuseEmail.php',
+            data: {'ids': arr, 'host': 1, 'msg': $('#refuse_msg').val()},
+            cache: false,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                alert('반려 메일이 발송되었습니다.');
+            }
+        })
+    });
+
 function fmemberlist_submit(f)
 {
     if(document.pressed == "선택승인") {

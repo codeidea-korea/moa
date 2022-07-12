@@ -233,7 +233,7 @@ $colspan = 9;
 	</div>
 	<div class="btnSet flex-center">
 		<button type="submit" class="btnSearch">조회</button>
-		<a href="#" class="btnReset">초기화</a>
+		<button type="button" class="btnReset">초기화</button>
 	</div>
 </div>
 </form>
@@ -356,6 +356,15 @@ function fcouponlist_submit(f)
 
     return true;
 }
+
+$('.btnReset').click(function(){
+    $("select").val('default');
+    $("select").selectpicker("refresh");
+    $('input[name="stx"]').val('');
+    $('input[name="cp_method"]').prop('checked', false);
+    $('input[name="sch_startdt"]').val('');
+    $('input[name="sch_enddt"]').val('');
+})
 
 $("#sfd").change(function(){
     var value = $(this).val();

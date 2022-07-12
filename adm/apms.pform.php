@@ -1,13 +1,13 @@
 <?php
-if (!defined('_GNUBOARD_')) exit;
-
+include_once('./_common.php');
 $mb = apms_partner($pt_id);
 if (!$mb['pt_id']) {
 	alert('존재하지 않는 호스트입니다.');
 }
 
-if($mode == "pform") {
+include_once(G5_ADMIN_PATH.'/admin.head.php');
 
+include_once(G5_ADMIN_PATH.'/apms_admin/apms.admin.lib.php');
 	check_token();
 
 	//삭제시
@@ -101,7 +101,6 @@ if($mode == "pform") {
 	} else {
 		goto_url($go_url);
 	}
-}
 
 $token = get_token();
 
@@ -138,7 +137,7 @@ $mb['pt_10'] = get_text($mb['pt_10']);
 <div class="boxContainer">
 
 
-<form name="fmember" id="fmember" action="./apms.admin.php" onsubmit="return fmember_submit(this);" method="post" enctype="multipart/form-data">
+<form name="fmember" id="fmember" action="apms_admin/apms.admin.php" onsubmit="return fmember_submit(this);" method="post" enctype="multipart/form-data">
 <input type="hidden" name="ap" value="pform">
 <input type="hidden" name="mode" value="pform">
 <input type="hidden" name="sfl" value="<?php echo $sfl ?>">
@@ -400,7 +399,7 @@ this.form.pt_leave.value=this.value; } else { this.form.pt_leave.value=this.form
 </div>
 
 <div class="btn_fixed_top">
-    <a href="./apms.admin.php?ap=plist&amp;<?php echo $qstr ?>" class="btn btn_02">목록</a>
+    <a href="apms_admin/apms.admin.php?ap=plist&amp;<?php echo $qstr ?>" class="btn btn_02">목록</a>
     <input type="submit" value="확인" class="btn_submit btn" accesskey='s'>
 </div>
 
@@ -414,3 +413,6 @@ function fmember_submit(f) {
     return true;
 }
 </script>
+
+
+<?php include_once(G5_ADMIN_PATH.'/admin.tail.php'); ?>

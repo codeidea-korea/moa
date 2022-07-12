@@ -39,11 +39,11 @@ var g5_bbs_url   = "/bbs";
             <div class="agree_list">
                 <div>
                     <input type="checkbox" id="agree1" name="agree1" required value="1" class="agreechk">
-                    <label for="agree1">[필수] 만14세 이상이며 모두 동의합니다.</label>
+                    <label for="agree1">[필수] 만14세 이상이며 모두 동의합니다. 가나다</label>
                 </div>
                 <div>
                     <input type="checkbox" id="agree2" name="agree2" required value="1" class="agreechk">
-                    <label for="agree2">[필수] 이용약관에 모두 동의합니다. </label>
+                    <label for="agree2">[필수] 이용약관에 모두 동의합니다.</label>
                 </div>
                 <div>
                     <input type="checkbox" id="agree3" name="agree3" required value='1' class="agreechk">

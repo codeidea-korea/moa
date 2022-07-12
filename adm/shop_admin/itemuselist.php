@@ -19,7 +19,7 @@ if ($stx != "") {
 }
 
 if ($sca != "") {
-    $sql_search .= " and ca_id like '$sca%' ";
+    $sql_search .= " and b.ca_id2 = '$sca' ";
 }
 
 if ($sfl == "")  $sfl = "a.it_name";
@@ -29,8 +29,8 @@ if (!$sst) {
 }
 
 $sql_common = "  from {$g5['g5_shop_item_use_table']} a
-                 left join {$g5['g5_shop_item_table']} b on (a.it_id = b.it_id)
-                 left join {$g5['member_table']} c on (a.mb_id = c.mb_id) ";
+                 join {$g5['g5_shop_item_table']} b on (a.it_id = b.it_id)
+                 join {$g5['member_table']} c on (a.mb_id = c.mb_id) ";
 $sql_common .= $sql_search;
 
 // 테이블의 전체 레코드수만 얻음
@@ -47,6 +47,7 @@ $sql  = " select *
           $sql_common
           order by $sst $sod, is_id desc
           limit $from_record, $rows ";
+echo $sql;
 $result = sql_query($sql);
 
 //$qstr = 'page='.$page.'&amp;sst='.$sst.'&amp;sod='.$sod.'&amp;stx='.$stx;
@@ -96,7 +97,7 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
 			</select>
 			<input type="text" name="stx" id="stx" value="<?php echo $stx; ?>" class="span300" placeholder="검색어">
 			<button type="submit" class="btnSearch">검색</button>
-			<a href="#" class="btnReset">초기화</a>
+			<button type="button" class="btnReset">초기화</button>
 		</div>
 	</div>
 </div>
@@ -126,7 +127,7 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
 		<th scope="col">작성일</th>
 		<th scope="col">포인트지급</th>
 		<th scope="col">조회수</th>
-        <th scope="col"><?php echo subject_sort_link("is_score"); ?>평점</a></th>
+        <th scope="col"><?php echo subject_sort_link("is_score"); ?>별점</a></th>
         <th scope="col"><?php echo subject_sort_link("is_reply_subject"); ?>답변</a></th>
 		<?php if(USE_PARTNER) { ?>
 	        <th scope="col"><?php echo subject_sort_link("a.pt_id"); ?>파트너</a></th>
@@ -170,11 +171,11 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
         <td class="td_select">
             <label for="score_<?php echo $i; ?>" class="sound_only">평점</label>
             <select name="is_score[<?php echo $i; ?>]" id="score_<?php echo $i; ?>">
-            <option value="5" <?php echo get_selected($row['is_score'], "5"); ?>>매우만족</option>
-            <option value="4" <?php echo get_selected($row['is_score'], "4"); ?>>만족</option>
-            <option value="3" <?php echo get_selected($row['is_score'], "3"); ?>>보통</option>
-            <option value="2" <?php echo get_selected($row['is_score'], "2"); ?>>불만</option>
-            <option value="1" <?php echo get_selected($row['is_score'], "1"); ?>>매우불만</option>
+            <option value="5" <?php echo get_selected($row['is_score'], "5"); ?>>5</option>
+            <option value="4" <?php echo get_selected($row['is_score'], "4"); ?>>4</option>
+            <option value="3" <?php echo get_selected($row['is_score'], "3"); ?>>3</option>
+            <option value="2" <?php echo get_selected($row['is_score'], "2"); ?>>2</option>
+            <option value="1" <?php echo get_selected($row['is_score'], "1"); ?>>1</option>
             </select>
         </td>		
         <td class="td_num"><?php echo (!empty($row['is_reply_content'])) ? '등록' : '';?></td>
@@ -230,6 +231,11 @@ function fitemuselist_submit(f)
 }
 
 $(function(){
+    $(".btnReset").click(function(){
+        $("select").val('default');
+        $("select").selectpicker("refresh");
+        $('input[name="stx"]').val('');
+    })
     $(".use_href").click(function(){
         var $content = $("#use_div"+$(this).attr("target"));
         $(".use_div").each(function(index, value){
