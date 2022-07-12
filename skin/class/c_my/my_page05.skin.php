@@ -66,6 +66,20 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 </div>
             </div>
 
+            <div class="mt15">
+                <p class="m_title">정보 공개 여부</p>
+                <div class="input_flex">
+                    <span class="info_radio">
+                        <input type="radio" value="1" <?php echo $member['mb_open'] == '1' ? 'checked = "checked"' : ''; ?> name="mb_open" id="mb_open1">
+                        <label for="mb_open1">공개</label>
+                    </span>
+                    <span class="info_radio">
+                        <input type="radio" value="0" <?php echo $member['mb_open'] == '0' ? 'checked = "checked"' : ''; ?> name="mb_open" id="mb_open2">
+                        <label for="mb_open2">비공개</label>
+                    </span>
+                </div>
+            </div>
+
             <div class="info_list">
                 <ul>
                     <li>

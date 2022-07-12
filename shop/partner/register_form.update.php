@@ -122,6 +122,7 @@ if($ap == 'register_form') {
 		$mb_hp = $_POST['mb_hp'];
 		$mb_recommend = $_POST['mb_recommend'];
 		$mb_sex = $_POST['mb_sex'];
+		$mb_open = $_POST['mb_open'];
 		$mb_password = get_encrypt_string($_POST['mb_password']);
 
 		if (!preg_match("/([0-9a-zA-Z_-]+)@([0-9a-zA-Z_-]+)\.([0-9a-zA-Z_-]+)/", $mb_email)) {
@@ -138,7 +139,8 @@ if($ap == 'register_form') {
 					mb_email = '{$mb_email}',
 					mb_hp = '{$mb_hp}',
 					mb_recommend = '{$mb_recommend}',
-					mb_sex = '{$mb_sex}'
+					mb_sex = '{$mb_sex}',
+					mb_open = '{$mb_open}'
 					{$common}
                     where mb_id = '{$member['mb_id']}' ";
 		sql_query($sql);

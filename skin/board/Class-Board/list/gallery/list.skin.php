@@ -218,7 +218,7 @@ $rate = getStrpointWr2($list[$i]['wr_id']);
 						if ($cc > 0) {
 							$classon = "on";
 							$cc--;
-						} 
+						}
 							?>
 					<span class="<?php echo $classon;?>"></span>
 					<?php } ?>
@@ -236,7 +236,7 @@ $rate = getStrpointWr2($list[$i]['wr_id']);
 				<p class="sale"></p>	
 				<div class="dsc_price">
 					<!--금액구현-->
-					<span><?php echo $list[$i]['wr_4'] > 0 ? number_format($list[$i]['wr_4']) . '원' : '무료' ?></span>
+					<span><?php echo $row['it_price'] > 0 ? number_format($row['it_price']) . '원' : '무료' ?></span>
 					<!--금액구현-->
 					<!--사용시점구현-->
 					<p>

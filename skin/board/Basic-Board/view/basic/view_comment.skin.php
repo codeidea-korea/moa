@@ -27,6 +27,9 @@ $cmt_amt = count($list);
 <div class="view-comment font-18 en">
 	<i class="fa fa-commenting"></i> <span class="orangered"><?php echo number_format($write['wr_comment']);?></span> Comments
 </div>
+<div>
+    <a href="/bbs/board.php?bo_table=qa">목록보기</a>
+</div>
 
 <script>
 // 글자수 제한

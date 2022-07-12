@@ -174,7 +174,8 @@ include_once('./admin.head.php');
 
 		$p_name = '탈퇴('.$row['pt_id'].')';
 		if($row['mb_nick']) {
-			$p_name = apms_sideview($row['pt_id'], get_text($row['mb_nick']), $row['mb_email'], $row['mb_homepage']);
+			$p_name = get_text($row['mb_nick']);
+//			$p_name = apms_sideview($row['pt_id'], get_text($row['mb_nick']), $row['mb_email'], $row['mb_homepage']);
 		}
 
 		//수정
@@ -266,7 +267,6 @@ include_once('./admin.head.php');
         for (var i = 0; i < chk; i++) {
             arr.push($('.chk_btn:checked').eq(i).parent().prev('.pt_id').val());
         }
-        console.log(arr);
         $.ajax({
             type: "POST",
             url: '/ajax/sendRefuseEmail.php',

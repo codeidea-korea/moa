@@ -179,7 +179,7 @@ $row = sql_fetch($sql);
 $href = G5_SHOP_URL."/item.php?it_id=".$row['it_id'];
 $list[$i]['href'] = $href;
 //print_r2($list);
-$rate = getStrpointWr($list[$i]['wr_id']);
+$rate = getStrpointWr2($list[$i]['wr_id']);
 				//print_r2($rate);
 	if (strrpos($thumb['src'],"/skin/board/Class-Board/img/thumb-no-img")!== false) {
 		$thumb['src'] = "/images/moa_logo.svg";
@@ -211,18 +211,13 @@ $rate = getStrpointWr($list[$i]['wr_id']);
 				
 				?>
 				<div class="rated">
-					<?php
-					$cc = $rate['score'];
-					for ($ii = 0; $ii < 5; $ii++) {
-						$classon = "";
-						if ($cc > 0) {
-							$classon = "on";
-							$cc--;
-						} 
-							?>
-					<span class="<?php echo $classon;?>"></span>
-					<?php } ?>
-					
+                    <?php for($i=0;$i<$rate['score'];$i++) { ?>
+                        <span class="on"></span>
+                    <?php } ?>
+                    <?php for($i=0;$i<(5 - $rate['score']);$i++) { ?>
+                        <span></span>
+                    <?php } ?>
+                    <p><?= number_format($rate['score'], 1); ?></p>
 					<p>후기 <?php echo ($rate['cnt'])?$rate['cnt']:0;?>개</p>
 				</div>
 				<!--별점구현/후기구현-->

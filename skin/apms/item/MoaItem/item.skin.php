@@ -449,7 +449,7 @@ if($nav_title) {
     <div class="expected_cost none" >
         <div class="cost_area">
             <span class="ex_cost">예상비용</span>
-            <div class="cost"><?= number_format($data['wr_4']); ?>원<span>(회당)</span></div>
+            <div class="cost"><?php $data['wr_4'] > 0 ? number_format($data['wr_4']) . '원 <span>(회당)</span>':  '무료'; ?></div>
         </div>
         <?php if(number_format($data['wr_2']) > getAplyCountIt($it['it_id'])) { ?>
             <button type="button" onclick="$('.btn_submit').click();">결제하기</button>
