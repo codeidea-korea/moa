@@ -22,8 +22,7 @@ set_session("ss_direct", $sw_direct);
 // 장바구니가 비어있는가?
 if ($sw_direct) {
     $tmp_cart_id = get_session('ss_cart_direct');
-}
-else {
+}else {
     $tmp_cart_id = get_session('ss_cart_id');
 }
 
@@ -34,7 +33,7 @@ if (get_cart_count($tmp_cart_id) == 0)
 $pid = 'orderform';
 $at = apms_page_thema($pid);
 
-$g5['title'] = '주문서 작성';
+$g5['title'] = '결제하기';
 
 // 모바일이 아니고 전자결제를 사용할 때만 실행
 if($is_mobile_order) { 
@@ -314,12 +313,13 @@ if($is_demo) {
 
 // 설정값 불러오기
 $is_orderform_sub = false;
-@include_once($order_skin_path.'/config.skin.php');
+@include_once($order_skin_path.'/config.skin.php');	// 없는 파일
 
 if($is_orderform_sub) {
 	include_once(G5_PATH.'/head.sub.php');
 	if(!USE_G5_THEME) @include_once(THEMA_PATH.'/head.sub.php');
 } else {
+	// 이쪽으로 타고 들어옴. 
 	include_once('./_head.php');
 }
 
@@ -337,19 +337,15 @@ if ($default['de_hope_date_use']) {
 }
 
 // 결제대행사별 코드 include (스크립트 등)
-echo $is_mobile_order."<BR>";
-echo $default['de_pg_service']."<BR>";
-
-echo "iche_use : ".$default['de_iche_use']."<BR>";
-echo "de_vbank_use : ".$default['de_vbank_use']."<BR>";
-echo "de_hp_use : ".$default['de_hp_use']."<BR>";
-echo "de_card_use : ".$default['de_card_use']."<BR>";
-echo "de_easy_pay_use : ".$default['de_easy_pay_use']."<BR>";
-
-
+// echo $is_mobile_order."<BR>";
+// echo $default['de_pg_service']."<BR>";
+// echo "iche_use : ".$default['de_iche_use']."<BR>";
+// echo "de_vbank_use : ".$default['de_vbank_use']."<BR>";
+// echo "de_hp_use : ".$default['de_hp_use']."<BR>";
+// echo "de_card_use : ".$default['de_card_use']."<BR>";
+// echo "de_easy_pay_use : ".$default['de_easy_pay_use']."<BR>";
 
 if($is_mobile_order) {
-
 	echo '<div id="sod_approval_frm">'."\n";
 
 	ob_start();
@@ -368,7 +364,6 @@ if($is_mobile_order) {
 	if($is_kakaopay_use) {
 		require_once(G5_SHOP_PATH.'/kakaopay/orderform.1.php');
 	}
-
 } else {
 	require_once(G5_SHOP_PATH.'/'.$default['de_pg_service'].'/orderform.1.php');
 
@@ -382,9 +377,8 @@ include_once($skin_path.'/orderform.head.skin.php');
 ?>
 <script src="<?php echo G5_JS_URL?>/shop.order.js"></script>
 <?php
-// 상품 스킨
+// 결제 페이지 - 상품 스킨
 if(!$is_mobile_order) include_once($skin_path.'/orderform.item.skin.php');
-
 ?>
 
 	<input type="hidden" name="od_price"    value="<?php echo $tot_sell_price; ?>">
@@ -467,24 +461,25 @@ if(!$is_mobile_order) include_once($skin_path.'/orderform.item.skin.php');
 			$oc_cnt++;
 		}
 
-		if($send_cost > 0) {
-			// 배송비쿠폰
-			$sql = " select cp_id
-						from {$g5['g5_shop_coupon_table']}
-						where mb_id IN ( '{$member['mb_id']}', '전체회원' )
-						  and cp_method = '3'
-                          and cp_start <= '".G5_TIME_YMD."'
-                          and cp_end >= '".G5_TIME_YMD."'
-                          and cp_minimum <= '$tot_sell_price' ";
-			$res = sql_query($sql);
+		// 배송비 쿠폰이 없음. 
+		// if($send_cost > 0) {
+		// 	// 배송비쿠폰
+		// 	$sql = " select cp_id
+		// 				from {$g5['g5_shop_coupon_table']}
+		// 				where mb_id IN ( '{$member['mb_id']}', '전체회원' )
+		// 				  and cp_method = '3'
+        //                   and cp_start <= '".G5_TIME_YMD."'
+        //                   and cp_end >= '".G5_TIME_YMD."'
+        //                   and cp_minimum <= '$tot_sell_price' ";
+		// 	$res = sql_query($sql);
 
-			for($k=0; $cp=sql_fetch_array($res); $k++) {
-				if(is_used_coupon($member['mb_id'], $cp['cp_id']))
-					continue;
+		// 	for($k=0; $cp=sql_fetch_array($res); $k++) {
+		// 		if(is_used_coupon($member['mb_id'], $cp['cp_id']))
+		// 			continue;
 
-				$sc_cnt++;
-			}
-		}
+		// 		$sc_cnt++;
+		// 	}
+		// }
 	}
 
 	// 결제방법
