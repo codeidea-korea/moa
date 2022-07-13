@@ -13,7 +13,7 @@ if($ap == 'register_form') {
 		alert('휴대폰번호는 010으로 시작해야만 합니다.');
 		return false;
 	} else {
-//파일등록
+		//파일등록
 		function apms_photo_upload($mb_id, $del_photo, $file)
 		{
 			global $g5, $config, $xp;
@@ -29,7 +29,7 @@ if($ap == 'register_form') {
 
 			$photo_dir = G5_DATA_PATH . '/member_image/' . substr($mb_id, 0, 2);
 			$temp_dir = G5_DATA_PATH . '/member_image/temp';
-
+			
 			//Delete Photo
 			if ($del_photo == "1") {
 				@unlink($photo_dir . '/' . $mb_id . '.gif');
@@ -37,9 +37,9 @@ if($ap == 'register_form') {
 			}
 
 			//Upload Photo
-			if (is_uploaded_file($file['mb_icon2']['tmp_name'])) {
-				if (!preg_match("/(\.(gif|jpe?g|bmp|png))$/i", $file['mb_icon2']['name'])) {
-					alert(aslang('alert', 'is_image', array($file['mb_icon2']['name']))); //은(는) 이미지(gif/jpg/png) 파일이 아닙니다.
+			if (is_uploaded_file($file['pt_file']['tmp_name'])) {
+				if (!preg_match("/(\.(gif|jpe?g|bmp|png))$/i", $file['pt_file']['name'])) {
+					alert(aslang('alert', 'is_image', array($file['pt_file']['name']))); //은(는) 이미지(gif/jpg/png) 파일이 아닙니다.
 				} else {
 
 					if (!is_dir(G5_DATA_PATH . '/member_image')) {
@@ -57,10 +57,10 @@ if($ap == 'register_form') {
 						@chmod($temp_dir, G5_DIR_PERMISSION);
 					}
 
-					$filename = $file['mb_icon2']['name'];
+					$filename = $file['pt_file']['name'];
 					$filename = preg_replace('/(<|>|=)/', '', $filename);
 					$filename = preg_replace("/\.(php|phtm|htm|cgi|pl|exe|jsp|asp|inc)/i", "$0-x", $filename);
-
+echo $filename;
 					$chars_array = array_merge(range(0, 9), range('a', 'z'), range('A', 'Z'));
 					shuffle($chars_array);
 					$shuffle = implode('', $chars_array);
@@ -69,7 +69,7 @@ if($ap == 'register_form') {
 					$org_photo = $photo_dir . '/' . $mb_id . '.gif';
 					$temp_photo = $temp_dir . '/' . $filename;
 
-					move_uploaded_file($file['mb_icon2']['tmp_name'], $temp_photo) or die($file['mb_icon2']['error']);
+					move_uploaded_file($file['pt_file']['tmp_name'], $temp_photo) or die($file['pt_file']['error']);
 					chmod($temp_photo, G5_FILE_PERMISSION);
 					if (is_file($temp_photo)) {
 						$size = @getimagesize($temp_photo);
@@ -124,10 +124,11 @@ if($ap == 'register_form') {
 		$mb_sex = $_POST['mb_sex'];
 		$mb_open = $_POST['mb_open'];
 		$mb_password = get_encrypt_string($_POST['mb_password']);
-		if (!preg_match("/^[_\.0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $mb_email)) {
+
+		if (!preg_match("/([0-9a-zA-Z_-]+)@([0-9a-zA-Z_-]+)\.([0-9a-zA-Z_-]+)/", $mb_email)) {
 			alert('이메일 주소가 형식에 맞지 않습니다.');
 		}
-		apms_photo_upload($member['mb_id'], $del_mb_icon2, $_FILES);
+		apms_photo_upload($member['mb_id'], '', $_FILES);
 		//정보등록
 		$common = '';
 		if($mb_password != '') {

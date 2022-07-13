@@ -205,9 +205,9 @@ include_once('./admin.head.php');
         <td  align="center" style="width:50px;">
 <!--			--><?php //echo get_member_level_select("pt_level[$i]", 1, 3, $row['pt_level']); ?>
             <select name="pt_level[<?php echo $i; ?>">
-                <option value="1" <?php echo $row['pt_level'] == '1' ? 'selected' : ''; ?>>1</option>
-                <option value="2" <?php echo $row['pt_level'] == '2' ? 'selected' : ''; ?>>2</option>
-                <option value="3" <?php echo $row['pt_level'] == '3' ? 'selected' : ''; ?>>3</option>
+                <option value="1" <?php echo $row['pt_level'] == '1' ? 'selected' : ''; ?>>게스트</option>
+                <option value="2" <?php echo $row['pt_level'] == '2' ? 'selected' : ''; ?>>호스트</option>
+                <option value="3" <?php echo $row['pt_level'] == '3' ? 'selected' : ''; ?>>슈퍼호스트</option>
             </select>
         </td>
 		<td align="center"><?php echo $p_type;?></td>
