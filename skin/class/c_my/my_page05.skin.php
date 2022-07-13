@@ -9,7 +9,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
     <div class="s_content">
         <div class="p_area fileContainer">
             <div class="profile_img upImg-preview">
-                <?php echo ($member['photo']) ? '<img src="'.$member['photo'].'" alt="">' : '<span class="no-img"></span>'; //사진 ?>
+                <?php echo ($member['photo']) ? '<img src="'.$member['photo'].'" alt="">' : '<img src="../images/profile_default.svg">';  ?>
             </div>
             <div class="up_profile02">
                 <input type="file" id="up_profile" name="pt_file" class="preview">
