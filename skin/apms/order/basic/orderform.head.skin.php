@@ -15,7 +15,6 @@ if(isset($wset['ohead']) && $wset['ohead']) {
 // 헤더 출력
 if($header_skin)
 	include_once('./header.php');
-
 ?>
 
 <?php // 주문서폼 시작 - id 변경불가 & 삭제하면 안됨 ?>

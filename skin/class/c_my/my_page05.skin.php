@@ -16,7 +16,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 <label for="up_profile" class="upload-btn"><img src="../images/up_profile.svg" alt=""></label>
             </div>
             <p class="p_id"><?php echo $member['mb_id']; ?></p>
-<!--            <a href="" class="connect">네이버 계정 연결</a>-->
+                <!-- <a href="" class="connect">네이버 계정 연결</a> -->
             <div class="my_ment">
                 회원님은 <b>반가운 분</b>입니다. <span><?php echo $member['grade']; ?></span>
             </div>
