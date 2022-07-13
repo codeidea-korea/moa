@@ -37,7 +37,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 $i = 1;
                 while($row2 = sql_fetch_array($famous_word)) {
             ?>
-                    <li><?php echo $i; ?>.<button type="button" class="search_word"><?php echo $row2['search_word']; ?></button></li>
+                    <li><?php echo $i; ?>.<button class="search_word" onclick="location.href='?word=<?php echo $row2['search_word']; ?>'"><?php echo $row2['search_word']; ?></button></li>
             <?php $i++; } ?>
         </ol>
     </div>
@@ -46,14 +46,14 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 <!-- 검색 리스트 검색 후 -->
 <section class="srchVlm s_content">
     <p>총 <?php echo count($list); ?>개</p>
-    <!-- <div style="display:none;">
+    <div style="display:none;">
         <button onclick="$('#calendar').addClass('on')">날짜</button>
         <button onclick="$('#s_filter').addClass('on')">필터</button>
-    </div>  -->
+    </div> 
 </section>
 
 <!-- 검색 리스트 날짜 팝업 -->
-<!-- <div class="calendar_pop" id="calendar" style="display:none;">
+<div class="calendar_pop" id="calendar" style="display:none;">
     <div class="layerBody">
         <div class="confirm">
             <div class="mentBox">
@@ -75,7 +75,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
             </div>
         </div>
     </div>
-</div> -->
+</div>
 
 <!-- 검색 리스트 필터 팝업 -->
 <div class="s_filter_pop" id="s_filter" style="display:none;">
@@ -122,7 +122,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
             data: { 'word': word },
             type: "POST",
             success: function(data) {
-                location.href = '/c_main/main_search.php?word=' + word;
+                location.href = '/c_main/main_search.php?word=' + $('#search_word').val();
             }
         })
     }
