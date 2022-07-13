@@ -39,7 +39,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 					</td>
 				</tr>
                 <tr>
-                    <th><span class="m_title" class="required">성별</span></th>
+                    <th><span class="m_title required">성별</span></th>
                     <td>
                         <div class="radio_area">
                             <span class="info_radio">

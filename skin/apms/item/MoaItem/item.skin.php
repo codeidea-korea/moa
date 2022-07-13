@@ -85,15 +85,18 @@ if($nav_title) {
 		include_once('./header.php');
 	}
 }
+
+if(!$member['mb_id'] || $member['mb_status'] != '승인') {
+    alert('승인된 회원만 조회가 가능합니다.', G5_URL);
+}
 ?>
 <!-- <link rel="stylesheet" href="/dist/typicons.css">
 <link rel="stylesheet" href="/css/q.css"> -->
 <!-- <link rel="stylesheet" href="/dist/spectre-icons.min.css"> -->
 <!-- <link rel="stylesheet" href="/dist/spectre-exp.min.css">
 <link rel="stylesheet" href="/dist/spectre.min.css"> -->
+
 <div class="top_detail_wrap">
-
-
 	<div class="wrapper detail_wrap detail_wrap02">
         <!-- 메인 슬라이드 -->
         <div class="swiper-container detail_slide">

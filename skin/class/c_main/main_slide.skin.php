@@ -7,7 +7,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 <div class="swiper-wrapper">
                     <?php while($row = sql_fetch_array($main)) { ?>
                     <div class="swiper-slide">
-                        <a href="<?php echo $row['bn_url']; ?>">
+                        <a href="<?php echo $row['bn_url']; ?>" target="<?php echo $row['bn_new_win'] ? '_blank' : '' ?>">
                             <img src="<?php echo $row['bn_bimg'] != '' ? $row['bn_bimg'] : G5_URL . "/images/moa_logo.svg" ?>" />
                         </a>
                     </div>
