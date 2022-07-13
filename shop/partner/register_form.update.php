@@ -124,11 +124,10 @@ if($ap == 'register_form') {
 		$mb_sex = $_POST['mb_sex'];
 		$mb_open = $_POST['mb_open'];
 		$mb_password = get_encrypt_string($_POST['mb_password']);
-
-		if (!preg_match("/([0-9a-zA-Z_-]+)@([0-9a-zA-Z_-]+)\.([0-9a-zA-Z_-]+)/", $mb_email)) {
+		if (!preg_match("/^[_\.0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $mb_email)) {
 			alert('이메일 주소가 형식에 맞지 않습니다.');
 		}
-		apms_photo_upload($member['mb_id'], '', $_FILES['bf_file']);
+		apms_photo_upload($member['mb_id'], $del_mb_icon2, $_FILES);
 		//정보등록
 		$common = '';
 		if($mb_password != '') {
