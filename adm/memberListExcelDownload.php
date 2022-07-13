@@ -19,7 +19,7 @@ $sql_common = " FROM g5_member
 				WHERE mb_datetime BETWEEN '$sch_startdt' AND '$sch_enddt' ";
 
 if($sca || $stx) {
-    $sql_common .= " AND $sca like '%$stx%'";
+    $sql_common .= " AND (mb_name LIKE '%$stx%' OR mb_hp LIKE '%$stx%')";
 }
 
 
