@@ -18,8 +18,8 @@ if ($stx != "") {
         $page = 1;
 }
 
-if ($sca != "") {
-    $sql_search .= " and b.ca_id2 = '$sca' ";
+if ($sca != "" && $sca != '전체') {
+    $sql_search .= " and d.ca_name = '$sca' ";
 }
 
 if ($sfl == "")  $sfl = "a.it_name";
@@ -30,7 +30,8 @@ if (!$sst) {
 
 $sql_common = "  from {$g5['g5_shop_item_use_table']} a
                  join {$g5['g5_shop_item_table']} b on (a.it_id = b.it_id)
-                 join {$g5['member_table']} c on (a.mb_id = c.mb_id) ";
+                 join {$g5['member_table']} c on (a.mb_id = c.mb_id)
+                 join g5_write_class d on (c.mb_id = d.mb_id) ";
 $sql_common .= $sql_search;
 
 // 테이블의 전체 레코드수만 얻음
@@ -82,8 +83,8 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
 					if($row1['as_line']) {
 						echo "<option value=\"\">".$nbsp."------------</option>\n";
 					}
-					$selected = ($row1['ca_id'] == $sca) ? ' selected="selected"' : '';
-					echo '<option value="'.$row1['ca_id'].'"'.$selected.'>'.$nbsp.$row1['ca_name'].'</option>'.PHP_EOL;
+					$selected = ($row1['ca_name'] == $sca) ? ' selected="selected"' : '';
+					echo '<option value="'.$row1['ca_name'].'"'.$selected.'>'.$nbsp.$row1['ca_name'].'</option>'.PHP_EOL;
 				}
 				?>
 			</select>
