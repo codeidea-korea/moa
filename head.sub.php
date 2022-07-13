@@ -129,7 +129,6 @@ if (defined('MOA_HEAD')) {
 
 //김과장추가 (임시...)
 $header_title = '';
-
 if($board['bo_subject']) $header_title = $board['bo_subject'];
 if(strpos($_url, '/c_category/') !== false) $header_title = '카테고리';
 ?>

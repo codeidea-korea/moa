@@ -5,6 +5,5 @@ adm_1
 css02
 ztest
 minitalk
-plugin
 .idea
-.vscode
+.gitignore

@@ -1,8 +1,11 @@
 <?php
 if (!defined('_GNUBOARD_')) exit;
 
+// 애플 로그인 관련 확장기능 불러오기
+include_once(G5_PLUGIN_PATH.'/social/vendor/autoload.php');
+
 function get_social_skin_path(){
-    global $config, $member_skin_path, $member_skin_url;
+    global $config;
 
     static $skin_path = '';
 
@@ -10,10 +13,9 @@ function get_social_skin_path(){
         return $skin_path;
     }
 
-	$dir = G5_SOCIAL_LOGIN_DIR;
-
-    if( USE_G5_THEME && defined('G5_THEME_PATH') && $config['cf_theme'] ){
+    if( $config['cf_theme'] ){
         $cf_theme = trim($config['cf_theme']);
+        $dir = G5_SOCIAL_LOGIN_DIR;
 
         $theme_path = G5_PATH.'/'.G5_THEME_DIR.'/'.$cf_theme;
 
@@ -24,11 +26,10 @@ function get_social_skin_path(){
         } else {
             $skin_path = $theme_path.'/'.G5_SKIN_DIR.'/'.$dir;
         }
-	}
+    }
 
     if( ! ($skin_path && is_dir($skin_path)) ){
-		list($member_skin_path, $member_skin_url) = apms_skin_thema('member', $member_skin_path, $member_skin_url); 
-		$skin_path = $member_skin_path;
+        $skin_path = G5_SOCIAL_SKIN_PATH;
     }
 
     return $skin_path;
@@ -46,15 +47,11 @@ function get_social_convert_id($identifier, $service)
     return strtolower($service).'_'.hash('adler32', md5($identifier));
 }
 
-function get_social_callbackurl($provider, $no_domain=false){
+function get_social_callbackurl($provider, $no_domain=false, $no_params=false){
 
     $base_url = G5_SOCIAL_LOGIN_BASE_URL;
 
-    if( $provider === 'kakao' && $no_domain ){
-        $base_url = '/'.ltrim(parse_url($base_url, PHP_URL_PATH), '/');
-    }
-
-    if ( $provider === 'twitter' ){
+    if ( $provider === 'twitter' || ($provider === 'payco' && $no_params) ){
         return $base_url;
     }
 
@@ -328,7 +325,7 @@ function social_extends_get_keys($provider){
                     "keys" => array("id" => $config['cf_facebook_appid'], "secret" => $config['cf_facebook_secret']),
                     "display"   =>  "popup",
                     "redirect_uri" => get_social_callbackurl('facebook'),
-                    "scope"   => array('email'), // optional
+                    "scope"   => 'email', // optional
                     "trustForwarded" => false
                 );
 
@@ -338,9 +335,12 @@ function social_extends_get_keys($provider){
                     "keys" => array("id" => $config['cf_google_clientid'],
                     "secret" => $config['cf_google_secret']),
                     "redirect_uri" => get_social_callbackurl('google'),
+                    "scope"   => "https://www.googleapis.com/auth/userinfo.profile "."https://www.googleapis.com/auth/userinfo.email",
+                    /*
                     "scope"   => "https://www.googleapis.com/auth/plus.login ". // optional
                                     "https://www.googleapis.com/auth/plus.me ". // optional
                                     "https://www.googleapis.com/auth/plus.profile.emails.read", // optional
+                    */
                     //"access_type"     => "offline",   // optional
                     //"approval_prompt" => "force",     // optional
                 );
@@ -360,6 +360,25 @@ function social_extends_get_keys($provider){
                     "redirect_uri" => get_social_callbackurl('payco'),
                     "trustForwarded" => false
                 );
+        
+        // Apple 애플 아이디로 로그인 시작 {
+        // Apple
+        $r['Apple'] = array(
+            "enabled" => option_array_checked('Apple', $config['cf_social_servicelist']) ? true : false,
+            "keys" => array(
+                "id" => $config['cf_apple_bundle_id'],
+                "secret" => array(
+                    "team_id" => $config['cf_apple_team_id'],
+                    "key_id" => $config['cf_apple_key_id'],
+                    "key_content" => $config['cf_apple_key_file']
+                ),
+            ),
+            "scope" => "name email",
+            "verifyTokenSignature" => true,
+            "redirect_uri" => get_social_callbackurl('Apple'),
+            "trustForwarded" => false
+            );
+    // } Apple 애플 아이디로 로그인 끝
     }
 
     return $r[$provider];
@@ -911,6 +930,9 @@ function social_get_provider_service_name($provider='', $all=''){
         'google'    =>  '구글',
         'twitter'  =>  '트위터',
         'payco'  =>  '페이코',
+        // Apple 애플 아이디로 로그인 시작 {
+        'Apple'  =>  '애플',
+        // } Apple 애플 아이디로 로그인 끝
         );
 
     if( $all ){

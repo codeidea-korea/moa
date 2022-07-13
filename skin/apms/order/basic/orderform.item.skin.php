@@ -2,11 +2,17 @@
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 ?>
 
-<div class="wrapper detail_wrap pb0 bg_gray">
-    <!-- 결제정보 -->
-    <div class="s_content detail_con">
-        <div class="dt_con1"><h3>결제정보</h3></div>
-        <?php for($i=0; $i < count($item); $i++) { ?>
+
+
+    <div class="wrapper detail_wrap pb0 bg_gray">
+        <!-- 결제정보 -->
+        <div class="s_content detail_con">
+            <!-- <div class="dt_con1">
+                <h3>
+                    결제정보
+                </h3>
+            </div> -->
+            <?php for($i=0; $i < count($item); $i++) { ?>
             <div class="chat_infor">
                 <div class="chat_img img_ct">
                     <img src="<?php echo filter_var($item[$i]['as_thumb'], FILTER_VALIDATE_URL) != '' ? $item[$i]['as_thumb'] : G5_URL . "/images/moa_logo.svg" ?>" alt="">
@@ -17,56 +23,61 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                     <p><?php echo number_format($item[$i]['hidden_sell_price']); ?>원</p>
                 </div>
             </div>
-        <?php } ?>
-    </div>
-
-    <div class="s_content detail_con">
-        <div class="dt_con1"><h3>결제수단</h3></div>
-        <div class="lounchecL pay_radio mt25">
-            <!-- <input type="radio" id="box_1" name="od_settle_case" value="무통장" checked>
-            <label for="box_1">무통장</label> -->
-            <input type="radio" id="box_settle_2" name="od_settle_case" value="신용카드" checked>
-            <label for="box_settle_2">신용카드</label>
-            <!-- <input type="radio" id="box_2" name="sequence">
-            <label for="box_2">카카오페이</label>
-            <input type="radio" id="box_3" name="sequence">
-            <label for="box_3">네이버페이</label>
-            <input type="radio" id="box_4" name="sequence">
-            <label for="box_4">가상계좌</label> -->
-            <script>
-            $(function() {
-                $("#box_settle_2").attr("checked", "true");
-            });
-            </script>
         </div>
-    </div>
+	<?php } ?>
 
-    <div class="s_content detail_con">
-        <div class="dt_con1">
-            <h3>
-                쿠폰/포인트
-            </h3>
+        <div class="s_content detail_con">
+            <div class="dt_con1">
+                <h3>
+                    결제수단
+                </h3>
+            </div>
+            <div class="lounchecL pay_radio mt25">
+                <!-- <input type="radio" id="box_1" name="od_settle_case" value="무통장" checked>
+                <label for="box_1">무통장</label> -->
+                <input type="radio" id="box_settle_2" name="od_settle_case" value="신용카드" checked>
+                <label for="box_settle_2">신용카드</label>
+                <!-- <input type="radio" id="box_2" name="sequence">
+                <label for="box_2">카카오페이</label>
+                <input type="radio" id="box_3" name="sequence">
+                <label for="box_3">네이버페이</label>
+                <input type="radio" id="box_4" name="sequence">
+                <label for="box_4">가상계좌</label> -->
+                <script>
+                $(function() {
+                    $("#box_settle_2").attr("checked", "true");
+                });
+                </script>
+            </div>
         </div>
-        <ul class="a_layout mt25 coupon_area">
-            <li>
-                <a href="javascript:">
-                    <p>할인 쿠폰<span>
-                    <input type="hidden" name="od_cp_id" value="">
-                    <input type="hidden" name="sc_cp_id" value="">
-                    <button type="button" id="od_coupon_btn" class="cp_btn btn btn-black btn-sm">쿠폰적용</button>
-                    <button type="button" id="sc_coupon_btn" class="cp_apply btn btn-black btn-sm">쿠폰적용 ct</button>
-                    <!-- <span><img src="../images/r_arrow_o.svg" alt=""></span> -->
-                </a>
-            </li>
-            <li>
-                <a href="javascript:" >
-                    <p>포인트</p>
-                    <span> <?php echo number_format($member['mb_point'])?>Point 보유, 1000점 이상 사용 가능</span>
-                    <!-- <span><img src="../images/r_arrow_o.svg" alt=""></span> -->
-                </a>
-            </li>
-        </ul>
-    </div>
+
+        <div class="s_content detail_con">
+            <div class="dt_con1">
+                <h3>
+                    쿠폰/포인트
+                </h3>
+            </div>
+            <ul class="a_layout mt25 coupon_area">
+                <li>
+                    <a href="javascript:">
+                        <p>할인 쿠폰<span>
+                        <input type="hidden" name="od_cp_id" value="">
+                        <input type="hidden" name="sc_cp_id" value="">
+						<button type="button" id="od_coupon_btn" class="cp_btn btn btn-black btn-sm">쿠폰적용</button>
+						<!-- <button type="button" id="sc_coupon_btn" class="cp_apply btn btn-black btn-sm">쿠폰적용 ct</button> -->
+
+                        <!-- <span><img src="../images/r_arrow_o.svg" alt=""></span> -->
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:" >
+                        <p>포인트</p>
+                        <span> <?php echo number_format($member['mb_point'])?>Point 보유, 1000점 이상 사용 가능</span>
+                        <!-- <span><img src="../images/r_arrow_o.svg" alt=""></span> -->
+                    </a>
+                </li>
+            </ul>
+        </div>
 
         <div class="s_content detail_con">
             <div class="dt_con1 layout_f">
@@ -148,6 +159,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 		<th scope="col"><span>쿠폰</span></th>
 		<th scope="col"><span>소계</span></th>
 		<th scope="col"><span>포인트</span></th>
+
 	</tr>
 	<?php for($i=0; $i < count($item); $i++) { ?>
 		<tr<?php echo ($i == 0) ? ' class="tr-line"' : '';?>>
