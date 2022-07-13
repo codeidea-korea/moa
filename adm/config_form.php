@@ -1167,11 +1167,11 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
                     </div>
                 </div>
                 <div class="explain_box">
-                    <input type="checkbox" name="cf_social_servicelist[]" id="check_social_google" value="Apple" <?php echo option_array_checked('Apple', $config['cf_social_servicelist']); ?> >
+                    <input type="checkbox" name="cf_social_servicelist[]" id="check_social_google" value="apple" <?php echo option_array_checked('apple', $config['cf_social_servicelist']); ?> >
                     <label for="check_social_google">Apple 로그인을 사용합니다</label>
                     <div>
                     <h3>Apple 승인된 리디렉션 URI</h3>
-                    <p><?php echo get_social_callbackurl('Apple'); ?></p>
+                    <p><?php echo get_social_callbackurl('apple'); ?></p>
                     </div>
                 </div>
                 <div class="explain_box none">
@@ -1255,7 +1255,7 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
             </td>
             <th scope="row"><label for="cf_apple_key_file">Apple Key File</label></th>
             <td>
-                <textarea type="text" name="cf_apple_key_file" id="cf_apple_key_file" class="frm_input" cols="40" rows="4"><?php echo $config['cf_apple_key_file'] ?></textarea>
+                <input type="text" name="cf_apple_key_file" value="<?php echo $config['cf_apple_key_file'] ?>" id="cf_apple_key_file" class="frm_input" size="45">
             </td>
         </tr>
         <tr>

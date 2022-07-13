@@ -21,7 +21,10 @@ else {?>
 <div id="moa-header" class="header">
 	<div class="inner">
 		<button class="prev" OnClick="history.back();" style="cursor:hand"></button>
-		<h2 class="pageTit"><?=$header_title?></h2>
+		<h2 class="pageTit">
+            <?php if ($header_title == '') $header_title = $g5['title'];?>
+            <?=$header_title?>
+        </h2>
         <?php if($it_id != '') { ?>
 		<!-- 모임 상세페이지 아이콘 -->
             <div class="ic_area">
