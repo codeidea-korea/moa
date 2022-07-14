@@ -30,7 +30,7 @@ for ($i=0; $row=sql_fetch_array($result); $i++)
 $where = " and ";
 $sql_search = "";
 if ($stx != "") {
-    $sql_search .= " $where (a.mb_id like '%$stx%' or c.it_name like '%$stx%') ";
+    $sql_search .= " $where (a.mb_name like '%$stx%' or c.it_name like '%$stx%') ";
     $where = " and ";
     if ($save_stx != $stx)
         $page = 1;

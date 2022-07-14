@@ -1838,3 +1838,46 @@ if(! function_exists('sendDirectMail')) {
 //        curl_close ($ch);
     }
 }
+
+// DirectSend SMS
+if(! function_exists('sendDirectSMS')) {
+    function sendDirectSMS($title, $message, $sender, $receiver)
+    {
+        $username = "codeidea";
+        $key = "mUJrCPVuyMOq02W";
+
+        $ch = curl_init();
+
+        $postvars = '"title":"'.$title.'"';
+        $postvars = $postvars.', "message":"'.$message.'"';
+        $postvars = $postvars.', "sender":"'.$sender.'"';
+        $postvars = $postvars.', "username":"'.$username.'"';
+        $postvars = $postvars.', "receiver":'.$receiver.'';
+        $postvars = $postvars.', "key":"'.$key.'"';
+        $postvars = '{'.$postvars.'}';
+
+        $url = "https://directsend.co.kr/index.php/api_v2/sms_change_word";
+
+        $headers = array("cache-control: no-cache","content-type: application/json; charset=utf-8");
+
+        curl_setopt($ch,CURLOPT_URL, $url);
+        curl_setopt($ch,CURLOPT_POST, true);
+        curl_setopt($ch,CURLOPT_POSTFIELDS, $postvars);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch,CURLOPT_CONNECTTIMEOUT ,3);
+        curl_setopt($ch,CURLOPT_TIMEOUT, 60);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $response = curl_exec($ch);
+
+        if(curl_errno($ch)){
+            echo 'Curl error: ' . curl_error($ch);
+            return true;
+
+        }else{
+            //print_r($response);
+            return false;
+
+        }
+//        curl_close ($ch);
+    }
+}

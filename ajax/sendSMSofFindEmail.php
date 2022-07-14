@@ -14,7 +14,7 @@ $rtn = "";
 if ($hp_no) {
 
     
-
+    $hp_no = str_replace('-', '', $hp_no);
     $sql = "SELECT * from {$g5['member_table']} where mb_hp = '{$hp_no}'";
     $mb = sql_fetch($sql);
 
