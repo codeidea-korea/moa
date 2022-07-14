@@ -1197,7 +1197,7 @@ function getHitCategory()
 {
     global $g5;
 
-    $sql = "SELECT ca_name, wr_id, sum(wr_hit) cnt  
+    $sql = "SELECT ca_name, sum(wr_hit) cnt  
     FROM g5_write_class
     WHERE ca_name <> ''
     GROUP BY ca_name
