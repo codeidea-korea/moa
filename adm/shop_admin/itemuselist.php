@@ -48,7 +48,6 @@ $sql  = " select *
           $sql_common
           order by $sst $sod, is_id desc
           limit $from_record, $rows ";
-echo $sql;
 $result = sql_query($sql);
 
 //$qstr = 'page='.$page.'&amp;sst='.$sst.'&amp;sod='.$sod.'&amp;stx='.$stx;
