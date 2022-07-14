@@ -119,6 +119,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 <div class="pay02">
 					<?php for($i=0; $i < count($item); $i++) { ?>
 						 <span  id="od_tot_price"><?php echo number_format($item[$i]['hidden_sell_price']); ?></span>원
+                        <input type="hidden" id="tot_price" value="<?php echo $item[$i]['hidden_sell_price']; ?>" />
 					<?php } ?>
                 </div>
             </div>
@@ -238,12 +239,17 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 </div>
 <script>
     (function($){
-        $('#od_temp_point').keypress(function(){
-            var price = $('#od_tot_price').text();
-            var point = $(this).val();
+        $(document).ready(function(){
+            let price = parseInt($('#tot_price').val());
+            $('#od_temp_point').keyup(function(){
+                if($(this).val() != '')
+                var point = parseInt($(this).val());
+                else
+                    var point = 0;
 
-            var total = int(price) - int(point);
-            $('#od_tot_price').text(total);
+                var total = price - parseInt(point);
+                $('#od_tot_price').text(total);
+            })
         })
-    })
+    })(jQuery)
 </script>
