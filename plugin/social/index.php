@@ -20,3 +20,4 @@ require_once( "includes/g5_endpoint.php" );
 error_reporting(0); // Turn off all error reporting
 
 G5_Hybrid_Authentication::hybridauth_endpoint();
+echo "TEST";

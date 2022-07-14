@@ -366,7 +366,6 @@ if($is_mobile_order) {
 	}
 } else {
 	require_once(G5_SHOP_PATH.'/'.$default['de_pg_service'].'/orderform.1.php');
-    echo '123';
 
 	if($is_kakaopay_use) {
 		require_once(G5_SHOP_PATH.'/kakaopay/orderform.1.php');
