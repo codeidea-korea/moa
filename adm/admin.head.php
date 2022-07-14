@@ -60,9 +60,6 @@ function apms_admin_skin($save='', $str='') {
     return $set;
 }
 
-
 include_once(G5_PATH.'/head.sub.admin.php');
-
-
 include_once(ADMIN_SKIN_PATH.'/head.php');
 ?>

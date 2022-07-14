@@ -95,14 +95,17 @@ echo '<link rel="stylesheet" href="'.get_url(G5_ADMIN_URL.'/js/bootstrap-select/
 echo '<link rel="stylesheet" href="'.get_url(G5_ADMIN_URL.'/css/new-adminDefault.css').'">'.PHP_EOL;
 echo '<link rel="stylesheet" href="'.get_url(G5_ADMIN_URL.'/css/new-admin.css').'">'.PHP_EOL;
 
-echo '<script type="text/javascript" src="'.G5_ADMIN_URL.'/js/easing.js"></script>'.PHP_EOL;
-echo '<script type="text/javascript" src="'.G5_ADMIN_URL.'/js/sideContainer.js"></script>'.PHP_EOL;
-echo '<script type="text/javascript" src="'.G5_ADMIN_URL.'/js/bootstrap-select/bootstrap.min.js"></script>'.PHP_EOL;
-echo '<script type="text/javascript" src="'.get_url(G5_ADMIN_URL.'/js/bootstrap-select/bootstrap-select.js').'"></script>'.PHP_EOL;
-echo '<script type="text/javascript" src="'.get_url(G5_ADMIN_URL.'/js/datepicker/datepicker.js').'"></script>'.PHP_EOL;
-echo '<script type="text/javascript" src="'.G5_ADMIN_URL.'/js/datepicker/datepicker.ko-KR.js"></script>'.PHP_EOL;
-echo '<script type="text/javascript" src="'.get_url(G5_ADMIN_URL.'/js/myform.js').'"></script>'.PHP_EOL;
-echo '<script type="text/javascript" src="'.get_url(G5_ADMIN_URL.'/js/myScript.js').'"></script>'.PHP_EOL;
+if (strpos($_SERVER['REQUEST_URI'], '/shop_admin/configform') > 0){
+}else{
+	echo '<script type="text/javascript" src="'.G5_ADMIN_URL.'/js/easing.js"></script>'.PHP_EOL;
+	echo '<script type="text/javascript" src="'.G5_ADMIN_URL.'/js/sideContainer.js"></script>'.PHP_EOL;
+	echo '<script type="text/javascript" src="'.G5_ADMIN_URL.'/js/bootstrap-select/bootstrap.min.js"></script>'.PHP_EOL;
+	echo '<script type="text/javascript" src="'.get_url(G5_ADMIN_URL.'/js/bootstrap-select/bootstrap-select.js').'"></script>'.PHP_EOL;
+	echo '<script type="text/javascript" src="'.get_url(G5_ADMIN_URL.'/js/datepicker/datepicker.js').'"></script>'.PHP_EOL;
+	echo '<script type="text/javascript" src="'.G5_ADMIN_URL.'/js/datepicker/datepicker.ko-KR.js"></script>'.PHP_EOL;
+	echo '<script type="text/javascript" src="'.get_url(G5_ADMIN_URL.'/js/myform.js').'"></script>'.PHP_EOL;
+	echo '<script type="text/javascript" src="'.get_url(G5_ADMIN_URL.'/js/myScript.js').'"></script>'.PHP_EOL;
+}
 ?>
 
 
