@@ -119,7 +119,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 <div class="pay02">
 					<?php for($i=0; $i < count($item); $i++) { ?>
 						 <span  id="od_tot_price"><?php echo number_format($item[$i]['hidden_sell_price']); ?></span>원
-                        <input type="text" id="tot_price" value="<?php echo $item[$i]['hidden_sell_price']; ?>" />
+                        <input type="hidden" id="tot_price" value="<?php echo $item[$i]['hidden_sell_price']; ?>" />
 					<?php } ?>
                 </div>
             </div>
