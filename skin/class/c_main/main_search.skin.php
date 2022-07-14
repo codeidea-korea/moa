@@ -20,9 +20,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 $result = sql_query($words);
                 while($row = sql_fetch_array($result)) {
             ?>
-                <li>
-                    <button class="search_word" onclick="location.href='?word=<?php echo $row['search_word']; ?>'"><?php echo $row['search_word']; ?></button>
-                </li>
+                    <li><?php echo $i; ?>.<button type="button" class="search_word"><?php echo $row2['search_word']; ?></button></li>
             <?php } ?>
         </ul>
     </div>
@@ -122,7 +120,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
             data: { 'word': word },
             type: "POST",
             success: function(data) {
-                location.href = '/c_main/main_search.php?word=' + $('#search_word').val();
+                location.href = '/c_main/main_search.php?word=' + word;
             }
         })
     }
