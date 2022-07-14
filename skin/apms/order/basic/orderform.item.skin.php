@@ -246,7 +246,6 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
                 var total = price - parseInt(point);
                 $('#od_tot_price').text(total);
-                console.log(price + '/ ' + point);
             })
         })
     })(jQuery)
