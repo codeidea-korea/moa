@@ -55,7 +55,7 @@ function get_social_callbackurl($provider, $no_domain=false, $no_params=false){
         return $base_url;
     }
 
-    $base_url = $base_url . ( strpos($base_url, '?') ? '&' : '?' ).G5_SOCIAL_LOGIN_DONE_PARAM.'='.strtolower($provider);
+    $base_url = $base_url . ( strpos($base_url, '?') ? '&' : '?' ).G5_SOCIAL_LOGIN_DONE_PARAM.'=apple';//.strtolower($provider);
 
     return $base_url;
 }
