@@ -3665,7 +3665,7 @@ function check_password($pass, $hash)
 }
 
 // 동일한 host url 인지
-function check_url_host($url, $msg='', $return_url=G5_URL, $is_redirect=false)
+function check_url_host($url, $msg='', $return_url=G5_URL.'/c_detail/d_p_history01.php', $is_redirect=false)
 {
     if(!$msg)
         $msg = 'url에 타 도메인을 지정할 수 없습니다.';
