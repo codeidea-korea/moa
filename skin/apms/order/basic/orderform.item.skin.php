@@ -102,8 +102,8 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                     <a href="javascript:" >
                         <p>포인트<span><input type="hidden" name="max_temp_point" value="<?php echo $temp_point;?>">
 
-								<input type="number" name="od_temp_point" value="" id="od_temp_point" class="frm_input form-control input-sm" size="10">
-								<span class="input-group-addon">점</span>
+                        <input type="number" name="od_temp_point" value="" id="od_temp_point" class="frm_input form-control input-sm" size="10">
+                        <span class="input-group-addon">점</span>
 
                         <!-- <span><img src="../images/r_arrow_o.svg" alt=""></span> -->
                     </a>
@@ -236,3 +236,14 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 </div>
 
 </div>
+<script>
+    (function($){
+        $('#od_temp_point').keypress(function(){
+            var price = $('#od_tot_price').text();
+            var point = $(this).val();
+
+            var total = int(price) - int(point);
+            $('#od_tot_price').text(total);
+        })
+    })
+</script>
