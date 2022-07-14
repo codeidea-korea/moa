@@ -297,6 +297,7 @@ $( document ).ready(function() {
 	<a href="./board.php?bo_table=<?php echo $bo_table ?>" class="btn btn-<?php echo $btn1;?> btn-sm" role="button">취소</a>
 </div>
 -->
+<button type="submit" id="community_write_proc" style="display:none;"></button>
 
 <div class="clearfix"></div>
 
@@ -393,6 +394,10 @@ function fwrite_submit(f) {
 
 	return true;
 }
+
+$('#header_write_complete').click(function(){
+	
+});
 
 $(function(){
 	$("#wr_content").addClass("form-control input-sm write-content");

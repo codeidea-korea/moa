@@ -32,7 +32,7 @@ if($is_dhtml_editor) {
 
 <!-- 컨텐츠 -->
 <div class="contents container grid-lg">
-	`
+	
 	<div class="columns">
 
 <div id="bo_w" class="write-wrap<?php echo (G5_IS_MOBILE) ? ' font-14' : '';?>">

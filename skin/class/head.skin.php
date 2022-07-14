@@ -30,7 +30,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 		<a href="<?php echo C_DETAIL_PATH;?>/inquiry02.php" class="in_write dp_none" id="header_write ">글 작성</a>
 
 		<!-- 작성완료 버튼  버튼 작동을 안함-->
-		<a  class="in_write dp_none" id="header_write_complete" onClick="fwrite_submit('document.fwrite');">작성 완료</a>
+		<a  class="in_write dp_none" id="header_write_complete" onclick="$('#community_write_proc').trigger('click')">작성 완료</a>
 
 		 <!-- 커뮤니티 아이콘 -->
 		 <div class="ic_area t34 dp_none" id="header_icon">
