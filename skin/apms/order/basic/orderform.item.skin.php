@@ -242,7 +242,10 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
         $(document).ready(function(){
             let price = parseInt($('#tot_price').val());
             $('#od_temp_point').keyup(function(){
+                if($(this).val() > 0)
                 var point = parseInt($(this).val());
+                else
+                    var point = 0;
 
                 var total = price - parseInt(point);
                 $('#od_tot_price').text(total);
