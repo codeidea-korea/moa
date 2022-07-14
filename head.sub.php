@@ -163,8 +163,10 @@ var g5_purl = "<?php echo $seometa['url']; ?>";
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-migrate-1.4.1.min.js"></script>
 <script src="<?php echo MOA_URL;?>/js/calendar.js"></script>
-<!-- <script src="<?php echo MOA_URL;?>/js/rolldata.min.js?_v=<?php echo G5_JS_VER;?>"></script> -->
-<script type="text/javascript" src="<?php echo MOA_URL;?>/js/jquery.min.js"></script>
+<?php /*
+<script src="<?php echo MOA_URL;?>/js/rolldata.min.js?_v=<?php echo G5_JS_VER;?>"></script>
+<script type="text/javascript" src="<?php echo MOA_URL;?>/js/jquery.min.js"></script> */
+?>
 <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
 <script type="text/javascript" src="<?=get_url(MOA_URL.'/js/myScript.js')?>"></script>
 
