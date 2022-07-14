@@ -18,7 +18,7 @@ if( !$provider_name ){
 }
 
 if( isset( $_REQUEST["redirect_to_idp"] ) ){
-    $content = social_check_login_before();
+    $content = social_check_login_before(); 
 
     $get_login_url = G5_BBS_URL."/login.php?url=".$urlencode;
 
