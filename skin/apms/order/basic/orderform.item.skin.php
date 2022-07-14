@@ -239,11 +239,11 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 <script>
     (function($){
         $(document).ready(function(){
-            let price = $('#od_tot_price').text();
+            let price = parseInt($('#od_tot_price').text());
             $('#od_temp_point').keypress(function(){
                 var point = $(this).val();
 
-                var total = parseInt(price) - parseInt(point);
+                var total = price - parseInt(point);
                 $('#od_tot_price').text(total);
                 console.log(price + '/ ' + point);
             })
