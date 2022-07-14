@@ -14,7 +14,7 @@ check_admin_token();
 $mb_id = trim($_POST['mb_id']);
 
 // 휴대폰번호 체크
-$mb_hp = hyphen_hp_number($_POST['mb_hp']);
+$mb_hp = str_replace('-', '', $_POST['mb_hp']);
 if($mb_hp) {
     $result = exist_mb_hp($mb_hp, $mb_id);
     if ($result)
@@ -117,7 +117,7 @@ else if ($w == 'u')
     // 이메일중복체크
     $sql = " select mb_id, mb_name, mb_nick, mb_email from {$g5['member_table']} where mb_email = '{$mb_email}' and mb_id <> '$mb_id' ";
     $row = sql_fetch($sql);
-    if ($row['mb_id'])
+    if ($row['mb_id'] && $mb_email != '')
         alert('이미 존재하는 이메일입니다.\\nＩＤ : '.$row['mb_id'].'\\n이름 : '.$row['mb_name'].'\\n닉네임 : '.$row['mb_nick'].'\\n메일 : '.$row['mb_email']);
 
 	//이용기간 체크
