@@ -149,6 +149,7 @@ if($is_view_comment) {
 $list = array();
 
 $is_comment_write = false;
+
 if ($member['mb_level'] >= $board['bo_comment_level'])
     $is_comment_write = true;
 

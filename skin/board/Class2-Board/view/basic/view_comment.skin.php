@@ -166,7 +166,9 @@ $( document ).ready(function() {
 
 
 <?php if ($is_comment_write) {
+	
 	if($w == '') $w = 'c';
+	
 ?>
 	<aside id="bo_vc_w">
 		<form id="fviewcomment" name="fviewcomment" action="<?php echo $comment_action_url; ?>" onsubmit="return fviewcomment_submit(this);" method="post" autocomplete="off" class="form comment-form" role="form">

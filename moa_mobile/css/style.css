@@ -787,7 +787,7 @@ span.flatpickr-weekday{
 .login_wrap{
     width:100%;
     max-width:780px;
-    height:calc(100vh - 60px);
+    height:calc(100vh - 0px);
     overflow-y:scroll;
     position:relative;
     left:50%;
@@ -837,17 +837,22 @@ span.flatpickr-weekday{
     color:#fff;
 }
 .kakao_btn{
-    background:url(../images/kakao_ic.svg) 21% 53% no-repeat #F2E24B!important;
+    background:url(../images/kakao_ic.svg) 63px 53% no-repeat #F2E24B!important;
     color:#3C1E1E;
 }
 .naver_btn{
-    background:url(../images/naver_ic.svg) 25% 53% no-repeat #5ABC38!important;
+    background:url(../images/naver_ic.svg) 63px 53% no-repeat #5ABC38!important;
     color:#fff;
 }
 .Apple_btn{
-    background:url(../images/apple_ic.svg) 26% 53% no-repeat #F4F4F4;
+    background:url(../images/apple_ic.svg) 65px 53% no-repeat #F4F4F4!important;
     color:#333333;
     margin-bottom:15px!important;
+}
+.google_btn{
+    background:url(../images/Google_ic.svg) 60px 53% no-repeat #FFF!important;
+    border:1px solid #ccc;
+    background-size:20px!important;
 }
 .email_btn{
     background:url(../images/ic_e_mail.svg) 26% 53% no-repeat #333333;
@@ -884,7 +889,7 @@ span.flatpickr-weekday{
     font-size:1.4rem;
 }
 .look{
-    padding-top:30px;
+    padding-top:20px;
     text-align:center;
 }
 .look a{
@@ -6312,4 +6317,15 @@ table.option-tbl{
     width:100%!important;
     height:100%!important;
     object-fit: ;
+}
+
+.flex_layout01 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.flex_layout01 a{
+    font-size:1.2rem;
+    color:#3B4351;
+    text-decoration: underline;
 }

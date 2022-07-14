@@ -35,7 +35,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                     <button  type="button" class="google_btn sns-wrap social_link" onClick="winSocial('<?php echo $self_url;?>?provider=google')">Google 로 계속하기</button>
                 <?php }     //end if ?>
                 <?php if( social_service_check('Apple') ) {     //애플 로그인을 사용한다면 ?>
-                    <button  type="button" class="apple_btn sns-wrap social_link" onClick="winSocial('<?php echo $self_url;?>?provider=apple')">Apple 로 계속하기</button>
+                    <button  type="button" class="Apple_btn sns-wrap social_link" onClick="winSocial('<?php echo $self_url;?>?provider=apple')">Apple 로 계속하기</button>
                 <?php }     //end if ?>
             </div>
             <?php 
