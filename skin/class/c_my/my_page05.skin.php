@@ -1,7 +1,7 @@
 <?php
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 ?>
-
+<script src="/js/rolldate.min.js"></script>
 <!-- 프로필설정 -->
 <div class="boxContainer padding40">
 <form class="form" role="form" name="fregister" id="fregister" action="<?php echo G5_SHOP_URL ?>/partner/register_form.update.php" onsubmit="return fregister_submit(this);" method="POST" enctype="multipart/form-data" autocomplete="off">
@@ -95,6 +95,13 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                             </span>
                         </div>
                     </li>
+					<li>
+						<p>생년월일</p>
+						<div class="info_ent">
+							<input readonly type="text" name="mb_birth" id="date_picker" placeholder="생년월일을 입력해주세요" value="<?php echo $member['mb_birth']; ?>">
+						</div>
+						
+					</li>
                 </ul>
             </div>
         </div>
@@ -131,4 +138,19 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
             return false;
         };
     });
+
+	new Rolldate({
+		el: '#date_picker',
+		format: 'YYYY-MM-DD',
+		beginYear: 1920,
+		endYear: 2022,
+		lang: { 
+			title: '생년월일', 
+			cancel: '닫기', 
+			confirm: '입력', 
+			year: '', 
+			month: '', 
+			day: '', 
+		}
+	})
 </script>
