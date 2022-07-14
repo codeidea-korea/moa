@@ -30,7 +30,7 @@ for ($i=0; $row=sql_fetch_array($result); $i++)
 $where = " and ";
 $sql_search = "";
 if ($stx != "") {
-    $sql_search .= " $where (a.mb_name like '%$stx%' or c.it_name like '%$stx%') ";
+    $sql_search .= " $where (b.mb_name like '%$stx%' or c.it_name like '%$stx%') ";
     $where = " and ";
     if ($save_stx != $stx)
         $page = 1;
@@ -59,7 +59,8 @@ else if ($sch_startdt && !$sch_enddt) {
 $sql_common = " from g5_member b join deb_class_item a
                     on b.mb_id = a.mb_id join g5_shop_item c
                     on a.it_id = c.it_id join g5_write_class d
-                    on c.it_2 = d.wr_id ";
+                    on c.it_2 = d.wr_id join g5_member b 
+                    on d.mb_id = b.mb_id";
 $sql_common .= $sql_search;
 
 // 테이블의 전체 레코드수만 얻음
