@@ -236,3 +236,14 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 </div>
 
 </div>
+<script>
+    (function($){
+        $('#od_temp_point').keypress(function(){
+            var price = $('#od_tot_price').text();
+            var point = $(this).val();
+
+            var total = int(price) - int(point);
+            $('#od_tot_price').text(total);
+        })
+    })
+</script>
