@@ -27,7 +27,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
             </div>
             <div class="profile_imgarea">
                 <div class="profile_img" onclick="location.href='<?php echo MOA_MY_URL;?>/my_page05.php'">
-                    <?php echo ($member['photo']) ? '<img src="'.$member['photo'].'" alt="">' : '<span class="no-img"></span>'; //사진 ?>
+                    <?php echo ($member['photo']) ? '<img src="'.$member['photo'].'" alt="">' : '<img src="../images/profile_default.svg">'; //사진 ?>
                 </div>
                 <a href="/c_my/my_page05.php?ap=register_form">프로필 수정</a>
             </div>

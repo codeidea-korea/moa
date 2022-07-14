@@ -25,7 +25,7 @@ $word = $_GET['word'] ? $_GET['word'] : '';
 if($word) {
     $sql = " select a.*, b.it_id from g5_write_class a join g5_shop_item b on a.wr_id = b.it_2 where a.wr_subject like '%{$word}%' or a.wr_content like '%{$word}%' group by a.wr_id order by a.wr_datetime desc";
     $query = sql_query($sql);
-    echo $sql;
+    //echo $sql;
     $i = 0;
     while($row = sql_fetch_array($query)) {
         $review = "select (SUM(b.is_score) / count(b.it_id)) as score, count(b.it_id) as cnt, a.it_id from g5_shop_item a join g5_shop_item_use b on a.it_id = b.it_id where a.it_2 = {$row['wr_id']}";

@@ -131,6 +131,11 @@ if (defined('MOA_HEAD')) {
 $header_title = '';
 if($board['bo_subject']) $header_title = $board['bo_subject'];
 if(strpos($_url, '/c_category/') !== false) $header_title = '카테고리';
+
+if (strpos($_SERVER['REQUEST_URI'], 'c_my/my_inquiry02') > 0 ){
+	$header_title = "문의내역";
+}
+
 ?>
 <!--[if lte IE 8]>
 <script src="<?php echo G5_JS_URL ?>/html5.js"></script>
