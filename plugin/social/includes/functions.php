@@ -984,7 +984,7 @@ function social_member_link_delete($mb_id, $mp_no=''){
     if(!$mb_id)
         return;
 
-    $mp_no = (int) $mp_no;
+    $mp_no = (int) $mp_no; 
 
     if( G5_SOCIAL_DELETE_DAY > 0 ){
 
