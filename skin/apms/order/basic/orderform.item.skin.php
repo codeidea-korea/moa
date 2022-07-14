@@ -243,7 +243,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 var price = $('#od_tot_price').text();
                 var point = $(this).val();
 
-                var total = int(price) - int(point);
+                var total = price - point;
                 $('#od_tot_price').text(total);
                 console.log(price + '/ ' + point);
             })
