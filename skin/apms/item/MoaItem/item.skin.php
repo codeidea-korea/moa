@@ -86,7 +86,7 @@ if($nav_title) {
 	}
 }
 
-if(!$member['mb_id'] || $member['mb_status'] != '승인') {
+if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level'] > 3)) {
     alert('승인된 회원만 조회가 가능합니다.', G5_URL);
 }
 ?>
