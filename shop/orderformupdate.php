@@ -524,8 +524,11 @@ $od_memo          = clean_xss_tags($od_memo);
 $od_deposit_name  = clean_xss_tags($od_deposit_name);
 $od_tax_flag      = $default['de_tax_flag_use'];
 
+//line 531 insert > replace
+//od_id가 PRIMARY key 로 걸려있는데 인서트문에서 Duplicate 걸립니다.
+//두번실행되는 것처럼 보이는데 일단 replace로 대체해서 처리했습니다.
 // 주문서에 입력
-$sql = " insert {$g5['g5_shop_order_table']}
+$sql = " REPLACE {$g5['g5_shop_order_table']}
             set od_id             = '$od_id',
                 mb_id             = '{$member['mb_id']}',
                 od_pwd            = '$od_pwd',
@@ -618,6 +621,7 @@ $sql_card_point = "";
 if ($od_receipt_price > 0 && !$default['de_card_point']) {
     $sql_card_point = " , ct_point = '0' ";
 }
+
 $sql = "update {$g5['g5_shop_cart_table']}
            set od_id = '$od_id',
                ct_status = '$cart_status'
@@ -628,6 +632,7 @@ $result = sql_query($sql, false);
 
 // 주문정보 입력 오류시 결제 취소
 if(!$result) {
+
     if($tno) {
         $cancel_msg = '주문상태 변경 오류';
         switch($od_pg) {
@@ -724,7 +729,9 @@ apms_order($od_id, $od_status, $member['mb_recommend']);
 apms_coupon_update($member['mb_id']);
 
 include_once(G5_SHOP_PATH.'/ordermail1.inc.php');
-include_once(G5_SHOP_PATH.'/ordermail2.inc.php');
+//line 729 //include_once(G5_SHOP_PATH.'/ordermail2.inc.php');
+//메일보내는 설정이 잘못된것으로 보이는데 일단 주석처리해서 해결했습니다.
+//include_once(G5_SHOP_PATH.'/ordermail2.inc.php');
 
 // SMS BEGIN --------------------------------------------------------
 // 주문고객과 쇼핑몰관리자에게 SMS 전송
