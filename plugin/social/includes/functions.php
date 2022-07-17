@@ -370,7 +370,12 @@ function social_extends_get_keys($provider){
                 "secret" => array(
                     "team_id" => $config['cf_apple_team_id'],
                     "key_id" => $config['cf_apple_key_id'],
-                    "key_content" => $config['cf_apple_key_file']
+                    "key_content" => '-----BEGIN PRIVATE KEY-----
+MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgBktVrBnQeYer1bHO
+Caj/Aep6CDw7BTu8qpqso4i4o5SgCgYIKoZIzj0DAQehRANCAAR7CugsI6KoTr1r
+We5I9Gypau83+p+mcRUnKfYRCtu0ypGw6HYtk6xqdhpJJOpOE5ffm7uS9GFkcWoI
+n1m5JDxX
+-----END PRIVATE KEY-----'
                 ),
             ),
             "scope" => "name email",
