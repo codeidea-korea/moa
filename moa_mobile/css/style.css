@@ -6329,3 +6329,18 @@ table.option-tbl{
     color:#3B4351;
     text-decoration: underline;
 }
+
+.position_layout{
+    position:relative;
+}
+.position_layout .duplicate_check{
+    position:absolute;
+    top:-15px;
+    right:0;
+    width:80px;
+    height:40px;
+    border-radius: 4px;
+    background:var(--main-color);
+    color:#fff;
+    font-size:14px;
+}

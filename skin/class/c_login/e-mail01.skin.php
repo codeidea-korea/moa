@@ -36,11 +36,13 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 <p>이름</p>
                 <input type="text" id="reg_mb_name" name="mb_name" oninvalid="this.setCustomValidity('이름을 입력해주세요.')" oninput="this.setCustomValidity('')" value="<?php echo get_text($member['mb_name']) ?>" required <?php echo $readonly; ?> class="form-input half_input required <?php echo $readonly ?>" size="10" placeholder="이름">
                 <p>닉네임</p>
-                <input type="hidden" name="mb_nick_default" value="<?php echo isset($member['mb_nick'])?get_text($member['mb_nick']):''; ?>">
-                <input type="text" oninvalid="this.setCustomValidity('닉네임을 입력해주세요.')" oninput="this.setCustomValidity('')" name="mb_nick" value="<?php echo isset($member['mb_nick'])?get_text($member['mb_nick']):''; ?>" id="reg_mb_nick" required class="form-input required nospace  half_input" size="10" maxlength="20" placeholder="닉네임">
-                <p class="form-input-hint" style="display:none"></p>
-                <button id="search_nick" type="button">중복검사</button>
-                <input type="hidden" value="" id="is_nick_search" />
+                <div class="position_layout">
+                    <input type="hidden" name="mb_nick_default" value="<?php echo isset($member['mb_nick'])?get_text($member['mb_nick']):''; ?>">
+                    <input type="text" oninvalid="this.setCustomValidity('닉네임을 입력해주세요.')" oninput="this.setCustomValidity('')" name="mb_nick" value="<?php echo isset($member['mb_nick'])?get_text($member['mb_nick']):''; ?>" id="reg_mb_nick" required class="form-input required nospace  half_input" size="10" maxlength="20" placeholder="닉네임">
+                    <p class="form-input-hint" style="display:none"></p>
+                    <button id="search_nick" class="duplicate_check" type="button">중복검사</button>
+                    <input type="hidden" value="" id="is_nick_search" />
+                </div>
             </div>
             <div class="p156">
                 <button class="inactive on" type="submit">다음</button>

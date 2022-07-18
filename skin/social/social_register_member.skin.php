@@ -13,7 +13,10 @@ add_javascript('<script src="'.G5_JS_URL.'/remodal/remodal.js"></script>', 10);
 
 $email_msg = $is_exists_email ? '등록할 이메일이 중복되었습니다.다른 이메일을 입력해 주세요.' : '';
 ?>
-
+<script src="<?=G5_JS_URL?>/remodal/remodal.js"></script>
+<link rel="stylesheet" href="<?=G5_JS_URL?>/remodal/remodal.css">
+<link rel="stylesheet" href="<?=G5_JS_URL?>/remodal/remodal-default-theme.css">
+<link rel="stylesheet" href="<?=get_social_skin_url()?>/style.css?ver=<?=G5_CSS_VER?>">
 <!-- 회원정보 입력/수정 시작 { -->
 <div class="mbskin" id="register_member">
 
