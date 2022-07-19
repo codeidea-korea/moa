@@ -542,8 +542,8 @@ span.flatpickr-weekday{
   .swiper-slide img{
     display:block;
     width:100%;
-    height:532px;
-    object-fit:cover;
+    height:100%;
+    object-fit:contain;
   }
   .s_content{
       padding:0 5%;
@@ -1709,7 +1709,7 @@ bottom:0;
     width:158px;
 }
 .meeting a{
-    height:176px;
+    height:216px;
 }
 .meeting .title_area{
     color:#fff;
@@ -1965,8 +1965,9 @@ bottom:0;
     color:#fff;
     line-height:1.3em;
 }
+.stmng li{height:}
 .stmng img{
-    height:147px;
+    height:100%;
     width:100%;
     object-fit: cover;
 }
@@ -3662,8 +3663,8 @@ span.d_chip{
 }
 .day_list .thumb_box div img{
     width:100%;
-    object-fit: cover;
-    height:180px;
+    object-fit: contain;
+    height:100%;
     border-radius: 7px;
 }
 .day_list .lctn{
@@ -6177,6 +6178,11 @@ table.option-tbl{
     margin-bottom:12px;
     padding-top:16px;
     padding-bottom:16px!important;
+}
+.s_content.detail_con p img{
+    height:100%;
+    width:100%;
+    object-fit: contain;
 }
 .t_area02{
     display: flex;

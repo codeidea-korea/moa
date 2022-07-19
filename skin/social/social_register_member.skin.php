@@ -13,10 +13,13 @@ add_javascript('<script src="'.G5_JS_URL.'/remodal/remodal.js"></script>', 10);
 
 $email_msg = $is_exists_email ? '등록할 이메일이 중복되었습니다.다른 이메일을 입력해 주세요.' : '';
 ?>
+
 <script src="<?=G5_JS_URL?>/remodal/remodal.js"></script>
 <link rel="stylesheet" href="<?=G5_JS_URL?>/remodal/remodal.css">
 <link rel="stylesheet" href="<?=G5_JS_URL?>/remodal/remodal-default-theme.css">
 <link rel="stylesheet" href="<?=get_social_skin_url()?>/style.css?ver=<?=G5_CSS_VER?>">
+
+<!--<link rel="stylesheet" href="/moa_mobile/css/style.css?ver=<?=G5_CSS_VER?>">-->
 <!-- 회원정보 입력/수정 시작 { -->
 <div class="mbskin" id="register_member">
 
@@ -32,27 +35,32 @@ $email_msg = $is_exists_email ? '등록할 이메일이 중복되었습니다.�
     <input type="hidden" name="mb_id" value="<?php echo $user_id; ?>" id="reg_mb_id">
     <input type="hidden" name="mb_nick_default" value="<?php echo isset($user_nick)?get_text($user_nick):''; ?>">
     <input type="hidden" name="mb_nick" value="<?php echo isset($user_nick)?get_text($user_nick):''; ?>" id="reg_mb_nick">
-
-    <div class="toggle">
-        <div class="toggle-title">
-		<span class="right_i"><i></i> 자세히보기</span>
-		<span class="title-name"><input type="checkbox" name="agree" value="1" id="agree11"> <label for="agree11">회원가입약관</label></span>
+    
+    <div class="checkbox">
+        <div class="all_agree">
+            <span class="title-name">
+                <input type="checkbox" name="chk_all" value="1" id="chk_all">
+                <label for="chk_all"><strong>전체약관에 동의합니다.</strong></label>
+            </span>
         </div>
-        <div class="toggle-inner">
-            <p><?php echo conv_content($config['cf_stipulation'], 0); ?></p>
-        </div>
-    </div>  <!-- END OF TOGGLE -->
-    <div class="toggle">
-        <div class="toggle-title">
-		<span class="right_i"><i></i> 자세히보기</span>
-		<span class="title-name"><input type="checkbox" name="agree2" value="1" id="agree21"> <label for="agree21">개인정보처리방침안내</label></span>
-        </div>
-        <div class="toggle-inner">
-            <p><?php echo conv_content($config['cf_privacy'], 0); ?></p>
-        </div>
-    </div>  <!-- END OF TOGGLE -->
-    <div class="all_agree">
-		<span class="title-name"><input type="checkbox" name="chk_all" value="1" id="chk_all"> <label for="chk_all"><strong>전체약관에 동의합니다.</strong></label></span>
+        <div class="toggle">
+            <div class="toggle-title">
+            <span class="right_i"><i></i> 자세히보기</span>
+            <span class="title-name"><input type="checkbox" name="agree" value="1" id="agree11"> <label for="agree11">이용약관</label></span>
+            </div>
+            <div class="toggle-inner">
+                <p><?php echo conv_content($config['cf_stipulation'], 0); ?></p>
+            </div>
+        </div>  <!-- END OF TOGGLE -->
+        <div class="toggle">
+            <div class="toggle-title">
+            <span class="right_i"><i></i> 자세히보기</span>
+            <span class="title-name"><input type="checkbox" name="agree2" value="1" id="agree21"> <label for="agree21">개인정보처리방침안내</label></span>
+            </div>
+            <div class="toggle-inner">
+                <p><?php echo conv_content($config['cf_privacy'], 0); ?></p>
+            </div>
+        </div>  <!-- END OF TOGGLE -->
     </div>
 
     <div class="sns_tbl tbl_wrap">
@@ -63,14 +71,14 @@ $email_msg = $is_exists_email ? '등록할 이메일이 중복되었습니다.�
             <tr>
             <th scope="row"><label for="reg_mb_name">이름<strong class="sound_only">필수</strong></label></th>
             <td>
-                <input type="text" name="mb_name" value="<?php echo $user_name ? $user_name : $user_nick ?>" id="reg_mb_name" required class="frm_input required" size="70" maxlength="100" placeholder="이름을 입력해주세요." >
+                <input type="text" name="mb_name" value="<?php echo $user_name ? $user_name : $user_nick ?>" id="reg_mb_name" required class="frm_input required" maxlength="100" placeholder="이름을 입력해주세요." >
             </td>
         </tr>
         <!-- } 애플 로그인 Apple 애플 아이디로 로그인 끝 -->
         <tr>
             <th scope="row"><label for="reg_mb_email">E-mail<strong class="sound_only">필수</strong></label></th>
             <td>
-                <input type="text" name="mb_email" value="<?php echo isset($user_email)?$user_email:''; ?>" id="reg_mb_email" required class="frm_input email required" size="70" maxlength="100" placeholder="이메일을 입력해주세요." >
+                <input type="text" name="mb_email" value="<?php echo isset($user_email)?$user_email:''; ?>" id="reg_mb_email" required class="frm_input email required" maxlength="100" placeholder="이메일을 입력해주세요." >
                 <p class="email_msg"><?php echo $email_msg; ?></p>
             </td>
         </tr>
@@ -80,8 +88,8 @@ $email_msg = $is_exists_email ? '등록할 이메일이 중복되었습니다.�
     </div>
 
     <div class="btn_confirm">
-        <input type="submit" value="회원가입" id="btn_submit" class="btn_submit" accesskey="s">
         <a href="<?php echo G5_URL ?>" class="btn_cancel">취소</a>
+        <input type="submit" value="회원가입" id="btn_submit" class="btn_submit" accesskey="s">
     </div>
     </form>
     <!-- 새로가입 끝 -->

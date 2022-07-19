@@ -1,5 +1,11 @@
 @charset "utf-8";
 
+.checkbox input[type=checkbox] + label:before {background-image: url(./img/check02.svg)!important;}
+.checkbox input:checked+label:before{background-image: url(./img/check01.svg)!important;}
+.checkbox input[type=checkbox] + label:before{display: inline-block;content: '';clear: both;position: absolute;left: 0;top: -2px;width: 24px;height: 24px;background-size: cover;background-repeat: no-repeat;}
+.checkbox input[type=checkbox] + label{display: flex;cursor: pointer; padding-left: 36px;position: relative;}
+.checkbox input{display: none;}
+
 .social_info_guide {background:#f3f3f3;border:1px solid #ddd;margin:0 10px 10px;padding:10px 15px;line-height:1.5em}
 .bg-warning {margin:0 10px 10px;padding:10px 15px;line-height:1.5em}
 .bg-warning1 {background:#f7dfe4;border:1px solid #eac3cb}
@@ -107,26 +113,27 @@
 
 /* Styles for Accordion */
 
-.mbskin .toggle {position:relative;display:block;border:1px solid #c6cacc;margin-top:-1px;background-color:#fcfcfc}
-.mbskin .toggle .toggle-title {padding:13px 15px;line-height:20px}
+.mbskin .toggle {position:relative;display:block;border-bottom:1px solid #c6cacc;background-color:#fcfcfc}
+.mbskin .toggle .toggle-title {padding:16px 15px;line-height:20px}
 .mbskin .toggle .title-name {display:block}
-.mbskin .toggle .toggle-inner {padding:15px;line-height:1.5em;display:none;background:#fff;border-top:1px solid #e2e2e2}
+.mbskin .toggle .toggle-inner {padding:15px;line-height:1.5em;display:none;background:rgb(244, 244, 244);border-top:1px solid #e2e2e2}
 .mbskin .toggle .toggle-inner div {max-width:100%}
-.mbskin .right_i {position:absolute;font-size:0.92em;top:10px;right:10px;padding:0 10px 0 0;border-radius:3px;display:inline-block;z-index:2;background:#3497d9;color:#fff;border-bottom-color:#1977b5;cursor:pointer}
-.mbskin .toggle .toggle-title .right_i i {background:url("./img/plus_minus.png") 0 -24px no-repeat;width:20px;height:24px;display:inline-block;vertical-align:middle}
+.mbskin .right_i {position:absolute;font-size:0.92em;top:10px;right:10px;padding:6px 10px;border-radius:3px;display:inline-block;z-index:2;background:#D0DB23;color:#fff;cursor:pointer}
+.mbskin .toggle .toggle-title .right_i i {background:url("./img/plus_minus.png") 0 -27px no-repeat;width:20px;height:20px;display:inline-block;vertical-align:middle;}
 .mbskin .toggle .toggle-title.active .right_i i {background:url("./img/plus_minus.png") 0 0 no-repeat}
-.mbskin .all_agree {position:relative;display:block;margin-bottom:6px;background:#fff;border:1px solid #c6cacc;border-top:0;padding:13px 15px;line-height:20px}
-
-#register_member .sns_tbl {background:#fff;margin:10px 0;border:1px solid #c6cacc}
+.mbskin .all_agree {position:relative;display:block;background:#fff;border-top:0px;border-right:0px;border-left:0px;border-bottom:1px solid #c6cacc;border-top:0;padding:13px 15px;line-height:20px;border-radius: 0;}
+#register_member .sns_tbl {background:#fff;margin:15px 15px;border:1px solid #c6cacc;border-radius: 3px;}
 .sns_tbl table {border:0}
-.sns_tbl caption {padding:0 20px;line-height:45px;font-size:1.083em;border-bottom:1px solid #e2e2e2;color:#253dbe;background:#fcfcfc}
-.sns_tbl th {width:100px;text-align:right;padding:10px}
+.sns_tbl caption {padding:0 20px;line-height:45px;font-size:1.083em;border-bottom:1px solid #e2e2e2;color:#212121;background:#fcfcfc}
+.sns_tbl th {width:76px;text-align:right;padding:10px}
 .sns_tbl td {padding:10px}
 .sns_tbl .email_msg {color:#777;margin:5px 0 0}
+.sns_tbl input{width:100%;}
+
 
 #fregisterform .btn_confirm {text-align:center;margin:20px 0}
-#fregisterform .btn_confirm .btn_submit {height:45px;padding:0 30px;font-weight:bold;font-size:1.083em}
-#fregisterform .btn_confirm .btn_cancel {line-height:45px;height:45px;padding:0 30px;font-weight:bold;font-size:1.083em}
+#fregisterform .btn_confirm .btn_submit {height:45px;padding:0 30px;font-weight:bold;font-size:1.083em;background-color: #D0DB23;color:#4C4338;border-radius: 3px;}
+#fregisterform .btn_confirm .btn_cancel {line-height:45px;height:45px;padding:0 30px;font-weight:bold;font-size:1.083em;border-radius: 3px;}
 
 #sns-link-pnl .connect-close {position:absolute;top:10px;right:10px;margin:0;padding:0;width:30px;height:30px;border:0;background:transparent;color:#383838;cursor:pointer;font-size:15px}
 #sns-link-pnl .connect-close:hover {color:#ff5191}
@@ -144,13 +151,17 @@
 #sns-link-pnl .connect-fg .connect-title {margin-top:25px;margin-bottom:10px;font-size:1.667em;font-weight:bold;text-align:center}
 
 .mbskin .member_connect:after {display:block;visibility:hidden;clear:both;content:""}
-.mbskin .member_connect {margin-top:80px;background:#d9d9d9;border-radius:3px;padding:10px;text-align:left}
+.mbskin .member_connect {margin-top:66px;background:#eee;border-radius:3px;padding:10px;text-align:left}
 .mbskin .member_connect .strong {font-size:1em;font-weight:bold;margin:0 0 10px}
-.mbskin .member_connect button {color:#fff;border:0;padding:6px 20px 7px;border:1px solid #6446e7;font-weight:bold;background:#6f50e7;border-radius:3px;font-size:0.91em}
+.mbskin .member_connect button {color:#4C4338;border:0;padding:6px 20px 7px;border:1px solid #D0DB23;font-weight:bold;background:#D0DB23;border-radius:3px;font-size:0.91em}
 .mbskin .member_connect button:hover {background:#6446e7}
+
+.frm_input{height:auto!important;}
 
 html.remodal-is-locked {overflow-y:scroll !important}
 
 @media only screen and (min-width:641px) {
 	#sns-link-pnl.remodal {max-width:400px;padding:50px}
 }
+
+.required, textarea.required {background-image:none!important;}
