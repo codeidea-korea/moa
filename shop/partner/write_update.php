@@ -474,12 +474,12 @@ if($ap == 'list') {
               where wr_id = '{$wr['wr_id']}' ";
         sql_query($sql);
 
+		// shop_item 수정
+		// deb_class_item 수정
+
         // 분류가 수정되는 경우 해당되는 코멘트의 분류명도 모두 수정함 (코멘트의 분류를 수정하지 않으면 검색이 제대로 되지 않음)
         $sql = " update {$write_table} set ca_name = '{$ca_name}' where wr_parent = '{$wr['wr_id']}' ";
         sql_query($sql);
-
-        $bo_notice = board_notice($board['bo_notice'], $wr_id, $notice);
-        sql_query(" update {$g5['board_table']} set bo_notice = '{$bo_notice}' where bo_table = '{$bo_table}' ");
 		// ### 모임 수정 처리 End ######################################################################################################################
     }
 

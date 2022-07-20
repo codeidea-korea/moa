@@ -582,8 +582,8 @@ function procWrite2Item($bo_table, $wr_id)
         $vals['it_price'] = ($moa['wr_4']) ? $moa['wr_4'] : 0;   // 0원이면 기본 10만원으로
         $vals['it_name'] = $moa['wr_subject'];
         $vals['it_model'] = $list[$i]['content'];
-        $vals['it_explan'] = $moa['wr_content'];
-        $vals['it_basic'] = $moa['wr_content'];
+        $vals['it_explan'] = str_replace("'", "''", $moa['wr_content']);
+        $vals['it_basic'] = str_replace("'", "''", $moa['wr_content']);
         $vals['it_brand'] = $it_basic = $moa['wr_name'];
         $vals['it_use'] = '1';
         if ($list[$i]['moa_form'] == "고정형") {
@@ -698,7 +698,7 @@ function procItemAdd($vals)
     }
 
 
-    //echo $sql."<BR>";
+    //echo $sql."<BR>"; exit;
     if (!trim($it_id)) {
         alert('코드가 없으므로 추가하실 수 없습니다.');
     }

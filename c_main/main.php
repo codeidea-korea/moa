@@ -20,9 +20,17 @@ include_once(MOA_MAIN_SKIN."/exhibitions.skin.php");
 $query2 = "select si.*, wc.as_thumb from g5_shop_item as si join g5_write_class as wc on si.it_2 = wc.wr_id where wc.moa_status = 1 and wc.moa_pick = '모아픽' group by wc.wr_id order by wc.wr_hit desc";
 $result2 = sql_query($query2);
 include_once(MOA_MAIN_SKIN."/pick.skin.php");
-$query3 = "select wc.*, si.it_id from g5_write_class as wc join g5_shop_item as si on wc.wr_id = si.it_2 order by wc.wr_id and wc.moa_status = 1 desc limit 0, 3";
+
+
+// ### New 모임 Start #############################################################################################################################
+$query3 = "select wc.*, si.it_id from g5_write_class as wc 
+			left JOIN (select it_id, it_2 from g5_shop_item GROUP BY it_2) as si on wc.wr_id = si.it_2 
+			WHERE wc.moa_status = 1
+			order by wc.wr_id desc limit 0, 6";
 $result3 = sql_query($query3);
 include_once(MOA_MAIN_SKIN."/meeting.skin.php");
+
+
 $sql1 = "select *, count(c.it_id) as cnt from g5_write_class a join g5_shop_item b on a.wr_id = b.it_2 join deb_class_aplyer c on b.it_id = c.it_id group by c.it_id having count(c.it_id) > 0 and wc.moa_status = 1";
 $result7 = sql_query($sql1);
 include_once(MOA_MAIN_SKIN."/ranking.skin.php");

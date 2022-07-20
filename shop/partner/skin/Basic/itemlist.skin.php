@@ -174,86 +174,86 @@ include_once($skin_path.'/pop.moim-info.php'); //모임신청인원정보
 
 		<div class="tbl-basic outline odd th-h5 fs15 line-nth-1">
 			<table>
-			<colgroup>
-				<col width="60">
-				<col width="90">
-				<col width="160">
-				<col width="120">
-				<col>
-			</colgroup>
-			<thead>
-			<tr>
-				<th scope="col">
-					<label for="chkall" class="sound_only">전체</label>
-					<input type="checkbox" name="chkall" value="1" id="chkall" onclick="check_all(this.form)">
-				</th>
-				<!-- <th scope="col">순서</th> -->
-				<th scope="col"><?php echo subject_sort_link('it_id', 'ap='.$ap.'&amp;sca='.$sca); ?>모임ID</a></th>				
-				<th scope="col">썸네일</th>
-				<th scope="col"><?php echo subject_sort_link('it_name', 'ap='.$ap.'&amp;sca='.$sca); ?>모임명</a></th>
-				
-				<th scope="col"><?php echo subject_sort_link('it_price', 'ap='.$ap.'&amp;sca='.$sca); ?>정가가격</a></th>
-				<th scope="col">인원수</th>
-				<!-- <th scope="col">모집마감일</th> -->
-				<th scope="col">모임 일시</th>
-				<th scope="col">모임상태</th>
-				<th scope="col">관리</th>
-			</tr>
-			</thead>
-			<tbody>
-			<?php for ($i=0; $i < count($list); $i++) {  ?>
+				<colgroup>
+					<col width="50">
+					<col width="100">
+					<col width="130">
+					<col>
+					<col width="100">
+					<col width="100">
+					<col width="100">
+					<col width="120">
+					
+				</colgroup>
+				<thead>
 				<tr>
-					<td>
-						<label for="chk_<?php echo $i; ?>" class="sound_only"><?php echo get_text($list[$i]['it_name']); ?></label>
-						<input type="checkbox" name="chk[]" value="<?php echo $i ?>" id="chk_<?php echo $i; ?>">
-						<input type="hidden" name="it_id[<?php echo $i; ?>]" value="<?php echo $list[$i]['it_id']; ?>">
-					</td>
-					<!-- <td>
-						<input type="text" name="pt_show[<?php echo $i; ?>]" value="<?php echo $list[$i]['pt_show']; ?>" size="4" class="span55">
-					</td> -->
-					<td>
-						<a href="<?php echo $list[$i]['href']; ?>"><nobr><?php echo $list[$i]['it_id'];?></nobr></a>
-					</td>
-					<td>
-						<a href="<?php echo $list[$i]['href']; ?>"><img src="<?php echo $list[$i]['as_thumb']; ?>" alt="" width="80px" height="80px"></a>
-					</td>				
-					<td class="tleft">
-						<a href="<?php echo $list[$i]['href']; ?>"><b><?php echo $list[$i]['it_name'];?></b></a>
-						<sub class="block">
-							<?php echo apms_pt_it($list[$i]['pt_it'],1);?>
-							<?php echo ($list[$i]['ca_name1']) ? ' / '.$list[$i]['ca_name1'] : '';?>
-							<?php echo ($list[$i]['ca_name2']) ? ' / '.$list[$i]['ca_name2'] : '';?>
-							<?php echo ($list[$i]['ca_name3']) ? ' / '.$list[$i]['ca_name3'] : '';?>
-						</sub>
-					</td>
-					<td >
-						<?php if ($list[$i]['it_cust_price']!=$list[$i]['it_price']) { ?>
-							<strike style="color:#aaa"><?php echo number_format($list[$i]['wr_3']); ?></strike><br>
-						<?php } ?>
-						<?php echo number_format($list[$i]['wr_4']); ?>
-					</td>
-					<td>
-						<?php $su = countAplyerMoaClass($list[$i]['it_id']); ?>
-						<span data-href="#pop-moim-info" class="aplyInfo pop-inline color-blue" data-it_id="<?php echo $list[$i]['it_id']; ?>">
-						<?php echo $su['cnt'] ? $su['cnt'] : '0'; ?>/<?php echo $list[$i]['tot'];?>
-						</span>
-					</td>
-					<td>
-						<!-- [고정형, 자율형] -->
-						<?php echo $list[$i]['moa_form'];?><sub class="block"><?php echo $list[$i]['day'].' '.$list[$i]['time'];?></sub>
-					</td>
-					<td><?php echo getStatusValue($list[$i]['moa_status']); ?></td><!-- [승인, 대기중, 반려] -->
-					<td class="td_mng td_mng_s">
-						<span data-href="#pop-cancel-class" data-wr_id="<?php echo $list[$i]['wr_id']; ?>" class="close_moim pop-inline btn mini span50">폐강</span>
-						<a href="./?ap=moa_write&amp;w=u&amp;wr_id=<?php echo $list[$i]['wr_id']?>" class="btn btn_03 mini">수정</a>
-						<!-- <a href="#" class="btn btn_01 mini">삭제</a> -->
-					</td>
+					<th scope="col">
+						<label for="chkall" class="sound_only">전체</label>
+						<input type="checkbox" name="chkall" value="1" id="chkall" onclick="check_all(this.form)">
+					</th>
+					<!-- <th scope="col">순서</th> -->
+					<th scope="col"><?php echo subject_sort_link('it_id', 'ap='.$ap.'&amp;sca='.$sca); ?>모임ID</a></th>				
+					<th scope="col">썸네일</th>
+					<th scope="col"><?php echo subject_sort_link('it_name', 'ap='.$ap.'&amp;sca='.$sca); ?>모임명</a></th>
+					<th scope="col"><?php echo subject_sort_link('it_price', 'ap='.$ap.'&amp;sca='.$sca); ?>정가가격</a></th>
+					<th scope="col">인원수</th>
+					<!-- <th scope="col">모집마감일</th> -->
+					<th scope="col">모임 일시</th>
+					<th scope="col">모임상태</th>
+					<th scope="col">관리</th>
 				</tr>
-			<?php } ?>
-			<?php if ($i == 0) { ?>
-				<tr><td colspan="13" class="text-center">등록된 자료가 없습니다.</td></tr>
-			<?php } ?>
-			</tbody>
+				</thead>
+				<tbody>
+				<?php for ($i=0; $i < count($list); $i++) {  ?>
+					<tr>
+						<td>
+							<label for="chk_<?php echo $i; ?>" class="sound_only"><?php echo get_text($list[$i]['it_name']); ?></label>
+							<input type="checkbox" name="chk[]" value="<?php echo $i ?>" id="chk_<?php echo $i; ?>">
+							<input type="hidden" name="it_id[<?php echo $i; ?>]" value="<?php echo $list[$i]['it_id']; ?>">
+						</td>
+						<!-- <td>
+							<input type="text" name="pt_show[<?php echo $i; ?>]" value="<?php echo $list[$i]['pt_show']; ?>" size="4" class="span55">
+						</td> -->
+						<td>
+							<a href="<?php echo $list[$i]['href']; ?>"><nobr><?php echo $list[$i]['it_id'];?></nobr></a>
+						</td>
+						<td>
+							<a href="<?php echo $list[$i]['href']; ?>"><img src="<?php echo $list[$i]['as_thumb']; ?>" alt="" width="80px" height="80px"></a>
+						</td>				
+						<td class="tleft">
+							<a href="<?php echo $list[$i]['href']; ?>"><b><?php echo $list[$i]['wr_subject'];?></b></a>
+							<sub class="block">
+								<?=$list[$i]['moa_onoff']?> / <?=$list[$i]['ca_name']?> / <?=$list[$i]['moa_type']?>
+							</sub>
+						</td>
+						<td >
+							<?php if ($list[$i]['it_cust_price']!=$list[$i]['it_price']) { ?>
+								<strike style="color:#aaa"><?php echo number_format($list[$i]['wr_3']); ?></strike><br>
+							<?php } ?>
+							<?php echo number_format($list[$i]['wr_4']); ?>
+						</td>
+						<td>
+							<?php $su = countAplyerMoaClass($list[$i]['it_id']); ?>
+							<span data-href="#pop-moim-info" class="aplyInfo pop-inline color-blue" data-it_id="<?php echo $list[$i]['it_id']; ?>">
+							<?php echo $su['cnt'] ? $su['cnt'] : '0'; ?>/<?php echo $list[$i]['tot'];?>
+							</span>
+						</td>
+						<td>
+							<!-- [고정형, 자율형] -->
+							<?php echo $list[$i]['moa_form'];?><sub class="block"><?php echo $list[$i]['day'].' '.$list[$i]['time'];?></sub>
+						</td>
+						<td><?php echo getStatusValue($list[$i]['moa_status']); ?></td><!-- [승인, 대기중, 반려] -->
+						<td class="td_mng td_mng_s">
+							<span data-href="#pop-cancel-class" data-wr_id="<?php echo $list[$i]['wr_id']; ?>" class="close_moim pop-inline btn mini span50">폐강</span>
+							<a href="./?ap=moa_write&amp;w=u&amp;wr_id=<?php echo $list[$i]['wr_id']?>" class="btn btn_03 mini">수정</a>
+							<!-- <a href="#" class="btn btn_01 mini">삭제</a> -->
+						</td>
+					</tr>
+				<?php } ?>
+				<?php if ($i == 0) { ?>
+					<tr><td colspan="13" class="text-center">등록된 자료가 없습니다.</td></tr>
+				<?php } ?>
+				</tbody>
 			</table>
 		</div>
 
