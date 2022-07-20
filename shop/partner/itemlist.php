@@ -76,12 +76,11 @@ $sql_common = " from {$g5['g5_shop_item_table']} a ,
                 and (a.ca_id = b.ca_id ";
 
 $sql_common .= " and (a.pt_id = '{$mb_id}' or a.it_brand = '{$member['mb_nick']}')";
-$sql_common .= ")
-                and exists(select 'x' from  {$g5['g5_shop_item_table']} d where d.it_2 = a.it_2 order by it_id asc limit 1) ";
+$sql_common .= ") "; //and exists(select 'x' from  {$g5['g5_shop_item_table']} d where d.it_2 = a.it_2 order by it_id asc limit 1) ";
 $sql_common .= $sql_search;
 
 // 테이블의 전체 레코드수만 얻음
-$sql = " select count(DISTINCT a.it_id) as cnt " . $sql_common;
+$sql = " select count(DISTINCT c.wr_id) as cnt " . $sql_common;
 $row = sql_fetch($sql);
 $total_count = $row['cnt'];
 
@@ -92,7 +91,6 @@ $from_record = ($page - 1) * $rows; // 시작 열을 구함
 
 $sql_order = "order by a.pt_show, a.pt_num desc, a.it_id desc";
 
-//$sql  = " SELECT distinct a.*, b.ca_name, c.*, d.day, d.time, d.tot, d.min_tot, d.aply 
 $sql  = " SELECT distinct a.*, b.ca_name, c.*,  d.tot, d.min_tot, d.aply 
            $sql_common group by c.wr_id 
            $sql_order

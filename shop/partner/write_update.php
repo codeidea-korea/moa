@@ -6,7 +6,6 @@ include_once(G5_CAPTCHA_PATH.'/captcha.lib.php');
 // 토큰체크
 //check_write_token($bo_table);
 $board_skin_path = G5_SHOP_PATH."/partner/skin/Class-Board";
-//echo ($board_skin_path)."<BR>";exit;
 
 $g5['title'] = '게시글 저장';
 
@@ -107,7 +106,7 @@ if($ap == 'list') {
         alert($msg);
     }
 
-// 090710
+	// 090710
     if (substr_count($wr_content, '&#') > 50) {
         alert('내용에 올바르지 않은 코드가 다수 포함되어 있습니다.');
         exit;
@@ -128,7 +127,7 @@ if($ap == 'list') {
         }
     }
 
-// 외부에서 글을 등록할 수 있는 버그가 존재하므로 비밀글은 사용일 경우에만 가능해야 함
+	// 외부에서 글을 등록할 수 있는 버그가 존재하므로 비밀글은 사용일 경우에만 가능해야 함
     if (!$is_admin && !$board['bo_use_secret'] && (stripos($_POST['html'], 'secret') !== false || stripos($_POST['secret'], 'secret') !== false || stripos($_POST['mail'], 'secret') !== false)) {
         alert('비밀글 미사용 게시판 이므로 비밀글로 등록할 수 없습니다.');
     }
@@ -139,7 +138,7 @@ if($ap == 'list') {
             $secret = $matches[0];
     }
 
-// 외부에서 글을 등록할 수 있는 버그가 존재하므로 비밀글 무조건 사용일때는 관리자를 제외(공지)하고 무조건 비밀글로 등록
+	// 외부에서 글을 등록할 수 있는 버그가 존재하므로 비밀글 무조건 사용일때는 관리자를 제외(공지)하고 무조건 비밀글로 등록
     if (!$is_admin && $board['bo_use_secret'] == 2) {
         $secret = 'secret';
     }
@@ -184,19 +183,19 @@ if($ap == 'list') {
         }
     }
 
-//비밀글
+	//비밀글
     $as_secret = ($secret) ? 1 : 0;
     $as_extend = '';
     $is_new = (isset($board['as_new']) && $board['as_new']) ? false : true;
     $is_response = true;
 
-// 보드설정
+	// 보드설정
     $boset = array();
     $boset = apms_boset();
 
     @include_once($board_skin_path.'/write_update.head.skin.php');
 
-// 태그
+	// 태그
     $as_tag = ($as_tag) ? apms_check_tag($as_tag) : '';
 
     if ($w == '' || $w == 'u') {
@@ -434,146 +433,63 @@ if($ap == 'list') {
             }
         }
 
-    }  else if ($w == 'u') {
+    }  else if ($w == 'u') {	
+		// ### 모임 수정 처리 Start ######################################################################################################################
+		$return_url = '/shop/partner/?ap=moa_write&w=u&wr_id='.$_POST['wr_id'];
+
         if (get_session('ss_bo_table') != $_POST['bo_table'] || get_session('ss_wr_id') != $_POST['wr_id']) {
-            alert('올바른 방법으로 수정하여 주십시오.', G5_BBS_URL.'/board.php?bo_table='.$bo_table);
+            alert('잘못된 접근입니다.', $return_url);
         }
 
-        $return_url = './board.php?bo_table='.$bo_table.'&amp;wr_id='.$wr_id;
-
-        if ($is_admin === 'super') // 최고관리자 통과
-            ;
-        else if ($is_admin === 'group') { // 그룹관리자
-            $mb = get_member($write['mb_id']);
-            if (!chk_multiple_admin($member['mb_id'], $group['gr_admin'])) // 자신이 관리하는 그룹인가?
-                alert('자신이 관리하는 그룹의 게시판이 아니므로 수정할 수 없습니다.', $return_url);
-            else if ($member['mb_level'] < $mb['mb_level']) // 자신의 레벨이 크거나 같다면 통과
-                alert('자신의 권한보다 높은 권한의 회원이 작성한 글은 수정할 수 없습니다.', $return_url);
-        } else if ($is_admin === 'board') { // 게시판관리자이면
-            $mb = get_member($write['mb_id']);
-            if (!chk_multiple_admin($member['mb_id'], $board['bo_admin'])) // 자신이 관리하는 게시판인가?
-                alert('자신이 관리하는 게시판이 아니므로 수정할 수 없습니다.', $return_url);
-            else if ($member['mb_level'] < $mb['mb_level']) // 자신의 레벨이 크거나 같다면 통과
-                alert('자신의 권한보다 높은 권한의 회원이 작성한 글은 수정할 수 없습니다.', $return_url);
+        if ($is_admin === 'super') { // 최고관리자 통과
         } else if ($member['mb_id']) {
-            if ($member['mb_id'] !== $write['mb_id'])
-                alert('자신의 글이 아니므로 수정할 수 없습니다.', $return_url);
+            if ($member['mb_id'] !== $write['mb_id']) { alert('모임의 호스트가 아니므로 수정할 수 없습니다.', $return_url); }
         } else {
-            if ($write['mb_id'])
-                alert('로그인 후 수정하세요.', './login.php?url='.urlencode($return_url));
+            alert('잘못된 접근입니다.', '/');
         }
 
-        if ($member['mb_id']) {
-            // 자신의 글이라면
-            if ($member['mb_id'] === $wr['mb_id']) {
-                $mb_id = $member['mb_id'];
-                $wr_name = addslashes(clean_xss_tags($board['bo_use_name'] ? $member['mb_name'] : $member['mb_nick']));
-                $wr_email = addslashes($member['mb_email']);
-                $wr_homepage = addslashes(clean_xss_tags($member['mb_homepage']));
-            } else {
-                $mb_id = $wr['mb_id'];
-                if(isset($_POST['wr_name']) && $_POST['wr_name'])
-                    $wr_name = clean_xss_tags(trim($_POST['wr_name']));
-                else
-                    $wr_name = addslashes(clean_xss_tags($wr['wr_name']));
-                if(isset($_POST['wr_email']) && $_POST['wr_email'])
-                    $wr_email = get_email_address(trim($_POST['wr_email']));
-                else
-                    $wr_email = addslashes($wr['wr_email']);
-                if(isset($_POST['wr_homepage']) && $_POST['wr_homepage'])
-                    $wr_homepage = addslashes(clean_xss_tags($_POST['wr_homepage']));
-                else
-                    $wr_homepage = addslashes(clean_xss_tags($wr['wr_homepage']));
-            }
-        } else {
-            $mb_id = "";
-            // 비회원의 경우 이름이 누락되는 경우가 있음
-            if (!trim($wr_name)) alert("이름은 필히 입력하셔야 합니다.");
-            $wr_name = clean_xss_tags(trim($_POST['wr_name']));
-            $wr_email = get_email_address(trim($_POST['wr_email']));
-        }
+        $mb_id = $member['mb_id'];
+		$wr_name = addslashes(clean_xss_tags($board['bo_use_name'] ? $member['mb_name'] : $member['mb_nick']));
+		$wr_email = addslashes($member['mb_email']);
 
         $sql_password = $wr_password ? " , wr_password = '".get_encrypt_string($wr_password)."' " : "";
 
         $sql_ip = '';
-        if (!$is_admin)
-            $sql_ip = " , wr_ip = '{$_SERVER['REMOTE_ADDR']}' ";
-
-        // 외부 이미지 저장
-        if($board['as_save']) {
+        if (!$is_admin) { $sql_ip = " , wr_ip = '{$_SERVER['REMOTE_ADDR']}' "; } 
+        
+        if($board['as_save']) { // 외부 이미지 저장
             $wr_content = apms_content_image($wr_content);
         }
 
-        $sql = " update {$write_table}
-                set ca_name = '{$ca_name}',
-                     wr_option = '{$html},{$secret},{$mail}',
-                     wr_subject = '{$wr_subject}',
-                     wr_content = '{$wr_content}',
-                     wr_link1 = '{$wr_link1}',
-                     wr_link2 = '{$wr_link2}',
-                     mb_id = '{$mb_id}',
-                     wr_name = '{$wr_name}',
-                     wr_email = '{$wr_email}',
-                     wr_homepage = '{$wr_homepage}',
-                     wr_1 = '{$wr_1}',
-                     wr_2 = '{$wr_2}',
-                     wr_3 = '{$wr_3}',
-                     wr_4 = '{$wr_4}',
-                     wr_5 = '{$wr_5}',
-                     wr_6 = '{$wr_6}',
-                     wr_7 = '{$wr_7}',
-                     wr_8 = '{$wr_8}',
-                     wr_9 = '{$wr_9}',
-                     wr_10 = '{$wr_10}',
-                     as_type = '{$as_type}',
-                     as_img = '{$as_img}',
-                     as_publish = '{$as_publish}',
-                     as_extra = '{$as_extra}',
-                     as_extend = '{$as_extend}',
-					 as_down = '{$as_down}',
-                     as_view = '{$as_view}',
-					 as_tag = '{$as_tag}',
-                     as_map = '{$as_map}', 
-					 as_icon = '{$as_icon}',
-                     as_update = '{$as_update}'
-                     {$sql_ip}
-                     {$sql_password}
+        $sql = " update {$write_table} set 
+					ca_name = '{$ca_name}', wr_option = '{$html},{$secret},{$mail}',
+					wr_subject = '{$wr_subject}', wr_content = '{$wr_content}', wr_link1 = '{$wr_link1}',
+					wr_link2 = '{$wr_link2}', mb_id = '{$mb_id}', wr_name = '{$wr_name}', wr_email = '{$wr_email}',
+					wr_1 = '{$wr_1}', wr_2 = '{$wr_2}', wr_3 = '{$wr_3}', wr_4 = '{$wr_4}', wr_5 = '{$wr_5}',
+					wr_6 = '{$wr_6}', wr_7 = '{$wr_7}', wr_8 = '{$wr_8}', wr_9 = '{$wr_9}', wr_10 = '{$wr_10}',
+					as_type = '{$as_type}', as_img = '{$as_img}', as_publish = '{$as_publish}', as_extra = '{$as_extra}',
+					as_extend = '{$as_extend}', as_down = '{$as_down}', as_view = '{$as_view}', as_tag = '{$as_tag}', 
+					as_map = '{$as_map}', as_icon = '{$as_icon}', as_update = '{$as_update}'
+					{$sql_ip} {$sql_password} 
               where wr_id = '{$wr['wr_id']}' ";
         sql_query($sql);
 
-        // 분류가 수정되는 경우 해당되는 코멘트의 분류명도 모두 수정함
-        // 코멘트의 분류를 수정하지 않으면 검색이 제대로 되지 않음
+        // 분류가 수정되는 경우 해당되는 코멘트의 분류명도 모두 수정함 (코멘트의 분류를 수정하지 않으면 검색이 제대로 되지 않음)
         $sql = " update {$write_table} set ca_name = '{$ca_name}' where wr_parent = '{$wr['wr_id']}' ";
         sql_query($sql);
 
-        /*
-        if ($notice) {
-            //if (!preg_match("/[^0-9]{0,1}{$wr_id}[\r]{0,1}/",$board['bo_notice']))
-            if (!in_array((int)$wr_id, $notice_array)) {
-                $bo_notice = $wr_id . ',' . $board['bo_notice'];
-                sql_query(" update {$g5['board_table']} set bo_notice = '{$bo_notice}' where bo_table = '{$bo_table}' ");
-            }
-        } else {
-            $bo_notice = '';
-            for ($i=0; $i<count($notice_array); $i++)
-                if ((int)$wr_id != (int)$notice_array[$i])
-                    $bo_notice .= $notice_array[$i] . ',';
-            $bo_notice = trim($bo_notice);
-            //$bo_notice = preg_replace("/^".$wr_id."[\n]?$/m", "", $board['bo_notice']);
-            sql_query(" update {$g5['board_table']} set bo_notice = '{$bo_notice}' where bo_table = '{$bo_table}' ");
-        }
-        */
-
         $bo_notice = board_notice($board['bo_notice'], $wr_id, $notice);
         sql_query(" update {$g5['board_table']} set bo_notice = '{$bo_notice}' where bo_table = '{$bo_table}' ");
+		// ### 모임 수정 처리 End ######################################################################################################################
     }
 
-// 게시판그룹접근사용을 하지 않아야 하고 비회원 글읽기가 가능해야 하며 비밀글이 아니어야 합니다.
+
+	// 게시판그룹접근사용을 하지 않아야 하고 비회원 글읽기가 가능해야 하며 비밀글이 아니어야 합니다.
     if (!$group['gr_use_access'] && $board['bo_read_level'] < 2 && !$secret) {
         naver_syndi_ping($bo_table, $wr_id);
     }
 
-// 파일개수 체크
+	// 파일개수 체크
     $file_count   = 0;
     $upload_count = count($_FILES['bf_file']['name']);
 
@@ -591,13 +507,13 @@ if($ap == 'list') {
             alert('첨부파일을 '.number_format($board['bo_upload_count']).'개 이하로 업로드 해주십시오.');
     }
 
-// 디렉토리가 없다면 생성합니다. (퍼미션도 변경하구요.)
+	// 디렉토리가 없다면 생성합니다. (퍼미션도 변경하구요.)
     @mkdir(G5_DATA_PATH.'/file/'.$bo_table, G5_DIR_PERMISSION);
     @chmod(G5_DATA_PATH.'/file/'.$bo_table, G5_DIR_PERMISSION);
 
     $chars_array = array_merge(range(0,9), range('a','z'), range('A','Z'));
 
-// 가변 파일 업로드
+	// 가변 파일 업로드
     $file_upload_msg = '';
     $upload = array();
     for ($i=0; $i<count($_FILES['bf_file']['name']); $i++) {
@@ -697,7 +613,7 @@ if($ap == 'list') {
         }
     }
 
-// 나중에 테이블에 저장하는 이유는 $wr_id 값을 저장해야 하기 때문입니다.
+	// 나중에 테이블에 저장하는 이유는 $wr_id 값을 저장해야 하기 때문입니다.
     for ($i=0; $i<count($upload); $i++)
     {
         if (!get_magic_quotes_gpc()) {
@@ -705,13 +621,11 @@ if($ap == 'list') {
         }
 
         $row = sql_fetch(" select count(*) as cnt from {$g5['board_file_table']} where bo_table = '{$bo_table}' and wr_id = '{$wr_id}' and bf_no = '{$i}' ");
-        if ($row['cnt'])
-        {
+        if ($row['cnt']){
             // 삭제에 체크가 있거나 파일이 있다면 업데이트를 합니다.
             // 그렇지 않다면 내용만 업데이트 합니다.
 
-            if ($upload[$i]['del_check'] || $upload[$i]['file'])
-            {
+            if ($upload[$i]['del_check'] || $upload[$i]['file']){
                 $sql = " update {$g5['board_file_table']}
                         set bf_source = '{$upload[$i]['source']}',
                              bf_file = '{$upload[$i]['file']}',
@@ -725,9 +639,7 @@ if($ap == 'list') {
                                 and wr_id = '{$wr_id}'
                                 and bf_no = '{$i}' ";
                 sql_query($sql);
-            }
-            else
-            {
+            }else{
                 $sql = " update {$g5['board_file_table']}
                         set bf_content = '{$bf_content[$i]}'
                         where bo_table = '{$bo_table}'
@@ -735,9 +647,7 @@ if($ap == 'list') {
                                   and bf_no = '{$i}' ";
                 sql_query($sql);
             }
-        }
-        else
-        {
+        }else{
             $sql = " insert into {$g5['board_file_table']}
                     set bo_table = '{$bo_table}',
                          wr_id = '{$wr_id}',
@@ -755,11 +665,10 @@ if($ap == 'list') {
         }
     }
 
-// 업로드된 파일 내용에서 가장 큰 번호를 얻어 거꾸로 확인해 가면서
-// 파일 정보가 없다면 테이블의 내용을 삭제합니다.
+	// 업로드된 파일 내용에서 가장 큰 번호를 얻어 거꾸로 확인해 가면서
+	// 파일 정보가 없다면 테이블의 내용을 삭제합니다.
     $row = sql_fetch(" select max(bf_no) as max_bf_no from {$g5['board_file_table']} where bo_table = '{$bo_table}' and wr_id = '{$wr_id}' ");
-    for ($i=(int)$row['max_bf_no']; $i>=0; $i--)
-    {
+    for ($i=(int)$row['max_bf_no']; $i>=0; $i--){
         $row2 = sql_fetch(" select bf_file from {$g5['board_file_table']} where bo_table = '{$bo_table}' and wr_id = '{$wr_id}' and bf_no = '{$i}' ");
 
         // 정보가 있다면 빠집니다.
@@ -769,19 +678,19 @@ if($ap == 'list') {
         sql_query(" delete from {$g5['board_file_table']} where bo_table = '{$bo_table}' and wr_id = '{$wr_id}' and bf_no = '{$i}' ");
     }
 
-// 파일의 개수를 게시물에 업데이트 한다.
+	// 파일의 개수를 게시물에 업데이트 한다.
     $row = sql_fetch(" select count(*) as cnt from {$g5['board_file_table']} where bo_table = '{$bo_table}' and wr_id = '{$wr_id}' ");
     sql_query(" update {$write_table} set wr_file = '{$row['cnt']}' where wr_id = '{$wr_id}' ");
 
-// 자동저장된 레코드를 삭제한다.
+	// 자동저장된 레코드를 삭제한다.
     sql_query(" delete from {$g5['autosave_table']} where as_uid = '{$uid}' ");
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-// 비밀글이라면 세션에 비밀글의 아이디를 저장한다. 자신의 글은 다시 비밀번호를 묻지 않기 위함
+	// 비밀글이라면 세션에 비밀글의 아이디를 저장한다. 자신의 글은 다시 비밀번호를 묻지 않기 위함
     if ($secret)
         set_session("ss_secret_{$bo_table}_{$wr_num}", TRUE);
 
-// 메일발송 사용 (수정글은 발송하지 않음)
+	// 메일발송 사용 (수정글은 발송하지 않음)
     if (!($w == 'u' || $w == 'cu') && $config['cf_email_use'] && $board['bo_use_email']) {
 
         // 확장보드
@@ -855,22 +764,22 @@ if($ap == 'list') {
         unset($wr_data);
     }
 
-// 태그등록
+	// 태그등록
     $tag_time = ($w == "u") ? $write['wr_datetime'] : G5_TIME_YMDHIS;
     apms_add_tag('', $as_tag, $tag_time, $bo_table, $wr_id, $mb_id);
 
-// 글타입 체크
+	// 글타입 체크
     $wrt = array("chk_img"=>true, "wr_id"=>$wr_id, "wr_option"=>$secret, "wr_content"=>stripslashes($wr_content), "wr_link1"=>$wr_link1, "wr_link2"=>$wr_link2);
 
     $wtype = apms_wr_type($bo_table, $wrt);
 
-// 글업데이트
+	// 글업데이트
     sql_query(" update {$write_table} set as_list = '{$wtype['as_list']}', as_thumb = '".addslashes($wtype['as_thumb'])."', as_video = '{$wtype['as_video']}' where wr_id = '{$wr_id}' ", false);
     if($is_new) {
         sql_query(" update {$g5['board_new_table']} set as_type = '{$as_type}', as_extra = '{$as_extra}', as_list = '{$wtype['as_list']}', as_secret = '{$as_secret}', as_publish = '{$as_publish}', as_update = '{$as_update}', as_video = '{$wtype['as_video']}' where bo_table = '{$bo_table}' and wr_id = '{$wr_id}' ", false);
     }
 
-// 리사이징
+	// 리사이징
     if($board['as_resize_kb'] > 0 && $board['as_resize'] > 0) {
         // Byte 변환
         $img_kb = $board['as_resize_kb'] * 1024;
@@ -981,15 +890,7 @@ if($ap == 'list') {
     @include_once($board_skin_path.'/write_update.tail.skin.php');
 
     delete_cache_latest($bo_table);
-    if($ap == 'moa_write')
-    {
-        goto_url(G5_URL . '/shop/partner/?ap=list');
-    } else {
-        if ($file_upload_msg)
-            alert($file_upload_msg, G5_HTTP_BBS_URL . '/board.php?bo_table=' . $bo_table . '&amp;wr_id=' . $wr_id . $qstr);
-        else
-            goto_url(G5_HTTP_BBS_URL . '/board.php?bo_table=' . $bo_table . '&amp;wr_id=' . $wr_id . $qstr);
-    }
+    goto_url(G5_URL . '/shop/partner/?ap=list');
 }
 ?>
 
