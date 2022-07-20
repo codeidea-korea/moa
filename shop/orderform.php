@@ -347,12 +347,10 @@ if ($default['de_hope_date_use']) {
 
 if($is_mobile_order) {
 	echo '<div id="sod_approval_frm">'."\n";
-
 	ob_start();
 	include_once($skin_path.'/orderform.item.skin.php');
 	$content = ob_get_contents();
 	ob_end_clean();
-
 	echo '</div>'."\n";
 
 	require_once(G5_MSHOP_PATH.'/'.$default['de_pg_service'].'/orderform.1.php');
@@ -378,289 +376,268 @@ include_once($skin_path.'/orderform.head.skin.php');
 <script src="<?php echo G5_JS_URL?>/shop.order.js"></script>
 <?php
 // 결제 페이지 - 상품 스킨
-if(!$is_mobile_order) include_once($skin_path.'/orderform.item.skin.php');
+if(!$is_mobile_order) { 
+	include_once($skin_path.'/orderform.item.skin.php'); 
+}
 ?>
 
-	<input type="hidden" name="od_price"    value="<?php echo $tot_sell_price; ?>">
-	<input type="hidden" name="org_od_price"    value="<?php echo $tot_sell_price; ?>">
-	<input type="hidden" name="od_send_cost" value="<?php echo $send_cost; ?>">
-	<input type="hidden" name="od_send_cost2" value="0">
-	<input type="hidden" name="item_coupon" value="0">
-	<input type="hidden" name="od_coupon" value="0">
-	<input type="hidden" name="od_send_coupon" value="0">
+<input type="hidden" name="od_price"    value="<?php echo $tot_sell_price; ?>">
+<input type="hidden" name="org_od_price"    value="<?php echo $tot_sell_price; ?>">
+<input type="hidden" name="od_send_cost" value="<?php echo $send_cost; ?>">
+<input type="hidden" name="od_send_cost2" value="0">
+<input type="hidden" name="item_coupon" value="0">
+<input type="hidden" name="od_coupon" value="0">
+<input type="hidden" name="od_send_coupon" value="0">
 
 <?php
-	if($is_mobile_order) {
-		echo $content; //모바일 상품스킨
-	} else {
-		// 결제대행사별 코드 include (결제대행사 정보 필드)
-		require_once(G5_SHOP_PATH.'/'.$default['de_pg_service'].'/orderform.2.php');
+if($is_mobile_order) {
+	echo $content; //모바일 상품스킨
+} else {
+	// 결제대행사별 코드 include (결제대행사 정보 필드)
+	require_once(G5_SHOP_PATH.'/'.$default['de_pg_service'].'/orderform.2.php');
 
-		if($is_kakaopay_use) {
-			require_once(G5_SHOP_PATH.'/kakaopay/orderform.2.php');
-		}
-	}
-
-	//주문서 사용할 때
-	$addr_sel = array();
-	$addr_default = '';
-	if($is_orderform) {
-		$orderer_zip_href =	G5_BBS_URL.'/zip.php?frm_name=forderform&amp;frm_zip1=od_zip1&amp;frm_zip2=od_zip2&amp;frm_addr1=od_addr1&amp;frm_addr2=od_addr2&amp;frm_addr3=od_addr3&amp;frm_jibeon=od_addr_jibeon';
-		$taker_zip_href = G5_BBS_URL.'/zip.php?frm_name=forderform&amp;frm_zip1=od_b_zip1&amp;frm_zip2=od_b_zip2&amp;frm_addr1=od_b_addr1&amp;frm_addr2=od_b_addr2&amp;frm_addr3=od_b_addr3&amp;frm_jibeon=od_b_addr_jibeon';
-
-		if($is_member) {
-
-			// 배송지 이력
-			$sep = chr(30);
-
-			// 기본배송지
-			$sql = " select *
-						from {$g5['g5_shop_order_address_table']}
-						where mb_id = '{$member['mb_id']}'
-						  and ad_default = '1' ";
-			$row = sql_fetch($sql);
-			if($row['ad_id']) {
-				$addr_default = $row['ad_name'].$sep.$row['ad_tel'].$sep.$row['ad_hp'].$sep.$row['ad_zip1'].$sep.$row['ad_zip2'].$sep.$row['ad_addr1'].$sep.$row['ad_addr2'].$sep.$row['ad_addr3'].$sep.$row['ad_jibeon'].$sep.$row['ad_subject'];
-			}
-
-			// 최근배송지
-			$sql = " select *
-						from {$g5['g5_shop_order_address_table']}
-						where mb_id = '{$member['mb_id']}'
-						  and ad_default = '0'
-						order by ad_id desc
-						limit 1 ";
-			$result = sql_query($sql);
-			for($i=0; $row=sql_fetch_array($result); $i++) {
-				$addr_sel[$i]['addr'] = $row['ad_name'].$sep.$row['ad_tel'].$sep.$row['ad_hp'].$sep.$row['ad_zip1'].$sep.$row['ad_zip2'].$sep.$row['ad_addr1'].$sep.$row['ad_addr2'].$sep.$row['ad_addr3'].$sep.$row['ad_jibeon'].$sep.$row['ad_subject'];
-				$addr_sel[$i]['namme'] = ($row['ad_subject']) ? $row['ad_subject'] : $row['ad_name'];
-			}
-		} 
-	}
-
-	// 주문서 스킨
-	include_once($skin_path.'/orderform.orderer.skin.php');
-
-	// 쿠폰사용
-	$oc_cnt = $sc_cnt = 0;
-	if($is_member) {
-		// 주문쿠폰
-		$sql = " select cp_id
-					from {$g5['g5_shop_coupon_table']}
-					where mb_id IN ( '{$member['mb_id']}', '전체회원' )
-                      and cp_method = '2'
-					  and cp_start <= '".G5_TIME_YMD."'
-                      and cp_end >= '".G5_TIME_YMD."'
-                      and cp_minimum <= '$tot_sell_price' ";
-		$res = sql_query($sql);
-
-		for($k=0; $cp=sql_fetch_array($res); $k++) {
-			if(is_used_coupon($member['mb_id'], $cp['cp_id']))
-				continue;
-
-			$oc_cnt++;
-		}
-
-		// 배송비 쿠폰이 없음. 
-		// if($send_cost > 0) {
-		// 	// 배송비쿠폰
-		// 	$sql = " select cp_id
-		// 				from {$g5['g5_shop_coupon_table']}
-		// 				where mb_id IN ( '{$member['mb_id']}', '전체회원' )
-		// 				  and cp_method = '3'
-        //                   and cp_start <= '".G5_TIME_YMD."'
-        //                   and cp_end >= '".G5_TIME_YMD."'
-        //                   and cp_minimum <= '$tot_sell_price' ";
-		// 	$res = sql_query($sql);
-
-		// 	for($k=0; $cp=sql_fetch_array($res); $k++) {
-		// 		if(is_used_coupon($member['mb_id'], $cp['cp_id']))
-		// 			continue;
-
-		// 		$sc_cnt++;
-		// 	}
-		// }
-	}
-
-	// 결제방법
-	$multi_settle = 0;
-	$escrow_title = ($default['de_escrow_use']) ? '에스크로 ' : '';
-
-	// 카카오페이
-	$is_kakaopay = false;
 	if($is_kakaopay_use) {
-		$multi_settle++;
-        $is_kakaopay = true;
+		require_once(G5_SHOP_PATH.'/kakaopay/orderform.2.php');
 	}
+}
 
-	// 무통장입금 사용
-	$is_mu = false;
-	if ($default['de_bank_use']) {
-		$multi_settle++;
-		$is_mu = true;
-	}
+//주문서 사용할 때
+$addr_sel = array();
+$addr_default = '';
+if($is_orderform) {
+	$orderer_zip_href =	G5_BBS_URL.'/zip.php?frm_name=forderform&amp;frm_zip1=od_zip1&amp;frm_zip2=od_zip2&amp;frm_addr1=od_addr1&amp;frm_addr2=od_addr2&amp;frm_addr3=od_addr3&amp;frm_jibeon=od_addr_jibeon';
+	$taker_zip_href = G5_BBS_URL.'/zip.php?frm_name=forderform&amp;frm_zip1=od_b_zip1&amp;frm_zip2=od_b_zip2&amp;frm_addr1=od_b_addr1&amp;frm_addr2=od_b_addr2&amp;frm_addr3=od_b_addr3&amp;frm_jibeon=od_b_addr_jibeon';
 
-	// 가상계좌 사용
-	$is_vbank = false;
-	if ($default['de_vbank_use']) {
-		$multi_settle++;
-		$is_vbank = true;
-	}
-
-	// 계좌이체 사용
-	$is_iche = false;
-	if ($default['de_iche_use']) {
-		$multi_settle++;
-		$is_iche = true;
-	}
-
-	// 휴대폰 사용
-	$is_hp = false;
-	if ($default['de_hp_use']) {
-		$multi_settle++;
-		$is_hp = true;
-	}
-
-	// 신용카드 사용
-	$is_card = false;
-	if ($default['de_card_use']) {
-		$multi_settle++;
-		$is_card = true;
-	}
-
-	// PG 간편결제
-	$is_easy_pay = false;
-	if($default['de_easy_pay_use']) {
-		switch($default['de_pg_service']) {
-			case 'lg':
-				$pg_easy_pay_name = 'PAYNOW';
-				break;
-			case 'inicis':
-				$pg_easy_pay_name = 'KPAY';
-				break;
-			default:
-				$pg_easy_pay_name = 'PAYCO';
-				break;
+	if($is_member) {
+		// 배송지 이력
+		$sep = chr(30);
+		// 기본배송지
+		$sql = " select *
+					from {$g5['g5_shop_order_address_table']}
+					where mb_id = '{$member['mb_id']}'
+					  and ad_default = '1' ";
+		$row = sql_fetch($sql);
+		if($row['ad_id']) {
+			$addr_default = $row['ad_name'].$sep.$row['ad_tel'].$sep.$row['ad_hp'].$sep.$row['ad_zip1'].$sep.$row['ad_zip2'].$sep.$row['ad_addr1'].$sep.$row['ad_addr2'].$sep.$row['ad_addr3'].$sep.$row['ad_jibeon'].$sep.$row['ad_subject'];
 		}
-
-		$multi_settle++;
-		$is_easy_pay = true;
-	}
-
-	// 이니시스 삼성페이
-	$is_samsung_pay = false;
-	if($is_mobile_order && $default['de_samsung_pay_use']) {
-		$multi_settle++;
-		$is_samsung_pay = true;
-	}
-
-	//이니시스 Lpay
-	$is_inicis_lpay = false;
-	if($is_mobile_order && $default['de_inicis_lpay_use']) {
-		$multi_settle++;
-		$is_inicis_lpay = true;
-	}
-
-	$temp_point = 0;
-	$is_point = false;
-	if (!$no_use_point && $is_member && $config['cf_use_point']) { // 회원이면서 포인트사용이면
-
-		// 포인트 결제 사용 포인트보다 회원의 포인트가 크다면
-		if ($member['mb_point'] >= $default['de_settle_min_point']) {
-			$temp_point = (int)$default['de_settle_max_point'];
-
-			if($temp_point > (int)$tot_sell_price)
-				$temp_point = (int)$tot_sell_price;
-
-			if($temp_point > (int)$member['mb_point'])
-				$temp_point = (int)$member['mb_point'];
-
-			$point_unit = (int)$default['de_settle_point_unit'];
-			$temp_point = (int)((int)($temp_point / $point_unit) * $point_unit);
-
-			$is_point = true;
+		// 최근배송지
+		$sql = " select *
+					from {$g5['g5_shop_order_address_table']}
+					where mb_id = '{$member['mb_id']}'
+					  and ad_default = '0'
+					order by ad_id desc
+					limit 1 ";
+		$result = sql_query($sql);
+		for($i=0; $row=sql_fetch_array($result); $i++) {
+			$addr_sel[$i]['addr'] = $row['ad_name'].$sep.$row['ad_tel'].$sep.$row['ad_hp'].$sep.$row['ad_zip1'].$sep.$row['ad_zip2'].$sep.$row['ad_addr1'].$sep.$row['ad_addr2'].$sep.$row['ad_addr3'].$sep.$row['ad_jibeon'].$sep.$row['ad_subject'];
+			$addr_sel[$i]['namme'] = ($row['ad_subject']) ? $row['ad_subject'] : $row['ad_name'];
 		}
+	} 
+}
+
+// 주문서 스킨
+include_once($skin_path.'/orderform.orderer.skin.php');
+
+// 쿠폰사용
+$oc_cnt = $sc_cnt = 0;
+if($is_member) {
+	// 주문쿠폰
+	$sql = " select cp_id
+				from {$g5['g5_shop_coupon_table']}
+				where mb_id IN ( '{$member['mb_id']}', '전체회원' )
+				  and cp_method = '2'
+				  and cp_start <= '".G5_TIME_YMD."'
+				  and cp_end >= '".G5_TIME_YMD."'
+				  and cp_minimum <= '$tot_sell_price' ";
+	$res = sql_query($sql);
+
+	for($k=0; $cp=sql_fetch_array($res); $k++) {
+		if(is_used_coupon($member['mb_id'], $cp['cp_id']))
+			continue;
+
+		$oc_cnt++;
+	}
+}
+
+// 결제방법
+$multi_settle = 0;
+$escrow_title = ($default['de_escrow_use']) ? '에스크로 ' : '';
+
+// 카카오페이
+$is_kakaopay = false;
+if($is_kakaopay_use) {
+	$multi_settle++;
+	$is_kakaopay = true;
+}
+
+// 무통장입금 사용
+$is_mu = false;
+if ($default['de_bank_use']) {
+	$multi_settle++;
+	$is_mu = true;
+}
+
+// 가상계좌 사용
+$is_vbank = false;
+if ($default['de_vbank_use']) {
+	$multi_settle++;
+	$is_vbank = true;
+}
+
+// 계좌이체 사용
+$is_iche = false;
+if ($default['de_iche_use']) {
+	$multi_settle++;
+	$is_iche = true;
+}
+
+// 휴대폰 사용
+$is_hp = false;
+if ($default['de_hp_use']) {
+	$multi_settle++;
+	$is_hp = true;
+}
+
+// 신용카드 사용
+$is_card = false;
+if ($default['de_card_use']) {
+	$multi_settle++;
+	$is_card = true;
+}
+
+// PG 간편결제
+$is_easy_pay = false;
+if($default['de_easy_pay_use']) {
+	switch($default['de_pg_service']) {
+		case 'lg':
+			$pg_easy_pay_name = 'PAYNOW';
+			break;
+		case 'inicis':
+			$pg_easy_pay_name = 'KPAY';
+			break;
+		default:
+			$pg_easy_pay_name = 'PAYCO';
+			break;
 	}
 
-	// 포인트 사용
-	$is_po = false;
-	if($is_point && $default['as_point'] && $member['mb_point'] >= (int)$tot_sell_price) {
-		$multi_settle++;
-		$is_po = true;
+	$multi_settle++;
+	$is_easy_pay = true;
+}
+
+// 이니시스 삼성페이
+$is_samsung_pay = false;
+if($is_mobile_order && $default['de_samsung_pay_use']) {
+	$multi_settle++;
+	$is_samsung_pay = true;
+}
+
+//이니시스 Lpay
+$is_inicis_lpay = false;
+if($is_mobile_order && $default['de_inicis_lpay_use']) {
+	$multi_settle++;
+	$is_inicis_lpay = true;
+}
+
+$temp_point = 0;
+$is_point = false;
+if (!$no_use_point && $is_member && $config['cf_use_point']) { // 회원이면서 포인트사용이면
+
+	// 포인트 결제 사용 포인트보다 회원의 포인트가 크다면
+	if ($member['mb_point'] >= $default['de_settle_min_point']) {
+		$temp_point = (int)$default['de_settle_max_point'];
+
+		if($temp_point > (int)$tot_sell_price)
+			$temp_point = (int)$tot_sell_price;
+
+		if($temp_point > (int)$member['mb_point'])
+			$temp_point = (int)$member['mb_point'];
+
+		$point_unit = (int)$default['de_settle_point_unit'];
+		$temp_point = (int)((int)($temp_point / $point_unit) * $point_unit);
+
+		$is_point = true;
+	}
+}
+
+// 포인트 사용
+$is_po = false;
+if($is_point && $default['as_point'] && $member['mb_point'] >= (int)$tot_sell_price) {
+	$multi_settle++;
+	$is_po = true;
+}
+
+$bank_account = '';
+if ($default['de_bank_use']) {
+	// 은행계좌를 배열로 만든후
+	$str = explode("\n", trim($default['de_bank_account']));
+	for ($i=0; $i<count($str); $i++) {
+		//$str[$i] = str_replace("\r", "", $str[$i]);
+		$str[$i] = trim($str[$i]);
+		$bank_account .= '<option value="'.$str[$i].'">'.$str[$i].'</option>'.PHP_EOL;
+	}
+}
+
+$is_none = false;
+if ($multi_settle == 0) {
+	$is_none = true;
+}
+
+// 결제정보 스킨 (모바일결제기준으로 주석처리함 2022-07-20 박경호 )
+// include_once($skin_path.'/orderform.payment.skin.php');
+
+// 결제대행사별 코드 include (주문버튼)
+if($is_mobile_order) {
+	require_once(G5_MSHOP_PATH.'/'.$default['de_pg_service'].'/orderform.2.php');
+
+	if( is_inicis_simple_pay() ){   //삼성페이 또는 L.pay 사용시
+		require_once(G5_MSHOP_PATH.'/samsungpay/orderform.2.php');
 	}
 
-	$bank_account = '';
-	if ($default['de_bank_use']) {
-		// 은행계좌를 배열로 만든후
-		$str = explode("\n", trim($default['de_bank_account']));
-		for ($i=0; $i<count($str); $i++) {
-			//$str[$i] = str_replace("\r", "", $str[$i]);
-			$str[$i] = trim($str[$i]);
-			$bank_account .= '<option value="'.$str[$i].'">'.$str[$i].'</option>'.PHP_EOL;
-		}
+	if($is_kakaopay_use) {
+		require_once(G5_SHOP_PATH.'/kakaopay/orderform.2.php');
 	}
 
-	$is_none = false;
-	if ($multi_settle == 0) {
-		$is_none = true;
+	echo '<div id="show_progress" style="display:none;">'.PHP_EOL;
+	echo '<img src="'.G5_MOBILE_URL.'/shop/img/loading.gif" alt="">'.PHP_EOL;
+	echo '<span>주문완료 중입니다. 잠시만 기다려 주십시오.</span>'.PHP_EOL;
+	echo '</div>'.PHP_EOL;
+
+	if($is_kakaopay_use) {
+		require_once(G5_SHOP_PATH.'/kakaopay/orderform.3.php');
 	}
 
-	// 결제정보 스킨
-	include_once($skin_path.'/orderform.payment.skin.php');
+} else {
+	require_once(G5_SHOP_PATH.'/'.$default['de_pg_service'].'/orderform.3.php');
 
-	// 결제대행사별 코드 include (주문버튼)
+	if($is_kakaopay_use) {
+		require_once(G5_SHOP_PATH.'/kakaopay/orderform.3.php');
+	}
+}
+
+$escrow_info = '';
+if ($default['de_escrow_use']) {
+	// 결제대행사별 코드 include (에스크로 안내)
+	ob_start();
 	if($is_mobile_order) {
-	    require_once(G5_MSHOP_PATH.'/'.$default['de_pg_service'].'/orderform.2.php');
+		include_once(G5_MSHOP_PATH.'/'.$default['de_pg_service'].'/orderform.3.php');
 
-	    if( is_inicis_simple_pay() ){   //삼성페이 또는 L.pay 사용시
-			require_once(G5_MSHOP_PATH.'/samsungpay/orderform.2.php');
-		}
-
-		if($is_kakaopay_use) {
-			require_once(G5_SHOP_PATH.'/kakaopay/orderform.2.php');
-		}
-
-		echo '<div id="show_progress" style="display:none;">'.PHP_EOL;
-		echo '<img src="'.G5_MOBILE_URL.'/shop/img/loading.gif" alt="">'.PHP_EOL;
-		echo '<span>주문완료 중입니다. 잠시만 기다려 주십시오.</span>'.PHP_EOL;
-		echo '</div>'.PHP_EOL;
-
-		if($is_kakaopay_use) {
-			require_once(G5_SHOP_PATH.'/kakaopay/orderform.3.php');
+		if( is_inicis_simple_pay() ){   //삼성페이 또는 L.pay 사용시
+			require_once(G5_MSHOP_PATH.'/samsungpay/orderform.3.php');
 		}
 
 	} else {
-		require_once(G5_SHOP_PATH.'/'.$default['de_pg_service'].'/orderform.3.php');
-
-		if($is_kakaopay_use) {
-			require_once(G5_SHOP_PATH.'/kakaopay/orderform.3.php');
-		}
+		include_once(G5_SHOP_PATH.'/'.$default['de_pg_service'].'/orderform.4.php');
 	}
+	$escrow_info = ob_get_contents();
+	ob_end_clean();
+}
 
-	$escrow_info = '';
-	if ($default['de_escrow_use']) {
-		// 결제대행사별 코드 include (에스크로 안내)
-		ob_start();
-		if($is_mobile_order) {
-			include_once(G5_MSHOP_PATH.'/'.$default['de_pg_service'].'/orderform.3.php');
+// 테일 스킨
+include_once($skin_path.'/orderform.tail.skin.php');
 
-		    if( is_inicis_simple_pay() ){   //삼성페이 또는 L.pay 사용시
-				require_once(G5_MSHOP_PATH.'/samsungpay/orderform.3.php');
-			}
-
-		} else {
-			include_once(G5_SHOP_PATH.'/'.$default['de_pg_service'].'/orderform.4.php');
-		}
-		$escrow_info = ob_get_contents();
-		ob_end_clean();
-	}
-
-	// 테일 스킨
-	include_once($skin_path.'/orderform.tail.skin.php');
-
-	if($is_mobile_order && $default['de_samsung_pay_use'] ){   //삼성페이 사용시
-		require_once(G5_MSHOP_PATH.'/samsungpay/order.script.php');
-	}
+if($is_mobile_order && $default['de_samsung_pay_use'] ){   //삼성페이 사용시
+	require_once(G5_MSHOP_PATH.'/samsungpay/order.script.php');
+}
 ?>
 <script>
 // document.cookie = "safeCookie1=foo; SameSite=Lax";
@@ -701,9 +678,9 @@ var g5_url = "<?php echo G5_URL;?>";
 	/* 결제방법에 따른 처리 후 결제등록요청 실행 */
 	var settle_method = "";
 	var temp_point = 0;
-
-	function pay_approval()
-	{
+	
+	// 모바일 화면 결제 시작
+	function pay_approval(){
 		// 재고체크
 		var stock_msg = order_stock_check();
 		if(stock_msg != "") {
@@ -996,10 +973,13 @@ var g5_url = "<?php echo G5_URL;?>";
 			var max_point  = parseInt(f.max_temp_point.value);
 
 		if (typeof(f.od_temp_point) != "undefined") {
-			if (f.od_temp_point.value)
-			{
+			if (f.od_temp_point.value){
 				var point_unit = parseInt(<?php echo $default['de_settle_point_unit']; ?>);
 				temp_point = parseInt(f.od_temp_point.value);
+
+				if (temp_point < 1000){
+					alert('포인트는 1,000점 이상 사용가능합니다. '); return false;
+				}
 
 				if (temp_point > <?php echo (int)$member['mb_point']; ?>) {
 					alert("회원님의 포인트보다 많이 결제할 수 없습니다.");
