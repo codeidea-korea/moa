@@ -13,14 +13,14 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 <?php } ?>
 
 <!-- Modal -->
-<div class="modal fade" id="couponModal" tabindex="-1" role="dialog" aria-labelledby="couponModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body">
-		<div id="couponBox"></div>
-	  </div>
-    </div>
-  </div>
+<div class="modal fade" style="padding:15px;" id="couponModal" tabindex="-1" role="dialog" aria-labelledby="couponModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div id="couponBox"></div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <?php if($setup_href) { ?>
@@ -45,22 +45,22 @@ $(function() {
 	var $cp_btn_el;
     var $cp_row_el;
 
-    $(".cp_btn").click(function() {
+    /*$(".cp_btn").click(function() {
         $cp_btn_el = $(this);
         $cp_row_el = $(this).closest("tr");
         //$("#cp_frm").remove();
-		$('#couponModal').modal('show');
+    		$('#couponModal').modal('show');
         var it_id = $cp_btn_el.closest("tr").find("input[name^=it_id]").val();
-
+    
         $.post(
             "./orderitemcoupon.php",
             { it_id: it_id,  sw_direct: "<?php echo $sw_direct; ?>" },
             function(data) {
                 //$cp_btn_el.after(data);
-				$("#couponBox").html(data);
+    				$("#couponBox").html(data);
             }
         );
-    });
+    });*/
 
     $(document).on("click", ".cp_apply", function() {
 		var $el = $(this).closest("tr");
@@ -147,7 +147,7 @@ $(function() {
         }
         $.post(
             "./ordercoupon.php",
-            { price: price },
+            { price: price, coupon_ids: "<?=implode(',', $arr_coupon_ids)?>" },
             function(data) {
                 //$this.after(data);
 				$("#couponBox").html(data);
@@ -165,32 +165,26 @@ $(function() {
         var od_price = parseInt($("input[name=org_od_price]").val()) - item_coupon;
 
         if(price == 0) {
-            if(!confirm(subj+"쿠폰의 할인 금액은 "+price+"원입니다.\n쿠폰을 적용하시겠습니까?")) {
+            if(!confirm(subj+"\n쿠폰의 할인 금액은 "+price+"원입니다.\n쿠폰을 적용하시겠습니까?")) {
                 return false;
             }
         }
-
         if(od_price - price <= 0) {
             alert("쿠폰할인금액이 주문금액보다 크므로 쿠폰을 적용할 수 없습니다.");
             return false;
         }
 
         $("input[name=sc_cp_id]").val("");
-        $("#sc_coupon_btn").text("쿠폰적용");
-        $("#sc_coupon_cancel").remove();
-
         $("input[name=od_price]").val(od_price - price);
         $("input[name=od_cp_id]").val(cp_id);
         $("input[name=od_coupon]").val(price);
         $("input[name=od_send_coupon]").val(0);
-        $("#od_cp_price").text(number_format(String(price)));
-        $("#sc_cp_price").text(0);
         calculate_order_price();
-        // $("#od_coupon_frm").remove();
-		$('#couponModal').modal('hidden');
-        $("#od_coupon_btn").text("쿠폰변경").focus();
-        if(!$("#od_coupon_cancel").size)
-            $("#od_coupon_btn").after("<button type=\"button\" id=\"od_coupon_cancel\" class=\"btn btn-black btn-sm\">쿠폰취소</button>");
+		$('.close-modal').trigger('click');
+		$("#od_coupon_btn").text("쿠폰변경").focus();
+        if(!$("#od_coupon_cancel").size()){
+			$("#od_coupon_btn").after("<button type=\"button\" id=\"od_coupon_cancel\" class=\"btn btn-black btn-sm\">쿠폰취소</button>");
+		}
     });
 
     $(document).on("click", "#od_coupon_close", function() {
@@ -392,12 +386,15 @@ function calculate_order_price() {
     var send_cost = parseInt($("input[name=od_send_cost]").val());
     var send_cost2 = parseInt($("input[name=od_send_cost2]").val());
     var send_coupon = parseInt($("input[name=od_send_coupon]").val());
-    var tot_price = sell_price + send_cost + send_cost2 - send_coupon;
+	var od_temp_point = parseInt($("input[name=od_temp_point]").val());	// 입력한 포인트
+	// 쿠폰, 포인트가 계산되어진 금액에 > 기타비용과 배송쿠폰을 계산한 금액, 현재 모아는 sell_price가 tot_price나 마찬가지
+    var tot_price = sell_price + send_cost + send_cost2 - send_coupon - od_temp_point; 
 
     $("input[name=good_mny]").val(tot_price);
+	$("#od_tot_coupon").text(number_format(String(parseInt($("input[name=od_coupon]").val()))));
     $("#od_tot_price").text(number_format(String(tot_price)));
     <?php if($temp_point > 0 && $is_member) { ?>
-    calculate_temp_point();
+		calculate_temp_point();
     <?php } ?>
 }
 
@@ -408,12 +405,8 @@ function calculate_temp_point() {
     var point_unit = parseInt(<?php echo $default['de_settle_point_unit']; ?>);
     var temp_point = max_point;
 
-    if(temp_point > sell_price)
-        temp_point = sell_price;
-
-    if(temp_point > mb_point)
-        temp_point = mb_point;
-
+    if(temp_point > sell_price) { temp_point = sell_price; }
+    if(temp_point > mb_point) { temp_point = mb_point; }
     temp_point = parseInt(temp_point / point_unit) * point_unit;
 
     $("#use_max_point").text("최대 "+number_format(String(temp_point))+"점");

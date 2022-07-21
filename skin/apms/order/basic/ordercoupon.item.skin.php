@@ -31,7 +31,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 			</table>
 		</div>
     <?php } else { ?>
-		<p class="text-center">사용할 수 있는 쿠폰이 없습니다.</p>
+		<p class="text-center">사용할4 수 있는 쿠폰이 없습니다.</p>
     <?php } ?>
 
 	<br>

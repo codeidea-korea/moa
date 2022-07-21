@@ -70,7 +70,7 @@ $count = sql_num_rows($result);
     </div>
     <?php
     } else {
-        echo '<p>사용할 수 있는 쿠폰이 없습니다.</p>';
+        echo '<p>사용할2 수 있는 쿠폰이 없습니다.</p>';
     }
     ?>
     <div class="btn_confirm">

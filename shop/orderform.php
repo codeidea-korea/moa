@@ -131,6 +131,8 @@ $no_use_point = 0; // 포인트 사용제한
 $item = array();
 $arr_it_orderform = array();
 
+$arr_coupon_ids = array(); // 사용가능한 쿠폰 id갑의 배열
+
 for ($i=0; $row=sql_fetch_array($result); $i++) {
 
 	// APMS : 비회원은 컨텐츠상품 구매않되도록 처리
@@ -186,7 +188,7 @@ for ($i=0; $row=sql_fetch_array($result); $i++) {
 	if($is_member) {
 		$cp_count = 0;
 
-		$sql = " select cp_id
+		$sql = " select cp_id, cp_no 
 					from {$g5['g5_shop_coupon_table']}
 					where mb_id IN ( '{$member['mb_id']}', '전체회원' )
 					  and cp_start <= '".G5_TIME_YMD."'
@@ -196,14 +198,17 @@ for ($i=0; $row=sql_fetch_array($result); $i++) {
 							( cp_method = '0' and cp_target = '{$row['it_id']}' )
 							OR
 							( cp_method = '1' and ( cp_target IN ( '{$row['ca_id']}', '{$row['ca_id2']}', '{$row['ca_id3']}' ) ) )
+							or 
+							cp_method = '2' 
 						  ) ";
+						  //echo $sql;
 		$res = sql_query($sql);
 
 		for($k=0; $cp=sql_fetch_array($res); $k++) {
-			if(is_used_coupon($member['mb_id'], $cp['cp_id']))
-				continue;
+			if(is_used_coupon($member['mb_id'], $cp['cp_id'])){ continue; }
 
 			$cp_count++;
+			array_push($arr_coupon_ids, $cp['cp_no']);
 		}
 
 		if($cp_count) {

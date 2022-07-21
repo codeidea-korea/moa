@@ -24,7 +24,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 						<div class="col-sm-7">
 							<input type="hidden" name="od_cp_id" value="">
 							<div class="btn-group">
-								<button type="button" id="od_coupon_btn" class="btn btn-black btn-sm">쿠폰적용</button>
+								<button type="button" id="od_coupon_btn-임시" class="btn btn-black btn-sm">쿠폰적용</button>
 							</div>
 						</div>
 					</div>

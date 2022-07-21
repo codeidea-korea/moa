@@ -55,16 +55,12 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                         <input type="hidden" name="od_cp_id" value="">
                         <input type="hidden" name="sc_cp_id" value="">
 						<button type="button" id="od_coupon_btn" class="cp_btn btn btn-black btn-sm">쿠폰적용</button>
-						<!-- <button type="button" id="sc_coupon_btn" class="cp_apply btn btn-black btn-sm">쿠폰적용 ct</button> -->
-
-                        <!-- <span><img src="../images/r_arrow_o.svg" alt=""></span> -->
                     </a>
                 </li>
                 <li>
                     <a href="javascript:" >
                         <p>포인트</p>
                         <span> <?php echo number_format($member['mb_point'])?>Point 보유, 1000점 이상 사용 가능</span>
-                        <!-- <span><img src="../images/r_arrow_o.svg" alt=""></span> -->
                     </a>
                 </li>
             </ul>
@@ -85,18 +81,20 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 <li>
                     <a href="javascript:" >
                         <p>할인 쿠폰</p>
-                        <span id="od_tot_coupon"><?php echo ($item[$i]['hidden_cp_price'])?$item[$i]['hidden_cp_price']:""; ?></span>원
-                        <!-- <span><img src="../images/r_arrow_o.svg" alt=""></span> -->
+						<div>
+							<span id="od_tot_coupon"><?php echo ($item[$i]['hidden_cp_price'])?$item[$i]['hidden_cp_price']:"0"; ?></span>
+							<span>원</span>
+						</div>
                     </a>
                 </li>
                 <li>
                     <a href="javascript:" >
-                        <p>포인트<span><input type="hidden" name="max_temp_point" value="<?php echo $temp_point;?>">
-
-                        <input type="number" name="od_temp_point" value="" id="od_temp_point" class="frm_input form-control input-sm" size="10">
-                        <span class="input-group-addon">점</span>
-
-                        <!-- <span><img src="../images/r_arrow_o.svg" alt=""></span> -->
+						<p>포인트</p>
+						<div>
+							<input type="hidden" name="max_temp_point" value="<?php echo $temp_point;?>">
+							<input type="number" name="od_temp_point" value="0" id="od_temp_point" class="frm_input form-control input-sm" size="10" style="text-align:right; padding-right:10px;" pattern="\d*">
+							<span class="input-group-addon">점</span>
+						</div>
                     </a>
                 </li>
             </ul>
@@ -223,17 +221,17 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 	</div>
 </div>
 
-
-
 <script>
 (function($){
-	$(document).ready(function(){
-		let price = parseInt($('#tot_price').val());
+	$(document).ready(function(){		
 		$('#od_temp_point').keyup(function(){
-			if($(this).val() != '')
-			var point = parseInt($(this).val());
-			else
+			let price = parseInt($("input[name='od_price']").val());
+
+			if($(this).val() != ''){
+				var point = parseInt($(this).val());
+			}else{
 				var point = 0;
+			}	
 
 			var total = price - parseInt(point);
 			$('#od_tot_price').text(total);

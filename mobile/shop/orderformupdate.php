@@ -201,7 +201,7 @@ if($is_member) {
 }
 
 if ((int)($row['od_price'] - $tot_cp_price) !== $i_price) {
-    die("Error.");
+    die("Error. Code = od_price");
 }
 
 // 배송비가 상이함
