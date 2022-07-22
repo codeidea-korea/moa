@@ -1448,11 +1448,12 @@ function insert_point($mb_id, $point, $content='', $rel_table='', $rel_id='', $r
 
     // 회원아이디가 없다면 업데이트 할 필요 없음
     if ($mb_id == '') { return 0; }
-    $mb = sql_fetch(" select mb_id from {$g5['member_table']} where mb_id = '$mb_id' ");
+    $mb = sql_fetch(" select mb_id, mb_point from {$g5['member_table']} where mb_id = '$mb_id' ");
     if (!$mb['mb_id']) { return 0; }
 
     // 회원포인트
-    $mb_point = get_point_sum($mb_id);
+    //$mb_point = get_point_sum($mb_id);
+	$mb_point = $mb['mb_point'];
 
     // 이미 등록된 내역이라면 건너뜀 - 반복기능 추가
     if (!$repeat && ($rel_table || $rel_id || $rel_action))
@@ -1644,7 +1645,9 @@ function get_point_sum($mb_id)
 {
     global $g5, $config;
 
-    if($config['cf_point_term'] > 0) {
+    //if($config['cf_point_term'] > 0) {
+	if($config['cf_point_term'] > 111110) {
+		echo "TEST";
         // 소멸포인트가 있으면 내역 추가
         $expire_point = get_expire_point($mb_id);
         if($expire_point > 0) {
@@ -1687,6 +1690,7 @@ function get_point_sum($mb_id)
                       and po_expire_date < '".G5_TIME_YMD."' ";
         sql_query($sql);
     }
+	;
 
     // 포인트합
     $sql = " select sum(po_point) as sum_po_point

@@ -21,8 +21,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                     <span class="tit_chip"><?= $i['ct_status'] ?></span>
                     <?php $yoil = array('일','월','화','수','목','금','토'); ?>
                     <span>
-                        <?= date('y-m-d(' . $yoil[date('w', strtotime($i['it_time']))] . ') H:i', strtotime($i['it_time'])); ?>
-                        ~ <?= date('y-m-d(' . $yoil[date('w', strtotime($i['it_4']))] . ') H:i', strtotime($i['it_4'])); ?>
+                        모임일 : <?=$i['it_4']?>
                     </span>
                 </div>
             </div>

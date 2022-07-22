@@ -514,7 +514,7 @@ while ($row = sql_fetch_array($item_use)) {
     $i++;
 }
 $qna = sql_query("select * from g5_shop_item_qa where it_id = '{$it_id}' order by it_id desc");
-echo "select * from g5_shop_item_qa where it_id = '{$it_id}' order by it_id desc";
+//echo "select * from g5_shop_item_qa where it_id = '{$it_id}' order by it_id desc";
 
 // 분류 상단 코드가 있으면 출력하고 없으면 기본 상단 코드 출력
 if ($ca['ca_include_head'] && is_include_path_check($ca['ca_include_head']))

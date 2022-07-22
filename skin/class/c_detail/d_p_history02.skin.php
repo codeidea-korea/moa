@@ -16,9 +16,13 @@ $result = sql_fetch($sql);
                 <p>쿠폰 할인금액</p>
                 <span><?php echo number_format($result['od_coupon']); ?>원</span>
             </div>
+			<div class="bothSides">
+                <p>포인트 사용금액</p>
+                <span><?php echo number_format($result['od_receipt_point']); ?>원</span>
+            </div>
             <div class="bothSides">
                 <p><?php echo $result['od_settle_case']; ?></p>
-                <span><?php echo number_format($result['od_cart_price']); ?>원</span>
+                <span><?php echo number_format($result['od_receipt_price']); ?>원</span>
             </div>
         </div>
     </div>
@@ -32,8 +36,8 @@ $result = sql_fetch($sql);
                 <?php echo number_format($result['od_receipt_price']); ?>원
             </div>
         </div>
-<!--        <div class="lowbtn_layout mt25">-->
-<!--            <button class="inactive on">완료</button>-->
-<!--        </div>-->
+		<div class="lowbtn_layout mt25">
+			<button class="inactive on" onclick="location.href='/';">완료</button>
+		</div>
     </div>
 </section>

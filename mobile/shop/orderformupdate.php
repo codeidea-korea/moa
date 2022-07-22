@@ -52,6 +52,7 @@ $sql = " select it_id,
            from {$g5['g5_shop_cart_table']}
           where od_id = '$tmp_cart_id'
             and ct_select = '1' ";
+			//echo $sql;
 $result = sql_query($sql);
 for ($i=0; $row=sql_fetch_array($result); $i++)
 {
@@ -200,6 +201,9 @@ if($is_member) {
     $tot_cp_price = $tot_it_cp_price + $tot_od_cp_price;
 }
 
+echo $row['od_price'] . "<br>";
+echo $tot_cp_price . "<br>";
+echo $i_price . "<br>";
 if ((int)($row['od_price'] - $tot_cp_price) !== $i_price) {
     die("Error. Code = od_price");
 }
