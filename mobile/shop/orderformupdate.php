@@ -21,6 +21,8 @@ if(get_session('ss_direct'))
     $page_return_url .= '?sw_direct=1';
 
 // 결제등록 완료 체크
+echo "main";
+echo $od_settle_case; exit;
 if($od_settle_case != '무통장' && $od_settle_case != '포인트' && $od_settle_case != 'KAKAOPAY') {
     if($default['de_pg_service'] == 'kcp' && ($_POST['tran_cd'] == '' || $_POST['enc_info'] == '' || $_POST['enc_data'] == ''))
         alert('결제등록 요청 후 주문해 주십시오.', $page_return_url);
@@ -303,18 +305,13 @@ $order_price = $tot_od_price + $send_cost + $send_cost2 - $tot_sc_cp_price - $od
 
 $od_status = '주문';
 $od_tno    = '';
-if ($od_settle_case == "무통장" || $od_settle_case == "포인트")
-{
-    $od_receipt_point   = $i_temp_point;
-    $od_receipt_price   = 0;
-    $od_misu            = $i_price - $od_receipt_price;
-    if($od_misu == 0) {
-        $od_status      = '입금';
-        $od_receipt_time = G5_TIME_YMDHIS;
-    }
-}
-else if ($od_settle_case == "계좌이체")
-{
+if ($od_settle_case == "무통장" || $od_settle_case == "포인트"){
+	$od_receipt_point   = $i_temp_point;
+	$od_receipt_price   = $i_price;
+	$od_misu            = 0; 
+	$od_status = '완료';
+	$od_receipt_time = G5_TIME_YMDHIS;
+}else if ($od_settle_case == "계좌이체"){
     switch($default['de_pg_service']) {
         case 'lg':
             include G5_SHOP_PATH.'/lg/xpay_result.php';

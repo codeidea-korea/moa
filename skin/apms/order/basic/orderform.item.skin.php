@@ -24,10 +24,19 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 	<div class="s_content detail_con">
 		<div class="dt_con1"><h3>결제수단</h3></div>
 		<div class="lounchecL pay_radio mt25">
-			<!-- <input type="radio" id="box_1" name="od_settle_case" value="무통장" checked>
-			<label for="box_1">무통장</label> -->
-			<input type="radio" id="box_settle_2" name="od_settle_case" value="신용카드" checked>
-			<label for="box_settle_2">신용카드</label>
+			<?php 
+			$tmp_total_price = 0;
+			for($i=0; $i < count($item); $i++) { 
+				$tmp_total_price += $item[$i]['hidden_sell_price'];
+			}
+			?>
+			<?php if ($tmp_total_price == 0){?>
+				<input type="radio" id="box_1" name="od_settle_case" value="무통장" checked>
+				<label for="box_1">무통장</label>
+			<?php }else{ ?>
+				<input type="radio" id="box_settle_2" name="od_settle_case" value="신용카드" checked>
+				<label for="box_settle_2">신용카드</label>
+			<?php }?>
 			<!-- <input type="radio" id="box_2" name="sequence">
 			<label for="box_2">카카오페이</label>
 			<input type="radio" id="box_3" name="sequence">
@@ -92,7 +101,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 						<p>포인트</p>
 						<div>
 							<input type="hidden" name="max_temp_point" value="<?php echo $temp_point;?>">
-							<input type="number" name="od_temp_point" value="0" id="od_temp_point" class="frm_input form-control input-sm" size="10" style="text-align:right; padding-right:10px;" pattern="\d*">
+							<input type="number" name="od_temp_point" value="" id="od_temp_point" class="frm_input form-control input-sm" size="10" style="text-align:right; padding-right:10px;" pattern="\d*">
 							<span class="input-group-addon">점</span>
 						</div>
                     </a>
@@ -107,7 +116,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 </h3>
                 <div class="pay02">
 					<?php for($i=0; $i < count($item); $i++) { ?>
-						 <span  id="od_tot_price"><?php echo number_format($item[$i]['hidden_sell_price']); ?></span>원
+						<span  id="od_tot_price"><?php echo number_format($item[$i]['hidden_sell_price']); ?></span>원
                         <input type="hidden" id="tot_price" value="<?php echo $item[$i]['hidden_sell_price']; ?>" />
 					<?php } ?>
                 </div>

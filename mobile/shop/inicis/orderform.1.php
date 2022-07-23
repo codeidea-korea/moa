@@ -42,7 +42,7 @@ if(!function_exists('get_inicis_app_scheme')){
 <input type="hidden" name="P_MID"        value="<?php echo $default['de_inicis_mid']; ?>">
 <input type="hidden" name="P_NEXT_URL"   value="<?php echo $next_url; ?>">
 <input type="hidden" name="P_NOTI_URL"   value="<?php echo $noti_url; ?>">
-<input type="text" name="P_RETURN_URL" value="">
+<input type="hidden" name="P_RETURN_URL" value="">
 <input type="hidden" name="P_HPP_METHOD" value="2">
 <input type="hidden" name="P_RESERVED"   value="<?php echo get_inicis_app_scheme(); ?>bank_receipt=N&twotrs_isp=Y&block_isp=Y<?php echo $useescrow.$inicis_cardpoint; ?>">
 <input type="hidden" name="DEF_RESERVED" value="<?php echo get_inicis_app_scheme(); ?>bank_receipt=N&twotrs_isp=Y&block_isp=Y<?php echo $useescrow.$inicis_cardpoint; ?>">

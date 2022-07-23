@@ -778,56 +778,56 @@ var g5_url = "<?php echo G5_URL;?>";
 			f.LGD_TAXFREEAMOUNT.value = pf.comm_free_mny.value;
 			<?php } ?>
 			<?php } else if($default['de_pg_service'] == 'inicis') { ?>
-			var paymethod = "";
-			var width = 330;
-			var height = 480;
-			var xpos = (screen.width - width) / 2;
-			var ypos = (screen.width - height) / 2;
-			var position = "top=" + ypos + ",left=" + xpos;
-			var features = position + ", width=320, height=440";
-			var p_reserved = f.DEF_RESERVED.value;
-			f.P_RESERVED.value = p_reserved;
-			switch(settle_method) {
-				case "계좌이체":
-					paymethod = "bank";
-					break;
-				case "가상계좌":
-					paymethod = "vbank";
-					break;
-				case "휴대폰":
-					paymethod = "mobile";
-					break;
-				case "신용카드":
-					paymethod = "wcard";
-					f.P_RESERVED.value = f.P_RESERVED.value.replace("&useescrow=Y", "");
-					break;
-				case "간편결제":
-					paymethod = "wcard";
-					f.P_RESERVED.value = p_reserved+"&d_kpay=Y&d_kpay_app=Y";
-					break;
-				case "삼성페이":
-					paymethod = "wcard";
-					f.P_RESERVED.value = f.P_RESERVED.value.replace("&useescrow=Y", "")+"&d_samsungpay=Y";
-					//f.DEF_RESERVED.value = f.DEF_RESERVED.value.replace("&useescrow=Y", "");
-					f.P_SKIP_TERMS.value = "Y"; //약관을 skip 해야 제대로 실행됨
-					break;
-				case "lpay":
-					paymethod = "wcard";
-					f.P_RESERVED.value = f.P_RESERVED.value.replace("&useescrow=Y", "")+"&d_lpay=Y";
-					//f.DEF_RESERVED.value = f.DEF_RESERVED.value.replace("&useescrow=Y", "");
-					f.P_SKIP_TERMS.value = "Y"; //약관을 skip 해야 제대로 실행됨
-					break;
-			}
-			f.P_AMT.value = f.good_mny.value;
-			f.P_UNAME.value = pf.od_name.value;
-			f.P_MOBILE.value = pf.od_hp.value;
-			f.P_EMAIL.value = pf.od_email.value;
-			<?php if($default['de_tax_flag_use']) { ?>
-			f.P_TAX.value = pf.comm_vat_mny.value;
-			f.P_TAXFREE = pf.comm_free_mny.value;
-			<?php } ?>
-			f.P_RETURN_URL.value = "<?php echo $return_url.$od_id; ?>";
-			f.action = "https://mobile.inicis.com/smart/" + paymethod + "/";
+				var paymethod = "";
+				var width = 330;
+				var height = 480;
+				var xpos = (screen.width - width) / 2;
+				var ypos = (screen.width - height) / 2;
+				var position = "top=" + ypos + ",left=" + xpos;
+				var features = position + ", width=320, height=440";
+				var p_reserved = f.DEF_RESERVED.value;
+				f.P_RESERVED.value = p_reserved;
+				switch(settle_method) {
+					case "계좌이체":
+						paymethod = "bank";
+						break;
+					case "가상계좌":
+						paymethod = "vbank";
+						break;
+					case "휴대폰":
+						paymethod = "mobile";
+						break;
+					case "신용카드":
+						paymethod = "wcard";
+						f.P_RESERVED.value = f.P_RESERVED.value.replace("&useescrow=Y", "");
+						break;
+					case "간편결제":
+						paymethod = "wcard";
+						f.P_RESERVED.value = p_reserved+"&d_kpay=Y&d_kpay_app=Y";
+						break;
+					case "삼성페이":
+						paymethod = "wcard";
+						f.P_RESERVED.value = f.P_RESERVED.value.replace("&useescrow=Y", "")+"&d_samsungpay=Y";
+						//f.DEF_RESERVED.value = f.DEF_RESERVED.value.replace("&useescrow=Y", "");
+						f.P_SKIP_TERMS.value = "Y"; //약관을 skip 해야 제대로 실행됨
+						break;
+					case "lpay":
+						paymethod = "wcard";
+						f.P_RESERVED.value = f.P_RESERVED.value.replace("&useescrow=Y", "")+"&d_lpay=Y";
+						//f.DEF_RESERVED.value = f.DEF_RESERVED.value.replace("&useescrow=Y", "");
+						f.P_SKIP_TERMS.value = "Y"; //약관을 skip 해야 제대로 실행됨
+						break;
+				}
+				f.P_AMT.value = f.good_mny.value;
+				f.P_UNAME.value = pf.od_name.value;
+				f.P_MOBILE.value = pf.od_hp.value;
+				f.P_EMAIL.value = pf.od_email.value;
+				<?php if($default['de_tax_flag_use']) { ?>
+					f.P_TAX.value = pf.comm_vat_mny.value;
+					f.P_TAXFREE = pf.comm_free_mny.value;
+				<?php } ?>
+				f.P_RETURN_URL.value = "<?php echo $return_url.$od_id; ?>";
+				f.action = "https://mobile.inicis.com/smart/" + paymethod + "/";
 			<?php } ?>
 
 			// 주문 정보 임시저장
@@ -848,13 +848,17 @@ var g5_url = "<?php echo G5_URL;?>";
 				alert(save_result);
 				return false;
 			}
-
-			f.submit();
+			
+			if ($('input[name=od_settle_case]').val() == "무통장"){
+				pf.submit();
+			}else{
+				f.submit();
+			}
 		}
-
 		return false;
 	}
-
+	
+	/* 이게 왜 중복으로 들어가있지? (2022-07-24 박경호)
 	function forderform_check()
 	{
 		var f = document.forderform;
@@ -879,6 +883,7 @@ var g5_url = "<?php echo G5_URL;?>";
 			f.submit();
 		}, 300);
 	}
+	*/
 
 	// 주문폼 필드체크
 	function orderfield_check(f)
@@ -1106,7 +1111,6 @@ var g5_url = "<?php echo G5_URL;?>";
 	});
 
 	function forderform_check(f) {
-
 		<?php if($is_guest_order) { ?>
 		if (!f.agree.checked) {
 			alert("개인정보처리방침안내의 내용에 동의하셔야 주문하실 수 있습니다.");

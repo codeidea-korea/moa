@@ -283,9 +283,9 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
 							<div class="com_chip color_green">
 								<?php $support = array_values(array_filter(explode(',', $data['moa_support']))); ?>
 								<?php for($i=0;$i<count($support);$i++) { ?>
-									<span>
-										<?php echo $support[$i]; ?>
-									</span>
+									<?php if (trim($support[$i]) != "") {?>
+										<span><?=$support[$i]?></span>
+									<?php }?>
 								<?php } ?>
 							</div>
 						</div>
@@ -296,9 +296,9 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
 							<div class="com_chip color_gray">
 								<?php $nosupport = array_values(array_filter(explode(',', $data['moa_nosupport']))); ?>
 								<?php for($i=0;$i<count($nosupport);$i++) { ?>
-									<span>
-										<?php echo $nosupport[$i]; ?>
-									</span>
+									<?php if (trim($nosupport[$i]) != "") {?>
+										<span><?=$nosupport[$i]?></span>
+									<?php }?>
 								<?php } ?>
 							</div>
 						</div>
@@ -309,9 +309,9 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
 							<div class="com_chip color_red">
 								<?php $supplies = array_values(array_filter(explode(',', $data['moa_supplies']))); ?>
 								<?php for($i=0;$i<count($supplies);$i++) { ?>
-									<span>
-										<?php echo $supplies[$i]; ?>
-									</span>
+									<?php if (trim($supplies[$i]) != "") {?>
+										<span><?=$supplies[$i]?></span>
+									<?php }?>
 								<?php } ?>
 							</div>
 						</div>
@@ -322,9 +322,9 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
                             <div class="com_chip color_gray">
                                 <?php $hash = array_values(array_filter(explode(',', $data['as_tag']))); ?>
                                 <?php for($i=0;$i<count($hash);$i++) { ?>
-                                    <span>
-										<?php echo $hash[$i]; ?>
-									</span>
+									<?php if (trim($hash[$i]) != "") {?>
+										<span><?=$hash[$i]?></span>
+									<?php }?>
                                 <?php } ?>
                             </div>
                         </div>

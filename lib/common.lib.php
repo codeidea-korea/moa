@@ -1645,9 +1645,7 @@ function get_point_sum($mb_id)
 {
     global $g5, $config;
 
-    //if($config['cf_point_term'] > 0) {
-	if($config['cf_point_term'] > 111110) {
-		echo "TEST";
+    if($config['cf_point_term'] > 0) {
         // 소멸포인트가 있으면 내역 추가
         $expire_point = get_expire_point($mb_id);
         if($expire_point > 0) {
