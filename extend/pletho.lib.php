@@ -1192,6 +1192,14 @@ function getAplyCountIt($it_id)
     return $row['cnt'];
 }
 
+// 모임에 승인된 신청인원수 구하기
+function getMoimAdmitApplyCountIt($it_id){
+    if (!$it_id) { return 0; }
+	$sql = "SELECT COUNT(idx) AS cnt FROM deb_class_aplyer WHERE it_id='".$it_id."' AND STATUS='예약확정'";
+    $row = sql_fetch($sql);
+    return $row['cnt'];
+}
+
 
 //인기카테고리 추출
 // 배열 (카테고리명, 히트수) 역순

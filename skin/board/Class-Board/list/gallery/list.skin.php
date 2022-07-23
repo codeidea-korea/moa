@@ -236,7 +236,19 @@ $rate = getStrpointWr2($list[$i]['wr_id']);
 				<p class="sale"></p>	
 				<div class="dsc_price">
 					<!--금액구현-->
-					<span><?php echo $row['it_price'] > 0 ? number_format($row['it_price']) . '원' : '무료' ?></span>
+					<span>
+						<?php 
+						if ($row['it_price'] > 0){
+							if ($row['it_price'] == $row['it_cust_price']){
+								echo number_format($row['it_price']) . '원';
+							}else{
+								echo '<s>' . number_format($row['it_cust_price']) . '원</s><br>' . number_format($row['it_price']) . '원';
+							}
+						}else{
+							echo "무료";
+						}
+						?>
+					</span>
 					<!--금액구현-->
 					<!--사용시점구현-->
 					<p>

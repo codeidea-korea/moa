@@ -192,7 +192,7 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
 				<span></span>
 				<?php $arr = ['준비중','모집승인','반려','모집삭제', '모집취소','폐강']; ?>
 				<span><?= $arr[$data['moa_status']]; ?></span>
-				<p>(<?php echo getAplyCountIt($it['it_id']) ?>/<?php echo $data['wr_2'] > 0 ? $data['wr_2'] : 0; ?>명)</p>
+				<p>(<?php echo getMoimAdmitApplyCountIt($it['it_id']) ?>/<?php echo $data['wr_2'] > 0 ? $data['wr_2'] : 0; ?>명)</p>
 			</div>
 			<!--<div class="owchip_com">
 				<span></span>
@@ -454,7 +454,7 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
             <span class="ex_cost">예상비용</span>
             <div class="cost"><?php $data['wr_4'] > 0 ? number_format($data['wr_4']) . '원 <span>(회당)</span>':  '무료'; ?></div>
         </div>
-        <?php if(number_format($data['wr_2']) > getAplyCountIt($it['it_id'])) { ?>
+        <?php if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) { ?>
             <button type="button" onclick="$('.btn_submit').click();">결제하기</button>
         <?php } else { ?>
             <button type="button" onclick="alert('인원이 초과 되었습니다.');" disabled>마감</button>
@@ -754,9 +754,21 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
 				<div class="make_payment">
 					<div class="pay">
 						<p>예상비용</p>
-						<p><?php echo number_format($it['it_price']);?></p>
+						<p>
+							<?php 
+							if ($it['it_price'] > 0){
+								if ($it['it_price'] == $it['it_cust_price']){
+									echo number_format($it['it_price']) . '원';
+								}else{
+									echo '<s>' . number_format($it['it_cust_price']) . '원</s><br>' . number_format($it['it_price']) . '원';
+								}
+							}else{
+								echo "무료";
+							}
+							?>
+						</p>
 					</div>
-                    <?php if(number_format($data['wr_2']) > getAplyCountIt($it['it_id'])) { ?>
+                    <?php if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) { ?>
                         <button class="btn btn-primary btn-lg btn-block application"  onclick="document.pressed=this.value;" value="바로구매">결제하기</button>
                     <?php } else { ?>
                         <button type="button" class="btn btn-lg btn-block application" onclick="alert('인원이 초과 되었습니다.');" disabled>마감</button>

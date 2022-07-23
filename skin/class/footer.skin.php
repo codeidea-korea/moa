@@ -22,12 +22,12 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 						카테고리
 					</a>
 				</li>
-				<li>
+				<!-- <li>
 					<a class="<?php if($board['bo_table']=='community') echo 'on';?>" href="<?php echo G5_BBS_URL;?>/board.php?bo_table=community">
 						<span class="mn_cmnty"></span>
 						커뮤니티
 					</a>
-				</li>
+				</li> -->
 				<li>
 					<a class="<?php if(strpos($_url, '/c_map/') !== false) echo 'on';?>" href="<?php echo MOA_MAP_URL;?>/map01.php">
 						<span class="mn_location"></span>

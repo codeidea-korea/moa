@@ -330,6 +330,8 @@ if ($board['bo_use_nogood'])
 $admin_href = ($is_designer || $is_admin === 'group') ? G5_ADMIN_URL.'/board_form.php?w=u&amp;bo_table='.$bo_table : ''; 
 $setup_href = ($is_demo || $is_designer || $is_admin === 'group') ? G5_BBS_URL.'/board.setup.php?bo_table='.$bo_table : '';
 
+//echo $board_skin_path;
+
 include_once(G5_BBS_PATH.'/board_head.php');
 @include_once($board_skin_path.'/board.skin.php');
 

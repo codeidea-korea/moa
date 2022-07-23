@@ -730,7 +730,7 @@ if ($is_first_login) {
 
 	// 첫 로그인 포인트 지급
 	if($config['cf_login_point']) {
-		insert_point($member['mb_id'], $config['cf_login_point'], aslang('log', 'login_point', array(G5_TIME_YMD)), '@login', $real_client_ip, G5_TIME_YMD);
+		//insert_point($member['mb_id'], $config['cf_login_point'], aslang('log', 'login_point', array(G5_TIME_YMD)), '@login', $real_client_ip, G5_TIME_YMD);
 	}
 	// 오늘의 로그인이 될 수도 있으며 마지막 로그인일 수도 있음
 	// 해당 회원의 접근일시와 IP 를 저장

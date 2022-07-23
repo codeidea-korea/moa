@@ -42,6 +42,7 @@ if (get_cart_count($tmp_cart_id) == 0)// 장바구니에 담기
     alert('장바구니가 비어 있습니다.\\n\\n이미 주문하셨거나 장바구니에 담긴 상품이 없는 경우입니다.', G5_SHOP_URL.'/cart.php');
 
 $error = "";
+$aply_it_id = $_POST['it_id'][0];
 // 장바구니 상품 재고 검사
 $sql = " select it_id,
                 ct_qty,
@@ -173,7 +174,7 @@ if($is_member) {
                       and mb_id IN ( '{$member['mb_id']}', '전체회원' )
                       and cp_start <= '".G5_TIME_YMD."'
                       and cp_end >= '".G5_TIME_YMD."'
-                      and cp_method = '2' ";
+                      and cp_method in (0,1,2) ";
         $cp = sql_fetch($sql);
 
         // 사용한 쿠폰인지
@@ -201,9 +202,6 @@ if($is_member) {
     $tot_cp_price = $tot_it_cp_price + $tot_od_cp_price;
 }
 
-echo $row['od_price'] . "<br>";
-echo $tot_cp_price . "<br>";
-echo $i_price . "<br>";
 if ((int)($row['od_price'] - $tot_cp_price) !== $i_price) {
     die("Error. Code = od_price");
 }
@@ -947,6 +945,8 @@ if($is_member) {
 
     sql_query($sql);
 }
+
+procClassAplyer($member['mb_id'], $aply_it_id);
 
 // Push - 최고관리자에게 보냄 ---------------------------------------
 	$mb_list = $config['cf_admin'].','.$config['as_admin'];
