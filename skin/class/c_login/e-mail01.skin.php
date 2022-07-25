@@ -43,6 +43,14 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                     <button id="search_nick" class="duplicate_check" type="button">중복검사</button>
                     <input type="hidden" value="" id="is_nick_search" />
                 </div>
+				<p>휴대폰번호</p>
+                <div class="position_layout">
+                    <input type="text" id="reg_mb_hp" name="mb_hp" required class="form-input half_input" size="10" placeholder="휴대폰번호">
+                </div>
+				<p>생년월일</p>
+                <div class="position_layout">
+                    <input type="text" id="reg_mb_birth" name="mb_birth" class="form-input half_input" size="10" placeholder="생년월일">
+                </div>
             </div>
             <div class="p156">
                 <button class="inactive on" type="submit">다음</button>
@@ -53,6 +61,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 </form>
 
 </section>
+<script src="/js/rolldate.min.js"></script>
 <script>
 $(function() {
     $("#reg_mb_password, #reg_mb_password_re").change(function() {
@@ -92,24 +101,37 @@ $(function() {
 
     $('#fregisterform').submit(function(){
         var email = $('input[name="mb_id"]').val();
-
         var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
         var pass = $('#reg_mb_password').val();
         if(pass.length < 8) {
             alert('비밀번호는 8자 이상 입력하세요');
             return false;
         }
-
         if(!$('#is_nick_search').val()){
             alert('중복 검사를 실행해주세요.');
             return false;
         }
-
         if (!re.test(email)) {
             alert("올바른 이메일 주소를 입력하세요");
             return false;
-        }
+        } 
+		if ($('#reg_mb_hp').val() == "") { alert('휴대폰번호를 입력해주세요.'); $('#reg_mb_hp').focus(); return false; }
+		if ($('#reg_mb_birth').val() == "") { alert('생년월일을 입력해주세요.'); return false; }
     })
+
+	new Rolldate({
+		el: '#reg_mb_birth',
+		format: 'YYYY-MM-DD',
+		beginYear: 1920,
+		endYear: 2022,
+		lang: { 
+			title: '생년월일', 
+			cancel: '닫기', 
+			confirm: '입력', 
+			year: '', 
+			month: '', 
+			day: '', 
+		}
+	})
 });
 </script>

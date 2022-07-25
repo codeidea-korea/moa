@@ -26,6 +26,8 @@ $mb_password = $_POST['mb_password'];
 $mb_password_re = $_POST['mb_password_re'];
 $mb_name = $_POST['mb_name'];
 $mb_nick = $_POST['mb_nick'];
+$mb_hp = $_POST['mb_hp'];
+$mb_birth = $_POST['mb_birth'];
 ////print_r2($member);
 //$emailchk = '@';
 //$emailchk2 = '.';

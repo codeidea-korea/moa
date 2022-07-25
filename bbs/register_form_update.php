@@ -192,7 +192,7 @@ if ($config['cf_cert_use'] && $cert_type && $md5_cert_no) {
         $sql_certify .= " , mb_hp = '{$mb_hp}' ";
         $sql_certify .= " , mb_certify  = '' ";
         $sql_certify .= " , mb_adult = 0 ";
-        $sql_certify .= " , mb_birth = '' ";
+        $sql_certify .= " , mb_birth = '{$mb_birth}' ";
         $sql_certify .= " , mb_sex = '' ";
     }
 } else {
@@ -200,7 +200,7 @@ if ($config['cf_cert_use'] && $cert_type && $md5_cert_no) {
         $sql_certify .= " , mb_hp = '{$mb_hp}' ";
         $sql_certify .= " , mb_certify = '' ";
         $sql_certify .= " , mb_adult = 0 ";
-        $sql_certify .= " , mb_birth = '' ";
+        $sql_certify .= " , mb_birth = '{$mb_birth}' ";
         $sql_certify .= " , mb_sex = '' ";
     }
 }

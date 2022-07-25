@@ -29,6 +29,8 @@ var g5_bbs_url   = "/bbs";
             <input type="hidden" name="mb_password" value="<?php echo $mb_password;?>">
             <input type="hidden" name="mb_password_re" value="<?php echo $mb_password_re;?>">
             <input type="hidden" name="mb_id" value="<?php echo $mb_id;?>">
+			<input type="hidden" name="mb_hp" value="<?php echo $mb_hp;?>">
+            <input type="hidden" name="mb_birth" value="<?php echo $mb_birth;?>">
             <?php echo $mb_id;?>
         </div>
         <div class="agree_area">
