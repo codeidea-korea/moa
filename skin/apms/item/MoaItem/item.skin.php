@@ -604,11 +604,11 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
 					<dd style="font-size:12px;"><strike><?php echo  $cur_price;?></strike></dd>
 					<dt style="font-size:12px;">할인률</dt>
 					<dd style="font-size:12px;">
-						<?php echo floor(($it['it_price'] / $it['it_cust_price']) * 100);?>%
+						<?php echo 100 - floor(($it['it_price'] / $it['it_cust_price']) * 100);?>%
 					</dd>
                     <dt style="font-size:12px;">총 비용</dt>
                     <dd style="font-size:12px;color:red;">
-                        <?php echo number_format($it['it_cust_price'] - $it['it_price']);?>원
+                        <?php echo number_format($it['it_price']);?>원
                     </dd>
 				</dl>
 				<div class="panel-desc none " ><?php echo nl2br(stripcslashes($it['it_6'])); ?></div>

@@ -987,7 +987,7 @@ var g5_url = "<?php echo G5_URL;?>";
 				var point_unit = parseInt(<?php echo $default['de_settle_point_unit']; ?>);
 				temp_point = parseInt(f.od_temp_point.value);
 
-				if (temp_point < 1000){
+				if (temp_point > 0 && temp_point < 1000){
 					alert('포인트는 1,000점 이상 사용가능합니다. '); return false;
 				}
 

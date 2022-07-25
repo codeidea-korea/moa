@@ -21,8 +21,6 @@ if(get_session('ss_direct'))
     $page_return_url .= '?sw_direct=1';
 
 // 결제등록 완료 체크
-echo "main";
-echo $od_settle_case; exit;
 if($od_settle_case != '무통장' && $od_settle_case != '포인트' && $od_settle_case != 'KAKAOPAY') {
     if($default['de_pg_service'] == 'kcp' && ($_POST['tran_cd'] == '' || $_POST['enc_info'] == '' || $_POST['enc_data'] == ''))
         alert('결제등록 요청 후 주문해 주십시오.', $page_return_url);
@@ -247,7 +245,7 @@ if($is_member && $send_cost > 0) {
 }
 
 if ((int)($send_cost - $tot_sc_cp_price) !== (int)($i_send_cost - $i_send_coupon)) {
-    die("Error..");
+    die("Error.. 250 send_cost");
 }
 
 // 추가배송비가 상이함
@@ -262,7 +260,7 @@ if(!$tmp['sc_id'])
 else
     $send_cost2 = (int)$tmp['sc_price'];
 if($send_cost2 !== $i_send_cost2)
-    die("Error...");
+    die("Error... 265 send_cost2");
 
 // 결제포인트가 상이함
 // 회원이면서 포인트사용이면
@@ -291,7 +289,7 @@ if ($od_settle_case == "포인트")
 
 } else {
 	if (($i_temp_point > (int)$temp_point || $i_temp_point < 0) && $config['cf_use_point'])
-		die("Error....");
+		die("Error.... 294 temp_point");
 }
 
 if ($od_temp_point)
