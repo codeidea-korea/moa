@@ -14,6 +14,12 @@ add_javascript('<script src="'.G5_JS_URL.'/remodal/remodal.js"></script>', 10);
 $email_msg = $is_exists_email ? '등록할 이메일이 중복되었습니다.다른 이메일을 입력해 주세요.' : '';
 ?>
 
+<script src="<?=G5_JS_URL?>/remodal/remodal.js"></script>
+<link rel="stylesheet" href="<?=G5_JS_URL?>/remodal/remodal.css">
+<link rel="stylesheet" href="<?=G5_JS_URL?>/remodal/remodal-default-theme.css">
+<link rel="stylesheet" href="<?=get_social_skin_url()?>/style.css?ver=<?=G5_CSS_VER?>">
+
+<!--<link rel="stylesheet" href="/moa_mobile/css/style.css?ver=<?=G5_CSS_VER?>">-->
 <!-- 회원정보 입력/수정 시작 { -->
 <div class="mbskin" id="register_member">
 
@@ -23,70 +29,81 @@ $email_msg = $is_exists_email ? '등록할 이메일이 중복되었습니다.�
     <form id="fregisterform" name="fregisterform" action="<?php echo $register_action_url; ?>" onsubmit="return fregisterform_submit(this);" method="post" enctype="multipart/form-data" autocomplete="off">
     <input type="hidden" name="w" value="<?php echo $w; ?>">
     <input type="hidden" name="url" value="<?php echo $urlencode; ?>">
-
     <input type="hidden" name="provider" value="<?php echo $provider_name;?>" >
     <input type="hidden" name="action" value="register">
 
     <input type="hidden" name="mb_id" value="<?php echo $user_id; ?>" id="reg_mb_id">
     <input type="hidden" name="mb_nick_default" value="<?php echo isset($user_nick)?get_text($user_nick):''; ?>">
     <input type="hidden" name="mb_nick" value="<?php echo isset($user_nick)?get_text($user_nick):''; ?>" id="reg_mb_nick">
-
-    <div class="toggle">
-        <div class="toggle-title">
-		<span class="right_i"><i></i> 자세히보기</span>
-		<span class="title-name"><input type="checkbox" name="agree" value="1" id="agree11"> <label for="agree11">회원가입약관</label></span>
+    
+    <div class="checkbox">
+        <div class="all_agree">
+            <span class="title-name">
+                <input type="checkbox" name="chk_all" value="1" id="chk_all">1
+                <label for="chk_all"><strong>전체약관에 동의합니다.</strong></label>
+            </span>
         </div>
-        <div class="toggle-inner">
-            <p><?php echo conv_content($config['cf_stipulation'], 0); ?></p>
-        </div>
-    </div>  <!-- END OF TOGGLE -->
-    <div class="toggle">
-        <div class="toggle-title">
-		<span class="right_i"><i></i> 자세히보기</span>
-		<span class="title-name"><input type="checkbox" name="agree2" value="1" id="agree21"> <label for="agree21">개인정보처리방침안내</label></span>
-        </div>
-        <div class="toggle-inner">
-            <p><?php echo conv_content($config['cf_privacy'], 0); ?></p>
-        </div>
-    </div>  <!-- END OF TOGGLE -->
-    <div class="all_agree">
-		<span class="title-name"><input type="checkbox" name="chk_all" value="1" id="chk_all"> <label for="chk_all"><strong>전체약관에 동의합니다.</strong></label></span>
+        <div class="toggle">
+            <div class="toggle-title">
+            <span class="right_i"><i></i> 자세히보기</span>
+            <span class="title-name"><input type="checkbox" name="agree" value="1" id="agree11" checked> <label for="agree11">이용약관</label></span>
+            </div>
+            <div class="toggle-inner">
+                <p><?php echo conv_content($config['cf_stipulation'], 0); ?></p>
+            </div>
+        </div>  <!-- END OF TOGGLE -->
+        <div class="toggle">
+            <div class="toggle-title">
+            <span class="right_i"><i></i> 자세히보기</span>
+            <span class="title-name"><input type="checkbox" name="agree2" value="1" id="agree21" checked> <label for="agree21">개인정보처리방침안내</label></span>
+            </div>
+            <div class="toggle-inner">
+                <p><?php echo conv_content($config['cf_privacy'], 0); ?></p>
+            </div>
+        </div>  <!-- END OF TOGGLE -->
     </div>
 
     <div class="sns_tbl tbl_wrap">
         <table>
-        <caption>개인정보 입력</caption>
-        <tbody>
-        <!-- 애플 로그인 Apple 애플 아이디로 로그인 시작 { -->
-        <tr>
-            <th scope="row"><label for="reg_mb_name">이름<strong class="sound_only">필수</strong></label></th>
-            <td>
-                <input type="text" name="mb_name" value="<?php echo $user_name ? $user_name : $user_nick ?>" id="reg_mb_name" required class="frm_input required" size="70" maxlength="100" placeholder="이름을 입력해주세요." >
-            </td>
-        </tr>
-        <!-- } 애플 로그인 Apple 애플 아이디로 로그인 끝 -->
-        <tr>
-            <th scope="row"><label for="reg_mb_email">E-mail<strong class="sound_only">필수</strong></label></th>
-            <td>
-                <input type="text" name="mb_email" value="<?php echo isset($user_email)?$user_email:''; ?>" id="reg_mb_email" required class="frm_input email required" size="70" maxlength="100" placeholder="이메일을 입력해주세요." >
-                <p class="email_msg"><?php echo $email_msg; ?></p>
-            </td>
-        </tr>
-
-        </tbody>
+			<caption>개인정보 입력</caption>
+			<tbody>
+			<!-- 애플 로그인 Apple 애플 아이디로 로그인 시작 { -->
+				<tr>
+				<th scope="row"><label for="reg_mb_name">이름<strong class="sound_only">필수</strong></label></th>
+				<td>
+					<input type="text" name="mb_name" value="<?php echo $user_name ? $user_name : $user_nick ?>" id="reg_mb_name" required class="frm_input required" maxlength="100" placeholder="이름을 입력해주세요." >
+				</td>
+			</tr>
+			<!-- } 애플 로그인 Apple 애플 아이디로 로그인 끝 -->
+			<tr>
+				<th scope="row"><label for="reg_mb_email">E-mail<strong class="sound_only">필수</strong></label></th>
+				<td>
+					<input type="text" name="mb_email" value="<?php echo isset($user_email)?$user_email:''; ?>" id="reg_mb_email" required class="frm_input email required" maxlength="100" placeholder="이메일을 입력해주세요." >
+					<p class="email_msg"><?php echo $email_msg; ?></p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="reg_mb_email">휴대폰<strong class="sound_only">필수</strong></label></th>
+				<td>
+					<input type="text" name="mb_hp" value="01056835847" id="reg_mb_hp" required class="frm_input required" size="70" maxlength="100" placeholder="휴대폰번호를 입력해주세요." >
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="reg_mb_email">생년월일<strong class="sound_only">필수</strong></label></th>
+				<td>
+					<input type="text" name="mb_birth" value="2001-01-05" id="reg_mb_birth" required class="frm_input required" size="70" maxlength="100" placeholder="생년월일을 입력해주세요." >
+				</td>
+			</tr>
+			</tbody>
         </table>
     </div>
 
-    <div class="btn_top top">
+    <div class="btn_confirm">
         <a href="<?php echo G5_URL ?>" class="btn_cancel">취소</a>
         <input type="submit" value="회원가입" id="btn_submit" class="btn_submit" accesskey="s">
     </div>
     </form>
     <!-- 새로가입 끝 -->
-
-    <div class="btn_group_trigger">
-        <a class="btn_submit_trigger">회원가입</a>
-    </div>
 
     <!-- 기존 계정 연결 -->
 
@@ -128,25 +145,22 @@ $email_msg = $is_exists_email ? '등록할 이메일이 중복되었습니다.�
             </form>
         </div>
     </div>
-
+	
+	<script src="/js/rolldate.min.js"></script>
     <script>
-
     // submit 최종 폼체크
     function fregisterform_submit(f)
     {
-
         if (!f.agree.checked) {
             alert("회원가입약관의 내용에 동의하셔야 회원가입 하실 수 있습니다.");
             f.agree.focus();
             return false;
         }
-
         if (!f.agree2.checked) {
             alert("개인정보처리방침안내의 내용에 동의하셔야 회원가입 하실 수 있습니다.");
             f.agree2.focus();
             return false;
         }
-
         // E-mail 검사
         if ((f.w.value == "") || (f.w.value == "u" && f.mb_email.defaultValue != f.mb_email.value)) {
             var msg = reg_mb_email_check();
@@ -198,10 +212,20 @@ $email_msg = $is_exists_email ? '등록할 이메일이 중복되었습니다.�
             }
         });
 
-        $(".btn_submit_trigger").on("click", function(e){
-            e.preventDefault();
-            $("#btn_submit").trigger("click");
-        });
+		new Rolldate({
+			el: '#reg_mb_birth',
+			format: 'YYYY-MM-DD',
+			beginYear: 1920,
+			endYear: 2022,
+			lang: { 
+				title: '생년월일', 
+				cancel: '닫기', 
+				confirm: '입력', 
+				year: '', 
+				month: '', 
+				day: '', 
+			}
+		})
     });
     </script>
 

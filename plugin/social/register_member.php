@@ -22,6 +22,9 @@ if( ! $user_profile ){
 // 소셜 가입된 내역이 있는지 확인 상수 G5_SOCIAL_DELETE_DAY 관련
 $is_exists_social_account = social_before_join_check($url);
 
+//var_dump($user_profile);
+//echo $provider_name;
+//echo $user_profile->displayName;
 $user_nick = social_relace_nick($user_profile->displayName);
 $user_email = isset($user_profile->emailVerified) ? $user_profile->emailVerified : $user_profile->email;
 $user_id = $user_profile->sid ? preg_replace("/[^0-9a-z_]+/i", "", $user_profile->sid) : get_social_convert_id($user_profile->identifier, $provider_name);

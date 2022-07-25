@@ -65,25 +65,38 @@ $email_msg = $is_exists_email ? '등록할 이메일이 중복되었습니다.�
 
     <div class="sns_tbl tbl_wrap">
         <table>
-        <caption>개인정보 입력</caption>
-        <tbody>
-        <!-- 애플 로그인 Apple 애플 아이디로 로그인 시작 { -->
-            <tr>
-            <th scope="row"><label for="reg_mb_name">이름<strong class="sound_only">필수</strong></label></th>
-            <td>
-                <input type="text" name="mb_name" value="<?php echo $user_name ? $user_name : $user_nick ?>" id="reg_mb_name" required class="frm_input required" maxlength="100" placeholder="이름을 입력해주세요." >
-            </td>
-        </tr>
-        <!-- } 애플 로그인 Apple 애플 아이디로 로그인 끝 -->
-        <tr>
-            <th scope="row"><label for="reg_mb_email">E-mail<strong class="sound_only">필수</strong></label></th>
-            <td>
-                <input type="text" name="mb_email" value="<?php echo isset($user_email)?$user_email:''; ?>" id="reg_mb_email" required class="frm_input email required" maxlength="100" placeholder="이메일을 입력해주세요." >
-                <p class="email_msg"><?php echo $email_msg; ?></p>
-            </td>
-        </tr>
-
-        </tbody>
+			<caption>개인정보 입력</caption>
+			<tbody>
+			<!-- 애플 로그인 Apple 애플 아이디로 로그인 시작 { -->
+				<tr>
+				<th scope="row"><label for="reg_mb_name">이름<strong class="sound_only">필수</strong></label></th>
+				<td>
+					<input type="text" name="mb_name" value="<?php echo $user_name ? $user_name : $user_nick ?>" id="reg_mb_name" required class="frm_input required" maxlength="100" placeholder="이름을 입력해주세요." >
+				</td>
+			</tr>
+			<!-- } 애플 로그인 Apple 애플 아이디로 로그인 끝 -->
+			<tr>
+				<th scope="row"><label for="reg_mb_email">E-mail<strong class="sound_only">필수</strong></label></th>
+				<td>
+					<input type="text" name="mb_email" value="<?php echo isset($user_email)?$user_email:''; ?>" id="reg_mb_email" required class="frm_input email required" maxlength="100" placeholder="이메일을 입력해주세요." >
+					<p class="email_msg"><?php echo $email_msg; ?></p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="reg_mb_email">휴대폰<strong class="sound_only">필수</strong></label></th>
+				<td>
+					<input type="text" name="mb_hp" value="<?php echo isset($user_email)?$user_email:''; ?>" id="reg_mb_hp" required class="frm_input email required" size="70" maxlength="100" placeholder="휴대폰번호를 입력해주세요." >
+					<p class="email_msg"><?php echo $email_msg; ?></p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="reg_mb_email">생년월일<strong class="sound_only">필수</strong></label></th>
+				<td>
+					<input type="text" name="mb_birth" value="<?php echo isset($user_email)?$user_email:''; ?>" id="reg_mb_birth" required class="frm_input email required" size="70" maxlength="100" placeholder="생년월일을 입력해주세요." >
+					<p class="email_msg"><?php echo $email_msg; ?></p>
+				</td>
+			</tr>
+			</tbody>
         </table>
     </div>
 
@@ -134,25 +147,22 @@ $email_msg = $is_exists_email ? '등록할 이메일이 중복되었습니다.�
             </form>
         </div>
     </div>
-
+	
+	<script src="/js/rolldate.min.js"></script>
     <script>
-
     // submit 최종 폼체크
     function fregisterform_submit(f)
     {
-
         if (!f.agree.checked) {
             alert("회원가입약관의 내용에 동의하셔야 회원가입 하실 수 있습니다.");
             f.agree.focus();
             return false;
         }
-
         if (!f.agree2.checked) {
             alert("개인정보처리방침안내의 내용에 동의하셔야 회원가입 하실 수 있습니다.");
             f.agree2.focus();
             return false;
         }
-
         // E-mail 검사
         if ((f.w.value == "") || (f.w.value == "u" && f.mb_email.defaultValue != f.mb_email.value)) {
             var msg = reg_mb_email_check();
@@ -203,6 +213,21 @@ $email_msg = $is_exists_email ? '등록할 이메일이 중복되었습니다.�
                 $("input[name^=agree]").prop("checked", false);
             }
         });
+
+		new Rolldate({
+			el: '#reg_mb_birth',
+			format: 'YYYY-MM-DD',
+			beginYear: 1920,
+			endYear: 2022,
+			lang: { 
+				title: '생년월일', 
+				cancel: '닫기', 
+				confirm: '입력', 
+				year: '', 
+				month: '', 
+				day: '', 
+			}
+		})
     });
     </script>
 
