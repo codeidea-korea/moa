@@ -211,77 +211,73 @@ if(!$header_skin) {
 		<div class="wr-list" id="moimSchedule2">
 			<div class="wr-list-label required">신청 가능 시간</div>
 			<div class="wr-list-con">
-				<input type="number" min="0" name="moa_reglimittime"  id="moa_reglimittime" value="<?php echo $write['moa_reglimittime']; ?>" class="span100" placeholder="" min="1" max="100" data-label="모임" data-label-inline="일"> 이전까지 신청 가능
+				<input type="number" min="3" name="moa_reglimittime"  id="moa_reglimittime" value="<?php echo $write['moa_reglimittime']; ?>" class="span100" placeholder="" min="1" max="100" data-label="모임" data-label-inline="일"> 이전까지 신청 가능 (최소 3일)
 			</div>
 		</div>
         <script>
-            $('#moa_reglimittime').focusout(function(){
-                if (($(this).val() < 0 || !$.isNumeric($(this).val())) && $(this).val() != '') {
-                   alert('숫자만 입력해주세요');
-                    $(this).val('');
-                    $(this).focus();
-                }
-            });
+		$('#moa_reglimittime').focusout(function(){
+			if (($(this).val() < 3 || !$.isNumeric($(this).val())) && $(this).val() != '') {
+				//alert('숫자만 입력해주세요');
+				$(this).val('');
+				$(this).focus();
+			}
+		});
         </script>
 		<?php 
-	$addkind = array(
-        1=> "최소인원",
-		2=>"모임정원",
-		3=>"참가료",
-		4=>"할인참가료",
-		5=>"",
-		6=>"",
-		7=>"",
-		8=>"",
-		9=>"",
-	);
-	$addkind2 = array(
-        1=>"명",
-		2=>"명",
-		3=>"원",
-		4=>"원",
-		5=>"",
-		6=>"",
-		7=>"",
-		8=>"",
-		9=>"",
-	);
-	$addcnt = count($addkind);
-	for ($i=1; $is_link && $i<=$addcnt; $i++) {
-		if ($i < 5) {
-			?>
-			<div class="wr-list" >
+		$addkind = array(
+			1=> "최소인원",
+			2=>"모임정원",
+			3=>"참가료",
+			4=>"할인참가료",
+			5=>"",
+			6=>"",
+			7=>"",
+			8=>"",
+			9=>"",
+		);
+		$addkind2 = array(
+			1=>"명",
+			2=>"명",
+			3=>"원",
+			4=>"원",
+			5=>"",
+			6=>"",
+			7=>"",
+			8=>"",
+			9=>"",
+		);
+		$addcnt = count($addkind);
+		for ($i=1; $is_link && $i<=$addcnt; $i++) {
+			if ($i < 5) {
+				?>
+				<div class="wr-list" >
 					<div class="wr-list-label required"><?php echo $addkind[$i] ?></div>
 					<div class="wr-list-con">
-			
-					<input type="<?php if ($i < 5) {echo "number";} else { echo "text";} ?>"
-						name="wr_<?php echo $i ?>" value="<?php echo $write['wr_'.$i]; ?>" required 
-						id="wr_<?php echo $i ?>"
-						max="<?php if ($i==2 || $i==5) { echo "100";} else { echo "1000000"; } ?>"
-						class="form-control input-sm  required "  style="width:<?php if ($i < 4) {echo "200";} else { echo "400";} ?>px" placehonder="<?php echo $addkind2[$i];?>">
-                        <?php if($i == '4') { ?>
-                            <small>실제 결제되는 금액입니다. (할인을 원치 않는 경우 참가료와 동일한 금액을 입력해 주세요. )</small>
-                        <?php } ?>
+						<input type="<?php if ($i < 5) {echo "number";} else { echo "text";} ?>"
+							name="wr_<?php echo $i ?>" value="<?php echo $write['wr_'.$i]; ?>" required 
+							id="wr_<?php echo $i ?>"
+							max="<?php if ($i==2 || $i==5) { echo "100";} else { echo "1000000"; } ?>"
+							class="form-control input-sm  required "  style="width:<?php if ($i < 5) {echo "200";} else { echo "400";} ?>px" placehonder="<?php echo $addkind2[$i];?>">
+							<?php if($i == '4') { ?>
+								<small>실제 결제되는 금액입니다. (할인을 원치 않는 경우 참가료와 동일한 금액을 입력해 주세요. )</small>
+							<?php } ?>
+					</div>
 				</div>
-			</div>
-            <script>
-                $('#wr_<?php echo $i ?>').on('focusout', function(){
-                    if (($(this).val() < 0 || !$.isNumeric($(this).val())) && $(this).val() != '') {
-                        alert('숫자만 입력해주세요.');
-                        $(this).val('');
-                        $(this).focus();
-                    }
-                });
-            </script>
-			<?php 
-		} 
-		else { ?>
-			<input type="hidden" name="wr_<?php echo $i?>" value="<?php echo $write['wr_'.$i]?>" />
-
-        <?php
+				<script>
+				$('#wr_<?php echo $i ?>').on('keyup', function(){
+					if (($(this).val() < 0 || !$.isNumeric($(this).val())) && $(this).val() != '') {
+						$(this).val(''); $(this).focus();
+					}
+				});
+				
+				</script>
+				<?php 
+			} else { ?>
+				<input type="hidden" name="wr_<?php echo $i?>" value="<?php echo $write['wr_'.$i]?>" />
+			<?php
+			}
 		}
-	}
-	?>
+		?>
 		<div style="margin-top:50px;margin-bottom:50px;border-top:1px dashed rgba(0,0,0,0.08);"></div>
 
 		<div class="wr-list" >

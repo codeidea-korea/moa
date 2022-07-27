@@ -6335,7 +6335,6 @@ table.option-tbl{
     color:#3B4351;
     text-decoration: underline;
 }
-
 .position_layout{
     position:relative;
 }
@@ -6349,4 +6348,22 @@ table.option-tbl{
     background:var(--main-color);
     color:#fff;
     font-size:14px;
+}
+.point_table{
+	margin-top:20px;
+}
+.point_table th, .point_table td{
+	border:0.5px solid #ccc;
+	padding:6px;
+    vertical-align: middle;
+	text-align:center;
+}
+.point_table th{
+	font-size:14px;
+	font-weight:500;
+}
+.point_table td{
+	font-size:12px;
+	font-weight:400;
+	color:#232323;
 }
