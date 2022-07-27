@@ -257,20 +257,12 @@ if(!$header_skin) {
 							name="wr_<?php echo $i ?>" value="<?php echo $write['wr_'.$i]; ?>" required 
 							id="wr_<?php echo $i ?>"
 							max="<?php if ($i==2 || $i==5) { echo "100";} else { echo "1000000"; } ?>"
-							class="form-control input-sm  required "  style="width:<?php if ($i < 5) {echo "200";} else { echo "400";} ?>px" placehonder="<?php echo $addkind2[$i];?>">
+							class="form-control input-sm  required onlyNumbers"  style="width:<?php if ($i < 5) {echo "200";} else { echo "400";} ?>px" placehonder="<?php echo $addkind2[$i];?>">
 							<?php if($i == '4') { ?>
-								<small>실제 결제되는 금액입니다. (할인을 원치 않는 경우 참가료와 동일한 금액을 입력해 주세요. )</small>
+								<small>실제 결제되는 금액(천원 단위 - 할인을 원치 않는 경우 참가료와 동일한 금액을 입력해 주세요. )</small>
 							<?php } ?>
 					</div>
 				</div>
-				<script>
-				$('#wr_<?php echo $i ?>').on('keyup', function(){
-					if (($(this).val() < 0 || !$.isNumeric($(this).val())) && $(this).val() != '') {
-						$(this).val(''); $(this).focus();
-					}
-				});
-				
-				</script>
 				<?php 
 			} else { ?>
 				<input type="hidden" name="wr_<?php echo $i?>" value="<?php echo $write['wr_'.$i]?>" />
@@ -278,8 +270,16 @@ if(!$header_skin) {
 			}
 		}
 		?>
+		<script>
+		$(document).ready(function(){
+			$('#wr_4').change(function(){
+				var n = $(this).val(); 
+				n = Math.floor(n/1000) * 1000; 
+				$(this).val(n);
+			});
+		});
+        </script>
 		<div style="margin-top:50px;margin-bottom:50px;border-top:1px dashed rgba(0,0,0,0.08);"></div>
-
 		<div class="wr-list" >
 			<div class="wr-list-label required">모임 제목</div>
 			<div class="wr-list-con">
