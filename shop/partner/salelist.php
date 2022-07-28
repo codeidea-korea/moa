@@ -21,12 +21,15 @@ unset($tot);
 
 
 
-$sql_common = " FROM g5_shop_order a, g5_shop_cart b, g5_shop_item c
+$sql_common = " FROM g5_shop_order a, g5_shop_cart b, g5_shop_item c, g5_write_class d 
 				WHERE a.od_id = b.od_id
-				and b.pt_id = '{$member['mb_id']}' 
 				and b.ct_select = '1'
-				and b.it_id = c.it_id
-				and SUBSTRING(od_time,1,10) between '$sch_startdt' and '$sch_enddt'	";
+				and b.it_id = c.it_id 
+				and c.it_2 = d.wr_id 
+				and d.mb_id = '{$member['mb_id']}' 
+				and a.od_status in ('입금', '완료') 
+				and replace(SUBSTRING(c.it_4,1,10),'.','-') < NOW() 
+				and SUBSTRING(a.od_time,1,10) between '$sch_startdt' and '$sch_enddt'	";
 
 // 테이블의 전체 레코드수만 얻음
 $sql = " select count(*) as cnt " . $sql_common;

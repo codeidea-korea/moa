@@ -85,6 +85,7 @@ function apms_balance_sheet($mb_id, $opt='') {
 					sum(mk_benefit) as benefit
 					from {$g5['g5_shop_cart_table']} 
 					where ct_status = '완료' and ct_select = '1' $pt_sql";
+					//echo $sql;
 	$row = sql_fetch($sql);
 
 	$account['sale'] = $row['sale'];
@@ -99,6 +100,7 @@ function apms_balance_sheet($mb_id, $opt='') {
 
 	//지급액
 	$sql = " select sum(pp_amount) as pay from {$g5['apms_payment']} where pp_confirm = '1' $mb_sql";
+	//echo $sql;
 	$row = sql_fetch($sql);
 	$account['payment'] = $row['pay'];
 
@@ -118,6 +120,7 @@ function apms_balance_sheet($mb_id, $opt='') {
 
 		//적립액
 		$account['netgross'] = $account['netsale'] + $account['sendcost']  + $row['incentive'];
+		//echo $account['netgross'];
 	}
 
 	//신청가능액 - 잔액

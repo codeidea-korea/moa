@@ -349,17 +349,21 @@ function apms_order($od_id, $od_status, $od_mk='') {
 	$od_ok = ($od_status == "입금") ? true : false;
 	$now = G5_TIME_YMDHIS;
 	$ptxt = aslang('log', 'delivery_point');
+	echo $ptxt;
 
 	// APMS
 	$mk_id = '';
 	$mk_brate = 0;
 	if(USE_PARTNER) {
+		echo "use_partner";
 		$apms = sql_fetch(" select * from {$g5['apms']} ", false);
 		$od_mk =($is_guest && defined('APMS_MKT') && APMS_MKT) ? APMS_MKT : $od_mk; //비회원주문 처리
 
 		if($od_mk) { // 추천인 아이디가 있으면
+			echo "od_mk";
 			$mk = apms_marketer($od_mk);
 			if($mk['pt_id']) {
+				echo "pt_id";
 				$mk_id = $mk['pt_id'];
 				$lvl = (isset($mk['pt_level']) && $mk['pt_level'] > 0) ? $mk['pt_level'] : 1;
 				$mk_lvrate = (isset($apms['apms_benefit'.$lvl]) && $apms['apms_benefit'.$lvl] > 0) ? $apms['apms_benefit'.$lvl] : 0;

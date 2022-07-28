@@ -108,13 +108,10 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 		</div>
 		<table>
 			<colgroup>
-				<col width="100">
-				<col width="150">
-				<col>
-				<col>
-				<col>
-				<col>
-				<col>
+				<col width="60">
+				<col width="80">
+				<col><col><col><col>
+				<col><col><col><col>
 			</colgroup>
 			<thead>
 				<tr>
