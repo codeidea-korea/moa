@@ -37,7 +37,37 @@ $result = sql_fetch($sql);
             </div>
         </div>
 		<div class="lowbtn_layout mt25">
-			<button class="inactive on" onclick="location.href='/';">완료</button>
+			<button class="inactive on" onclick="location.href='/c_detail/d_p_history01.php';">결제 목록</button>
+			<?php if ($_REQUEST['p'] == "history"){?>
+				<?php if ($cancel_price == 0){?>
+					<button class="inactive btn_order_cancel" style="margin-top:10px;">주문 취소하기</button>
+					<div id="sod_fin_cancelfrm">
+						<form id="ocancelForm" method="post" action="./orderinquirycancel.php">
+							<input type="text" name="od_id"  value="<?php echo $od['od_id']; ?>">
+							<input type="text" name="token"  value="<?php echo $token; ?>">
+							<label for="cancel_memo" class="sound_only">취소사유</label>
+							<input type="text" name="cancel_memo" id="cancel_memo" required class="frm_input required" size="40" maxlength="100" placeholder="취소사유" value="주문취소사유입니다.">
+						</form>
+					</div>
+				<?php }else{?>
+					<p>주문 취소, 반품, 품절된 내역이 있습니다.</p>
+				<?php }?>
+			<?php }?>
 		</div>
     </div>
 </section>
+
+<script>
+$(document).ready(function(){
+	$('.btn_order_cancel').click(function(){
+		if ($('#cancel_memo').val() == ""){
+			alert('취소사유를 입력해 주세요.'); return false; 
+		}
+		if(confirm("주문을 정말 취소하시겠습니까?")){
+			$('#ocancelForm').submit();
+		}else{
+			return false; 
+		}
+	});
+});
+</script>

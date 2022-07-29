@@ -100,6 +100,11 @@ if ($w == '' || $w == 'r') {
         $wr_content = apms_content_image($wr_content);
     }
 
+	$sql = "select it_2 from g5_shop_item where it_id='".$it_id."'";
+	$tmpr = sql_fetch($sql);
+	$sql = "select mb_id from g5_write_class where wr_id=".$tmpr['it_2'];
+	$tmpi = sql_fetch($sql);
+
     $sql = " insert into g5_shop_item_use
                 set it_id = '$it_id',
                      mb_id = '{$member['mb_id']}',
@@ -116,7 +121,7 @@ if ($w == '' || $w == 'r') {
                      is_reply_name = '',
                      pt_it = 0,
                      pt_photo = 0,
-                     pt_id = ''";
+                     pt_id = '".$tmpi['mb_id']."'";
     sql_query($sql);
 
     $is_id = sql_insert_id();
@@ -129,7 +134,7 @@ if ($w == '' || $w == 'r') {
 
     // 쓰기 포인트 부여
     if ($w == '') {
-            doAssignPoint($mb_id,'review',$is_id);
+            //doAssignPoint($mb_id,'review',$is_id);
 
         // if ($config['cf_use_review']) {
         //     insert_point($member['mb_id'], '1000', "리뷰 {$is_id} 글쓰기", 'g5_shop_item_use', $is_id, '쓰기');

@@ -14,6 +14,7 @@ if (!isset($includers)) {
     $thruaddr3 = "118.37.1.242";  // 수빈집
     $thruaddr4 = "221.158.106.18";  // 수빈집
     $thruaddr5 = "116.41.82.205";  // 윤진아
+    $thruaddr5 = "49.238.202.225";  // 정성민
     $includers = false;
     if ((strrpos($member['mb_id'],'pletho')!==false )
         || $thruaddr == $thisaddr

@@ -9,7 +9,7 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 <div class="boxContainer padding40">
 	
 
-	<div class="data-search-wrap fx-wrap label120">		
+
 	<form name="frm_search" action="/shop/partner/" method="get">
 		<input type="hidden" name="ap" value="<?php echo $ap;?>">
 	<div class="data-search-wrap fx-wrap label120">
@@ -73,7 +73,7 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 				}
 				$(function() {
 					<?php if(!$sch_startdt) { ?>
-					setdate(0);
+					setdate(4);
 					<?php } ?>
 				});
 				</script>
@@ -98,46 +98,26 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 			<tbody>
 			<tr >
 				<th  scope="col">번호</th>
-				<th  scope="col">상태</th>
-				<th  scope="col">접수번호</th>
+				<th  scope="col">정산상태</th>
+				<th  scope="col">주문번호</th>
 				<th  scope="col">신청일</th>
-				<th  scope="col">출금방법</th>
-				<th  scope="col">정산유형</th>
-				<th  scope="col">신청금액</th>
-				<th  scope="col">공급가</th>
-				<th  scope="col">부가세</th>
-				<th  scope="col">제세공과</th>
-				<th  scope="col">실지급액</th>
-				<th  scope="col">메모</th>
-				<th  scope="col">비고</th>
+				<th  scope="col">상품명</th>
+				<th  scope="col">호스트명</th>
+				<th  scope="col">결제금액</th>
+				<th  scope="col">수수료율</th>
+				<th  scope="col">정산수수료</th>
 			</tr>
 			<?php for ($i=0; $i < count($list); $i++) { ?>
 				<tr>
 					<td ><?php echo $list[$i]['pp_num'];?></td>
 					<td ><?php echo $list[$i]['pp_confirm'];?></td>
-					<td ><?php echo $list[$i]['pp_no'];?></td>
+					<td ><?php echo $list[$i]['od_id'];?></td>
 					<td ><?php echo $list[$i]['pp_date'];?></td>
-					<td ><?php echo $list[$i]['pp_means'];?></td>
-					<td ><?php echo $list[$i]['pp_company'];?></td>
-					<td class="text-right"><?php echo number_format($list[$i]['pp_amount']);?></td>
-					<td class="text-right"><?php echo number_format($list[$i]['pp_net']);?></td>
-					<td class="text-right"><?php echo number_format($list[$i]['pp_vat']);?></td>
-					<td class="text-right"><?php echo number_format($list[$i]['pp_tax']);?></td>
-					<td class="text-right"><?php echo number_format($list[$i]['pp_pay']);?></td>
-					<td >
-						<?php if($list[$i]['pp_memo']) { ?>
-							<a class="cursor" role="button" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<span class='font-12'><?php echo $list[$i]['pp_memo'];?></span>">
-							<i class="fa fa-volume-up fa-lg"></i>
-							</a>
-						<?php } ?>
-					</td>
-					<td >
-						<?php if($list[$i]['pp_ans']) { ?>
-							<a class="cursor" role="button" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<span class='font-12'><?php echo $list[$i]['pp_ans'];?></span>">
-							<i class="fa fa-bell fa-lg"></i>
-							</a>
-						<?php } ?>			
-					</td>
+					<td ><?php echo $list[$i]['it_name'];?></td>
+					<td ><?php echo $list[$i]['it_brand'];?></td>
+					<td class="text-right"><?php echo number_format($list[$i]['od_receipt_price']);?>원</td>
+					<td class="text-right"><?php echo $parter['pt_commission_2']?>%</td>
+					<td class="text-right"><?php echo number_format($list[$i]['commission']);?>원</td>
 				</tr>
 			<?php } ?>
 			<?php if ($i == 0) { ?>

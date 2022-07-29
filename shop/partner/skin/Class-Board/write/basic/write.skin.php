@@ -106,7 +106,7 @@ if(!$header_skin) {
 								<th><span class="num">회차</span></th>
 								<td class="bg">
 									<label class="inp-wrap inline-label span">
-                                        <input type="text" name="cls_day[]" value="<?php echo $write['cls_no'][$j]['day']; ?>" class="span datepicker" placeholder="날짜 선택">
+                                        <input type="text" name="cls_day[]" value="<?php echo $write['cls_no'][$j]['day']; ?>" class="span datepicker " placeholder="날짜 선택" >
                                         <span class="label-inline"></span>
                                     </label>
 								</td>
@@ -987,6 +987,7 @@ function fwrite_submit(f) {
 		}
 	}
 
+	if ($('input[name*=cls_day]').val() == ""){ alert('모임스케쥴을 입력하세요.'); return false; }
 
 	<?php echo $captcha_js; // 캡챠 사용시 자바스크립트에서 입력된 캡챠를 검사함  ?>
 

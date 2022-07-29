@@ -9,8 +9,8 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
             <!-- 인증 후 소속 인증 없어야함 -->
             <?php
             $sql = "SELECT 
-IF((SELECT count(*) cnt FROM deb_certi_mail WHERE mb_id = '{$member['mb_id']}') > 0 OR (SELECT count(*) cnt FROM deb_certi_image WHERE mb_id = '{$member['mb_id']}') > 0, '1', '0') as cnt,
-IF((SELECT cert_yn cnt FROM deb_certi_mail WHERE mb_id = '{$member['mb_id']}') > 1 OR (SELECT cert_yn FROM deb_certi_image WHERE mb_id = '{$member['mb_id']}') > 1, '1', '0') as cert_yn";
+				IF((SELECT count(*) cnt FROM deb_certi_mail WHERE mb_id = '{$member['mb_id']}') > 0 OR (SELECT count(*) cnt FROM deb_certi_image WHERE mb_id = '{$member['mb_id']}') > 0, '1', '0') as cnt,
+					IF((SELECT cert_yn cnt FROM deb_certi_mail WHERE mb_id = '{$member['mb_id']}') > 1 OR (SELECT cert_yn FROM deb_certi_image WHERE mb_id = '{$member['mb_id']}') > 1, '1', '0') as cert_yn";
             $result = sql_fetch($sql);
 
             if($result['cnt'] <= 0 && $result['cert_yn'] == 0) { ?>

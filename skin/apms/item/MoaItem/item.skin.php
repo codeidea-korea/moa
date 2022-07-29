@@ -333,6 +333,14 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
 					<div class="mt25">
 						<div id="map" style="width:700px;height:600px;"></div>
 					</div>
+					<!--신고버튼-->
+					<div class="d_tit cr mt14">
+						<div class="com_chip color_red">
+							<span onclick="report_btn('모임1')" style="cursor:pointer;">신고</span>
+							<span onclick="report_btn('모임2')" style="cursor:pointer;">차단</span>
+						</div>
+					</div>
+					<!--신고버튼-->
 				</div>
 				<!-- 포함 /불포함 지도 끝-->				
 			</div>
@@ -366,6 +374,8 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
 												<span></span>
 											<?php } ?>
 											<p><?= number_format($item[$j]['is_score'], 1); ?></p>
+											<p onclick="report_btn('후기1')" style="color: #EB5757;background: rgba(235, 87, 87, 0.05);border: 1px solid #EB5757;border-radius: 38px;padding: 6px 16px !important;margin:0 5px;">신고</p>
+											<p onclick="report_btn('후기2')" style="color: #EB5757;background: rgba(235, 87, 87, 0.05);border: 1px solid #EB5757;border-radius: 38px;padding: 6px 16px !important;margin:0 5px;">차단</p>
 										</div>
 									</div>
 									<p class="txt">
@@ -398,7 +408,7 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
 						<div class="review">
 							<div class="pro_img"><?php echo moaMemberProfile($row['mb_id']); ?></div>
 							<div class="t_area">
-								<p><?= $row['mb_id']; ?><span><?= date('y-m-d', strtotime($row['iq_time'])); ?></span><i <?= $row['iq_answer'] != '' ? 'class="on"' : ''; ?>><?= $row['iq_answer'] != '' ? '답변 완료' : '답변 미완료' ?></i></p>
+								<p><?= $row['mb_id']; ?><span><?= date('y-m-d', strtotime($row['iq_time'])); ?></span><span onclick="report_btn('Q&A1')" style="color: #EB5757;background: rgba(235, 87, 87, 0.05);border: 1px solid #EB5757;border-radius: 38px;padding: 6px 16px !important;margin:0 5px;">신고</span><span onclick="report_btn('Q&A2')" style="color: #EB5757;background: rgba(235, 87, 87, 0.05);border: 1px solid #EB5757;border-radius: 38px;padding: 6px 16px !important;margin:0 5px;">차단</span><i <?= $row['iq_answer'] != '' ? 'class="on"' : ''; ?>><?= $row['iq_answer'] != '' ? '답변 완료' : '답변 미완료' ?></i></p>
 								<p class="txt">
 									<?php if($row['iq_secret']) { ?>
 										<span class="secret">비밀글입니다</span>
@@ -461,6 +471,87 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
         <?php } ?>
     </div>
 </div> 
+<!--신고버튼-->
+<script>
+function report_btn(val){
+	if(val=='모임1'){
+		var result = confirm('해당 모임을 신고하시겠습니까?');
+
+		if(result) {
+		   //yes
+		   //location.replace('index.php');
+		   alert('신고되었습니다. 관리자 확인 후 처리예정입니다. 감사합니다.');
+		   //처리예정 
+		   /*
+			$.ajax({
+				type: 'POST',
+				url: "../../app/ajax_check.php",
+				data: {
+					checkName : "company_01_ck",
+					company_token_val : company_token_val,
+					token_val : $('#token_val').val()
+				},
+				cache: false,
+				async: false,
+				error : function(request,status,error){
+					alert("code : "+request.status+"\r\nmessage : " + request.responseText);
+				},
+				beforeSend:function(x){
+				//처리중 화면구성
+				},
+				success: function(result) {
+					result = result.replace(/(^\s*)|(\s*$)/g, "");
+					var re=result.split("///");
+					if(re[0]=='ok'){
+						$("#company_01").html(re[1]);
+						$("#company_01").selectpicker('refresh');
+						
+						$("#company_02").html(re[2]);
+						$("#company_02").selectpicker('refresh');
+						
+						$("#company_03").html(re[3]);
+						$("#company_03").selectpicker('refresh');
+					}else{}
+				}
+			});
+			*/
+		} else {
+			//no
+		}
+	}else if(val=='후기1'){
+		var result = confirm('해당 후기를 신고하시겠습니까?');
+		if(result) {
+		   alert('신고되었습니다. 관리자 확인 후 처리예정입니다. 감사합니다.');
+		} else {}
+	}else if(val=='Q&A1'){
+		var result = confirm('해당 질문을 신고하시겠습니까?');
+		if(result) {
+		   alert('신고되었습니다. 관리자 확인 후 처리예정입니다. 감사합니다.');
+		} else {}
+
+	}else if(val=='모임2'){
+		var result = confirm('해당 사용자를 차단하시겠습니까?');
+
+		if(result) {
+		   alert('관리자 확인 후 처리예정입니다. 감사합니다.');
+		} else {}
+	}else if(val=='후기2'){
+		var result = confirm('해당 사용자를 차단하시겠습니까?');
+
+		if(result) {
+		   alert('관리자 확인 후 처리예정입니다. 감사합니다.');
+		} else {}
+	}else if(val=='Q&A2'){
+		var result = confirm('해당 사용자를 차단하시겠습니까?');
+
+		if(result) {
+		   alert('관리자 확인 후 처리예정입니다. 감사합니다.');
+		} else {}
+	}else{
+	}
+}
+</script>
+<!--신고버튼-->
 <div class="item-wrap container grid-lg" >
 
 	<?php echo $it_head_html; // 상단 HTML; ?>

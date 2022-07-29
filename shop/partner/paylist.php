@@ -24,24 +24,14 @@ $sch_enddt = str_replace(".","-",$sch_enddt);
 //세션등록
 set_session('pp_payment_id', $member['mb_id']);
 
-$pp_limit = '';
-if($apms['apms_payment_limit']) {
-	if($apms['apms_payment_day']) {
-		$pp_limit = '매주 '.$apms['apms_payment_limit'].'요일만 출금신청이 가능합니다.';
-	} else {
-		$pp_limit = '매월 '.$apms['apms_payment_limit'].'일만 출금신청이 가능합니다.';
-	}
-}
-
 $partner['pt_flag'] = apms_pay_flag($partner['pt_flag']);
 
 //계정현황
 $account = apms_balance_sheet($member['mb_id']);
-$search_sql = " and pp_datetime between '{$sch_startdt} 00:00:00' and '{$sch_enddt} 23:59:59' ";
+$search_sql = " and A.pp_datetime between '{$sch_startdt} 00:00:00' and '{$sch_enddt} 23:59:59' ";
 //신청현황
-$sql_common = " from {$g5['apms_payment']} 
-				where mb_id = '{$member['mb_id']}' 
-				and pp_field = '0' 
+$sql_common = " from g5_apms_payment A left join g5_shop_order B on A.pp_id=B.calculate_pp_id 
+				where A.mb_id = '{$member['mb_id']}' 
 				{$search_sql}
 				";
 
@@ -55,19 +45,12 @@ $total_page  = ceil($total_count / $rows);  // 전체 페이지 계산
 if ($page < 1) { $page = 1; } // 페이지가 없으면 첫 페이지 (1 페이지)
 $from_record = ($page - 1) * $rows; // 시작 열을 구함
 
-$sql  = " select * $sql_common order by pp_id desc limit $from_record, $rows ";
+$sql  = " select A.*, B.od_id, B.od_receipt_price $sql_common order by A.pp_id desc limit $from_record, $rows ";
 $result = sql_query($sql);
 for ($i=0; $row=sql_fetch_array($result); $i++) {
 	$list[$i] = $row;
 	$list[$i]['pp_num'] = $total_count - ($page - 1) * $rows - $i;
-	$list[$i]['pp_no'] = $row['pp_id'];
-	$list[$i]['pp_date'] = date("Y/m/d H:i", strtotime($row['pp_datetime']));
-
-	switch($row['pp_means']) {
-		case '1'	: $pp_means = AS_MP.'전환'; break;
-		default		: $pp_means = '통장입금'; break;
-	}
-	$list[$i]['pp_means'] = $pp_means;
+	$list[$i]['pp_date'] = date("Y.m.d H:i", strtotime($row['pp_datetime']));
 
 	switch($row['pp_confirm']) {
 		case '1'	: $pp_confirm = '완료'; break;
@@ -76,15 +59,13 @@ for ($i=0; $row=sql_fetch_array($result); $i++) {
 	}
 	$list[$i]['pp_confirm'] = $pp_confirm;
 
-	$list[$i]['pp_memo'] = conv_content(trim($row['pp_memo']), 0);
-	$list[$i]['pp_memo'] = str_replace("\"", "'", $list[$i]['pp_memo']);
-	$list[$i]['pp_ans'] = conv_content(trim($row['pp_ans']), 0);
-	$list[$i]['pp_ans'] = str_replace("\"", "'", $list[$i]['pp_ans']);
+	$sql = "select I.it_name, I.it_brand from g5_shop_cart C left join g5_shop_item I on C.it_id=I.it_id where C.od_id=".$row['od_id'];
+	$it = sql_fetch($sql);
+	$list[$i]['it_name'] = $it['it_name'];
+	$list[$i]['it_brand'] = $it['it_brand'];
 
-	list($net, $vat) = apms_vat($row['pp_amount']);
-
-	$list[$i]['pp_net'] = $net;
-	$list[$i]['pp_vat'] = $vat;
+	$commission = ($row['od_receipt_price'] * $partner['pt_commission_2']) / 100;
+	$list[$i]['commission'] = $commission;
 }
 
 // 페이징
@@ -92,7 +73,7 @@ $write_pages = (G5_IS_MOBILE) ? $config['cf_mobile_pages'] : $config['cf_write_p
 $list_page = './?ap='.$ap.'&amp;page=';
 $action_url = './payconfirm.php';
 
-$exceldownlink = '/shop/partner/paylistexceldownload.php?&amp;sca='.$sca.'&amp;save_stx='.$stx.'&amp;stx='.$stx.'&amp;page=';
+$exceldownlink = '/shop/partner/paylistexceldownload.php?sch_startdt='.$sch_startdt.'&sch_enddt='.$sch_enddt;
 
 @include_once($skin_path.'/paylist.skin.php');
 

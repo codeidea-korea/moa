@@ -1639,12 +1639,12 @@ function getDashBoardInfo($pt_id) {
 
     $sql = " SELECT 
         (
-            SELECT COUNT(*) cnt
-            FROM g5_write_class
-            WHERE DATE(wr_datetime) BETWEEN (LAST_DAY(NOW() - interval 2 month) + interval 1 DAY) AND (LAST_DAY(NOW() - INTERVAL 1 MONTH)) 
-            AND wr_parent = wr_id
-            AND mb_id = '{$pt_id}'
-            AND moa_status NOT IN ('0','4','5')
+			SELECT COUNT(DISTINCT(C.wr_id)) from g5_write_class AS C LEFT JOIN deb_class_item D 
+			ON C.wr_id=D.wr_id 
+			WHERE  C.mb_id='{$pt_id}'  
+			AND C.wr_parent = C.wr_id 
+			AND C.moa_status NOT IN ('0','4','5') 
+			AND substring(D.day,1,7)='".date('Y-m')."' 
         ) AS moa_count 
         ,
         (
@@ -1673,21 +1673,23 @@ function getDashBoardInfo($pt_id) {
          , 
         ( 
             SELECT sum(od_cart_price)  
-            FROM g5_shop_order a, g5_shop_cart b, g5_shop_item c
+            FROM g5_shop_order a, g5_shop_cart b, g5_shop_item c, g5_write_class d 
             WHERE a.od_id = b.od_id
-            AND b.it_id = c.it_id
-            AND c.pt_id = '{$pt_id}'
-            AND a.od_status = '완료'
+            and b.it_id = c.it_id 
+			and c.it_2 = d.wr_id 
+            and d.mb_id = '{$pt_id}' 
+			and a.od_status in ('입금', '완료') 
         ) AS total_sales
         , 
         (
-            SELECT sum(od_cart_price) 
-            FROM g5_shop_order a, g5_shop_cart b, g5_shop_item c
+           SELECT sum(od_cart_price)  
+            FROM g5_shop_order a, g5_shop_cart b, g5_shop_item c, g5_write_class d 
             WHERE a.od_id = b.od_id
-            AND b.it_id = c.it_id
-            AND c.pt_id = '{$pt_id}'
-            AND a.od_status = '완료'
-            AND date(a.od_time) BETWEEN (LAST_DAY(NOW() - interval 2 month) + interval 1 DAY) AND (LAST_DAY(NOW() - INTERVAL 1 MONTH)) 
+            and b.it_id = c.it_id 
+			and c.it_2 = d.wr_id 
+            and d.mb_id = '{$pt_id}' 
+			and a.od_status in ('입금', '완료') 
+			AND substring(a.od_receipt_time,1,7)='".date('Y-m')."' 
         ) AS thismonth_sales
         , 
         (
@@ -1696,7 +1698,7 @@ function getDashBoardInfo($pt_id) {
             WHERE a.od_id = b.od_id
             AND b.it_id = c.it_id
             AND c.pt_id = '{$pt_id}'
-            AND a.od_status = '완료'
+            AND a.od_status in ('신청','완료')
             AND date(a.od_time) BETWEEN (LAST_DAY(NOW() - interval 2 month) + interval 1 DAY) AND (LAST_DAY(NOW() - INTERVAL 1 MONTH)) 
         ) AS thismonth_coupon
         ,
@@ -1706,7 +1708,7 @@ function getDashBoardInfo($pt_id) {
             WHERE a.od_id = b.od_id
             AND b.it_id = c.it_id
             AND c.pt_id = '{$pt_id}'
-            AND a.od_status = '완료'
+            AND a.od_status in ('신청','완료')
             AND date(a.od_time) BETWEEN (LAST_DAY(NOW() - interval 2 month) + interval 1 DAY) AND (LAST_DAY(NOW() - INTERVAL 1 MONTH)) 
         ) AS thismonth_point
         

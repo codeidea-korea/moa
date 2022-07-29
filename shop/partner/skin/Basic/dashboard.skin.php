@@ -52,12 +52,12 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 					<span class="fs16 color-gray noto500">평균 모임 별점</span>
 				</div>
 				<div class="boxContainer flex1 flexCenter column">
-					<span class="h2 mainColor mb15"><?php echo $count['answer_rate'] ? $count['answer_rate'] : 0; ?>%</span>
+					<span class="h2 mainColor mb15"><?php echo $count['answer_rate'] ? number_format($count['answer_rate'],0) : 0; ?>%</span>
 					<span class="fs16 color-gray noto500">QnA 응답률</span>
 				</div>
 			</div>
 			<div class="flex flex1 gap20 flex-stretch">
-				<div class="boxContainer flex1">
+				<!-- <div class="boxContainer flex1">
 					<div class="flex flex-middle">
 						<span class="fs16 color-gray noto500">사용된 포인트</span>
 						<span class="right fs22 bold"><?php echo $count['thismonth_point'] ? number_format($count['thismonth_point']) : 0; ?> P</span>
@@ -67,7 +67,7 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 						<span class="fs16 color-gray noto500">사용된 쿠폰 금액</span>
 						<span class="right fs22 bold"><?php echo $count['thismonth_point'] ? number_format($count['thismonth_point']) : 0; ?>원</span>
 					</div>
-				</div>
+				</div> -->
 				<div class="boxContainer flex1">
 					<div class="flex flex-middle">
 						<span class="fs16 color-gray noto500">이번 달 매출액</span>

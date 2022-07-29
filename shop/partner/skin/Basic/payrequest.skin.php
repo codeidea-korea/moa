@@ -8,11 +8,20 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 		<div class="flex span420">
 			<div class="flex1">
 				<div class="fs16 color-gray">정산 가능 금액</div>
-				<div class="fs24">522,000 원</div>
+				<div class="fs24"><?=number_format($tsum_sales)?> 원</div>
 				<div class="mt25 fs16 color-gray">계좌정보</div>
-				<div class="fs16">카카오뱅크 23213318738</div>
+				<?php if ($host_data['pt_bank_name'] != "" && $host_data['pt_bank_account'] != "" && $host_data['pt_bank_owner'] != "" && $host_data['pt_bank_limit'] == "0"){?>
+					<div class="fs16"><?=$host_data['pt_bank_name']?> <?=$host_data['pt_bank_account']?></div>
+				<?php }else{?>
+					<div class="fs16">계좌정보가 등록되지 않았습니다.</div>
+				<?php }?>
+				
 			</div>
-			<a href="#" class="btn span100">정산신청</a>
+			<?php if ($host_data['pt_bank_name'] != "" && $host_data['pt_bank_account'] != "" && $host_data['pt_bank_owner'] != "" && $host_data['pt_bank_limit'] == "0"){?>
+				<a href="#" class="btn span100 pop-inline" data-href="#pop05" >정산신청</a>
+			<?php }else{?>
+				<a href="javascript:alert('계좌정보가 등록되지 않았습니다.');" class="btn span100">정산신청</a>
+			<?php }?>
 		</div>
 		<div class="flex1">
 			<div class="fs16 color-gray">매출 현황 안내</div>
@@ -24,227 +33,158 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 			</p>
 		</div>
 	</div>
-	<div class="mt30"></div>
-	<div class="boxContainer padding30">
-		<div class="box-header">타이틀</div>
-		내용
-		<hr class="mt50 mb50">
-		내용
-	</div>
 </section>
 
-
-
-<div class="section-title">정산신청 </div>
-
-<div class="mt30"></div>
-<div class="boxContainer padding40">
-	<div class="data-search-wrap fx-wrap label120">		
-		<div >
-			<div >
-				<table >
-				<tbody>
-				<tr >
-					<th >구분</th>
-					<th >금액(원)</th>
-					<th >비고</th>
-				</tr>
-				<tr>
-					<td>① 총판매액</td>
-					<td class="text-right"><nobr><?php echo number_format($account['sale']);?></nobr></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>② 총수수료</td>
-					<td class="text-right"><?php echo number_format($account['commission']);?></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>③ 총포인트</td>
-					<td class="text-right"><?php echo number_format($account['point']);?></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td><nobr>④ 총인센티브</nobr></td>
-					<td class="text-right"><?php echo number_format($account['intensive']);?></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>⑤ 총매출액</td>
-					<td class="text-right"><?php echo number_format($account['netsale']);?></td>
-					<td>①-②-③+④</td>
-				</tr>
-				<tr>
-					<td>⑥ 총배송비</td>
-					<td class="text-right"><?php echo number_format($account['sendcost']);?></td>
-					<td></td>
-				</tr>
-				<tr class="active">
-					<td><b>⑦ 총적립액</b></td>
-					<td class="text-right"><b><?php echo number_format($account['netgross']);?></b></td>
-					<td>⑤+⑥</td>
-				</tr>
-				<tr>
-					<td>⑧ 총지급액</td>
-					<td class="text-right"><?php echo number_format($account['payment']);?></td>
-					<td>신청금액 기준</td>
-				</tr>
-				<tr>
-					<td>⑨ 지급요청</td>
-					<td class="text-right"><?php echo number_format($account['request']);?></td>
-					<td>신청금액 기준</td>
-				</tr>
-				<tr class="success">
-					<td><b>⑩ 현재잔액</b></td>
-					<td class="text-right"><b><?php echo number_format($account['balance']);?></b></td>
-					<td>⑦-⑧-⑨</td>
-				</tr>
-				<tr>
-					<td>⑪ 출금기준</td>
-					<td class="text-right"><b><?php echo number_format($account['deposit']);?></b></td>
-					<td>이상 잔액</td>
-				</tr>
-				<tr class="warning">
-					<td><b>⑫ 출금가능</b></td>
-					<td class="text-right"><b><?php echo number_format($account['possible']);?></b></td>
-					<td>⑩-⑪</td>
-				</tr>
-				</tbody>
-				</table>
-			</div>
-			<div >
-
-				<table >
-				<tbody>
-				<tr >
-					<th >정산/입금안내</th>
-				</tr>
-				<tr>
-					<td>정산유형 : <?php echo ($partner['pt_company']) ? $partner['pt_company'] : '미등록'; ?></td>
-				</tr>
-				<tr>
-					<td>입금계좌 :
-						<?php if($partner['pt_bank_name']) { ?>
-							<?php echo $partner['pt_bank_name'];?>
-							<?php echo $partner['pt_bank_account'];?>
-							<?php echo $partner['pt_bank_holder'];?>
-						<?php } else { ?>
-							미등록
-						<?php } ?>
-					</td>
-				</tr>
-				<tr>
-					<td>
-					<?php if($partner['pt_type'] == "1") { ?>
-						간이과세사업자는 세금계산서 교부 불가로 부가세를 제한 금액만 입금됩니다.
-					<?php } else { ?>
-						개인 파트너는 부가세를 제한 금액에 대해 원천징수 후 입금됩니다.
-					<?php } ?>
-					</td>
-				</tr>
-				</tbody>
-				</table>
-				<div class="panel panel-primary">
-					<div class="panel-heading text-center">
-						최대 <strong><?php echo number_format($account['max']);?></strong>원까지 신청할 수 있습니다.
-					</div>
-					<div class="panel-body">
-						<form class="form" role="form" name="frm_amount" action="<?php echo $action_url;?>" onsubmit="return frm_submit(this);" method="post">
-						<input type="hidden" name="ap" value="<?php echo $ap;?>">
-						<input type="hidden" name="pp_field" value="0">
-							<div >
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label for="pp_means" class="sr-only">출금방법</label>
-										<select name="pp_means" id="pp_means" class="form-control input-sm">
-											<option value="0">통장입금</option>
-											
-										</select>
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<label for="pp_amount" class="sr-only">출금액</label>
-									<div class="form-group input-group input-group-sm">
-										<input type="text" name="pp_amount" value="" id="pp_amount" required class="form-control input-sm" placeholder="<?php echo number_format($account['unit']);?>원 단위 양수">
-										<span class="input-group-addon">원</span>
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<textarea name="pp_memo" id="pp_memo" rows="4" class="form-control input-sm" placeholder="메모<?php echo ($pp_limit) ? ' : '.$pp_limit : '';?>"></textarea>
-							</div>
-
-							<button type="submit" id="btn_submit" class="btn btn-danger btn-block"><b>출금신청하기</b></button>
-
-						</form>
-						<script>
-						function frm_right(str, n){
-							if (n <= 0)
-							return "";
-							else if (n > String(str).length)
-							return str;
-							else {
-							var iLen = String(str).length;
-							return String(str).substring(iLen, iLen - n);
-							}
-						}
-
-						function frm_submit(f) {
-							var pp_possible = "<?php echo $account['possible'];?>";
-							var pp_amount = f.pp_amount.value;
-							var pp_unit = String(frm_right(pp_amount, <?php echo $account['num'];?>));
-
-							if (pp_possible > 0) {
-								;
-							} else {
-								alert("출금가능한 잔액이 없습니다.");
-								f.pp_amount.focus();
-								return false;
-							}
-
-							if (pp_amount > 0) {
-								;
-							} else {
-								alert("신청금액은 0보다 큰 양수로 입력하셔야 합니다.");
-								f.pp_amount.focus();
-								return false;
-							}
-
-							if (pp_amount > parseInt(pp_possible)) {
-								alert("출금가능한 잔액보다 큰 금액을 신청하셨습니다.");
-								f.pp_amount.focus();
-								return false;
-							}
-
-							if(pp_unit == "<?php echo $account['txt'];?>") {
-								;
-							} else {
-								alert("신청금액을 <?php echo number_format($account['unit']);?>원 단위로 입력해 주세요.");
-								f.pp_amount.focus();
-								return false;
-							}
-
-							newWin = window.open("about:blank", "_frm", "width=500,height=600,scrollbars=yes,resizable=yes");
-
-							f.target = "_frm";
-							f.submit();
-
-							return false;
-						}
-						</script>
-					</div>
-					<div class="panel-footer text-center">
-						신청금액은 <b><?php echo number_format($account['unit']);?></b>원 단위로 입력할 수 있습니다.
-					</div>
+<div class="layer-popup" id="pop05">
+	<div class="popContainer">
+		<div class="pop-inner fs16" style="width:660px;padding-left:70px;padding-right:70px;">
+		<form id="theForm" method="post" action="./payupdate.php">
+		<input type="hidden" name="ap" value="payrequest">
+		<input type="hidden" name="pp_field" value="0">
+		<input type="hidden" name="pp_means" value="0"><!--통장입금-->
+		<input type="hidden" name="pp_amount" id="pp_amount" value="<?=$tsum_sales?>">
+		<textarea name="od_id_list" style="display:none;"><?=$od_id_list['od_id_list']?></textarea>
+		
+			<span class="pop-closer">팝업닫기</span>
+			<div class="pop-header">정산 신청</div>
+			<div class="tbl-excel">
+				<div class="tbl-header fs16 noto500 mb20">
+					<span class="color-gray">정산 가능 금액</span>
+					<div class="right fs24"><?=number_format($tsum_sales)?>원</div>
 				</div>
+				<table>
+					<colgroup>
+						<col width="180">
+						<col>
+					</colgroup>
+					<tbody>
+						<tr>
+							<th class="tleft">예금주</td>
+							<td class="tleft"><?=$host_data['pt_bank_owner']?></td>
+						</tr>
+						<tr>
+							<th class="tleft">은행</td>
+							<td class="tleft"><?=$host_data['pt_bank_name']?></td>
+						</tr>
+						<tr>
+							<th class="tleft">계좌번호</td>
+							<td class="tleft"><?=$host_data['pt_bank_account']?></td>
+						</tr>
+					</tbody>			
+				</table>				
 			</div>
+
+			<div class="flex mt20">
+				<label class="radio-wrap noto500"><input type="radio" name="pp_type" value="1" checked><span></span>개인사업자(법인)</label>
+				<label class="radio-wrap noto500"><input type="radio" name="pp_type" value="2"><span></span>개인</label>
+			</div>
+
+			<p class="mt25 noto500 color-gray" id="pp_type_name">사업자등록번호</p>
+			<div class="flex flex-middle mt10" id="pp_type1">
+				<input type="text" name="co_num1" id="co_num1" value="" class="span100" placeholder="">
+				<span class="color-light">-</span>
+				<input type="text" name="co_num2" id="co_num2" value="" class="span65" placeholder="">
+				<span class="color-light">-</span>
+				<input type="text" name="co_num3" id="co_num3" value="" class="span160" placeholder="">
+			</div>
+			<div class="flex flex-middle mt10" id="pp_type2" style="display:none">
+				<input type="text" name="jumin1" id="jumin1" value="" class="span100" placeholder="주민번호 앞자리를 입력해주세요">
+				<span class="color-light">-</span>
+				<input type="password" name="jumin2" id="jumin2" value="" class="span160" placeholder="주민번호 뒷자리를 입력해주세요">
+			</div>
+
+			<p class="mt25 noto500 color-gray">성함/사업자명</p>
+			<div class="mt10">
+				<input type="text" name="pp_name" id="pp_name" value="" class="span" placeholder="성함/사업자명을 입력해주세요.">
+			</div>
+			<p class="fs14 color-gray mt15">
+				* 최소 1회 정산 요청시 증빙서류 제출이 필요하며, 확인시 정산이 정상적으로 진행됩니다. 회사이메일 (tax@moa.co.kr)<br>
+				- 사업자 : 사업자 등록증 사본, 사업자 통장 사본<br>
+				- 개인 : 주민등록증 사본, 본인 명의 통장 사본
+			</p>
+			
+			<div class="pop-header mt40">수익 상세</div>
+			<div class="tbl-excel">				
+				<table>
+					<colgroup>
+						<col width="180">
+						<col>
+					</colgroup>
+					<tbody>
+						<tr>
+							<th class="tleft">총 매출금액</td>
+							<td class="tleft"><?=number_format($sales['sum_sales'], 0)?>원</td>
+						</tr>
+						<tr>
+							<th class="tleft">수수료율</td>
+							<td class="tleft"><?=$host_data['pt_commission_2']?>%</td>
+						</tr>
+						<tr>
+							<th class="tleft">차감금액</td>
+							<td class="tleft"><?=($sales['sum_sales'] * $host_data['pt_commission_2']) / 100?>원</td>
+						</tr>
+					</tbody>			
+				</table>				
+			</div>
+
+			<div class="pop-header mt40">정산 가이드</div>
+			<p class="noto500 color-gray">필수서류</p>
+			<p class="mt10 noto500">
+				사업자 정산 신청 시 : 사업자 등록증 사본, 사업자 통장사본<br>
+				개인 정산 신청 시 : 신분증 사본, 신분증과 동일한 명의 통장 사본
+			</p>
+			<p class="mt10 fs14 color-gray">
+				* 필수서류는 최초 1회 정산시에만 제출이 필요하며, 이후 정산에는 서류 제출없이 정산 신청할 수 있습니다.
+			</p>
+			
+			<div class="btnSet mt50">
+				<a href="#" class="btn gray span90 popClose">닫기</a>
+				<a href="#" class="btn submit span90 btn_submit">정산신청</a>		
+			</div>
+		</form>
 		</div>
 	</div>
+
+	<div class="pop-bg"></div>
 </div>
+
 <script>
-$(function () {
-  $('[data-toggle="popover"]').popover()
-})
- </script>
+$(document).ready(function(){
+	$('input[name=pp_type]').change(function(){
+		$('#pp_type1, #pp_type2').hide();
+		$('#pp_type'+$('input[name=pp_type]:checked').val()).show();
+		$('#pp_type_name').text(($('input[name=pp_type]:checked').val()=='1')?'개인사업자(법인)':'개인');
+	});
+
+	$('.btn_submit').click(function(){
+		if (parseInt($('#pp_amount').val()) <= 0){
+			alert('정산 가능 금액이 없습니다.'); return false;
+		}
+		if ($('input[name=pp_type]:checked').val()=='1'){
+			if ($('#co_num1').val() == "" || $('#co_num2').val() == "" || $('#co_num3').val() == ""){
+				alert('사업자등록번호를 입력해주세요.'); return false;
+			}
+		}else{
+			if ($('#jumin1').val() == "" || $('#jumin2').val() == ""){
+				alert('주민번호를 입력해주세요.'); return false;
+			}
+		}
+		if ($('#pp_name').val() == ""){
+			alert('성함/사업자명를 입력해주세요.'); return false;
+		}
+		$('#theForm').submit();
+	});
+});
+</script>
+
+
+
+
+
+
+
+
+
+
 
 

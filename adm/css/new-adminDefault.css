@@ -325,7 +325,7 @@ input[type="submit"].btn{font-weight:normal;padding:0 10px;color:#2d2d2d;backgro
 
 
 /*──────────────── flex ────────────────*/
-.flex{display:flex !important;align-items:flex-start;}
+.flex{display:flex ;align-items:flex-start;}
 .inline-flex{display:inline-flex !important;}
 .flex.column, .inline-flex.column{flex-direction:column !important;}
 .flex-top{align-items:flex-start !important;}

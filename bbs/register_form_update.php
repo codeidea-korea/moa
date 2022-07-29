@@ -69,7 +69,7 @@ $agree7          = isset($_POST['agree7'])            ? trim($_POST['agree7'])  
 $agree8          = isset($_POST['agree8'])            ? trim($_POST['agree8'])          : "";
 
 $mb_name        = clean_xss_tags($mb_name);
-$mb_email       = get_email_address($mb_email);
+$mb_email       = get_email_address($mb_id);
 $mb_homepage    = clean_xss_tags($mb_homepage);
 $mb_tel         = clean_xss_tags($mb_tel);
 $mb_zip1        = preg_replace('/[^0-9]/', '', $mb_zip1);
@@ -80,9 +80,7 @@ $mb_addr3       = clean_xss_tags($mb_addr3);
 $mb_addr_jibeon = preg_match("/^(N|R)$/", $mb_addr_jibeon) ? $mb_addr_jibeon : '';
 
 if ($w == '' || $w == 'u') {
-
     if ($msg = empty_mb_id($mb_id))         alert($msg, "", true, true); // alert($msg, $url, $error, $post);
-    //if ($msg = valid_mb_id($mb_id))         alert($msg, "", true, true);
     if ($msg = count_mb_id($mb_id))         alert($msg, "", true, true);
 
     // 이름, 닉네임에 utf-8 이외의 문자가 포함됐다면 오류
@@ -103,16 +101,14 @@ if ($w == '' || $w == 'u') {
 
     if ($msg = empty_mb_name($mb_name))     alert($msg, "", true, true);
     if ($msg = empty_mb_nick($mb_nick))     alert($msg, "", true, true);
-    //if ($msg = empty_mb_email($mb_email))   alert($msg, "", true, true);
+    if ($msg = empty_mb_email($mb_email))   alert($msg, "", true, true);
     if ($msg = reserve_mb_id($mb_id))       alert($msg, "", true, true);
     if ($msg = reserve_mb_nick($mb_nick))   alert($msg, "", true, true);
-    // 이름에 한글명 체크를 하지 않는다.
-    //if ($msg = valid_mb_name($mb_name))   alert($msg, "", true, true);
     if ($msg = valid_mb_nick($mb_nick))     alert($msg, "", true, true);
-    //if ($msg = valid_mb_email($mb_email))   alert($msg, "", true, true);
-    //if ($msg = prohibit_mb_email($mb_email))alert($msg, "", true, true);
+    if ($msg = valid_mb_email($mb_email))   alert($msg, "", true, true);
+    if ($msg = prohibit_mb_email($mb_email))alert($msg, "", true, true);
     // 휴대폰체크
-    //if ($msg = exist_mb_hp($mb_hp, $mb_id)) alert($msg, "", true, true);
+    if ($msg = exist_mb_hp($mb_hp, $mb_id)) alert($msg, "", true, true);
 
     // 휴대폰 필수입력일 경우 휴대폰번호 유효성 체크
     if (($config['cf_use_hp'] || $config['cf_cert_hp']) && $config['cf_req_hp']) {
@@ -121,16 +117,6 @@ if ($w == '' || $w == 'u') {
 
     if ($w=='') {
         if ($msg = exist_mb_id($mb_id))     alert($msg);
-        /*
-        if (get_session('ss_check_mb_id') != $mb_id || get_session('ss_check_mb_nick') != $mb_nick || get_session('ss_check_mb_email') != $mb_email) {
-            // set_session('ss_check_mb_id', '');
-            set_session('ss_check_mb_nick', '');
-            //set_session('ss_check_mb_email', '');
-
-            alert('올바른 방법으로 이용해 주십시오.');
-        }
-        */
-
         // 본인확인 체크
         if($config['cf_cert_use'] && $config['cf_cert_req']) {
             if(trim($_POST['cert_no']) != $_SESSION['ss_cert_no'] || !$_SESSION['ss_cert_no'])
@@ -153,9 +139,6 @@ if ($w == '' || $w == 'u') {
         // 회원정보의 메일을 이전 메일로 옮기고 아래에서 비교함
         $old_email = $member['mb_email'];
     }
-
-//    if ($msg = exist_mb_nick($mb_nick, $mb_id))     alert($msg, "", true, true);
-//    if ($msg = exist_mb_email($mb_email, $mb_id))   alert($msg, "", true, true);
 }
 
 // 사용자 코드 실행
@@ -204,9 +187,8 @@ if ($config['cf_cert_use'] && $cert_type && $md5_cert_no) {
         $sql_certify .= " , mb_sex = '' ";
     }
 }
-//===============================================================
 
-if ($w == '') {
+if ($w == '') { /******************** 회원 insert Start ************************************************************************************************/
     $sql = " insert into {$g5['member_table']}
                 set mb_id = '{$mb_id}',
                      mb_password = '".get_encrypt_string($mb_password)."',
@@ -252,16 +234,12 @@ if ($w == '') {
                      agree7 = '{$agree7}',
                      agree8 = '{$agree8}',
                      mb_status = '대기'
-                     
                      {$sql_certify} ";
 
     // 이메일 인증을 사용하지 않는다면 이메일 인증시간을 바로 넣는다
     if (!$config['cf_use_email_certify'])
         $sql .= " , mb_email_certify = '".G5_TIME_YMDHIS."' ";
     sql_query($sql);
-
-    //echo $sql."<BR>";
-
 
     // 회원가입 포인트 부여
     insert_point($mb_id, $config['cf_register_point'], '회원가입 축하', '@member', $mb_id, '회원가입');
@@ -310,6 +288,10 @@ if ($w == '') {
         set_session('ss_mb_id', $mb_id);
 
     set_session('ss_mb_reg', $mb_id);
+
+	/******************** 회원 insert End ************************************************************************************************/
+
+
 
 } else if ($w == 'u') {
     if (!trim($_SESSION['ss_mb_id']))

@@ -18,13 +18,15 @@ unset($save);
 unset($tot);
 
 
-$sql_common = " FROM g5_shop_order a, g5_shop_cart b, g5_shop_item c
+$sql_common = " FROM g5_shop_order a, g5_shop_cart b, g5_shop_item c, g5_write_class d 
 				WHERE a.od_id = b.od_id
 				and b.pt_id = '{$member['mb_id']}' 
 				and b.ct_select = '1'
 				and b.it_id = c.it_id
-				and SUBSTRING(od_time,1,10) between '$sch_startdt' and '$sch_enddt'	";
-
+				and c.it_2 = d.wr_id 
+				and a.od_status in ('입금', '완료') 
+				and replace(SUBSTRING(c.it_4,1,10),'.','-') < NOW() 
+				and SUBSTRING(a.od_time,1,10) between '$sch_startdt' and '$sch_enddt'	";
 
 $sql_order = "order by od_time desc";
 
@@ -54,9 +56,10 @@ $sql = "SELECT od_status,
 		a.od_coupon,
 		a.od_cart_coupon,
 		a.od_cancel_price,
-        b.ct_price - ROUND((b.ct_price * ((select pt_commission_2 from g5_apms_partner where pt_id = 'admin') / 100)),2) host_price,
-		(SELECT pt_commission_2 from g5_apms_partner where pt_id = 'admin') commissions,
-		ROUND((SELECT pt_commission_2 from g5_apms_partner where pt_id = 'admin'),2) round_commissions
+		a.od_receipt_point, 
+        b.ct_price - ROUND((b.ct_price * ((select pt_commission_2 from g5_apms_partner where pt_id = '{$member['mb_id']}') / 100)),2) host_price,
+		(SELECT pt_commission_2 from g5_apms_partner where pt_id = '{$member['mb_id']}') commissions,
+		ROUND((SELECT pt_commission_2 from g5_apms_partner where pt_id = '{$member['mb_id']}'),2) round_commissions
 
 		$sql_common
 		$sql_order
@@ -79,7 +82,7 @@ $result= sql_query($sql);
 		"".$row['it_name'],
 		"".number_format($row['ct_price']),
 		"".number_format($row['od_coupon']),
-		"".number_format($row['ct_point'])
+		"".number_format($row['od_receipt_point'])
 	);
 
 	array_push($rows, $data);

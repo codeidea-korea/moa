@@ -19,7 +19,14 @@ $sch_enddt = str_replace(".","-",$sch_enddt);
 unset($save);
 unset($tot);
 
-
+$sql_common_all = " FROM g5_shop_order a, g5_shop_cart b, g5_shop_item c, g5_write_class d 
+				WHERE a.od_id = b.od_id
+				and b.ct_select = '1'
+				and b.it_id = c.it_id 
+				and c.it_2 = d.wr_id 
+				and d.mb_id = '{$member['mb_id']}' 
+				and a.od_status in ('입금', '완료') 
+				and replace(SUBSTRING(c.it_4,1,10),'.','-') < NOW() ";
 
 $sql_common = " FROM g5_shop_order a, g5_shop_cart b, g5_shop_item c, g5_write_class d 
 				WHERE a.od_id = b.od_id
@@ -62,12 +69,15 @@ $sql = "SELECT od_status,
 		a.od_coupon,
 		a.od_cart_coupon,
 		a.od_cancel_price,
-		b.ct_price - ROUND((b.ct_price * ((select pt_commission_2 from g5_apms_partner where pt_id = 'admin') / 100)),2) host_price,
-		(SELECT pt_commission_2 from g5_apms_partner where pt_id = 'admin') commissions,
-		ROUND((SELECT pt_commission_2 from g5_apms_partner where pt_id = 'admin'),2) round_commissions
+		a.od_receipt_point, 
+		b.ct_price - ROUND((b.ct_price * ((select pt_commission_2 from g5_apms_partner where pt_id = '{$member['mb_id']}') / 100)),2) host_price,
+		(SELECT pt_commission_2 from g5_apms_partner where pt_id = '{$member['mb_id']}') commissions,
+		ROUND((SELECT pt_commission_2 from g5_apms_partner where pt_id = '{$member['mb_id']}'),2) round_commissions
+
 		$sql_common
 		$sql_order
 		limit $from_record, $rows ";
+
 		
 //echo nl2br($sql)."<BR>";
 
@@ -99,6 +109,23 @@ for ($i=0; $row = sql_fetch_array($result);$i++) {
 	$sum['od_cancel_price'] += $row['od_cancel_price'];
 	
 }
+
+// 호스트의 수수료
+$strSql = "select pt_commission_2 from g5_apms_partner where pt_id = '" . $member['mb_id'] . "'";
+$commission = sql_fetch($strSql);
+
+// 기간 내 매출 (수수료 미적용)
+$strSql = "SELECT sum(b.ct_price) as sum_sales ".$sql_common;
+$sales = sql_fetch($strSql);
+
+// 기간내 매출 (수수료 적용)
+$sum_sales = $sales['sum_sales'] - ($sales['sum_sales'] * $commission['pt_commission_2']) / 100;
+
+// 전체 매출 (수수료 적용)
+$strSql = "SELECT sum(b.ct_price) as sum_sales ".$sql_common_all;
+$tsales = sql_fetch($strSql);
+$tsum_sales = $tsales['sum_sales'] - ($tsales['sum_sales'] * $commission['pt_commission_2']) / 100;
+
 $totsql = "SELECT 
 			sum_price - (sum_price * ((select pt_commission_2 from g5_apms_partner where pt_id = '{$member['mb_id']}') / 100)) sum_price
 		  FROM (

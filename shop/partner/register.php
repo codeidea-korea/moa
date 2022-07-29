@@ -68,4 +68,4 @@ include_once(G5_PATH.'/head.sub.php');
 include_once($skin_path.'/register.skin.php');
 include_once(G5_PATH.'/tail.sub.php');
 include_once(G5_PATH.'/includers.php');
-?>
+?> 

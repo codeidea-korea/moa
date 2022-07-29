@@ -91,7 +91,7 @@ for ($i=0; $row=sql_fetch_array($result); $i++) {
 	}
 	
 	$list[$i] = $row;
-	$list[$i]['od_href'] = G5_SHOP_URL.'/orderinquiryview.php?od_id='.$row['od_id'].'&amp;uid='.$uid;
+	$list[$i]['od_href'] = G5_SHOP_URL.'/orderinquiryview.php?od_id='.$row['od_id'].'&amp;uid='.$uid.'&amp;p=history';
 	$list[$i]['uid'] = $uid;
 	$list[$i]['od_total_price'] = $row['od_cart_price'] + $row['od_send_cost'] + $row['od_send_cost2'];
 	$list[$i]['od_status'] = $od_status;

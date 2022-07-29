@@ -19,7 +19,9 @@ class Hybrid_Providers_Google extends Hybrid_Provider_Model_OAuth2 {
 	 * default permissions
 	 * {@inheritdoc}
 	 */
-	public $scope = "https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/plus.profile.emails.read https://www.google.com/m8/feeds/";
+
+    //public $scope = "https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/plus.profile.emails.read https://www.google.com/m8/feeds/";
+    public $scope = "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.google.com/m8/feeds/";
 
 	/**
 	 * {@inheritdoc}
@@ -70,37 +72,46 @@ class Hybrid_Providers_Google extends Hybrid_Provider_Model_OAuth2 {
 	 */
 	function getUserProfile() {
 		// refresh tokens if needed
-		$this->refreshToken();
 
-		// ask google api for user infos
-		if (strpos($this->scope, '/auth/plus.profile.emails.read') !== false) {
-			$verified = $this->api->api("https://www.googleapis.com/plus/v1/people/me");
+        $this->refreshToken();
 
-			if (!isset($verified->id) || isset($verified->error))
-				$verified = new stdClass();
-		} else {
-			$verified = $this->api->api("https://www.googleapis.com/plus/v1/people/me/openIdConnect");
+        $response = $this->api->api("https://www.googleapis.com/oauth2/v3/userinfo");
+        if (!isset($response->sub) || isset($response->error)) {
+            throw new Exception("User profile request failed! {$this->providerId} returned an invalid response:" . Hybrid_Logger::dumpData( $response ), 6);
+        }
 
-			if (!isset($verified->sub) || isset($verified->error))
-				$verified = new stdClass();
-		}
+        // ask google api for user infos
+        /*
+        if (strpos($this->scope, '/auth/plus.profile.emails.read') !== false) {
+            $verified = $this->api->api("https://www.googleapis.com/plus/v1/people/me");
 
-		$response = $this->api->api("https://www.googleapis.com/plus/v1/people/me");
-		if (!isset($response->id) || isset($response->error)) {
-			throw new Exception("User profile request failed! {$this->providerId} returned an invalid response:" . Hybrid_Logger::dumpData( $response ), 6);
-		}
+            if (!isset($verified->id) || isset($verified->error))
+                $verified = new stdClass();
+        } else {
+            $verified = $this->api->api("https://www.googleapis.com/plus/v1/people/me/openIdConnect");
 
-		$this->user->profile->identifier = (property_exists($verified, 'id')) ? $verified->id : ((property_exists($response, 'id')) ? $response->id : "");
-		$this->user->profile->firstName = (property_exists($response, 'name')) ? $response->name->givenName : "";
-		$this->user->profile->lastName = (property_exists($response, 'name')) ? $response->name->familyName : "";
-		$this->user->profile->displayName = (property_exists($response, 'displayName')) ? $response->displayName : "";
-		$this->user->profile->photoURL = (property_exists($response, 'image')) ? ((property_exists($response->image, 'url')) ? substr($response->image->url, 0, -2) . "200" : '') : '';
-		$this->user->profile->profileURL = (property_exists($response, 'url')) ? $response->url : "";
-		$this->user->profile->description = (property_exists($response, 'aboutMe')) ? $response->aboutMe : "";
-		$this->user->profile->gender = (property_exists($response, 'gender')) ? $response->gender : "";
-		$this->user->profile->language = (property_exists($response, 'locale')) ? $response->locale : ((property_exists($verified, 'locale')) ? $verified->locale : "");
-		$this->user->profile->email = (property_exists($response, 'email')) ? $response->email : ((property_exists($verified, 'email')) ? $verified->email : "");
-		$this->user->profile->emailVerified = (property_exists($verified, 'email')) ? $verified->email : "";
+            if (!isset($verified->sub) || isset($verified->error))
+                $verified = new stdClass();
+        }
+
+        $response = $this->api->api("https://www.googleapis.com/plus/v1/people/me");
+        if (!isset($response->id) || isset($response->error)) {
+            throw new Exception("User profile request failed! {$this->providerId} returned an invalid response:" . Hybrid_Logger::dumpData( $response ), 6);
+        }
+        */
+
+        $this->user->profile->identifier = (property_exists($response, 'sub')) ? $response->sub : "";
+        $this->user->profile->firstName = (property_exists($response, 'name')) ? $response->name->givenName : "";
+        $this->user->profile->lastName = (property_exists($response, 'name')) ? $response->name->familyName : "";
+        $this->user->profile->displayName = (property_exists($response, 'name')) ? $response->name : "";
+        $this->user->profile->photoURL = (property_exists($response, 'picture')) ? $response->picture : "";
+        $this->user->profile->profileURL = (property_exists($response, 'profile')) ? $response->profile : "";
+        $this->user->profile->description = (property_exists($response, 'aboutMe')) ? $response->aboutMe : "";
+        $this->user->profile->gender = (property_exists($response, 'gender')) ? $response->gender : "";
+        $this->user->profile->language = (property_exists($response, 'locale')) ? $response->locale : "";
+        $this->user->profile->email = (property_exists($response, 'email')) ? $response->email : "";
+        $this->user->profile->emailVerified = (property_exists($response, 'email_verified')) ? ($response->email_verified === true || $response->email_verified === 1 ? $response->email : "") : "";
+
 		if (property_exists($response, 'emails')) {
 			if (count($response->emails) == 1) {
 				$this->user->profile->email = $response->emails[0]->value;

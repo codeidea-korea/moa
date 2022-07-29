@@ -609,7 +609,7 @@ span.flatpickr-weekday{
 .inactive{
     height:62px;
     line-height:62px;
-    background-color:var(--gray-color3);
+    background-color:var(--gray-color3)!important;
     color:#fff;
     width:100%;
     border-radius:3px;
@@ -1033,7 +1033,7 @@ background:url('../images/check_off01.svg') left no-repeat;
     font-size:1.4rem;
 }
 .inactive.on{
-    background-color:var(--main-color);
+    background-color:var(--main-color)!important;
 }
 .t_bold{
     font-size:1.6rem;

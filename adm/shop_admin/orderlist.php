@@ -141,7 +141,7 @@ $sql  = " select a.*, c.it_name moa_name, c.it_2 classid,
            $sql_common
            order by $sort1 $sort2
            limit $from_record, $rows ";
-           echo $sql;
+           //echo $sql;
 $result = sql_query($sql);
 
 //echo nl2br($sql)."<BR>";

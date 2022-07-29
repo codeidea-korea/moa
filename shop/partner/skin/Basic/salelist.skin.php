@@ -9,11 +9,11 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 <div class="boxContainer flex line flex-stretch noto500 padding40">
 	<div class="flex flex-middle flex-center span360">
 		<div class="fs16 color-gray">기간내 총 매출액<p class="fs12">(1일 전 영업일 기준)</p></div>
-		<div class="ml40 fs24"><?php echo number_format($sum['ct_price']); ?>원</div>
+		<div class="ml40 fs24"><?php echo number_format($sum_sales); ?>원</div>
 	</div>
 	<div class="flex flex-middle flex-center span360">
 		<div class="fs16 color-gray">전체 매출액</div>
-		<div class="ml40 fs24"><?php echo number_format($totsum);?> 원</div>
+		<div class="ml40 fs24"><?php echo number_format($tsum_sales);?> 원</div>
 	</div>
 	<div class="flex flex-middle flex-center flex1">
 		<div class="fs16 color-gray">매출 현황 안내</div>
@@ -142,7 +142,7 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 					<td><?php echo $list[$i]['it_name'];?></td>
 					<td><?php echo number_format($list[$i]['ct_price']);?>원</td>
 					<td><?php echo number_format($list[$i]['od_coupon']);?></td>
-					<td><?php echo number_format($list[$i]['ct_point']);?>P</td>
+					<td><?php echo number_format($list[$i]['od_receipt_point']);?>P</td>
 					<!-- <td><?php echo $list[$i]['od_status'];?></td>
 					<td><?php echo $list[$i]['od_status'];?></td> -->
 				</tr>

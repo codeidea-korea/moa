@@ -17,16 +17,17 @@ if (!$od['od_id']) {
 }
 
 // 주문상품의 상태가 주문인지 체크
-$sql = " select SUM(IF(ct_status = '주문', 1, 0)) as od_count2,
+$sql = " select SUM(IF((ct_status = '입금' || ct_status='완료'), 1, 0)) as od_count2,
                 COUNT(*) as od_count1
             from {$g5['g5_shop_cart_table']}
             where od_id = '$od_id' ";
+			//echo $od['od_cancel_price'] . "/" . $sql; exit;
 $ct = sql_fetch($sql);
 
 $uid = md5($od['od_id'].$od['od_time'].$od['od_ip']);
 
 if($od['od_cancel_price'] > 0 || $ct['od_count1'] != $ct['od_count2']) {
-    alert("취소할 수 있는 주문이 아닙니다.", G5_SHOP_URL."/orderinquiryview.php?od_id=$od_id&amp;uid=$uid");
+    alert("취소할 수 있는 주문이 아닙니다.", G5_SHOP_URL."/orderinquiryview.php?od_id=$od_id&amp;uid=$uid&amp;p=history");
 }
 
 // PG 결제 취소
@@ -155,5 +156,5 @@ sql_query($sql);
 if ($od['od_receipt_point'] > 0)
     insert_point($member['mb_id'], $od['od_receipt_point'], "주문번호 $od_id 본인 취소");
 
-goto_url(G5_SHOP_URL."/orderinquiryview.php?od_id=$od_id&amp;uid=$uid");
+goto_url(G5_SHOP_URL."/orderinquiryview.php?od_id=$od_id&amp;uid=$uid&amp;p=history");
 ?>
