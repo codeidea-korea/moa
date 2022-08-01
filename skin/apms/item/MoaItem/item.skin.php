@@ -187,6 +187,7 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
 	<div class="s_content detail_con">
 		<div class="dt_h4">
 			<h4>모집 현황</h4>
+		</div>
 		<div class="owchip_area">
 			<div class="owchip_recru on">
 				<span></span>
@@ -215,7 +216,7 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
 			<div class="hpro_img"><?php echo ($result['as_photo']) ? '<img src="'.$result['as_photo'].'" alt="">' : '<span class="no-img"></span>'; //사진 ?></div>
 			<div class="t_area">
 				<?php $cnt = getDashBoardInfo($data['mb_id']); ?>
-				<p><?php echo $result['mb_nick']; ?><span>모임개수 <?php echo $cnt['moa_count']; ?></span><span>리뷰 <?php echo $cnt['moa_use'] ?>개</span></p>
+				<p><?php echo $result['mb_nick']; ?><span>모임개수<?php echo $cnt['moa_count']; ?></span><span>리뷰<?php echo $cnt['moa_use'] ?>개</span></p>
 				<p class="txt">
 					<?php echo $result['mb_signature']; ?>
 				</p>
@@ -364,7 +365,7 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
 							<div class="review">
 								<div class="pro_img"><?= $item[$i]['mb_img']; ?></div>
 								<div class="t_area p_layout">
-									<div class="t_area02">
+									<div class="t_area02" style="align-items: flex-start;flex-direction: column;">
 										<p><?= $item[$j]['is_name']; ?><span><?= date('y-m-d', strtotime($item[$j]['is_time'])); ?></span></p>
 										<div class="scope re_txt">
 											<?php for($i=0;$i<$item[$j]['is_score'];$i++) { ?>
@@ -374,8 +375,10 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
 												<span></span>
 											<?php } ?>
 											<p><?= number_format($item[$j]['is_score'], 1); ?></p>
-											<p onclick="report_btn('후기1')" style="color: #EB5757;background: rgba(235, 87, 87, 0.05);border: 1px solid #EB5757;border-radius: 38px;padding: 6px 16px !important;margin:0 5px;">신고</p>
-											<p onclick="report_btn('후기2')" style="color: #EB5757;background: rgba(235, 87, 87, 0.05);border: 1px solid #EB5757;border-radius: 38px;padding: 6px 16px !important;margin:0 5px;">차단</p>
+											<div style="display:flex;position:absolute;right:10px;">
+												<p onclick="report_btn('후기1')" style="font-size:13px;color: #EB5757;background: rgba(235, 87, 87, 0.05);border: 1px solid #EB5757;border-radius: 38px;padding: 6px 12px !important;margin:0 3px;">신고</p>
+												<p onclick="report_btn('후기2')" style="font-size:13px;color: #EB5757;background: rgba(235, 87, 87, 0.05);border: 1px solid #EB5757;border-radius: 38px;padding: 6px 12px !important;margin:0 3px;">차단</p>
+											</div>	
 										</div>
 									</div>
 									<p class="txt">
