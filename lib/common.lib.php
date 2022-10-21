@@ -161,7 +161,7 @@ function get_cookie($cookie_name)
 
 
 // 경고메세지를 경고창으로
-function alert($msg='', $url='', $error=true, $post=false)
+function alert($msg='', $url='', $error=true, $post=false, $pageName = '오류안내 페이지')
 {
     global $g5, $config, $member;
     global $is_admin;
@@ -1484,7 +1484,7 @@ function insert_point($mb_id, $point, $content='', $rel_table='', $rel_id='', $r
     }
     $po_mb_point = $mb_point + $point;
 
-    $sql = " insert into {$g5['point_table']}
+    $sqlA = " insert into {$g5['point_table']}
                 set mb_id = '$mb_id',
                     po_datetime = '".G5_TIME_YMDHIS."',
                     po_content = '".addslashes($content)."',
@@ -1495,8 +1495,10 @@ function insert_point($mb_id, $point, $content='', $rel_table='', $rel_id='', $r
                     po_expire_date = '$po_expire_date',
                     po_rel_table = '$rel_table',
                     po_rel_id = '$rel_id',
-                    po_rel_action = '$rel_action' ";
-    sql_query($sql);
+                    po_rel_action = '$rel_action',
+                    reg_mb_id = '$mb_id' ";
+    sql_query($sqlA);
+//    echo $sqlA;
 
     // 포인트를 사용한 경우 포인트 내역에 사용금액 기록
     if($point < 0) {
@@ -1508,9 +1510,9 @@ function insert_point($mb_id, $point, $content='', $rel_table='', $rel_id='', $r
     sql_query($sql);
 
 	// XP UPDATE
-	update_xp($mb_id, $point, $content, $rel_table, $rel_action);
-
-	return 1;
+    update_xp($mb_id, $point, $content, $rel_table, $rel_action);
+    
+	return $sqlA;
 }
 
 // 사용포인트 입력

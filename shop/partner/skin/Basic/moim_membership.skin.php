@@ -38,10 +38,12 @@ include_once($skin_path.'/pop.confirm-reservation.php'); //예약확정
 				<col>
 				<col>
 				<col>
+				<col>
 			</colgroup>
 			<thead>
 				<tr>
 					<th scope="col">번호</th>
+					<th scope="col">모임명</th>
 					<th scope="col">모임 날짜</th>
 					<th scope="col">신청자</th>
 					<th scope="col">모임금액</th>
@@ -65,6 +67,7 @@ include_once($skin_path.'/pop.confirm-reservation.php'); //예약확정
 					?>
 					<tr>
 						<td><?php echo $i; ?></td>
+						<td><?php echo $row['it_name'] ?></td>
 						<td><?php echo $row['aplydate'] . " " . $row['aplytime'].':00'; ?></td>
 						<td><?php echo $row['mb_name'] ?></td>
 						<td><?php echo number_format($row['pay']); ?></td>
@@ -76,7 +79,8 @@ include_once($skin_path.'/pop.confirm-reservation.php'); //예약확정
 								case '입금': echo '결제완료'; break;
 								case '배송': echo '결제완료'; break;
 								case '완료': echo '결제완료'; break;
-								case '취소': echo '결제완료'; break;
+//								case '취소': echo '결제완료'; break;
+								case '취소': echo '결제취소'; break;
 								case '반품': echo '결제완료'; break;
 								case '품절': echo '결제완료'; break;
 								default : echo '결제완료'; break;

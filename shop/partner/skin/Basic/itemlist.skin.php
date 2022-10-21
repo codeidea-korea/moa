@@ -207,9 +207,15 @@ include_once($skin_path.'/pop.moim-info.php'); //모임신청인원정보
 				<?php for ($i=0; $i < count($list); $i++) {  ?>
 					<tr>
 						<td>
+							<?
+							if($row['moa_status'] == 6) {
+								?>&nbsp;<?
+							} else {
+							?>
 							<label for="chk_<?php echo $i; ?>" class="sound_only"><?php echo get_text($list[$i]['it_name']); ?></label>
 							<input type="checkbox" name="chk[]" value="<?php echo $i ?>" id="chk_<?php echo $i; ?>">
 							<input type="hidden" name="it_id[<?php echo $i; ?>]" value="<?php echo $list[$i]['it_id']; ?>">
+							<? } ?>
 						</td>
 						<!-- <td>
 							<input type="text" name="pt_show[<?php echo $i; ?>]" value="<?php echo $list[$i]['pt_show']; ?>" size="4" class="span55">
@@ -218,10 +224,16 @@ include_once($skin_path.'/pop.moim-info.php'); //모임신청인원정보
 							<a href="<?php echo $list[$i]['href']; ?>"><nobr><?php echo $list[$i]['it_id'];?></nobr></a>
 						</td>
 						<td>
-							<a href="<?php echo $list[$i]['href']; ?>"><img src="<?php echo $list[$i]['as_thumb']; ?>" alt="" width="80px" height="80px"></a>
+							<a <?php echo getStatusValue($list[$i]['moa_status']) == '폐강' ? ('class="closed"') : '' ; ?> href="<?php echo $list[$i]['href']; ?>"><img src="<?php echo $list[$i]['as_thumb']; ?>" alt="" width="80px" height="80px"></a>
 						</td>				
 						<td class="tleft">
+						<!--
 							<a href="<?php echo $list[$i]['href']; ?>"><b><?php echo $list[$i]['wr_subject'];?></b></a>
+							-->
+							<span data-href="#pop-moim-info" class="aplyInfo pop-inline color-blue" data-it_id="<?php echo $list[$i]['it_id']; ?>">
+								<b><?php echo $list[$i]['wr_subject'];?></b>
+							</span>
+
 							<sub class="block">
 								<?=$list[$i]['moa_onoff']?> / <?=$list[$i]['ca_name']?> / <?=$list[$i]['moa_type']?>
 							</sub>
@@ -244,9 +256,23 @@ include_once($skin_path.'/pop.moim-info.php'); //모임신청인원정보
 						</td>
 						<td><?php echo getStatusValue($list[$i]['moa_status']); ?></td><!-- [승인, 대기중, 반려] -->
 						<td class="td_mng td_mng_s">
-							<span data-href="#pop-cancel-class" data-wr_id="<?php echo $list[$i]['wr_id']; ?>" class="close_moim pop-inline btn mini span50">폐강</span>
-							<a href="./?ap=moa_write&amp;w=u&amp;wr_id=<?php echo $list[$i]['wr_id']?>" class="btn btn_03 mini">수정</a>
-							<!-- <a href="#" class="btn btn_01 mini">삭제</a> -->
+							<?
+							if($row['moa_status'] == 6) {
+								?>정산됨<?
+							} else {
+							?>
+							<?
+								if(getStatusValue($list[$i]['moa_status']) == '폐강') {
+									?>&nbsp;<?
+								} else {
+									?>
+									<span data-href="#pop-cancel-class" data-wr_id="<?php echo $list[$i]['wr_id']; ?>" class="close_moim pop-inline btn mini span50">폐강</span>
+									<a href="./?ap=moa_write&amp;w=u&amp;wr_id=<?php echo $list[$i]['wr_id']?>" class="btn btn_03 mini">수정</a>
+									<!-- <a href="#" class="btn btn_01 mini">삭제</a> -->
+									<?
+								}
+							}
+							?>
 						</td>
 					</tr>
 				<?php } ?>
@@ -315,14 +341,17 @@ $('.aplyInfo').click(function(){
             var info = data.info;
             var su = data.su;
 
+			$('#applyInfo').html('');
+			$('#applyPeople').html('');
+
             $('#applyInfo').append('<tr>' +
                 '<td rowspan="3">' + data.it_id + '</td>' +
                 '<td rowspan="3">' + data.it_name + '</td>' +
                 '<td>' + data.it_time + '</td>' +
                 '<td>' + data.it_4 + '</td>' +
-                '<td>'+ su['cnt'] + '/' + su['tot'] + '</td>' +
-            '</tr>');
-            console.log(data.info[0]['status']);
+                '<td>'+ (su ? su['cnt'] + '/' + su['tot'] : '') + '</td>' +
+			'</tr>');
+			
             if(data.info.length > 0) {
                 for(var i=0; i<info.length; i++) {
                     $('#applyPeople').append('<tr>' +

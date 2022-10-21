@@ -9,7 +9,10 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
     <div class="s_content">
         <div class="p_area fileContainer">
             <div class="profile_img upImg-preview">
-                <?php echo ($member['photo']) ? '<img src="'.$member['photo'].'" alt="">' : '<img src="../images/profile_default.svg">';  ?>
+                <!-- 2022.09.06. botbinoo, 프로필 이미지 수정 안되는 오류(리소스 캐싱 문제) -->
+                <!-- <?php echo ($member['photo']) ? '<img src="'.$member['photo'].'" alt="">' : '<img src="../images/profile_default.svg">';  ?> -->
+                <?php echo ($member['photo']) ? '<img src="'.$member['photo'].'?v='.time().'" alt="">' : '<img src="../images/profile_default.svg">';  ?>
+                <!-- end 2022.09.06. botbinoo, 프로필 이미지 수정 안되는 오류(리소스 캐싱 문제) -->
             </div>
             <div class="up_profile02">
                 <input type="file" id="up_profile" name="pt_file" class="preview">
@@ -45,6 +48,13 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 </div>
             </div>
 
+            <style>
+            input[type="number"]::-webkit-outer-spin-button,
+            input[type="number"]::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+            </style>
             <div class="mt15">
                 <p class="m_title">휴대폰 번호</p>
                 <div class="input_flex">

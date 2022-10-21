@@ -150,6 +150,13 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 
 <script>
 $(document).ready(function(){
+	<?
+		$strSql = "select * from g5_member where mb_id = '{$member['mb_id']}' "; 
+		$hostInfo = sql_fetch($strSql);
+	?>
+	$('#jumin1').val('<?= substr(str_replace( '-', '', $hostInfo['mb_birth']), 2) ?>');
+	$('#jumin2').val('');
+
 	$('input[name=pp_type]').change(function(){
 		$('#pp_type1, #pp_type2').hide();
 		$('#pp_type'+$('input[name=pp_type]:checked').val()).show();

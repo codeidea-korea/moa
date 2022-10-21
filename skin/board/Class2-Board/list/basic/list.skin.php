@@ -73,7 +73,7 @@ $num_notice = ($is_thumb) ? '*' : '<span class="wr-icon wr-notice"></span>';
 		if ($list[$i]['is_notice']) { // 공지사항
 			$li_css = ' bg-light';
 			$list[$i]['num'] = $num_notice;
-			$list[$i]['ca_name'] = '';
+			$list[$i]['ca_name'] = '공지';
 			$list[$i]['subject'] = '<b>'.$list[$i]['subject'].'</b>';
 			$wr_icon = ($is_thumb) ? '' : '<b class="wr-hidden">[알림]</b>';
 		} else {
@@ -89,7 +89,8 @@ $num_notice = ($is_thumb) ? '*' : '<span class="wr-icon wr-notice"></span>';
 
 		// 링크이동
 		$list[$i]['target'] = '';
-		if($is_link_target && !$list[$i]['is_notice'] && $list[$i]['wr_link1']) {
+//		if($is_link_target && !$list[$i]['is_notice'] && $list[$i]['wr_link1']) {
+		if($is_link_target && $list[$i]['wr_link1']) {
 			$list[$i]['target'] = $is_link_target;
 			$list[$i]['href'] = $list[$i]['link_href'][1];
 		}
@@ -124,14 +125,22 @@ $num_notice = ($is_thumb) ? '*' : '<span class="wr-icon wr-notice"></span>';
             </a>
 				<?php 
 				//좋아요 기능구현
-				$likechk = checkLikeOn('class',$list[$i]['wr_id'],$member['mb_id']);
+//				$likechk = checkLikeOn('class',$list[$i]['wr_id'],$member['mb_id']);
+				$wr_id = $list[$i]['wr_id'];
+				$sql = "SELECT count(wr_id) as cnt from {$g5['board_good_table']} 
+					where wr_id = '{$wr_id}' 
+					and mb_id = '{$mb_id}' ";
+			//					echo $sql;
+				$cntRow = sql_fetch($sql);
+				$likechk = $cntRow['cnt'] > 0;
+
 				$likeon = ($likechk)?"on":"";
 				$likenoon = ($likechk)?"":"";
 				?>
             <div class="com_icon">
                 <span class="community_chip color_g"><?php echo $list[$i]['ca_name'];?></span>
                 <div class="ic_area">
-                    <span class="<?php echo $likeon;?>" onclick="deb_apms_like('<?php echo $bo_table;?>', '<?php echo $list[$i]['wr_id'];?>', '<?php echo $likenoon;?>good', 'wr_<?php echo $likenoon;?>good'); return false;">
+                    <span class="<?php echo $likeon;?>" onclick="fn_deb_apms_like(this, '<?php echo $bo_table;?>', '<?php echo $list[$i]['wr_id'];?>', '<?php echo $likenoon;?>good', 'wr_<?php echo $likenoon;?>good'); return false;">
 					<?php
 					
 					 echo $list[$i]['wr_good'];?></span>
@@ -143,6 +152,51 @@ $num_notice = ($is_thumb) ? '*' : '<span class="wr-icon wr-notice"></span>';
 		<?php } ?>
     </ul>
 </section>
+
+<script>
+	function fn_deb_apms_like(target, bo_table, wr_id, act, id, wc_id){
+		var href;
+		const targetTag = target;
+
+		if(wr_id && wc_id) {
+			href = './deb.like.comment.php?bo_table=' + bo_table + '&wr_id=' + wr_id + '&good=' + act + '&wc_id=' + wc_id;
+		} else {
+			if(wr_id) {
+				href = './deb.like.apms.php?bo_table=' + bo_table + '&wr_id=' + wr_id + '&good=' + act;
+			} else {
+				href = './deb.like.php?bo_table=' + bo_table + '&good=' + act;
+			}
+		}
+
+		$.ajaxSetup({ async:false });
+		$.post(href, { js: "on" }, function(data) {
+			if(data.error) {
+				alert(data.error);
+				/*
+				$(targetTag).removeClass('on');
+				setTimeout(() => {
+					$(targetTag).removeClass('on');
+				}, (150));
+				*/
+				return false;
+			} else if(data.success) {
+				alert(data.success);
+				$(targetTag).text(number_format(String(data.count)));
+				
+				$(targetTag).addClass('on');
+				setTimeout(() => {
+					$(targetTag).addClass('on');
+				}, (150));
+			}
+		}, "json");
+	}
+	$(document).ready(function(){
+		$(".ic_area span").off();
+		setTimeout(() => {
+			$(".ic_area span").off();
+		}, (250));
+	});
+	</script>
 
 
 	<ul class="list-body" style="display:none">

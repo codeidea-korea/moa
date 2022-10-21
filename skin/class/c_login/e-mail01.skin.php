@@ -8,12 +8,13 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
     <script src="<?php echo G5_JS_URL ?>/certify.js?v=<?php echo APMS_SVER; ?>"></script>
 <?php } ?>
 
-<form id="fregisterform" name="fregisterform" action="<?php echo MOA_LOGIN_URL; ?>/e-mail02.php" method="post" enctype="multipart/form-data" autocomplete="off">
+<form id="fregisterform" name="fregisterform" action="<?php echo MOA_LOGIN_URL; ?>/e-mail02.php" method="post" enctype="multipart/form-data" onsubmit="return checkForm()" autocomplete="off">
 	<input type="hidden" name="w" value="<?php echo $w ?>">
 	<input type="hidden" name="url" value="<?php echo $urlencode ?>">
 	<input type="hidden" name="agree" value="<?php echo $agree ?>">
 	<input type="hidden" name="agree2" value="<?php echo $agree2 ?>">
 	<input type="hidden" name="cert_type" value="<?php echo $member['mb_certify']; ?>">
+	<input type="hidden" name="invite_code" value="<?php echo $POST['invite_code']; ?>">
 	<input type="hidden" name="cert_no" value="">
 	<?php if (isset($member['mb_sex'])) {  ?><input type="hidden" name="mb_sex" value="<?php echo $member['mb_sex'] ?>"><?php }  ?>
 	<?php if (isset($member['mb_nick_date']) && $member['mb_nick_date'] > date("Y-m-d", G5_SERVER_TIME - ($config['cf_nick_modify'] * 86400))) { // 닉네임수정일이 지나지 않았다면  ?>
@@ -45,11 +46,11 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 </div>
 				<p>휴대폰번호</p>
                 <div class="position_layout">
-                    <input type="text" id="reg_mb_hp" name="mb_hp" required class="form-input half_input" size="10" placeholder="휴대폰번호">
+                    <input type="number" id="reg_mb_hp" name="mb_hp" required class="form-input half_input" size="10" placeholder="휴대폰번호" >
                 </div>
 				<p>생년월일</p>
                 <div class="position_layout">
-                    <input type="text" id="reg_mb_birth" name="mb_birth" class="form-input half_input" size="10" placeholder="생년월일">
+                    <input type="date" id="reg_mb_birth" name="mb_birth" class="form-input half_input" size="10" placeholder="생년월일">
                 </div>
             </div>
             <div class="p156">
@@ -60,12 +61,26 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 </form>
 
 </section>
-<script src="/js/rolldate.min.js"></script>
+<!-- <script src="/js/rolldate.min.js"></script> -->
 <script>
+function checkPhone(target) {
+    var phoneNo = target.value;
+
+    var regPhone = /^010([0-9]{4})([0-9]{4})$/;
+    if (regPhone.test(phoneNo) !== true) {
+        alert('올바른 휴대폰 번호를 입력해주세요.');
+        $('#reg_mb_hp').val('');
+        return false;
+    }
+    return true;
+}
 $(function() {
-    $("#reg_mb_password, #reg_mb_password_re").change(function() {
+    $("#reg_mb_password, #reg_mb_password_re").keyup(function() {
         var pwd1 = $("#reg_mb_password").val();
         var pwd2 = $("#reg_mb_password_re").val();
+
+        if(pwd2 == '') return false;
+
         if (pwd1 == pwd2) {
             $(".warning").hide();
             $("#reg_mb_password_re").removeClass("error");
@@ -78,6 +93,10 @@ $(function() {
 
     $('#search_nick').click(function(){
         var nick = $('#reg_mb_nick').val();
+        if(nick == '') {
+            alert('닉네임을 입력해주세요.');
+            return false;
+        }
         $.ajax({
             type: "POST",
             url: '/ajax/nickSearch.php',
@@ -106,6 +125,12 @@ $(function() {
             alert('비밀번호는 8자 이상 입력하세요');
             return false;
         }
+        var pwd1 = $("#reg_mb_password").val();
+        var pwd2 = $("#reg_mb_password_re").val();
+        if (pwd1 != pwd2) {
+            alert('비밀번호가 일치하지 않습니다.');
+            return false;
+        }
         if(!$('#is_nick_search').val()){
             alert('중복 검사를 실행해주세요.');
             return false;
@@ -115,9 +140,16 @@ $(function() {
             return false;
         } 
 		if ($('#reg_mb_hp').val() == "") { alert('휴대폰번호를 입력해주세요.'); $('#reg_mb_hp').focus(); return false; }
+        
+    var regPhone = /^010([0-9]{4})([0-9]{4})$/;
+        if (regPhone.test($('#reg_mb_hp').val()) !== true) {
+            alert('올바른 휴대폰 번호를 입력해주세요.');
+            return false;
+        }
+
 		if ($('#reg_mb_birth').val() == "") { alert('생년월일을 입력해주세요.'); return false; }
     })
-
+/*
 	new Rolldate({
 		el: '#reg_mb_birth',
 		format: 'YYYY-MM-DD',
@@ -131,6 +163,8 @@ $(function() {
 			month: '', 
 			day: '', 
 		}
-	})
+    })
+    */
+    $(".warning").hide();
 });
 </script>

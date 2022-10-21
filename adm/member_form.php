@@ -2,6 +2,9 @@
 $sub_menu = "200110";
 include_once('./_common.php');
 
+if($w == 'u') {
+    $sub_menu = "200100";
+}
 auth_check($auth[$sub_menu], 'w');
 
 if ($w == '')
@@ -324,7 +327,9 @@ this.form.mb_intercept_date.value=this.form.mb_intercept_date.defaultValue; }">
     <tr>
         <td scope="row">인증 여부</td>
         <td>
-            <?php $cert = array('대기', '완료');
+            <?php 
+            /*
+            $cert = array('대기', '완료');
             $row = "SELECT file_path, bf_file, cert_yn, count(*) cnt FROM deb_certi_image WHERE mb_id = '{$mb['mb_id']}'";
             $result = sql_fetch($row);
             if($mb['com_cert_yn'] != null) {
@@ -333,9 +338,13 @@ this.form.mb_intercept_date.value=this.form.mb_intercept_date.defaultValue; }">
                 $com_cert = $cert[$result['cert_yn']];
             } else {
                 $com_cert = '미신청';
-            } ?>
-            <input type="hidden" name="com_cert_yn" value="<?php echo $com_cert ?>" id="com_cert_yn" class="span250" />
-            <span><?php echo $com_cert; ?></span>
+            }
+            */
+            $row = "SELECT file_path, bf_file, cert_yn, count(*) cnt FROM deb_certi_image WHERE mb_id = '{$mb['mb_id']}'";
+            $result = sql_fetch($row);
+            ?>
+            <input type="hidden" name="com_cert_yn" value="<?php echo $mb['mb_status'] ?>" id="com_cert_yn" class="span250" />
+            <span><?php echo $mb['mb_status']; ?></span>
         </td>
     </tr>
     <?php if($result['cnt'] > 0) {?>
@@ -728,6 +737,10 @@ this.form.mb_intercept_date.value=this.form.mb_intercept_date.defaultValue; }">
 <div class="btn_fixed_top">
     <a href="./member_list.php?<?php echo $qstr ?>" class="btn btn_02">목록</a>
     <input type="submit" value="확인" class="btn_submit btn" accesskey='s'>
+
+    <?php if($mb['mb_status'] == '대기'){ ?>
+        <input type="button" value="승인" class="btn" onclick="approve(1)">
+    <?php } ?>
 </div>
 </form>
 
@@ -747,6 +760,24 @@ function fmember_submit(f)
     }
 
     return true;
+}
+function approve(status){
+    if(confirm('직장인 인증을 하시겠습니까?')) {
+        $.ajax({
+            type: "POST",
+            url: '/ajax/changeMemberCert.php',
+            data: {'status': status, 'mb_id': "<?php echo $mb['mb_id'] ?>"},
+            cache: false,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                alert('상태가 변경되었습니다.');
+                location.reload();
+            }
+        })
+    } else {
+        return false;
+    }
 }
 </script>
 

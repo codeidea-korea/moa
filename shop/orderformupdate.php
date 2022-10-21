@@ -181,7 +181,8 @@ if($is_member) {
 }
 
 if ((int)($row['od_price'] - $tot_cp_price) !== $i_price) {
-    die("Error.");
+    alert('사용할 수 없는 쿠폰입니다.');
+//    die("Error.");
 }
 
 // 배송비가 상이함

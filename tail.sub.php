@@ -73,7 +73,7 @@ $(function() {
 <!-- //page-wrapper -->
 
 <script>
-
+/*
 $(function() {
     $(".chat-link").on('click', function() {
         var $this = $(this),
@@ -116,7 +116,7 @@ function chat_invite() {
     return false;
 }
 
-    
+    */
 
     $(function() {    //화면 다 뜨면 시작
         var searchSource = [

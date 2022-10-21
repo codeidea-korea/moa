@@ -1,5 +1,5 @@
 <?php
-$sub_menu = '500000';
+$sub_menu = '500001';
 include_once('./_common.php');
 
 auth_check($auth[$sub_menu], "r");
@@ -19,6 +19,7 @@ $sch_startdt = str_replace(".","-",$sch_startdt);
 $sch_enddt = str_replace(".","-",$sch_enddt);
 
 $g5['title'] = '결제내역';
+
 include_once (G5_ADMIN_PATH.'/admin.head.php');
 //include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
 
@@ -136,11 +137,17 @@ $total_page  = ceil($total_count / $rows);  // 전체 페이지 계산
 if ($page < 1) { $page = 1; } // 페이지가 없으면 첫 페이지 (1 페이지)
 $from_record = ($page - 1) * $rows; // 시작 열을 구함
 
+/*
 $sql  = " select a.*, c.it_name moa_name, c.it_2 classid, 
             (od_cart_coupon + od_coupon + od_send_coupon) as couponprice
            $sql_common
            order by $sort1 $sort2
            limit $from_record, $rows ";
+           */
+$sql  = " select a.*, c.it_name moa_name, c.it_2 classid, 
+            (od_cart_coupon + od_coupon + od_send_coupon) as couponprice
+           $sql_common
+           order by $sort1 $sort2 ";
            //echo $sql;
 $result = sql_query($sql);
 
@@ -437,7 +444,7 @@ if(!sql_query(" select mb_id from {$g5['g5_shop_order_delete_table']} limit 1 ",
         $bg = 'bg'.($i%2);
         $td_color = 0;
         if($row['od_cancel_price'] > 0) {
-            $bg .= 'cancel';
+//            $bg .= 'cancel';
             $td_color = 1;
         }
     ?>
@@ -534,6 +541,7 @@ if(!sql_query(" select mb_id from {$g5['g5_shop_order_delete_table']} limit 1 ",
     </table>
 </div>
 
+<!--
 <div class="local_cmd01 local_cmd no ne">
 <?php if (($od_status == '' || $od_status == '완료' || $od_status == '전체취소' || $od_status == '부분취소') == false) {
     // 검색된 주문상태가 '전체', '완료', '전체취소', '부분취소' 가 아니라면
@@ -561,6 +569,7 @@ if(!sql_query(" select mb_id from {$g5['g5_shop_order_delete_table']} limit 1 ",
 <?php } ?>
     <?php if ($od_status == '주문' || $od_status == '전체취소') { ?> <span>주문 또는 전체취소 상태에서만 삭제가 가능하며, 전체취소는 입금액이 없는 주문만 삭제됩니다.</span> <input type="submit" value="선택삭제" class="btn_submit" onclick="document.pressed=this.value"><?php } ?>
 </div>
+    -->
 
 <div class="local_desc02 local_desc none">
 <p>
@@ -572,9 +581,11 @@ if(!sql_query(" select mb_id from {$g5['g5_shop_order_delete_table']} limit 1 ",
 
 </form>
 
+<!--
 <div class="tbl-basic fs13 outline odd line-nth-1">
 <?php  echo get_paging(G5_IS_MOBILE ? $config['cf_mobile_pages'] : $config['cf_write_pages'], $page, $total_page, "{$_SERVER['SCRIPT_NAME']}?$qstr&amp;page="); ?>
 </div>
+    -->
 </div>
 
 <script>

@@ -540,6 +540,8 @@ $action_url = G5_SHOP_URL."/partner/write_update.php";
 
 echo '<!-- skin : '.(G5_IS_MOBILE ? $board['bo_mobile_skin'] : $board['bo_skin']).' -->';
 
+$returnUrl = '/shop/partner/?ap=list';
+
 include_once ($board_skin_path.'/write.skin.php');
 
 //if ($chks) {

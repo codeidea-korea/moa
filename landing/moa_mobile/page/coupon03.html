@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="../js/calendar.js"></script>
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <title>MOA</title>
+</head>
+<body>
+    <div class="header">
+        <button class="prev"></button>
+        <h2 class="pageTit">포인트</h2>
+    </div>
+    <div class="wrapper">
+        <div class="point_history">
+            <p>취미부자님의 사용 가능 포인트</p>
+            <p> 5,000 P</p>
+            <p>15일 내, 소멸 예정 포인트 : 100 P</p>
+        </div>
+        <div class="s_content">
+            <div class="tabs02 pr">
+                <input id="host" type="radio" name="tab_item02" checked="">
+                <label class="tab_item02" for="host">전체내역</label>
+                <input id="group" type="radio" name="tab_item02">
+                <label class="tab_item02" for="group">소멸예정</label>
+                <hr class="hr02">
+                
+                <div class="tab_content p0 bt" id="host_content">
+                   <p class="explan mt60">지난 1년간 적립/사용/소멸된 포인트 내역입니다.</p>
+                </div>
+                
+                <div class="tab_content p0" id="group_content">
+                    <div class="ex_sel">
+                        <select name="" id="">
+                            <option value="">1</option>
+                            <option value="">2</option>
+                        </select>
+                        <p>일 이내, 0P 소멸 예정입니다. </p>
+                    </div>
+                    <p class="explan mt60">선택하신 기간 내, 소멸예정 포인트가 없습니다.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav>
+        <ul>
+            <li>
+                <a class="" href="">
+                    <span class="mn_home"></span>
+                    홈
+                </a>
+            </li>
+            <li>
+                <a class="" href="">
+                    <span class="mn_ctgry"></span>
+                    카테고리
+                </a>
+            </li>
+            <li>
+                <a class="" href="">
+                    <span class="mn_cmnty"></span>
+                    커뮤니티
+                </a>
+            </li>
+            <li>
+                <a class="" href="">
+                    <span class="mn_location"></span>
+                    위치
+                </a>
+            </li>
+            <li>
+                <a class="on" href="">
+                    <span class="mn_my"></span>
+                    마이페이지
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <script src="../js/common.js"></script>
+</body>
+</html>

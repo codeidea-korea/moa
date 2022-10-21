@@ -178,8 +178,8 @@ include_once(G5_ADMIN_PATH.'/_add/pop.cancel-class.php'); //폐강처리
                             $(".year5").addClass("active");
                             break;
                         default :
-                            sdt = '2022-01-01';
-                            edt = today;
+                            sdt = '';
+                            edt = '';
                             $(".allday").addClass("active");
                             break;
                     }
@@ -315,13 +315,24 @@ include_once(G5_ADMIN_PATH.'/_add/pop.cancel-class.php'); //폐강처리
         </td><!-- 오프라인 선택시에만 출력 -->
 		<td><?php echo $row['mb_name']; ?></td>
 		<td><?php echo $row['mb_hp']; ?></td>
-        <?php $status = array('준비','승인','반려','삭제', '취소','폐강'); ?>
+        <?php $status = array('준비','승인','반려','삭제', '취소','폐강', '정산'); ?>
 		<td><?php echo $status[$row['moa_status']]; ?></td>
 <!--		<td>0/5</td>-->
 		<td><?php echo date('Y.m.d', strtotime($row['day'])); ?></td>
-		<td><span data-href="#pop-cancel-class" data-wr_id="<?php echo $row['wr_id']; ?>" class="close_moim pop-inline btn mini span50">폐강</span></td><!-- <td>X</td>, <td>O</td> -->
+		<td>
+        <?
+        if($status[$row['moa_status']] == '정산') {
+            ?>정산<?
+        } else if($status[$row['moa_status']] == '삭제' || $status[$row['moa_status']] == '취소' || $status[$row['moa_status']] == '폐강') {
+            echo $status[$row['moa_status']];
+        } else {
+        ?>
+            <span data-href="#pop-cancel-class" data-wr_id="<?php echo $row['wr_id']; ?>" class="close_moim pop-inline btn mini span50">폐강</span></td>
+            <!-- <td>X</td>, <td>O</td> -->
 <!--		<td>어드민#1</td>	-->
-
+            <?    
+            }
+            ?>
 		<td  class="td_chk none">
             <label for="chk_<?php echo $i; ?>" class="sound_only"><?php echo get_text($row['it_name']); ?></label>
             <input type="checkbox" name="chk[]" value="<?php echo $i ?>" id="chk_<?php echo $i; ?>">

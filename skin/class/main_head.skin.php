@@ -9,7 +9,9 @@ if (defined('_INDEX_')) {?>
         <a href="/"><img src="../images/moa_logo.svg" alt=""></a>
         <div class="ic_area">
 <!--            <a href="javascript:" class="win_pop numchip"><img src="../images/icon_bell.png" alt="">--><?php ////echo $member['response_cnt'];?><!-- <span>10</span></a>-->
+
             <a href="javascript:"  class="on chat-main numchip" data-mb_id="<?php echo $member['mb_id'];?>"><img src="../images/icon_chat.png" alt=""><span><?php echo $member['response_cnt'];?></span></a>
+            
         </div>
     </div>
 </header>

@@ -981,7 +981,7 @@ h5, .h5 {
 .comment-form {
 	margin-top: 16px;
 	padding: 16px;
-	border: 1px solid #D9DEE4;
+	/*border: 1px solid #D9DEE4;*/
 	border-radius: 4px;
 }
 .comment-form textarea {

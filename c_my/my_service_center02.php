@@ -4,6 +4,7 @@ include_once("./_common.php");
 //헤더영역(공통파일)
 include_once(CLASS_PATH."/header.php");
 
+$header_title = '고객센터/도움말';
 //main head(공통파일)
 include_once(CLASS_PATH."/head.php");
 ?>

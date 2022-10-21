@@ -55,17 +55,35 @@ if($boset['date']) {
                     <div class="close_box">
                         <button class="close_b" onclick="$('#calendar').removeClass('on')"><img src="../images/close_b.svg" alt=""></button><span>날짜선택</span>
                     </div>
-                    <div id="myID"></div>
+
+                    <!-- <div id="myID"></div> -->
+					<input id="myID" name="searchTime" type="hidden" onchange="refreshBtnTextFilterBetweenDate(this.value)">
+
                     <script>
                         flatpickr("#myID", {
                             mode: "range",
                             inline: true,
                             "locale": "ko",
-                            disableMobile: "true"
+                            disableMobile: "true",
+
+							dateFormat: "Y-m-d"
                         });
+						function refreshBtnTextFilterBetweenDate(targetDates){
+							targetDates = targetDates.split(' ~ ');
+							if(targetDates.length < 2 || targetDates[0].length < 10 || targetDates[1].length < 10) {
+								return;
+							}
+							$('#filterBetweenDate').text( targetDates[0].substring(5,7) + '월 ' + targetDates[0].substring(8,10) + '일'
+								+ ' - ' + targetDates[1].substring(5,7) + '월 ' + targetDates[1].substring(8,10) + '일' );
+						}
+						
+						$(document).ready(function(){
+							refreshBtnTextFilterBetweenDate('<? echo $searchTime; ?>');
+						});
                     </script>
                     <div class="c_btn">
-                        <button class="inactive on" onclick="$('#calendar').removeClass('on')">1월 24일 - 1월 26일</button>
+                        <!-- <button class="inactive on" onclick="$('#calendar').removeClass('on')">1월 24일 - 1월 26일</button> -->
+                        <button class="inactive on" onclick="$('#fboardlist').submit()" id="filterBetweenDate">선택해주세요</button>
                     </div>
                 </div>
             </div>
@@ -81,28 +99,31 @@ if($boset['date']) {
                     </div>
                     <span class="s_tit">정렬</span>
                     <div class="lounchecL s_filter_radio">
-                        <input type="radio" id="box_1" name="sequence">
+                        <input type="radio" id="box_1" name="sequence" value="recent" <? echo ($_POST['sequence'] == 'recent' || !isset($_POST['composition'])  ? 'checked' : ''); ?> >
                         <label for="box_1">최신순</label>
-                        <input type="radio" id="box_2" name="sequence">
+						<!--
+                        <input type="radio" id="box_2" name="sequence" value="popular" <? echo ($_POST['sequence'] == 'popular' ? 'checked' : ''); ?> >
                         <label for="box_2">인기순</label>
-                        <input type="radio" id="box_3" name="sequence">
+						-->
+                        <input type="radio" id="box_3" name="sequence" value="review" <? echo ($_POST['sequence'] == 'review' ? 'checked' : ''); ?> >
                         <label for="box_3">리뷰순</label>
-                        <input type="radio" id="box_4" name="sequence">
+                        <input type="radio" id="box_4" name="sequence" value="lowcost" <? echo ($_POST['sequence'] == 'lowcost' ? 'checked' : ''); ?> >
                         <label for="box_4">가격 낮은순</label>
-                        <input type="radio" id="box5" name="sequence">
+                        <input type="radio" id="box5" name="sequence" value="highcost" <? echo ($_POST['sequence'] == 'highcost' ? 'checked' : ''); ?> >
                         <label for="box5">가격 높은순</label>
                     </div>
                     <div class="lounchecL s_filter_radio line">
-                        <input type="radio" id="box_6" name="composition">
+                        <input type="radio" id="box_6" name="composition" value="1" <? echo ($_POST['composition'] == '1' ? 'checked' : ''); ?> >
                         <label for="box_6">1회 구성만 보기</label>
-                        <input type="radio" id="box_7" name="composition">
+                        <input type="radio" id="box_7" name="composition" value="n" <? echo ($_POST['composition'] == 'n' ? 'checked' : ''); ?> >
                         <label for="box_7">N회 구성만 보기</label>
-                        <input type="radio" id="box_8" name="composition">
+                        <input type="radio" id="box_8" name="composition" value="all" <? echo ($_POST['composition'] == 'all' || !isset($_POST['composition']) ? 'checked' : ''); ?> >
                         <label for="box_8">전체 보기</label>
                     </div>
                     <div class="pop_btn">
                         <button class="gy" onclick="$('#s_filter').removeClass('on')">필터초기화</button>
-                        <button class="gn" onclick="$('#s_filter').removeClass('on')">적용하기</button>
+                        <!-- <button class="gn" onclick="$('#s_filter').removeClass('on')">적용하기</button> -->
+                        <button class="gn" onclick="$('#fboardlist').submit()">적용하기</button>
                     </div>
                 </div>
             </div>

@@ -71,6 +71,37 @@ $new_pp_id = sql_insert_id();
 $strSql = "update g5_shop_order set calculate_status='1', calculate_pp_id=".$new_pp_id." where od_id in (".$_POST['od_id_list'].")";
 sql_query($strSql);
 
+// 2022-10-09 dev, botbinoo. 정산신청된 모임이 재정산되지 않도록 정산 상태를 변경한다.
+
+$til_date = date("Y-m-d H:i:s", strtotime("+5 days"));
+// payrequest.php 쿼리와 일치 시킬것
+	$sql_common_all = " FROM g5_shop_order a, g5_shop_cart b, g5_shop_item c, g5_write_class d, (select mb_id,wr_id,it_id,status from deb_class_aplyer group by mb_id,wr_id,it_id,status) p
+		WHERE a.od_id = b.od_id
+		and b.ct_select = '1'
+		and b.it_id = c.it_id 
+		and c.it_2 = d.wr_id 
+		and d.mb_id = '{$member['mb_id']}' 
+		and a.od_status in ('입금', '완료') 
+		and a.calculate_status = '0' 
+		and replace(SUBSTRING(c.it_4,1,10),'.','-') < '" . $til_date . "'
+		and a.mb_id = p.mb_id and d.wr_id = p.wr_id and b.it_id = p.it_id 
+		and p.status = '예약확정'
+		and d.moa_status != '폐강' and d.moa_status != '5'
+		and d.moa_status != '정산' and d.moa_status != '6'
+				";
+	$moims = array();
+	$moimSQL = sql_query("select d.wr_id " . $sql_common_all);
+
+	while($row = sql_fetch_array($moimSQL)) {
+		array_push($moims, $row['wr_id']);
+	}
+	for($inx = 0; $inx < count($moims); $inx++){
+		$updateMoim = "update g5_write_class set moa_status = 6 where wr_id = " . $moims[$inx]; 
+		sql_query($updateMoim);
+	}
+
+// end 2022-10-09 dev, botbinoo. 정산신청된 모임이 재정산되지 않도록 정산 상태를 변경한다.
+
 //신청완료
 alert('출금신청을 하였습니다.', $prev_url)
 

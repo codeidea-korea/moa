@@ -33,9 +33,25 @@ echo '<link rel="stylesheet" href="'.get_url('/shop/partner/skin/Basic/style.css
 	<div class="member">
 		<div class="user">
 			<div class="photo">
-				<a href="<?php echo $at_href['myphoto'];?>" target="_blank" class="win_memo">
-					<?php echo ($member['photo']) ? '<img src="'.$member['photo'].'" alt="">' : '<span class="no-img"></span>'; //사진 ?>
+                <!-- 2022.09.06. botbinoo, 프로필 이미지 수정 안되는 오류(리소스 캐싱 문제) -->
+				<!-- <a href="<?php echo $at_href['myphoto'];?>" target="_blank" class="win_memo"> -->
+				<a href="#" class="" onclick="openImg('<?php echo $at_href['myphoto'];?>')">
+					<!-- <?php echo ($member['photo']) ? '<img src="'.$member['photo'].'" alt="">' : '<span class="no-img"></span>'; //사진 ?> -->
+					<?php echo ($member['photo']) ? '<img src="'.$member['photo'].'?v='.time().'" alt="">' : '<span class="no-img"></span>'; //사진 ?>
+                <!-- end 2022.09.06. botbinoo, 프로필 이미지 수정 안되는 오류(리소스 캐싱 문제) -->
 				</a>
+				<script>
+				function openImg(link){
+					var filter = "win16|win32|win64|mac"; 
+					if(navigator.platform){
+						if(0 > filter.indexOf(navigator.platform.toLowerCase())){
+							location.href = link;
+						}else{
+							win_memo(link);
+						}
+					}
+				}
+				</script>
 			</div>
 			<div class="name">
 				<?php echo $member['mb_nick'];?>
@@ -74,7 +90,8 @@ echo '<link rel="stylesheet" href="'.get_url('/shop/partner/skin/Basic/style.css
 						</ul>
 					</li>
 					<!--<li><a href="/bbs/write.php?bo_table=class" target="_blank">모임생성</a></li>-->
-					<li class="<?=$ap == 'moa_write' && !$w ?'active':''?>"><a href="/shop/partner/?ap=moa_write" target="_blank">모임생성</a></li>
+					<!-- <li class="<?=$ap == 'moa_write' && !$w ?'active':''?>"><a href="/shop/partner/?ap=moa_write" target="_blank">모임생성</a></li> -->
+					<li class="<?=$ap == 'moa_write' && !$w ?'active':''?>"><a href="/shop/partner/?ap=moa_write">모임생성</a></li>
 					<li>
 						<a href="#">정산 관리</a>
 						<ul>

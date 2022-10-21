@@ -84,6 +84,7 @@ else
 </div>
 
 <form name="fsearch" id="fsearch" class="local_sch012 local_sch2" method="get">
+<!--
 <div class="none">
 <label for="sfl" class="sound_only">검색대상</label>
 <select name="sfl" id="sfl">
@@ -94,6 +95,7 @@ else
 <input type="text" name="stx" value="<?php echo $stx ?>" id="stx" required class="required frm_input">
 <input type="submit" class="btn_submit" value="검색">
 </div>
+-->
 
 <div class="data-search-wrap fx-wrap label120">
 	<div class="fx-list">
@@ -109,6 +111,13 @@ else
 		</div>
 	</div>
 </div>
+<script>
+$('.btnReset').off().on('click', function(){
+    $('#sfl').val('mb_id');
+    $('#sfl').selectpicker('refresh');
+    $('#stx').val('');
+});
+</script>
 </form>
 
 <form name="fpointlist" id="fpointlist" method="post" action="./point_list_delete.php" onsubmit="return fpointlist_submit(this);">
@@ -239,6 +248,18 @@ else
 									</select>
 									<input type="text" name="" value="" class="ml10 span220" placeholder=""><a href="#" class="ml10 btn reverse span100">조회<i class="arrow-right ml10"></i></a> -->
 								</td>
+                                <script>
+                                $("#mb_id").click(function() {
+                                    if($("#chk_all_mb").is(":checked")) {
+                                        alert("전체회원 체크를 해제 후 이용해 주십시오.");
+                                        return false;
+                                    }
+
+                                    var opt = "left=50,top=50,width=520,height=600,scrollbars=1";
+                                    var url = "/adm/shop_admin/pointmember.php";
+                                    window.open(url, "win_member", opt);
+                                });
+                                </script>
 							</tr>
 							<tr>
 								<th>적용 포인트</th>

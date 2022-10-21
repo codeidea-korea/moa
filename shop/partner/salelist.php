@@ -26,6 +26,8 @@ $sql_common_all = " FROM g5_shop_order a, g5_shop_cart b, g5_shop_item c, g5_wri
 				and c.it_2 = d.wr_id 
 				and d.mb_id = '{$member['mb_id']}' 
 				and a.od_status in ('입금', '완료') 
+				and d.moa_status != '폐강' and d.moa_status != '5'
+				and d.moa_status != '정산' and d.moa_status != '6'
 				and replace(SUBSTRING(c.it_4,1,10),'.','-') < NOW() ";
 
 $sql_common = " FROM g5_shop_order a, g5_shop_cart b, g5_shop_item c, g5_write_class d 
@@ -36,6 +38,8 @@ $sql_common = " FROM g5_shop_order a, g5_shop_cart b, g5_shop_item c, g5_write_c
 				and d.mb_id = '{$member['mb_id']}' 
 				and a.od_status in ('입금', '완료') 
 				and replace(SUBSTRING(c.it_4,1,10),'.','-') < NOW() 
+				and d.moa_status != '폐강' and d.moa_status != '5'
+				and d.moa_status != '정산' and d.moa_status != '6'
 				and SUBSTRING(a.od_time,1,10) between '$sch_startdt' and '$sch_enddt'	";
 
 // 테이블의 전체 레코드수만 얻음

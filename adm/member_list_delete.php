@@ -1,4 +1,7 @@
 <?php
+error_reporting( E_ALL );
+ini_set( "display_errors", 1 );
+
 $sub_menu = "200100";
 include_once("./_common.php");
 
@@ -6,7 +9,7 @@ check_demo();
 
 auth_check($auth[$sub_menu], "d");
 
-check_admin_token();
+// check_admin_token();
 
 $msg = "";
 for ($i=0; $i<count($chk); $i++)
@@ -26,12 +29,20 @@ for ($i=0; $i<count($chk); $i++)
         $msg .= "{$mb['mb_id']} : 자신보다 권한이 높거나 같은 회원은 삭제할 수 없습니다.\\n";
     } else {
         // 회원자료 삭제
-        member_delete($mb['mb_id']);
+//        member_delete($mb['mb_id']);
+        $time = date("Ymd");
+        $sql = " UPDATE {$g5['member_table']}
+                 SET mb_leave_date = '{$time}'
+                 WHERE mb_id = '{$mb['mb_id']}' ";
+        //echo nl2br($sql)."<BR>";
+        $result = sql_query($sql);
+        echo $k;
+        echo $result;
     }
 }
 
 if ($msg)
-    echo "<script type='text/javascript'> alert('$msg'); </script>";
-
-goto_url("./member_list.php?$qstr");
+    echo "<script type='text/javascript'> alert('$msg'); document.location.href = './member_list.php?$qstr'; </script>";
+else 
+    goto_url("./member_list.php?$qstr");
 ?>

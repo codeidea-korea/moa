@@ -70,6 +70,7 @@ if(!$iq['iq_answer'] && trim($iq_answer)) {
 	}
 }
 
-goto_url('./?ap=qaform&amp;iq_id='.$iq_id.'&amp;sca='.$sca.'&amp;save_opt='.$opt.'&amp;opt='.$opt.'&amp;page='.$page);
+// goto_url('./?ap=qaform&amp;iq_id='.$iq_id.'&amp;sca='.$sca.'&amp;save_opt='.$opt.'&amp;opt='.$opt.'&amp;page='.$page);
+goto_url('/shop/partner/?ap=qalist');
 
 ?>

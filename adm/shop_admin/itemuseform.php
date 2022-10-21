@@ -72,6 +72,8 @@ $qstr .= ($qstr ? '&amp;' : '').'sca='.$sca;
         <th scope="row">평점</th>
         <td><img src="<?php echo G5_URL; ?>/shop/img/s_star<?php echo $is['is_score']; ?>.png" width="100"> (<?php echo $is['is_score']; ?>점)</td>
     </tr>
+    <!-- 2022-09-04 botbinoo, 후기 불필요한 내용 비노출하도록 수정 -->
+    <!--
     <tr>
         <th scope="row"><label for="is_subject">제목</label></th>
         <td><input type="text" name="is_subject" required class="required frm_input" id="is_subject" size="100"
@@ -90,6 +92,15 @@ $qstr .= ($qstr ? '&amp;' : '').'sca='.$sca;
         <th scope="row">답변 내용</th>
         <td><?php echo editor_html('is_reply_content', get_text(html_purifier($is['is_reply_content']), 0)); ?></td>
     </tr>
+-->
+    <tr>
+        <th scope="row">내용</th>
+        <td>
+            <textarea name="is_content" id="tx_is_content"><?php echo $is['is_content']; ?></textarea>
+        </td>
+    </tr>
+    <!-- end 2022-09-04 botbinoo, 후기 불필요한 내용 비노출하도록 수정 -->
+
     <tr>
         <th scope="row">확인</th>
         <td>

@@ -39,7 +39,7 @@ if ($ap == 'register_form_step2') {
 	$partner = array();
 	$partner = apms_partner($member['mb_id']);
 
-	if($partner['pt_id']) { //호스트 정보가 있으면
+	if($partner['pt_id'] && $partner['pt_host_status'] != '반려') { //호스트 정보가 있으면
 
 		if(!$partner['pt_register']) { // 등록심사중이면
 			alert('회원님은 현재 등록심사 중입니다.', G5_URL);
@@ -131,8 +131,25 @@ if ($ap == 'register_form_step2') {
 		//자동등록
 		$pt_register = ($apms['apms_register']) ? date("Ymd") : '';
 
-		//정보등록
-		$sql = " insert into {$g5['apms_partner']}
+		if($partner['pt_host_status'] == '반려') {
+			// update
+			$sql = " UPDATE {$g5['apms_partner']}
+				set 
+					pt_partner = '{$pt_partner}',
+					pt_marketer = '{$pt_marketer}',
+					pt_type = '{$pt_type}',
+					pt_register = '{$pt_register}',
+					pt_datetime = '".G5_TIME_YMDHIS."',
+					pt_name = '{$pt_name}',
+					pt_hp = '{$pt_hp}',
+					pt_email = '{$pt_email}',
+					pt_host_status = '' 
+				WHERE pt_id = '{$member['mb_id']}' ";
+			sql_query($sql);
+		}else {
+			
+			//정보등록
+			$sql = " insert into {$g5['apms_partner']}
 				set pt_id = '{$member['mb_id']}',
 					pt_partner = '{$pt_partner}',
 					pt_marketer = '{$pt_marketer}',
@@ -142,7 +159,8 @@ if ($ap == 'register_form_step2') {
 					pt_name = '{$pt_name}',
 					pt_hp = '{$pt_hp}',
 					pt_email = '{$pt_email}' ";
-		sql_query($sql);
+			sql_query($sql);
+		}
 
 		// 호스트 신청 알림쪽지 발송
 		$msg = $member['mb_nick'].'('.$member['mb_id'].')님이 호스트 등록을 신청하셨습니다.';
@@ -168,7 +186,8 @@ if ($ap == 'register_form_step2') {
 
 			alert('호스트 등록이 완료되었습니다.', APMS_PARTNER_URL);
 		} else {
-			alert('호스트 등록을 신청하셨습니다.\\n\\n신청내용에 대한 검토 후 등록이 완료됩니다.', G5_URL);
+//			alert('호스트 등록을 신청하셨습니다.\\n\\n신청내용에 대한 검토 후 등록이 완료됩니다.', G5_URL);
+			alert('호스트 등록을 신청하셨습니다.\\n\\n신청내용에 대한 검토 후 등록이 완료됩니다.', "/shop/partner/login.php");
 		}
 	}
 }

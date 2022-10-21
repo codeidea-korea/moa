@@ -268,12 +268,13 @@ if ($chks) {
 	include_once(G5_PATH.'/adm/apms_admin/apms.admin.lib.php');
     include_once(G5_PATH.'/adm/admin.head.sub.php');
     include_once(G5_PATH.'/shop/partner/skin/Basic/_head.php');
-}
-else 
+}else {
     include_once(G5_PATH.'/head.sub.php');
+}
 
 
 @include_once($board_skin_path.'/board.head.skin.php');
+
 
 
 //공지제외

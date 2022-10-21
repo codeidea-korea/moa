@@ -32,7 +32,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
         </div>
         <ol>
             <?php
-                $famous = "select search_word, count(*) cnt from deb_word_search group by search_word order by cnt desc";
+                $famous = "select search_word, count(*) cnt from deb_word_search group by search_word order by cnt desc limit 5";
                 $famous_word = sql_query($famous);
                 $i = 1;
                 while($row2 = sql_fetch_array($famous_word)) {

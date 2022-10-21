@@ -5,6 +5,13 @@ $mb_id = implode("','", $_POST['ids']);
 $msg = $_POST['msg'];
 $host = $_POST['host']?"호스트":"회원";
 
+$sql = "update g5_apms_partner set pt_host_status = '반려' where pt_id IN ('{$mb_id}')";
+$result = sql_query($sql);
+$sql = "update g5_member set mb_level = 2 where mb_id IN ('{$mb_id}')";
+$result = sql_query($sql);
+
+
+
 $sql = "SELECT mb_nick, mb_email, mb_hp FROM g5_member where mb_id IN ('{$mb_id}')";
 $result = sql_query($sql);
 

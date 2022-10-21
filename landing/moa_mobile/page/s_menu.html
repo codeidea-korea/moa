@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="../js/calendar.js"></script>
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <title>MOA</title>
+</head>
+<body>
+    <!-- header -->
+    <div class="header">
+        <div class="app_header">
+            <a href=""><img src="../images/moa_logo.svg" alt=""></a>
+            <div class="ic_area">
+                <a href=""><img src="../images/icon_bell.png" alt=""></a>
+                <a href="" class="on"><img src="../images/icon_chat.png" alt=""></a>
+            </div>
+        </div>
+    </div>
+
+    <!--액티비티 / 자기계발 / 힐링 / 문화예술 / 쿠킹/베이킹 탭 공통 -->
+    <div class="wrapper">
+        <div class="">
+            <!-- 메뉴 슬라이드 -->
+            <div class="swiper-container s_nav_sw">
+                <div class="swiper2">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                        <a href="">전체</a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="" class="on">액티비티</a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">자기계발</a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">힐링</a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">문화예술</a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">쿠킹/베이킹</a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">소셜링</a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">뷰티</a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">커리어</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 메인 검색 -->
+            <div class="s_content">
+                <div class="m_search">
+                    <input type="text" placeholder="클래스를 검색하세요">     
+                </div>
+            </div>
+        </div>
+
+        <!-- 공통 탭리스트 -->
+        <div class="s_content mt35">
+            <!-- 공통 탭리스트 시작 -->
+            <ul class="tab_list pb100">
+                <li>
+                    <a href="">
+                        <div class="thumb_box">
+                            <div></div>
+                        </div>
+                        <div class="lctn">성동 • 마포 • 서대문</div>
+                        <div class="st_textarea">
+                            다같이 게임으로<br/>
+                            힐링해봐요 
+                        </div>
+                        <button class="lick_btn on"></button>
+                        <div class="rated">
+                            <span class="on"></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <p>후기 38개</p> 
+                        </div>
+                        <div class="dsc_price">
+                            <p>쿠폰사용</p>
+                            <div class="price">
+                                <span>60,000원</span>
+                            </div>
+                        </div>
+                    </a>    
+                </li>
+                <li>
+                    <a href="">
+                        <div class="thumb_box">
+                            <div></div>
+                        </div>
+                        <div class="lctn">성동 • 마포 • 서대문</div>
+                        <div class="st_textarea">
+                            다같이 게임으로<br/>
+                            힐링해봐요 
+                        </div>
+                        <button class="lick_btn on"></button>
+                        <div class="rated">
+                            <span class="on"></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <p>후기 38개</p> 
+                        </div>
+                        <div class="dsc_price">
+                            <div class="dc">10%</div>
+                            <div class="price">
+                                <p>66,000원</p>
+                                <span>60,000원</span>
+                            </div>
+                        </div>
+                    </a>    
+                </li>
+                <li>
+                    <a href="">
+                        <div class="thumb_box">
+                            <div></div>
+                        </div>
+                        <div class="lctn">성동 • 마포 • 서대문</div>
+                        <div class="st_textarea">
+                            다같이 게임으로<br/>
+                            힐링해봐요 
+                        </div>
+                        <button class="lick_btn on"></button>
+                        <div class="rated">
+                            <span class="on"></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <p>후기 38개</p> 
+                        </div>
+                        <div class="dsc_price">
+                            <div class="price">
+                                <span>무료</span>
+                            </div>
+                        </div>
+                    </a>    
+                </li>
+            </ul>
+        </div>
+    </div>
+    <nav>
+        <ul>
+            <li>
+                <a class="on" href="">
+                    <span class="mn_home"></span>
+                    홈
+                </a>
+            </li>
+            <li>
+                <a class="" href="">
+                    <span class="mn_ctgry"></span>
+                    카테고리
+                </a>
+            </li>
+            <li>
+                <a class="" href="">
+                    <span class="mn_cmnty"></span>
+                    커뮤니티
+                </a>
+            </li>
+            <li>
+                <a class="" href="">
+                    <span class="mn_location"></span>
+                    위치
+                </a>
+            </li>
+            <li>
+                <a class="" href="">
+                    <span class="mn_my"></span>
+                    마이페이지
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <script src="../js/common.js"></script>
+</body>
+</html>

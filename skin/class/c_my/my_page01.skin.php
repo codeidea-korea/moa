@@ -27,7 +27,10 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
             </div>
             <div class="profile_imgarea">
                 <div class="profile_img" onclick="location.href='<?php echo MOA_MY_URL;?>/my_page05.php'">
-                    <?php echo ($member['photo']) ? '<img src="'.$member['photo'].'" alt="">' : '<img src="../images/profile_default.svg">'; //사진 ?>
+                <!-- 2022.09.06. botbinoo, 프로필 이미지 수정 안되는 오류(리소스 캐싱 문제) -->
+                <!--     <?php echo ($member['photo']) ? '<img src="'.$member['photo'].'" alt="">' : '<img src="../images/profile_default.svg">'; //사진 ?>  -->
+                    <?php echo ($member['photo']) ? '<img src="'.$member['photo'].'?v='.time().'" alt="">' : '<img src="../images/profile_default.svg">'; //사진 ?>
+                <!-- end 2022.09.06. botbinoo, 프로필 이미지 수정 안되는 오류(리소스 캐싱 문제) -->
                 </div>
                 <a href="/c_my/my_page05.php?ap=register_form">프로필 수정</a>
             </div>

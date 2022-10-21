@@ -75,28 +75,26 @@ $( document ).ready(function() {
 							
 							
 							<div class="comm_dflex">
-								<?php 
-								//좋아요 기능구현
-								$likechk = checkLikeOn('class',$list[$i]['wr_id'],$member['mb_id']);
-								$likeon = ($likechk)?"on":"";
-								$likenoon = ($likechk)?"":"";
-								?>
 								<!-- <img src="../images/com_like_on.svg" alt=""> -->
-								<div class="ic_area">
-								<span class="<?php echo $likeon;?>" onclick="deb_apms_like('<?php echo $bo_table;?>', '<?php echo $list[$i]['wr_id'];?>', '<?php echo $likenoon;?>good', 'wr_<?php echo $likenoon;?>good'); return false;"><?php echo $list[$i]['wr_good']; ?></span>
-								<a onclick="apms_good('<?php echo $bo_table;?>', '<?php echo $wr_id;?>', 'good', 'c_good<?php echo $comment_id;?>', '<?php echo $comment_id;?>'); return false;"id="c_good<?php echo $comment_id;?>"></a>
-								</span>
+								<div class="ic_area" style="display:flex;align-items:center;gap:15px;">
+									<span style="width:32px" id="c_good<?php echo $comment_id;?>" class="<?php echo $list[$i]['my_good_cmt_id'];?>" onclick="apms_good('<?php echo $bo_table;?>', '<?php echo $wr_id;?>', 'good', 'c_good<?php echo $comment_id;?>', '<?php echo $comment_id;?>'); return false;"><?php echo $list[$i]['wr_good']; ?></span>
+									<a class="dec" href="#" onclick="apms_shingo('<?php echo $bo_table;?>', '<?php echo $comment_id ?>'); return false;"><img src="../images/Dec.svg" alt=""></a>
+								</div>
 								<!-- <span><?php echo $list[$i]['wr_comment']; ?></span> -->
 								<!-- <a id="reply_<?php echo $comment_id ?>">답글달기</a>  -->
 								<!-- 답글달기 숫자 구현 필요 -->
 								
-						<?php if(!G5_IS_MOBILE) { // PC ?>
-							<!--<span id="edit_<?php echo $comment_id ?>"></span>-->
-							<input type="hidden" value="<?php echo strstr($list[$i]['wr_option'],"secret") ?>" id="secret_comment_<?php echo $comment_id ?>">
-							<textarea id="save_comment_<?php echo $comment_id ?>" style="display:none"><?php echo get_text($list[$i]['content1'], 0) ?></textarea>
-						<?php } ?>
-							</div>
-						<a class="dec" href="#" onclick="apms_shingo('<?php echo $bo_table;?>', '<?php echo $comment_id ?>'); return false;"><img src="../images/Dec.svg" alt=""></a>
+								<?php if(!G5_IS_MOBILE) { // PC ?>
+									<!--<span id="edit_<?php echo $comment_id ?>"></span>-->
+									<input type="hidden" value="<?php echo strstr($list[$i]['wr_option'],"secret") ?>" id="secret_comment_<?php echo $comment_id ?>">
+									<textarea id="save_comment_<?php echo $comment_id ?>" style="display:none"><?php echo get_text($list[$i]['content1'], 0) ?></textarea>
+								<?php }else{?>
+									<span id="edit_<?php echo $comment_id ?>"></span><!-- 수정 -->
+									<span id="reply_<?php echo $comment_id ?>"></span><!-- 답변 -->
+									<input type="hidden" value="<?php echo strstr($list[$i]['wr_option'],"secret") ?>" id="secret_comment_<?php echo $comment_id ?>">
+									<textarea id="save_comment_<?php echo $comment_id ?>" style="display:none"><?php echo get_text($list[$i]['content1'], 0) ?></textarea>
+								<?php } ?>
+							</div>		
 						</div>
 		
 					</div>
@@ -120,39 +118,17 @@ $( document ).ready(function() {
 
 				$c_reply_href = './board.php?'.$query_string.'&amp;c_id='.$comment_id.'&amp;w=c#bo_vc_w';
 				$c_edit_href = './board.php?'.$query_string.'&amp;c_id='.$comment_id.'&amp;w=cu#bo_vc_w';
-
 				?>
-				<div class="print-hide pull-right font-11" style="display:none;">
-					<?php if ($list[$i]['is_reply']) { ?>
-						<a href="<?php echo $c_reply_href;  ?>" onclick="comment_box('<?php echo $comment_id ?>', 'c'); return false;">
-							<span class="text-muted">답변</span>
-						</a>
-					<?php } ?>
+				<div class="print-hide font-11" style="float:right;">
 					<?php if ($list[$i]['is_edit']) { ?>
 						<a href="<?php echo $c_edit_href;  ?>" onclick="comment_box('<?php echo $comment_id ?>', 'cu'); return false;">
-							<span class="text-muted media-btn">수정</span>
+							<span class="text-muted media-btn" style="font-size:14px;">수정</span>
 						</a>
 					<?php } ?>
 					<?php if ($list[$i]['is_del'])  { ?>
 						<a href="<?php echo $list[$i]['del_link'];  ?>" onclick="return comment_delete();">
-							<span class="text-muted media-btn">삭제</span>
+							<span class="text-muted media-btn" style="font-size:14px;">삭제</span>
 						</a>
-					<?php } ?>
-					<?php if ($is_shingo)  { ?>
-						<a href="#" onclick="apms_shingo('<?php echo $bo_table;?>', '<?php echo $comment_id ?>'); return false;">
-							<span class="text-muted media-btn">신고</span>
-						</a>
-					<?php } ?>
-					<?php if ($is_admin) { ?>
-						<?php if ($list[$i]['is_lock']) { // 글이 잠긴상태이면 ?>
-							<a href="#" onclick="apms_shingo('<?php echo $bo_table;?>', '<?php echo $comment_id;?>', 'unlock'); return false;">
-								<span class="text-muted media-btn">해제</span>
-							</a>
-						<?php } else { ?>
-							<a href="#" onclick="apms_shingo('<?php echo $bo_table;?>', '<?php echo $comment_id;?>', 'lock'); return false;">
-								<span class="text-muted media-btn">잠금</span>
-							</a>
-						<?php } ?>
 					<?php } ?>
 				</div>
 			<?php } ?>
@@ -208,9 +184,9 @@ $( document ).ready(function() {
 		</div>
 
 		<div class="comment-box">
-			<div class="pull-left help-block hidden-xs">
+			<!--div class="pull-left help-block hidden-xs">
 				<i class="fa fa-smile-o fa-lg"></i> 댓글은 자신을 나타내는 '얼굴'입니다. *^^*
-			</div>
+			</div-->
 			<?php if ($comment_min || $comment_max) { ?>
 				<div class="pull-right help-block" id="char_cnt">
 					<i class="fa fa-commenting-o fa-lg"></i>

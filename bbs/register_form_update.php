@@ -1,8 +1,12 @@
 <?php
+error_reporting( E_ALL );
+ini_set( "display_errors", 1 );
+
 include_once('./_common.php');
 include_once(G5_LIB_PATH.'/register.lib.php');
 include_once(G5_LIB_PATH.'/mailer.lib.php');
 include_once(G5_LIB_PATH.'/thumbnail.lib.php');
+include_once(G5_LIB_PATH.'/common.lib.php');
 
 // 리퍼러 체크
 referer_check();
@@ -67,6 +71,7 @@ $agree5          = isset($_POST['agree5'])            ? trim($_POST['agree5'])  
 $agree6          = isset($_POST['agree6'])            ? trim($_POST['agree6'])          : "";
 $agree7          = isset($_POST['agree7'])            ? trim($_POST['agree7'])          : "";
 $agree8          = isset($_POST['agree8'])            ? trim($_POST['agree8'])          : "";
+$invite_code          = isset($_POST['invite_code'])            ? trim($_POST['invite_code'])          : "";
 
 $mb_name        = clean_xss_tags($mb_name);
 $mb_email       = get_email_address($mb_id);
@@ -78,6 +83,8 @@ $mb_addr1       = clean_xss_tags($mb_addr1);
 $mb_addr2       = clean_xss_tags($mb_addr2);
 $mb_addr3       = clean_xss_tags($mb_addr3);
 $mb_addr_jibeon = preg_match("/^(N|R)$/", $mb_addr_jibeon) ? $mb_addr_jibeon : '';
+
+
 
 if ($w == '' || $w == 'u') {
     if ($msg = empty_mb_id($mb_id))         alert($msg, "", true, true); // alert($msg, $url, $error, $post);
@@ -122,6 +129,12 @@ if ($w == '' || $w == 'u') {
             if(trim($_POST['cert_no']) != $_SESSION['ss_cert_no'] || !$_SESSION['ss_cert_no'])
                 alert("회원가입을 위해서는 본인확인을 해주셔야 합니다.");
         }
+        
+        if($invite_code != "") {
+            $sql = "select * from g5_member where invite_code in ('{$invite_code}')";
+            $recommedUser = sql_fetch($sql);
+            $mb_recommend = $recommedUser['mb_id'];
+        }
 
         if ($config['cf_use_recommend'] && $mb_recommend) {
             if (!exist_mb_id($mb_recommend))
@@ -147,7 +160,7 @@ if ($w == '' || $w == 'u') {
 //===============================================================
 //  본인확인
 //---------------------------------------------------------------
-$mb_hp = hyphen_hp_number($mb_hp);
+// $mb_hp = hyphen_hp_number($mb_hp);
 if($config['cf_cert_use'] && $_SESSION['ss_cert_type'] && $_SESSION['ss_cert_dupinfo']) {
     // 중복체크
     $sql = " select mb_id from {$g5['member_table']} where mb_id <> '{$member['mb_id']}' and mb_dupinfo = '{$_SESSION['ss_cert_dupinfo']}' ";
@@ -163,7 +176,7 @@ $cert_type = $_SESSION['ss_cert_type'];
 if ($config['cf_cert_use'] && $cert_type && $md5_cert_no) {
     // 해시값이 같은 경우에만 본인확인 값을 저장한다.
     if ($_SESSION['ss_cert_hash'] == md5($mb_name.$cert_type.$_SESSION['ss_cert_birth'].$md5_cert_no)) {
-        $sql_certify .= " , mb_hp = '{$mb_hp}' ";
+//        $sql_certify .= " , mb_hp = '{$mb_hp}' ";
         $sql_certify .= " , mb_certify  = '{$cert_type}' ";
         $sql_certify .= " , mb_adult = '{$_SESSION['ss_cert_adult']}' ";
         $sql_certify .= " , mb_birth = '{$_SESSION['ss_cert_birth']}' ";
@@ -172,7 +185,7 @@ if ($config['cf_cert_use'] && $cert_type && $md5_cert_no) {
         if($w == 'u')
             $sql_certify .= " , mb_name = '{$mb_name}' ";
     } else {
-        $sql_certify .= " , mb_hp = '{$mb_hp}' ";
+//        $sql_certify .= " , mb_hp = '{$mb_hp}' ";
         $sql_certify .= " , mb_certify  = '' ";
         $sql_certify .= " , mb_adult = 0 ";
         $sql_certify .= " , mb_birth = '{$mb_birth}' ";
@@ -180,7 +193,7 @@ if ($config['cf_cert_use'] && $cert_type && $md5_cert_no) {
     }
 } else {
     if (get_session("ss_reg_mb_name") != $mb_name || get_session("ss_reg_mb_hp") != $mb_hp) {
-        $sql_certify .= " , mb_hp = '{$mb_hp}' ";
+//        $sql_certify .= " , mb_hp = '{$mb_hp}' ";
         $sql_certify .= " , mb_certify = '' ";
         $sql_certify .= " , mb_adult = 0 ";
         $sql_certify .= " , mb_birth = '{$mb_birth}' ";
@@ -199,10 +212,10 @@ if ($w == '') { /******************** 회원 insert Start **********************
                      mb_homepage = '{$mb_homepage}',
                      mb_tel = '{$mb_tel}',
                      mb_zip1 = '{$mb_zip1}',
-                     mb_zip2 = '{$mb_zip2}',
                      mb_addr1 = '{$mb_addr1}',
                      mb_addr2 = '{$mb_addr2}',
                      mb_addr3 = '{$mb_addr3}',
+                     mb_hp = '{$mb_hp}',
                      mb_addr_jibeon = '{$mb_addr_jibeon}',
                      mb_signature = '{$mb_signature}',
                      mb_profile = '{$mb_profile}',
@@ -242,7 +255,7 @@ if ($w == '') { /******************** 회원 insert Start **********************
     sql_query($sql);
 
     // 회원가입 포인트 부여
-    insert_point($mb_id, $config['cf_register_point'], '회원가입 축하', '@member', $mb_id, '회원가입');
+    $sss = insert_point($mb_id, $config['cf_register_point'], '회원가입 축하', '@member', $mb_id, '회원가입');
 
     // 추천인에게 포인트 부여
     if ($config['cf_use_recommend'] && $mb_recommend)
@@ -290,9 +303,8 @@ if ($w == '') { /******************** 회원 insert Start **********************
     set_session('ss_mb_reg', $mb_id);
 
 	/******************** 회원 insert End ************************************************************************************************/
-
-
-
+echo $sql;
+// exit;
 } else if ($w == 'u') {
     if (!trim($_SESSION['ss_mb_id']))
         alert('로그인 되어 있지 않습니다.');

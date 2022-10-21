@@ -9,8 +9,9 @@ if($ap == 'register_form') {
 	if($_POST['mb_password'] != $_POST['mb_password2'] && $_POST['mb_password']) {
 		alert('비밀번호 확인이 일치하지 않습니다.');
 		return false;
-	} else if (substr($_POST['mb_hp'], 0, 3) != '010' ){
-		alert('휴대폰번호는 010으로 시작해야만 합니다.');
+	} else if (substr($_POST['mb_hp'], 0, 3) != '010' || strlen($_POST['mb_hp']) != 11 ){
+//		alert('휴대폰번호는 010으로 시작해야만 합니다.');
+		alert('올바른 휴대폰번호를 입력해주세요.');
 		return false;
 	} else {
 		//파일등록

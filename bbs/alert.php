@@ -6,6 +6,9 @@ include_once('./_common.php');
 
 if($error) {
     $g5['title'] = "오류안내 페이지";
+    if($pageName) {
+        $g5['title'] = $pageName;
+    }
 } else {
     $g5['title'] = "결과안내 페이지";
 }
@@ -30,10 +33,10 @@ include_once(G5_PATH.'/head.sub.php');
 
 $msg = isset($msg) ? strip_tags($msg) : '';
 $msg2 = str_replace("\\n", "<br>", $msg);
-
+/*
 $url = clean_xss_tags($url, 1);
 if (!$url) $url = clean_xss_tags($_SERVER['HTTP_REFERER'], 1);
-
+*/
 $url = preg_replace("/[\<\>\'\"\\\'\\\"\(\)]/", "", $url);
 $url = preg_replace('/\r\n|\r|\n|[^\x20-\x7e]/','', $url);
 

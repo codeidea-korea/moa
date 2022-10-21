@@ -20,12 +20,20 @@ $rows = $config['cf_page_rows'];
 $total_page  = ceil($total_count / $rows);  // 전체 페이지 계산
 if ($page < 1) { $page = 1; } // 페이지가 없으면 첫 페이지 (1 페이지)
 $from_record = ($page - 1) * $rows; // 시작 열을 구함
-
+/*
 $sql  = " select *
            $sql_common
            order by idx desc
            limit $from_record, $rows ";
+           */
+$sql  = " select *
+           $sql_common ";
 $result = sql_query($sql);
+
+$joinUsers = array();
+while($row=sql_fetch_array($result)) {
+    array_push($joinUsers, $row);
+}
 
 $subject_sql = "select * from g5_write_class a join g5_shop_item b on a.wr_id = b.it_2
                 join deb_class_item c on b.it_id = c.it_id
@@ -63,7 +71,9 @@ $subject = sql_fetch($subject_sql);
     </tr>
     </thead>
     <tbody>
-	<?php  for($i=0; $row=sql_fetch_array($result); $i++) { ?>
+	<?php  for($i=0; $i < count($joinUsers); $i++) {
+                $row = $joinUsers[$i];
+    ?>
 	<tr class="orderlist">
         <td class="td_chk">
             <input type="hidden" name="od_id[<?php echo $i ?>]" value="<?php echo $row['od_id'] ?>" id="od_id_<?php echo $i ?>">
@@ -129,8 +139,8 @@ $subject = sql_fetch($subject_sql);
     </thead>
     <tbody>
     <?php
-    for ($i=0; $row=sql_fetch_array($result); $i++)
-    {
+	for($i=0; $i < count($joinUsers); $i++) {
+                $row = $joinUsers[$i];
         // 결제 수단
         $s_receipt_way = $s_br = "";
         if ($row['od_settle_case'])
@@ -350,8 +360,11 @@ $subject = sql_fetch($subject_sql);
 
 </form>
 
-<?php echo get_paging(G5_IS_MOBILE ? $config['cf_mobile_pages'] : $config['cf_write_pages'], $page, $total_page, "{$_SERVER['SCRIPT_NAME']}?$qstr&amp;page="); ?>
-
+<!--
+<?php 
+// echo get_paging(G5_IS_MOBILE ? $config['cf_mobile_pages'] : $config['cf_write_pages'], $page, $total_page, "{$_SERVER['SCRIPT_NAME']}?$qstr&amp;page="); 
+?>
+    -->
 </div>
 
 <script>

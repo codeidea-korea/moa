@@ -35,6 +35,14 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                             </div>
                         </div>
                     </a>
+						<!--신고버튼-->
+						<div class="d_tit cr mt14" style="margin:0;float:left;">
+							<div class="com_chip color_red">
+								<span onclick="report_btn('모임1')" style="cursor:pointer;">신고</span>
+								<span onclick="report_btn('모임2')" style="cursor:pointer;">차단</span>
+							</div>
+						</div>
+						<!--신고버튼-->
                 </div>
                 <?php } ?>
             </div>

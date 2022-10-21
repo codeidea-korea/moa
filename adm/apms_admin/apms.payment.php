@@ -15,7 +15,7 @@ $sch_startdt = ($sch_startdt) ? $sch_startdt : $rday['year1ago'];
 $sch_enddt = ($sch_enddt) ? $sch_enddt : $rday['today'];
 $sch_startdt = str_replace(".","-",$sch_startdt);
 $sch_enddt = str_replace(".","-",$sch_enddt);
-
+$pp_confirm = isset($_POST['pp_confirm']) && $_POST['pp_confirm'] != '' ? $_POST['pp_confirm'] : -1;
 
 
 //검색결과
@@ -27,6 +27,9 @@ if ($stx) {
 }
 if ($sch_startdt) {
 	$sql_search .=" and date(pp_datetime) between '{$sch_startdt}' and '{$sch_enddt}' ";
+}
+if ($pp_confirm > -1) {
+	$sql_search .=" and pp_confirm = $pp_confirm ";
 }
 $sql_common = " from {$g5['apms_payment']} a left join {$g5['member_table']} b on ( a.mb_id = b.mb_id ) where (1) $sql_search ";
 
@@ -126,6 +129,17 @@ set_session('pp_inquiry_id', $member['mb_id']);
 						setdate(4);
 					});
 					</script>
+				</div>
+			</div>
+			<div class="fx-list">
+				<div class="fx-list-label">출금 상태</div>
+				<div class="fx-list-con">
+					<select name="pp_confirm" id="pp_confirm">
+						<option value=''>전체선택</option>
+						<option value='1' <?php echo ($pp_confirm == 1 ? 'selected' : '');?>>출금완료</option>
+						<option value='0' <?php echo ($pp_confirm == 0 ? 'selected' : '');?>>출금신청</option>
+						<option value='2' <?php echo ($pp_confirm == 2 ? 'selected' : '');?>>출금취소</option>
+					</select>
 				</div>
 			</div>
 			<div class="fx-list">

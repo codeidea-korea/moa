@@ -170,7 +170,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                             <span class="limit">0/20</span>
                         </div>
                         <span class="inform02 ">
-                            ·대원들에게 보여지는 닉네임 입니다.
+                            ·게스트들에게 보여지는 닉네임 입니다.
                         </span>
                     </div>
 

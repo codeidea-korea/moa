@@ -26,6 +26,7 @@ function get_mb_img($mb_id) {
  //헤더영역(공통파일)
 include_once(CLASS_PATH."/header.php");
 
+$header_title = '나의 후기';
 //main head(공통파일)
 include_once(CLASS_PATH."/head.php");
 

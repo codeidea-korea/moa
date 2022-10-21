@@ -8,12 +8,15 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
         <div class="p0 bt" id="host_content">
             <ul class="my_re_layout last_list">
                 <?php
-                    $sql = "select * from g5_write_qa where mb_id = '{$member['mb_id']}' and wr_reply = ''";
+                    $sql = "select * from g5_shop_item_qa where mb_id = '{$member['mb_id']}' ";
                     $query = sql_query($sql);
-                    if(sql_num_rows($query) > 0) {
+                    $cnt = sql_num_rows($query);
+                    if(sql_num_rows($query) > 0) 
+                    {
                     while($row = sql_fetch_array($query)) {
                     ?>
                     <li>
+                    <!--
                         <div class="re_txt">
                             <p><?php echo $row['ca_name'] ? '[' . $row['ca_name'] . ']' : ''; ?><?php echo $row['wr_subject']; ?></p>
                         </div>
@@ -26,7 +29,32 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                                 </p>
                             </div>
                         </div>
-                        <?php $sql2 = "SELECT * FROM g5_write_qa WHERE wr_num = '{$row['wr_num']}' AND wr_reply != ''";
+                        -->
+
+                        <div class="re_txt">
+                            <p><?php echo $row['ca_name'] ? '[' . $row['ca_name'] . ']' : ''; ?><?php echo $row['iq_subject']; ?></p>
+                        </div>
+                        <div class="review">
+                            <div class="pro_img"><?php echo get_mb_img($row['mb_id']); ?></div>
+                            <div class="t_area">
+                                <p><?php echo $row['iq_name']; ?><span><?php echo $row['iq_time'] ?></span></p>
+                                <p class="txt">
+                                    <?php echo $row['iq_question']; ?>
+                                </p>
+                            </div>
+                            <? if(!empty($row['iq_answer']) && $row['iq_answer'] != ''){ ?>
+                            <div class="t_area">
+                                <p><?php echo $row['pt_id']; ?><span></p>
+                                <p class="txt">
+                                    <?php echo $row['iq_answer']; ?>
+                                </p>
+                            </div>
+                            <? } ?>
+                        </div>
+
+                        <?php 
+                        /*
+                        $sql2 = "SELECT * FROM g5_shop_item_qa WHERE wr_num = '{$row['wr_num']}' AND wr_reply != ''";
                         $query2 = sql_query($sql2);
                         if(sql_num_rows($query2)) {
                         while($row2 = sql_fetch_array($query2)) { ?>
@@ -47,7 +75,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                                 </li>
                             </ul>
                         <?php }
-                        } ?>
+                        }*/ ?>
                     </li>
                 <?php
                     }

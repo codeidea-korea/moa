@@ -12,8 +12,13 @@ auth_check($auth[$sub_menu], 'r');
 
 
 
-$sql_common = " from g5_member where (1) ";
-$sql_search = " AND mb_status <> '승인'";
+$sql_common = " from g5_member where 1=1 ";
+// 2022-09-04. botbinoo, 직장 인증한 회원을 제외하는 로직이나 요구조건에 의해 노출되지 않음이 오류로 올라옴
+// 2022-09-05. botbinoo, 대기와 반려만 포함하도록 추가됨
+$sql_search = " AND (mb_status = '대기' or mb_status = '반려') ";
+// $sql_search = " ";
+// end 2022-09-04. botbinoo, 직장 인증한 회원을 제외하는 로직이나 요구조건에 의해 노출되지 않음이 오류로 올라옴
+
 if($mb_name) {
     $sql_search .= " AND mb_name like '%{$mb_name}%'";
 }
@@ -37,7 +42,6 @@ $sql_order = " order by mb_no desc ";
 
 $sql = " select count(*) as cnt {$sql_common} {$sql_search} {$sql_order} ";
 
-
 //echo nl2br($sql)."<BR>";
 $row = sql_fetch($sql);
 $total_count = $row['cnt'];
@@ -48,6 +52,10 @@ $total_page  = ceil($total_count / $rows);  // 전체 페이지 계산
 if ($page < 1) $page = 1; // 페이지가 없으면 첫 페이지 (1 페이지)
 $from_record = ($page - 1) * $rows; // 시작 열을 구함
 
+// 2022-09-04. botbinoo, 직장 인증한 회원을 제외하는 로직이나 요구조건에 의해 노출되지 않음이 오류로 올라옴
+$sqlA = " select * {$sql_common} {$sql_search} {$sql_order} limit {$from_record}, {$rows} ";
+// end 2022-09-04. botbinoo, 직장 인증한 회원을 제외하는 로직이나 요구조건에 의해 노출되지 않음이 오류로 올라옴
+
 // 멤버쉽 확인 ------------------------
 
 $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목록</a>';
@@ -55,9 +63,9 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
 $g5['title'] = '승인 회원 관리';
 include_once('./admin.head.php');
 
-$sql = " select * {$sql_common} {$sql_search} {$sql_order} limit {$from_record}, {$rows} ";
-$result = sql_query($sql);
-//echo $sql."<BR><BR><BR>";
+// $sql = " select * {$sql_common} {$sql_search} {$sql_order} limit {$from_record}, {$rows} ";
+$result = sql_query($sqlA);
+// echo $sqlA."<BR><BR><BR>";
 $colspan = ($is_membership) ? 17 : 16;
 ?>
 
@@ -108,7 +116,7 @@ $colspan = ($is_membership) ? 17 : 16;
 		<table>
 			<colgroup>
 				<col width="60">
-				<col width="80">
+				<!-- <col width="80"> -->
 				<col>
 				<col>
 				<col>
@@ -121,7 +129,7 @@ $colspan = ($is_membership) ? 17 : 16;
 			<thead>
 				<tr>
 					<th><input type="checkbox" class="chk_all_btn chk_btn"></th>
-					<th>NO</th>
+					<!-- <th>NO</th> -->
 					<th>이름</th>
 					<th>이메일</th>
 					<th>회원 구분</th>
@@ -136,8 +144,11 @@ $colspan = ($is_membership) ? 17 : 16;
             <?php $i = 1; ?>
             <?php while($row = sql_fetch_array($result)) { ?>
 				<tr>
-					<td><input type="checkbox" name="chk[]" class="chk_btn check_box" value="<?php echo $row['mb_id'] ?>" id="chk_<?php echo $i ?>"></td>
-					<td><?php echo $i; ?></td>
+                    <td>
+                        <input type="checkbox" name="chk[]" value="<?php echo $row['mb_id'] ?>" id="chk_<?php echo $i ?>" 
+                            <?php echo ($row['mb_status'] == '승인' || $row['mb_status'] == '' ? 'disabled style="display:none;"' : ' class="chk_btn check_box" '); ?>>
+                    </td>
+					<!-- <td><?php echo $i; ?></td> -->
 					<td><a href="/adm/member_form.php?w=u&mb_id=<?php echo $row['mb_id']; ?>" class="color-blue underline"><?php echo $row['mb_name']; ?></a></td>
 					<td><?php echo $row['mb_id']; ?></td>
 					<td><?php echo $row['mb_level'] > 2 ? '호스트' : '게스트'; ?></td>
@@ -157,7 +168,7 @@ $colspan = ($is_membership) ? 17 : 16;
 		<input type="button" name="act_button" id="approval_btn" value="선택 승인" onclick="document.pressed=this.value" class="btn btn_02">
         <!--기존 onclick="document.pressed=this.value" -->
 		<input type="button" name="act_button" id="refuse_btn" value="선택 거절" class="btn btn_02">
-		<input type="button" name="act_button" id="all_approval_btn" value="모두 일괄 승인" onclick="document.pressed=this.value" class="btn btn_01">
+		<!-- <input type="button" name="act_button" id="all_approval_btn" value="모두 일괄 승인" onclick="document.pressed=this.value" class="btn btn_01"> -->
 	</div>
 
 	<div class="btn_fixed_top none">

@@ -131,9 +131,25 @@ if (strpos($_SERVER['REQUEST_URI'], '/shop_admin/configform') > 0){
 	<div class="member">
 		<div class="user">
 			<div class="photo">
-				<a href="<?php echo $at_href['myphoto'];?>" target="_blank" class="win_memo">
-					<?php echo ($member['photo']) ? '<img src="'.$member['photo'].'" alt="">' : '<span class="no-img"></span>'; //사진 ?>
+                <!-- 2022.09.06. botbinoo, 프로필 이미지 수정 안되는 오류(리소스 캐싱 문제) -->
+				<!-- <a href="<?php echo $at_href['myphoto'];?>" target="_blank" class="win_memo"> -->
+				<a href="#" class="" onclick="openImg('<?php echo $at_href['myphoto'];?>')">
+					<!-- <?php echo ($member['photo']) ? '<img src="'.$member['photo'].'" alt="">' : '<span class="no-img"></span>'; //사진 ?>-->
+					<?php echo ($member['photo']) ? '<img src="'.$member['photo'].'?v='.time().'" alt="">' : '<span class="no-img"></span>'; //사진 ?>
+                <!-- end 2022.09.06. botbinoo, 프로필 이미지 수정 안되는 오류(리소스 캐싱 문제) -->
 				</a>
+				<script>
+				function openImg(link){
+					var filter = "win16|win32|win64|mac"; 
+					if(navigator.platform){
+						if(0 > filter.indexOf(navigator.platform.toLowerCase())){
+							location.href = link;
+						}else{
+							win_memo(link);
+						}
+					}
+				}
+				</script>
 			</div>
 			<div class="name">
 				<?php echo apms_sideview($member['mb_id'], $member['mb_nick'], $member['mb_email'], $member['mb_homepage'], 'no');?> 
@@ -242,7 +258,7 @@ if (strpos($_SERVER['REQUEST_URI'], '/shop_admin/configform') > 0){
 		<div id="side_login">
 			<div class="user">
 				<div class="photo">
-					<a href="<?php echo $at_href['myphoto'];?>" target="_blank" class="win_memo">
+					<a href="#" class="" onclick="openImg('<?php echo $at_href['myphoto'];?>')">
 						<?php echo ($member['photo']) ? '<img src="'.$member['photo'].'" alt="">' : '<i class="fa fa-user-plus"></i>'; //사진 ?>
 					</a>
 				</div>

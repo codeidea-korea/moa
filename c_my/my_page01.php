@@ -2,14 +2,25 @@
 include_once("./_common.php");
 
 // 타이틀 마이페이지
-$host = $member['as_partner'];
+// $host = $member['as_partner'];
+
+$sql = "select * from {$g5['apms_partner']} where pt_id = '{$member['mb_id']}'";
+$result = sql_fetch($sql);
+$prow = sql_fetch_array($result);
+
+$partner = sql_fetch("select * from {$g5['apms_partner']} where pt_id = '{$member['mb_id']}'");
+
+$host = $partner['pt_level'] > 1;
+
 $hostlink = MOA_HOSTJ_URL.'/host_join01.php';
 if ($host)
     $hostlink = G5_URL."/shop/partner/";
  //헤더영역(공통파일)
 include_once(CLASS_PATH."/header.php");
 
+$header_title = '마이페이지';
 //main head(공통파일)
+
 include_once(CLASS_PATH."/head.php");
 $sql = " select count(*) cnt
             from {$g5['g5_shop_coupon_table']}

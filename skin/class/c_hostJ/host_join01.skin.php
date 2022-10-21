@@ -36,7 +36,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
             <p>모아에서 당신의 재능을 마음껏 펼치세요.<br>
                 당신의 더 멋진 활동을 위해 모아가 함께합니다.</p>
         </div>
-        <p class="site">www.2교시hostadmin.co.kr</p>
+        <!-- <p class="site">www.2교시hostadmin.co.kr</p> -->
         <div class="btn_fixed">
         <?php
         if ($is_member) {

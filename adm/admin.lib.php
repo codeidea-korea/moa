@@ -268,7 +268,7 @@ function auth_check($auth, $attr, $return=false)
     global $is_admin;
 
     if ($is_admin == 'super') return;
-
+/*
     if (!trim($auth)) {
         $msg = '이 메뉴에는 접근 권한이 없습니다.\\n\\n접근 권한은 최고관리자만 부여할 수 있습니다.';
         if($return)
@@ -276,9 +276,9 @@ function auth_check($auth, $attr, $return=false)
         else
             alert($msg);
     }
-
+*/
     $attr = strtolower($attr);
-
+/*
     if (!strstr($auth, $attr)) {
         if ($attr == 'r') {
             $msg = '읽을 권한이 없습니다.';
@@ -306,6 +306,7 @@ function auth_check($auth, $attr, $return=false)
                 alert($msg);
         }
     }
+    */
 }
 
 
@@ -539,7 +540,15 @@ else if ($is_admin != 'super')
 
     if (!$i)
     {
-        alert('최고관리자 또는 관리권한이 있는 회원만 접근 가능합니다.', G5_URL);
+//        alert('최고관리자 또는 관리권한이 있는 회원만 접근 가능합니다.', G5_URL);
+    $sql = " select au_menu, au_auth from {$g5['auth_table']} ";
+    $result = sql_query($sql);
+    for($i=0; $row=sql_fetch_array($result); $i++)
+    {
+        array_push($auth, $row);
+    }
+    echo json_encode($auth);
+// exit;
     }
 }
 
@@ -607,4 +616,18 @@ function get_mb_img($mb_id) {
 	}
 	return $mb_img;
 }
+
+
+// 2022.09.05. 관리자 페이지 권한 체크 추가
+// 1. 관리자 소스는 모두 {domain}/adm/* 의 path 를 지닌 것으로 확인됨
+// 2. 따라서 도메인을 제외한 첫 path가 /adm/ 으로 시작하는 uri 에 대해서는 로그인을 제외하고 모두 관리자 권한 체크하여 비권한자는 관리자 로그인으로 튕겨내도록 구현
+$sourceUri = $_SERVER['REQUEST_URI'];
+if(mb_strpos($sourceUri, '/adm/') == 0) {
+//    echo "is admin";
+    if(empty($member) || $member['mb_level'] != 10) {
+        // 슈퍼 어드민이 아닌 경우
+        alert('로그인 하십시오.');
+    }
+}
+
 ?>

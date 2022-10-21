@@ -19,7 +19,7 @@ if ($stx != "") {
 }
 
 if ($sca != "" && $sca != '전체') {
-    $sql_search .= " and d.ca_name = '$sca' ";
+    $sql_search .= " and e.ca_name = '$sca' ";
 }
 
 if ($sfl == "")  $sfl = "a.it_name";
@@ -31,7 +31,11 @@ if (!$sst) {
 $sql_common = "  from {$g5['g5_shop_item_use_table']} a
                  join {$g5['g5_shop_item_table']} b on (a.it_id = b.it_id)
                  join {$g5['member_table']} c on (a.mb_id = c.mb_id)
-                 join g5_write_class d on (c.mb_id = d.mb_id) ";
+                 join g5_shop_item d on (d.it_id = a.it_id)
+                 join g5_write_class e on (d.it_2 = e.wr_id) ";
+                 // 2022-08-11 botbinoo, 카테고리 조인이 잘못된 것을 확인
+                 //                  join g5_write_class d on (c.mb_id = d.mb_id) ";
+
 $sql_common .= $sql_search;
 
 // 테이블의 전체 레코드수만 얻음
@@ -148,6 +152,10 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
 
     <tr class="<?php echo $bg; ?>">
         <td class="td_chk">
+        <?php 
+        // 2022-08-11 botbinoo, 카테고리 체크
+        // echo $row['ca_name']; 
+        ?>
             <label for="chk_<?php echo $i; ?>" class="sound_only"><?php echo get_text($row['is_subject']) ?> 사용후기</label>
             <input type="checkbox" name="chk[]" value="<?php echo $i ?>" id="chk_<?php echo $i; ?>">
             <input type="hidden" name="is_id[<?php echo $i; ?>]" value="<?php echo $row['is_id']; ?>">
@@ -157,7 +165,17 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
 			<div style="font-size:11px; letter-spacing:-1px;"><?php echo apms_pt_it($row['pt_it'],1);?></div>
 			<b><?php echo $row['it_id']; ?></b>
         </td>
+        <!-- 2022-09-04 botbinoo, 썸네일 오류 수정 -->
+        <!--
         <td class="td_left"><a href="<?php echo $href; ?>"><?php echo get_it_image($row['it_id'], 50, 50); ?>&nbsp;&nbsp;<?php echo cut_str($row['it_name'],30); ?></a></td>        
+        -->
+        <td class="td_left">
+            <a href="<?php echo $href; ?>">
+                <img src="<?php echo $row['as_thumb']; ?>" onerror="/shop/img/no_image.gif" width="50" height="50" alt="" title="">
+                &nbsp;&nbsp;<?php echo cut_str($row['it_name'],30); ?>
+            </a>
+        </td>   
+
         <td class="sit_use_subject td_left">
             <a href="#" class="use_href" onclick="return false;" target="<?php echo $i; ?>"><?php echo get_text($row['is_subject']); ?><span class="tit_op">열기</span></a>
             <div id="use_div<?php echo $i; ?>" class="use_div" style="display:none;">

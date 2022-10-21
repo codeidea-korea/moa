@@ -79,7 +79,7 @@ if ($includers) {
         if ($pfname)    {
             $pfname = str_replace("/var/www/yc3","",$pfname);
             $pfname = str_replace(G5_PATH,"",$pfname);
-            echo $pfname."<br>";
+//            echo $pfname."<br>";
         }
     } 
     if ((strrpos($member['mb_id'],'pletho')!==false )

@@ -23,7 +23,7 @@ $upload_max_filesize = number_format($default['pt_upload_size']) . ' 바이트';
 $partner = array();
 $partner = apms_partner($member['mb_id']);
 
-if($partner['pt_id']) { //호스트 정보가 있으면
+if($partner['pt_id'] && $partner['pt_host_status'] != '반려') { //호스트 정보가 있으면
 
 	if(!$partner['pt_register']) { // 등록심사중이면
 		alert('회원님은 현재 등록심사 중입니다.', G5_URL);

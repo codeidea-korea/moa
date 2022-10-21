@@ -101,6 +101,13 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 						<p>포인트</p>
 						<div>
 							<input type="hidden" name="max_temp_point" value="<?php echo $temp_point;?>">
+							<style>
+							input[type="number"]::-webkit-outer-spin-button,
+							input[type="number"]::-webkit-inner-spin-button {
+								-webkit-appearance: none;
+								margin: 0;
+							}
+							</style>
 							<input type="number" name="od_temp_point" value="0" id="od_temp_point" class="frm_input form-control input-sm" size="10" style="text-align:right; padding-right:10px;" pattern="\d*">
 							<span class="input-group-addon">점</span>
 						</div>
