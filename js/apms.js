@@ -413,6 +413,7 @@ function apms_good(bo_table, wr_id, act, id, wc_id) {
 		} else if(data.success) {
 			alert(data.success);
 			$("#"+id).text(number_format(String(data.count)));
+			$("#"+id).addClass('on');
 		}
 	}, "json");
 }

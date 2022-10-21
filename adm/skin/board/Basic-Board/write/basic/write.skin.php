@@ -6,9 +6,9 @@ add_stylesheet('<link rel="stylesheet" href="'.$write_skin_url.'/write.css" medi
 
 if(!$header_skin) { 
 ?>
-<div class="well">
-	<h2><?php echo $g5['title'] ?></h2>
-</div>
+<!-- <div class="well">
+	<h2><?php echo $g5['title'] ?>1</h2>
+</div> -->
 <?php } ?>
 
 <!-- 게시물 작성/수정 시작 { -->
@@ -99,7 +99,7 @@ if(!$header_skin) {
 	</div>
 <?php } ?>
 
-<div class="form-group">
+<!-- <div class="form-group">
 	<label class="col-sm-2 control-label hidden-xs">포토</label>
 	<div class="col-sm-10">
 		<input type="hidden" name="as_icon" value="<?php echo $write['as_icon'];?>" id="picon">
@@ -136,8 +136,10 @@ if(!$header_skin) {
 			</label>
 		</div>
 	</div>
-</div>
+</div> -->
 
+
+<?php /*
 <?php if ($is_category || $option) { ?>
 	<div class="form-group">
 		<label class="col-sm-2 control-label hidden-xs"><?php echo ($is_category) ? '분류' : '옵션';?></label>
@@ -157,7 +159,6 @@ if(!$header_skin) {
 		<?php } ?>
 	</div>
 <?php } ?>
-
 <?php if ($is_member) { // 임시 저장된 글 기능 ?>
 	<script src="<?php echo G5_JS_URL; ?>/autosave.js"></script>
 	<?php if($editor_content_js) echo $editor_content_js; ?>
@@ -179,19 +180,20 @@ if(!$header_skin) {
 		</div>
 	</div>
 <?php } ?>
+*/?>
 
 <div class="form-group">
 	<label class="col-sm-2 control-label" for="wr_subject">제목<strong class="sound_only">필수</strong></label>
 	<div class="col-sm-10">
 		<div class="input-group">
 			<input type="text" name="wr_subject" value="<?php echo $subject ?>" id="wr_subject" required class="form-control input-sm" size="50" maxlength="255">
-			<span class="input-group-btn" role="group">
+			<!-- <span class="input-group-btn" role="group">
 				<a href="<?php echo G5_BBS_URL;?>/helper.php" target="_blank" class="btn btn-<?php echo $btn1;?> btn-sm hidden-xs win_scrap">안내</a>
 				<a href="<?php echo G5_BBS_URL;?>/helper.php?act=map" target="_blank" class="btn btn-<?php echo $btn1;?> btn-sm hidden-xs win_scrap">지도</a>
 				<?php if ($is_member) { // 임시 저장된 글 기능 ?>
 					<button type="button" id="btn_autosave" data-toggle="modal" data-target="#autosaveModal" class="btn btn-<?php echo $btn1;?> btn-sm">저장 (<span id="autosave_count"><?php echo $autosave_count; ?></span>)</button>
 				<?php } ?>
-			</span>
+			</span> -->
 		</div>
 	</div>
 </div>

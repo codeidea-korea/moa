@@ -7,7 +7,11 @@ if(USE_G5_THEME && defined('G5_THEME_PATH')) {
 }
 
 if($member['mb_status'] != '승인' && !$member['mb_id']) {
-    alert('로그인 후 이용해주세요.', '/c_login/login.php');
+	$sql = " select a.*, b.*, c.moa_addr1 from g5_shop_item a join deb_class_item b on a.it_id = b.it_id join g5_write_class c on a.it_2 = c.wr_id where a.it_id = '$it_id'";
+	$it = sql_fetch($sql);
+	$pageName = $it['it_name'];
+
+    alert('로그인 후 이용해주세요.', '/c_login/login.php', true, false, $pageName);
 }
 
 include_once(G5_LIB_PATH.'/iteminfo.lib.php');
@@ -515,6 +519,18 @@ while ($row = sql_fetch_array($item_use)) {
 }
 $qna = sql_query("select * from g5_shop_item_qa where it_id = '{$it_id}' order by it_id desc");
 //echo "select * from g5_shop_item_qa where it_id = '{$it_id}' order by it_id desc";
+
+
+// 2022-09-09. botbinoo
+// step 1. 본인이 등록한 글인지 체크하기 위한 데이터 isMine = T/F
+// step 2. 이미 결제(취소는 제외)한 고객인지 체크하기 위한 데이터 isAleadyJoined = T/F
+$isMine = $data['mb_id'] == $member['mb_id'];
+
+// NOTICE: /home/classboard01/www/shop/partner/skin/Basic 63 line 결제 상태 관련 내용 체크
+$cntOrdered = sql_fetch_array(sql_query("select count(*) cnt FROM g5_shop_order a join g5_shop_cart b on a.od_id=b.od_id where b.it_id='{$it_id}' AND a.mb_id='{$member['mb_id']}' and a.od_status != '취소' "));
+$isAleadyJoined = !empty($cntOrdered['cnt']) && $cntOrdered['cnt'] > 0 ? true : false;
+
+// end 2022-09-09. botbinoo
 
 // 분류 상단 코드가 있으면 출력하고 없으면 기본 상단 코드 출력
 if ($ca['ca_include_head'] && is_include_path_check($ca['ca_include_head']))

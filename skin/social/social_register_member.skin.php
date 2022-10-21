@@ -40,7 +40,7 @@ $email_msg = $is_exists_email ? '등록할 이메일이 중복되었습니다.�
         <div class="all_agree">
             <span class="title-name">
                 <input type="checkbox" name="chk_all" value="1" id="chk_all">
-                <label for="chk_all"><strong>전체약관에 동의합니다.</strong></label>
+                <label for="chk_all"><strong>전체약관에 동의합니다.ㅇㄹㅇㄹㅇㄹ</strong></label>
             </span>
         </div>
         <div class="toggle">

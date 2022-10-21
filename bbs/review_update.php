@@ -3,7 +3,6 @@ include_once('./_common.php');
 include_once(G5_LIB_PATH.'/naver_syndi.lib.php');
 include_once(G5_CAPTCHA_PATH.'/captcha.lib.php');
 
-
 $g5['title'] = '리뷰 저장';
 
 $msg = array();
@@ -69,6 +68,32 @@ if ($w == '' || $w == 'u') {
 
 } else {
     alert('w 값이 제대로 넘어오지 않았습니다.');
+}
+
+// 결제 후 해당 모임의 호스트가 예약확정 한 게스트만 후기 작성 가능하도록 수정
+// 1. 모임 참여자만 후기를 등록할수있습니다 alert 
+// 2. 후기 작성 포인트 지급
+// it_id mb_id g5_shop_item
+{
+    $query = "select player.*
+                from deb_class_aplyer as player 
+                    join g5_member as member on member.mb_id = player.mb_id 
+                where player.status = '예약확정'
+                and player.it_id = '$it_id'
+                and player.mb_id = '{$member['mb_id']}' ";
+    $result = sql_fetch($query);
+
+    if(empty($result) || empty($result['it_id'])) {
+        alert('모임 참여자만 후기를 등록할수있습니다.');
+    }
+    
+    // 2022-08-19. botbinoo, 리뷰 작성시 포인트 지급
+    if($config['cf_use_review'] == 1){
+        $config = sql_fetch("select * from {$g5['config_table']} ");
+        $add_point = $config['cf_review_point'];
+    
+        insert_point($member['mb_id'], $add_point, '리뷰 작성', '@review', $it_id, '리뷰 작성');
+    }
 }
 
 
@@ -145,8 +170,8 @@ if ($w == '' || $w == 'r') {
 }
 
 // 사용자 코드 실행
-@include_once($board_skin_path.'/write_update.skin.php');
-@include_once($board_skin_path.'/write_update.tail.skin.php');
+// @include_once($board_skin_path.'/write_update.skin.php');
+// @include_once($board_skin_path.'/write_update.tail.skin.php');
 
 delete_cache_latest($bo_table);
 

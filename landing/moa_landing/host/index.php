@@ -1,0 +1,1 @@
+<script>location.href='/shop/partner/login.php';</script>

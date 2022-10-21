@@ -41,7 +41,7 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 					<td>
 						<div class="flex">
 							<input type="text" name="pt_bank_owner" class="span140" value="<?php echo $partner['pt_bank_owner'];?>" placeholder="예금주 성함">
-							<input type="text" name="pt_bank_account" class="flex1"  value="<?php echo $partner['pt_bank_account'];?>" placeholder="계좌번호를 입력해주세요.">
+							<input type="text" name="pt_bank_account" class="flex1"  value="<?php echo $partner['pt_bank_account'];?>" onkeyup="checkNumeric(this)" placeholder="계좌번호를 입력해주세요.">
 						</div>
 					</td>
 				</tr>
@@ -98,4 +98,13 @@ $('input[name="r1"]').change(function (){
 	let val = $(this).val();
 	radioChange(val)
 });
+
+function checkNumeric(target){
+	var regex = /[^-0-9]/g;
+	if(regex.test(target.value)) {
+		alert('숫자만 입력해주세요.');
+		target.value = target.value.replace(/[^-0-9]/g, '');
+	}
+}
+checkNumeric($('input[name=pt_bank_account]')[0]);
 </script>

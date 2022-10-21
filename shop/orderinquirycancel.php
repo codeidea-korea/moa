@@ -102,6 +102,9 @@ if($od['od_tno']) {
             $res_msg = $inipay->getResult('ResultMsg');
 
             if($res_cd != '00') {
+                if($res_cd == '01') {
+                    alert('이미 취소된 거래입니다.');
+                }
                 alert(iconv_utf8($res_msg).' 코드 : '.$res_cd);
             }
             break;

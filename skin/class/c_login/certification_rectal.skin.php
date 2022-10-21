@@ -18,13 +18,49 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 </label>
             </div>
             <div class="common_input p15 " >
-            <form method="post" enctype="multipart/form-data" action="/c_login/member_cert_mail_send.php">
+            <form method="post" enctype="multipart/form-data" action="/c_login/member_cert_mail_send.php" id="frmComEmail">
+                <!-- 2022.09.05. 이메일 입력후 active 효과 스타일 적용 -->
+                <!--
                 <div class="input_flex">
                     <input type="text" placeholder="이메일을 입력하세요" name="com_email" id="com_email">
                     <div class="cominput_btn">
                         <button>전송</button>
                     </div>
                 </div>
+                -->
+                <div class="input_flex">
+                    <input type="text" placeholder="이메일을 입력하세요" name="com_email" id="com_email" onkeyup="checkEmail(this)">
+                    <div class="cominput_btn">
+                        <button>전송</button>
+                    </div>
+                </div>
+                <style>
+                    .cominput_btn button.on{
+                        border:1px solid var(--main-color);
+                        color:var(--main-color);
+                        background:#fff;
+                    }
+                </style>
+                <script>
+                    function checkEmail(target){
+                        var regex = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
+                        if(regex.test(target.value)) {
+                            $('.cominput_btn > button').addClass('on');
+                        } else {
+                            $('.cominput_btn > button').removeClass('on');
+                        }
+                    }
+                    $(document).ready(function(){
+                        $('#frmComEmail')[0].onsubmit = function(){
+                            if($('.cominput_btn > button').hasClass('on')) {
+                                return wrestSubmit();
+                            }
+                            return false;
+                        };
+                    });
+                </script>
+                <!-- end 2022.09.05. 이메일 입력후 active 효과 스타일 적용 -->
+
             </form>
             </div>
         </div>

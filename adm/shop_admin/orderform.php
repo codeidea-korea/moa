@@ -399,6 +399,9 @@ $is_use_partner = (defined('USE_PARTNER') && USE_PARTNER) ? true : false;
     // 미수금 = 신청금액 - 취소금액 - 입금금액 - 쿠폰금액
     //$amount['미수'] = $amount['order'] - $amount['receipt'] - $amount['coupon'];
 
+    // 합계 = 신청금액 - 포인트금액 - 쿠폰금액
+    $amount['sum'] = $amount['order'] - $amount['od_receipt_point'] - $amount['coupon'];
+
     // 결제방법
     $s_receipt_way = ($od['pt_case']) ? $od['pt_case'] : $od['od_settle_case'];
 
@@ -438,6 +441,7 @@ $is_use_partner = (defined('USE_PARTNER') && USE_PARTNER) ? true : false;
             <th scope="col">총결제액</th>
             <th scope="col">쿠폰</th>
             <th scope="col">신청취소</th>
+            <th scope="col">합계</th>
         </tr>
         </thead>
         <tbody>
@@ -445,7 +449,9 @@ $is_use_partner = (defined('USE_PARTNER') && USE_PARTNER) ? true : false;
             <td><?php echo $od['od_id']; ?></td>
             <td class="td_paybybig"><?php echo $s_receipt_way; ?></td>
             <td class="td_numbig td_numsum"><?php echo display_price($amount['order']); ?></td>
+            <!--
             <td class="td_numbig"><?php echo display_price($od['od_send_cost'] + $od['od_send_cost2']); ?></td>
+-->
             <td class="td_numbig"><?php echo display_point($od['od_receipt_point']); ?></td>
             <td class="td_numbig td_numincome">
 				<?php echo number_format($amount['receipt']); ?>원
@@ -455,6 +461,7 @@ $is_use_partner = (defined('USE_PARTNER') && USE_PARTNER) ? true : false;
 			</td>
             <td class="td_numbig td_numcoupon"><?php echo display_price($amount['coupon']); ?></td>
             <td class="td_numbig td_numcancel"><?php echo number_format($amount['cancel']); ?>원</td>
+            <td class="td_numbig td_numsum"><?php echo number_format($amount['order']); ?>원</td>
         </tr>
         </tbody>
         </table>

@@ -8,6 +8,9 @@ include_once(G5_LIB_PATH.'/thumbnail.lib.php');
 //회원정보 불러오기
 $sql = " select * from $g5[member_table] group by mb_id order by mb_id asc"; 
 $result = sql_query($sql); 
+
+
+$closeBtnAction = "location.href = '/';";
 ?>
 
 <link rel="stylesheet" href="<?php echo $member_skin_url;?>/style.css">
@@ -33,7 +36,7 @@ $result = sql_query($sql);
                     </button>
 
                     
-                    <a href="javascript:void(0);" id="btn_close2" onclick="javascript:self.close();">
+                    <a href="javascript:void(0);" id="btn_close2" onclick="javascript:<? echo $closeBtnAction; ?>">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 -5 10 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus w-5 h-5 sm:w-6 sm:h-6"><line x1="13" y1="12" x2="3" y2="2"></line><line x1="13" y1="2" x2="3" y2="12"></line></svg>
                     </a>
                 </form>
@@ -109,12 +112,18 @@ $result = sql_query($sql);
 
 $(function() {
     $(".chat-link").on('click', function() {
+        /*
         var $this = $(this),
             $what = $this.closest('[data-mb_id]');
             value = $what.data('mb_id');
         var href = "./memo_form.php?me_recv_mb_id="+value;
         var new_win = window.open(href, 'win_'+value, 'left=400,top=50,width=450,height=600,scrollbars=1');
         new_win.focus();
+        */
+        var $this = $(this),
+                $what = $this.closest('[data-mb_id]');
+                value = $what.data('mb_id');
+			location.href = "./memo_form.php?me_recv_mb_id="+value;
     });
 });
 
@@ -137,9 +146,12 @@ function chat_invite() {
                     alert('대화상대를 추가하지 못하였습니다. 닉네임을 정확히 입력하세요.');
                     return false;
                 } else {
+                    /*
                     var href = "<?php echo G5_BBS_URL; ?>/memo_form.php?me_recv_mb_id="+$i.mb_id;
                     var new_win = window.open(href, 'win_'+$i.mb_id, 'left=400,top=50,width=450,height=600,scrollbars=1');
                     new_win.focus();
+                    */
+                    location.href = "<?php echo G5_BBS_URL; ?>/memo_form.php?me_recv_mb_id="+$i.mb_id;
                     return false;
                 }
             });

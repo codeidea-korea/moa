@@ -130,6 +130,14 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
 				<?php echo $data['wr_subject'] ?>
 			</h3>
 			<span class="tit_chip"><?php echo $data['moa_onoff']; ?></span>
+			<!--신고버튼-->
+			<!-- <div class="d_tit cr mt14">
+				<div class="com_chip color_red">
+					<span onclick="report_btn('모임1')" style="cursor:pointer;">신고</span>
+					<span onclick="report_btn('모임2')" style="cursor:pointer;">차단</span>
+				</div>
+			</div> -->
+			<!--신고버튼-->
 		</div>
 		<div class="clctn_ic">
 			<div>
@@ -277,7 +285,7 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
 				<!-- 커리큘러 끝 -->
 
 				<!-- 포함 /불포함 지도-->
-				<div class="s_content detail_con" >
+				<div class="detail_map s_content detail_con" >
 					<?php if($data['moa_support']) { ?>
 						<div class="d_tit cr mt14">
 							포함 사항
@@ -346,7 +354,7 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
 				<!-- 포함 /불포함 지도 끝-->				
 			</div>
 			<div class="tab_content" id="review_content">
-				<div class="s_content detail_con">
+				<div class="s_content detail_con" style="margin-bottom:97px">
 					<div class="more col_green">
 						<button onclick="location.href='/c_detail/d_review.php?it_id=<?php echo $it_id ?>'">후기 작성하기</button>
 					</div>
@@ -402,7 +410,7 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
 				</div>
 			</div>
 			<div class="tab_content" id="qa_content">
-				<div class="s_content detail_con">
+				<div class="s_content detail_con" style="margin-bottom:97px">
 					<div class="more col_green">
 						<button onclick="location.href='/c_detail/d_qna.php?it_id=<?php echo $it_id ?>'">문의 작성하기</button>
 					</div>
@@ -411,7 +419,13 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
 						<div class="review">
 							<div class="pro_img"><?php echo moaMemberProfile($row['mb_id']); ?></div>
 							<div class="t_area">
-								<p><?= $row['mb_id']; ?><span><?= date('y-m-d', strtotime($row['iq_time'])); ?></span><span onclick="report_btn('Q&A1')" style="color: #EB5757;background: rgba(235, 87, 87, 0.05);border: 1px solid #EB5757;border-radius: 38px;padding: 6px 16px !important;margin:0 5px;">신고</span><span onclick="report_btn('Q&A2')" style="color: #EB5757;background: rgba(235, 87, 87, 0.05);border: 1px solid #EB5757;border-radius: 38px;padding: 6px 16px !important;margin:0 5px;">차단</span><i <?= $row['iq_answer'] != '' ? 'class="on"' : ''; ?>><?= $row['iq_answer'] != '' ? '답변 완료' : '답변 미완료' ?></i></p>
+								<i <?= $row['iq_answer'] != '' ? 'class="on"' : ''; ?>><?= $row['iq_answer'] != '' ? '답변 완료' : '답변 미완료' ?></i></p>
+								<p><!-- <?= $row['mb_id']; ?> --><?= $row['iq_subject']; ?><span><?= date('y-m-d', strtotime($row['iq_time'])); ?></span>
+									<span onclick="report_btn('Q&A1')" 
+										style="color: #EB5757;background: rgba(235, 87, 87, 0.05);border: 1px solid #EB5757;border-radius: 38px;padding: 6px 16px !important;margin:0 5px;">신고</span>
+									<span onclick="report_btn('Q&A2')" 
+										style="color: #EB5757;background: rgba(235, 87, 87, 0.05);border: 1px solid #EB5757;border-radius: 38px;padding: 6px 16px !important;margin:0 5px;">차단</span>
+									<!-- <i <?= $row['iq_answer'] != '' ? 'class="on"' : ''; ?>><?= $row['iq_answer'] != '' ? '답변 완료' : '답변 미완료' ?></i></p> -->
 								<p class="txt">
 									<?php if($row['iq_secret']) { ?>
 										<span class="secret">비밀글입니다</span>
@@ -467,11 +481,22 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
             <span class="ex_cost">예상비용</span>
             <div class="cost"><?php $data['wr_4'] > 0 ? number_format($data['wr_4']) . '원 <span>(회당)</span>':  '무료'; ?></div>
         </div>
-        <?php if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) { ?>
-            <button type="button" onclick="$('.btn_submit').click();">결제하기</button>
-        <?php } else { ?>
-            <button type="button" onclick="alert('인원이 초과 되었습니다.');" disabled>마감</button>
-        <?php } ?>
+		<?php 
+		if($isMine == true) {
+			// 본인이 개최한 모임의 경우
+			?><button type="button" onclick="alert('본인의 모임은 결제하실 수 없습니다.');" disabled><? if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) echo '마감'; else echo '등록중'; ?></button><?
+		} else if($isAleadyJoined == true){
+			// 이미 결제한 모임의 경우
+			?><button type="button" onclick="alert('이미 결제된 모임입니다.');" disabled><? if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) echo '마감'; else echo '결제됨'; ?></button><?
+		} else {
+			if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) { ?>
+				<button type="button" onclick="$('.btn_submit').click();">결제하기</button>
+			<?php } else { ?>
+				<button type="button" onclick="alert('인원이 초과 되었습니다.');" disabled>마감</button>
+			<?php 
+			}
+		}
+		?>
     </div>
 </div> 
 <!--신고버튼-->
@@ -696,7 +721,7 @@ function report_btn(val){
 					<dd style="font-size:12px;"><?php echo stripslashes($it['it_name']); // 상품명 ?></dd>
 					<dt style="font-size:12px;">참가료</dt>
 					<dd style="font-size:12px;"><strike><?php echo  $cur_price;?></strike></dd>
-					<dt style="font-size:12px;">할인률</dt>
+					<dt style="font-size:12px;">할인율</dt>
 					<dd style="font-size:12px;">
 						<?php echo 100 - floor(($it['it_price'] / $it['it_cust_price']) * 100);?>%
 					</dd>
@@ -862,11 +887,31 @@ function report_btn(val){
 							?>
 						</p>
 					</div>
-                    <?php if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) { ?>
-                        <button class="btn btn-primary btn-lg btn-block application"  onclick="document.pressed=this.value;" value="바로구매">결제하기</button>
-                    <?php } else { ?>
-                        <button type="button" class="btn btn-lg btn-block application" onclick="alert('인원이 초과 되었습니다.');" disabled>마감</button>
-                    <?php } ?>
+					<?php 
+					
+					$paymentText = '결제하기';
+					$paymentStyle = '';
+					if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) {
+						//
+					} else {
+						$paymentText = '마감';
+						$paymentStyle = 'disabled';
+					}
+					if($isMine == true) {
+						// 본인이 개최한 모임의 경우
+						?><button type="button" type="button" class="btn btn-lg btn-block application" onclick="alert('본인의 모임은 결제하실 수 없습니다.');" <?= $paymentStyle; ?>><?= $paymentText; ?></button><?
+					} else if($isAleadyJoined == true){
+						// 이미 결제한 모임의 경우
+						?><button type="button" type="button" class="btn btn-lg btn-block application" onclick="alert('이미 결제된 모임입니다.');" <?= $paymentStyle; ?>><?= $paymentText; ?></button><?
+					} else {
+						if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) { ?>
+							<button class="btn btn-primary btn-lg btn-block application"  onclick="document.pressed=this.value;" value="바로구매">결제하기</button>
+						<?php } else { ?>
+							<button type="button" class="btn btn-lg btn-block application" onclick="alert('인원이 초과 되었습니다.');" disabled>마감</button>
+						<?php 
+						} 
+					}
+					?>
 				</div>
 				<?php } ?>
 				<?php //echo (chk_wishcnt($it['it_id'],$member['mb_id']))?'Y':'N';?>

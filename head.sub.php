@@ -23,7 +23,7 @@ if(!defined('_RESPONSIVE_')) {
 $begin_time = get_microtime();
 
 if (isset($g5['title']) && $g5['title']) {
-    $g5_head_title = $g5['title'].' > '.$config['cf_title'];
+    $g5_head_title = $g5['title']; //.' > '.$config['cf_title'];
 } else { // 상태바에 표시될 제목
 	$g5['title'] = $config['cf_title'];
     $g5_head_title = $g5['title'];

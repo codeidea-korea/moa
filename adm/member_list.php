@@ -26,7 +26,7 @@ $sql_common = " from {$g5['member_table']} a
 	left outer join {$g5['certi_image']} d on (d.mb_id = a.mb_id) 
 	";
 
-$sql_search = " where (1) ";
+$sql_search = " where (1) and mb_leave_date = '' ";
 
 if ($sch_startdt) {
 	$sql_search .=" and date(a.mb_datetime) between '{$sch_startdt}' and '{$sch_enddt}' ";
@@ -465,7 +465,10 @@ $colspan = ($is_membership) ? 17 : 16;
 		<td><?php echo $row['mb_gubun']; ?></td>
 		<td><?php echo $row['mb_type']; ?></td>
 		<td><?php echo $row['invite_code']; ?></td>		
-        <td headers="mb_list_id"  class="td_name sv_use">
+        <td headers="mb_list_id"  class="td_name sv_use" style="
+    display: flex;
+    justify-content: center;
+">
             <?php echo $mb_id ?>
             <?php
             //소셜계정이 있다면
@@ -579,7 +582,7 @@ $colspan = ($is_membership) ? 17 : 16;
 </div>
 
 <div class="btn_list01 btn_list">
-	<input type="submit" name="act_button" value="선택 회원 삭제" onclick="document.pressed=this.value" class="btn btn_02">
+	<input type="button" name="act_button" value="선택 회원 삭제" onclick="submitDeleteUserForm()" class="btn btn_02">
 	<!-- <input type="submit" name="act_button" value="완전 회원 삭제" onclick="document.pressed=this.value" class="btn btn_02"> -->
 </div>
 
@@ -602,6 +605,10 @@ $colspan = ($is_membership) ? 17 : 16;
         $('input[name="sch_startdt"]').val('');
         $('input[name="sch_enddt"]').val('');
     })
+function submitDeleteUserForm(){
+	$('#fmemberlist').attr('action', './member_list_delete.php');
+	$('#fmemberlist').submit();
+}
 function fmemberlist_submit(f)
 {
     if (!is_checked("chk[]")) {

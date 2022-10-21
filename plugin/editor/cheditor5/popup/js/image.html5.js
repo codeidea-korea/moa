@@ -720,6 +720,13 @@ function doSubmit() {
         }
     }
 
+    // 2022.09.04. dev, botbinoo, 에디터 이미지 크롭 오류
+    var width = document.getElementById('idResizeSelectBox').value;
+    if(width == -1) {
+        width = document.getElementById('idResizeWidth').value;
+    }
+    // end 2022.09.04. dev, botbinoo, 에디터 이미지 크롭 오류
+
     for (i = 0; i < el.length; i++) {
         imgBox = el[i];
         if (imgBox.className !== "imageBox_theImage") {
@@ -735,6 +742,12 @@ function doSubmit() {
                 imageArray[num].alt = '';
                 imageArray[num].align = imgAlign;
             }
+
+            // 2022.09.04. dev, botbinoo, 에디터 이미지 크롭 오류
+            if(width !== 0) {
+                imageArray[num].width = width;
+            }
+            // end 2022.09.04. dev, botbinoo, 에디터 이미지 크롭 오류
 
             num++;
         }

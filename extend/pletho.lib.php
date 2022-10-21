@@ -1226,7 +1226,8 @@ function getFavoriteClass($limit = 10, $ca_name)
 {
     global $g5;
     $common = '';
-    if($ca_name || $ca_name != '') { $common = " WHERE ca_name = '{$ca_name}'"; }
+    if($ca_name || $ca_name != '') { $common = " AND ca_name = '{$ca_name}'"; }
+    /*
     $sql = "SELECT * FROM (
                 SELECT
                     wr_id   
@@ -1269,6 +1270,23 @@ function getFavoriteClass($limit = 10, $ca_name)
                 ORDER BY wr_hit desc
             ) xx
             WHERE xx.it_id <> '' LIMIT 0, {$limit}";
+            */
+    // NOTICE: 2022.08.23. 조회 조건시 모임일자가 모두 지난 모임의 경우 비노출 조건이 추가됨에 따라 해당 조인(g5_shop_item, deb_class_item) 강제
+    $today = date('Y-m-d') . ' 00:00:00';
+    $sql = "SELECT * FROM (
+                SELECT
+                    distinct class.*, item.it_id
+                FROM g5_write_class AS class 
+                JOIN g5_shop_item AS item ON item.it_2 = class.wr_id
+                JOIN deb_class_item AS deb ON item.it_id = deb.it_id 
+                WHERE 1=1 
+                {$common} 
+                AND class.moa_status = 1
+                AND (class.moa_form = '자율형' or (class.moa_form = '고정형' and deb.day > '{$today}'))
+                ORDER BY class.wr_hit desc
+            ) xx
+            WHERE xx.it_id <> '' LIMIT 0, {$limit}";
+
     $result = sql_query($sql);
     $list = array();
     while ($row = sql_fetch_array($result)) {

@@ -26,7 +26,7 @@ $(document).ready(function(){
 	$('.pop-inline').click(function() {
 		let target = $(this).attr('data-href');
 		$(target).addClass('open');
-		$('body').css('overflow', 'hidden');
+//		$('body').css('overflow', 'hidden');
 	});
 	$('.pop-closer, .popClose').click(function() {
 		let el = $(this).closest('.layer-popup');

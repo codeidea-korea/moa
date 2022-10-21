@@ -160,6 +160,7 @@ $setup_href = '';
 if(is_file($skin_path.'/setup.skin.php') && ($is_demo || $is_designer)) {
 	$setup_href = './skin.setup.php?skin=member&amp;ts='.urlencode(THEMA);
 }
+// echo $skin_path;
 
 include_once($skin_path.'/myphoto.skin.php');
 

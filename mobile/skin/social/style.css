@@ -128,7 +128,9 @@
 .sns_tbl th {width:76px;text-align:right;padding:10px}
 .sns_tbl td {padding:10px}
 .sns_tbl .email_msg {color:#777;margin:5px 0 0}
-.sns_tbl input{width:100%;}
+.sns_tbl input{width:100%;height: 50px!important;padding: 0 10px;border-radius: 3px;}
+.position_layout .duplicate_check{top: 15px;right: 15px;}
+.right_i i{display:none!important;}
 
 
 #fregisterform .btn_confirm {text-align:center;margin:20px 0}

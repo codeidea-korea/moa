@@ -29,6 +29,16 @@ if (!$agree2) {
 	alert('개인정보처리방침안내의 내용에 동의하셔야 회원가입 하실 수 있습니다.');
 }
 
+// 2022.09.04. botbinoo, 14세 체크 로직 추가
+$year = date("Y", time());
+$birthYear = isset($_POST['mb_birth']) ? $_POST['mb_birth'] : date("Y-m-d", time());
+$birthYear = substr($birthYear, 0, 4);
+
+if((int)$year - (int)$birthYear < 14) {
+	alert('14세 이상만 회원가입 하실 수 있습니다.');
+}
+// end 2022.09.04. botbinoo, 14세 체크 로직 추가
+
 $sm_id = $user_profile->sid;
 $mb_id = trim($_POST['mb_id']);
 $mb_password    = trim($_POST['mb_password']);
@@ -37,6 +47,7 @@ $mb_nick        = trim(strip_tags($_POST['mb_nick']));
 $mb_email       = trim($_POST['mb_email']);
 $mb_name        = clean_xss_tags(trim(strip_tags($_POST['mb_name'])));
 $mb_email       = get_email_address($mb_email);
+$mb_hp = trim($_POST['mb_hp']);
 
 // 이름, 닉네임에 utf-8 이외의 문자가 포함됐다면 오류
 // 서버환경에 따라 정상적으로 체크되지 않을 수 있음.
@@ -113,6 +124,7 @@ $sql = " insert into {$g5['member_table']}
                 mb_mailling = '{$mb_mailling}',
                 mb_sms = '0',
                 mb_open = '{$mb_open}',
+                mb_hp = '{$mb_hp}',
                 mb_open_date = '".G5_TIME_YMD."' ";
 
 $result = sql_query($sql, false);

@@ -750,7 +750,8 @@ if($is_member) {
 
 // APMS : 주문처리 - 2014.07.21
 apms_order($od_id, $od_status, $member['mb_recommend']);
-echo "<p>mobile/shop/</p>"; exit;
+echo "<p>mobile/shop/</p>"; 
+// exit;
 // 쿠폰업데이트
 apms_coupon_update($member['mb_id']);
 

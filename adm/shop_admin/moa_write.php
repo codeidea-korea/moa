@@ -18,6 +18,7 @@ if (!$is_admin && $w != 'u' && isset($_SESSION['ss_datetime'])) {
     }
 }
 */
+$sub_menu = '400410';
 
 check_device($board['bo_device']);
 
@@ -226,7 +227,8 @@ else
 $is_seometa = 'write';
 $is_no_meta = true;
 
-$g5['title'] = ((G5_IS_MOBILE && $board['bo_mobile_subject']) ? $board['bo_mobile_subject'] : $board['bo_subject']).' '.$title_msg;
+// $g5['title'] = ((G5_IS_MOBILE && $board['bo_mobile_subject']) ? $board['bo_mobile_subject'] : $board['bo_subject']).' '.$title_msg;
+$g5['title'] = '모임관리';
 
 $is_notice = false;
 $notice_checked = '';
@@ -528,6 +530,8 @@ include_once('./board_head.php');
 $action_url = G5_SHOP_URL."/partner/write_update.php";
 
 echo '<!-- skin : '.(G5_IS_MOBILE ? $board['bo_mobile_skin'] : $board['bo_skin']).' -->';
+
+$returnUrl = '/adm/shop_admin/confirm_moa_list.php';
 
 include_once ($board_skin_path.'/write.skin.php');
 

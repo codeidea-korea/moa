@@ -19,7 +19,10 @@ add_stylesheet('<link rel="stylesheet" href="'.$skin_url.'/style.css" media="scr
 			<div class="row">
 				<div class="col-lg-2 col-sm-3 text-center">
 					<div class="myphoto">
-						<?php echo ($myphoto) ? '<img src="'.$myphoto.'" alt="">' : '<i class="fa fa-user"></i>'; ?>
+                <!-- 2022.09.06. botbinoo, 프로필 이미지 수정 안되는 오류(리소스 캐싱 문제) -->
+						<!-- <?php echo ($myphoto) ? '<img src="'.$myphoto.'" alt="">' : '<i class="fa fa-user"></i>'; ?> -->
+						<?php echo ($myphoto) ? '<img src="'.$myphoto.'?v='.time().'" alt="">' : '<i class="fa fa-user"></i>'; ?>
+                <!-- end 2022.09.06. botbinoo, 프로필 이미지 수정 안되는 오류(리소스 캐싱 문제) -->
 					</div>
 				</div>
 				<div class="col-lg-10 col-sm-9">
@@ -38,7 +41,7 @@ add_stylesheet('<link rel="stylesheet" href="'.$skin_url.'/style.css" media="scr
 
 	<div class="text-center">
 		<button type="submit" class="btn btn-color btn-sm">등록</button>
-		<button type="button" class="btn btn-black btn-sm" onclick="window.close();">닫기</button>
+		<button type="button" class="btn btn-black btn-sm" onclick="closeBtn()">닫기</button>
 	</div>		
 </form>
 
@@ -46,4 +49,8 @@ add_stylesheet('<link rel="stylesheet" href="'.$skin_url.'/style.css" media="scr
 $(function() {
 	window.resizeTo(320, 440);
 });
+function closeBtn(){
+	var filter = "win16|win32|win64|mac"; 
+	if(navigator.platform){if(0 > filter.indexOf(navigator.platform.toLowerCase())){history.back();}else{window.close();}}
+}
 </script>

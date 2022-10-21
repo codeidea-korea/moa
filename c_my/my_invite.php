@@ -19,6 +19,7 @@ if ($host)
 //헤더영역(공통파일)
 include_once(CLASS_PATH."/header.php");
 
+$header_title = '초대 코드';
 //main head(공통파일)
 include_once(CLASS_PATH."/head.php");
 

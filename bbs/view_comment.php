@@ -186,6 +186,14 @@ for ($i=0; $row=sql_fetch_array($result); $i++)
             }
         }
     }
+
+	// 좋아요 체크
+	$strSql = "select count(bg_id) as cnt from g5_board_good where bo_table='".$bo_table."' and wr_id=".$row['wr_id']." and mb_id='".$member['mb_id']."' and bg_flag='good'";
+	$tmp_g = sql_fetch($strSql);
+	$list[$i]['my_good_cmt_id'] = "";
+	if ($tmp_g['cnt'] > 0){
+		$list[$i]['my_good_cmt_id'] = "on";
+	}
 }
 
 //  코멘트수 제한 설정값

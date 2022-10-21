@@ -19,11 +19,16 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 <div class="swiper-slide">
                     <a class="btn btn-primary ca_name_btn" data-ca_id = "pm_0" data-ca_name="">전체</a>
                 </div>
-                <?php foreach($cats as $cat) { ?>
+                <?php 
+                    $idx = 1;
+                    foreach($cats as $cat) { 
+                    ?>
                     <div class="swiper-slide">
-                        <a class="btn btn-primary ca_name_btn" data-ca_id = "pm_<?= $cat['wr_id']?>" data-ca_name="<?php echo $cat['ca_name']; ?>"><?= $cat['ca_name']; ?></a>
+                        <a class="btn btn-primary ca_name_btn" data-ca_id = "pm_<?= $idx?>" data-ca_name="<?php echo $cat['ca_name']; ?>"><?= $cat['ca_name']; ?></a>
                     </div>
-                <?php } ?>
+                    <?php 
+                        $idx = $idx + 1;
+                    } ?>
             </div>
         </div>
     </div>
@@ -35,7 +40,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
             <?php $cnt = 1; ?>
             <?php $classes = getFavoriteClass(3, ''); ?>
             <?php foreach($classes as $class) { ?>
-            <li>
+            <li style="position:relative;">
                 <a href="/shop/item.php?it_id=<?php echo $class['it_id'] ?>">
                     <span class="num item1"><?php echo $cnt; ?></span>
                     <div class="item2">
@@ -55,12 +60,22 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                         </p>
                     </div>
                 </a>
+				<!--신고버튼-->
+				<div class="d_tit cr mt14" style="margin:0;float:left;position:absolute;right:0;top:20px;">
+					<div class="com_chip color_red">
+						<span onclick="report_btn('모임1')" style="cursor:pointer;">신고</span>
+						<span onclick="report_btn('모임2')" style="cursor:pointer;">차단</span>
+					</div>
+				</div>
+				<!--신고버튼-->
             </li>
             <?php $cnt++; } ?>
         </ol>
     </div>
-    <?php foreach($cats as $cat) { ?>
-        <div class="popular_moim s_content mt25" id="pm_<?= $cat['wr_id']?>" style="display:none;">
+    <?php 
+        $idx = 1;
+        foreach($cats as $cat) { ?>
+        <div class="popular_moim s_content mt25" id="pm_<?= $idx?>" style="display:none;">
             <ol class="ppl_list">
                 <?php $cnt = 1; ?>
                 <?php $classes = getFavoriteClass(3, $cat['ca_name']); ?>
@@ -89,7 +104,9 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 <?php $cnt++; } ?>
             </ol>
         </div>
-    <?php } ?>
+        <?php
+            $idx = $idx + 1; 
+        } ?>
 
     
 

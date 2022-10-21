@@ -4,10 +4,11 @@ include_once("./_common.php");
 //헤더영역(공통파일)
 include_once(CLASS_PATH."/header.php");
 
+$header_title = '포인트';
 //main head(공통파일)
 include_once(CLASS_PATH."/head.php");
 
-$query = "select * from {$g5['point_table']} where mb_id = '" . $member['mb_id'] . "'";
+$query = "select * from {$g5['point_table']} where mb_id = '" . $member['mb_id'] . "' order by po_datetime desc ";
 $result = sql_query($query);
 
 // 15일 내 소멸 예정 포인트 
@@ -24,7 +25,6 @@ if ($_REQUEST['ep_day'] != ""){
 }else{
 	$ep_day_epoint = $expire_point_15['expire_sum_point'];
 }
-
 
 //contents 영역
 include_once(MOA_MY_SKIN."/my_coupon03.skin.php");

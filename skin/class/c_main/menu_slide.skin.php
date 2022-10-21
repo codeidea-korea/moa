@@ -30,7 +30,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 <?php $tags = getHashTagList();?>
                 <?php foreach($tags as $tag) { ?>
                     <div class="swiper-slide">
-                        <a href="/bbs/board.php?bo_table=class&sca=&stx=<?= $tag['tag']; ?>" class="on">#<?= $tag['tag'] ?></a>
+                        <a href="/bbs/board.php?bo_table=class&sca=&stx=<?= str_replace('#','', $tag['tag']); ?>" class="on">#<?= $tag['tag'] ?></a>
                     </div>
                 <?php } ?>
             </div>

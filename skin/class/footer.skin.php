@@ -22,12 +22,14 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 						카테고리
 					</a>
 				</li>
-				<!-- <li>
+				<!--
+				<li>
 					<a class="<?php if($board['bo_table']=='community') echo 'on';?>" href="<?php echo G5_BBS_URL;?>/board.php?bo_table=community">
 						<span class="mn_cmnty"></span>
 						커뮤니티
 					</a>
-				</li> -->
+				</li>
+					-->
 				<li>
 					<a class="<?php if(strpos($_url, '/c_map/') !== false) echo 'on';?>" href="<?php echo MOA_MAP_URL;?>/map01.php">
 						<span class="mn_location"></span>
@@ -66,19 +68,20 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 <script src="<?php echo MOA_URL;?>/js/common.js"></script>
 
 <script>
-
+/*
 $(function() {
     $(".chat-link").on('click', function() {
-        var $this = $(this),
-            $what = $this.closest('[data-mb_id]');
-            value = $what.data('mb_id');
-        var href = "<?php echo G5_BBS_URL; ?>/memo_form.php?me_recv_mb_id="+value;
-        var new_win = window.open(href, 'win_'+value, 'left=400,top=50,width=450,height=600,scrollbars=1');
-        new_win.focus();
+            var $this = $(this),
+                $what = $this.closest('[data-mb_id]');
+                value = $what.data('mb_id');
+			location.href = "./memo_form.php?me_recv_mb_id="+value;
     });
 });
 
+	*/
 $(function() {
+	// 2022.09.05. 쪽지 팝업 X -> 새창 이동으로 변경
+	/*
     $(".chat-main").on('click', function() {
         var $this = $(this),
             $what = $this.closest('[data-mb_id]');
@@ -87,8 +90,15 @@ $(function() {
         var chat_win = window.open(href, 'win_'+value, 'left=400,top=50,width=450,height=600,scrollbars=1');
         chat_win.focus();
     });
+	*/
+    $(".chat-main").on('click', function() {
+//		window.open('<?php echo G5_BBS_URL; ?>/memo.php', '_blank');
+			location.href = '<?php echo G5_BBS_URL; ?>/memo.php';
+    });
+	// end 2022.09.05. 쪽지 팝업 X -> 새창 이동으로 변경
 });
 
+/*
 function chat_invite() {
 	var mb_nick = $("#sch_stx").val();
 	if( mb_nick == "" )
@@ -119,6 +129,7 @@ function chat_invite() {
     });
     return false;
 }
+	*/
 
    // $.prototype.autocomplete = function() {}
 

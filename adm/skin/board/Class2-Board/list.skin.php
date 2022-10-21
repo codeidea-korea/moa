@@ -216,7 +216,7 @@ $list_cnt = count($list);
 					<div class="btn-group" role="group">
 						<?php if ($is_checkbox) { ?>
 							<button type="button" class="btn-chkall btn btn-<?php echo $btn1;?> btn-sm"><i class="fa fa-check"></i><span class="hidden-xs"> 전체선택</span></button>
-							<button type="submit" name="btn_submit" value="선택삭제" onclick="document.pressed=this.value" class="btn btn-<?php echo $btn1;?> btn-sm"><i class="fa fa-times"></i><span class="hidden-xs"> 선택삭제</span></button>
+							<button type="submit" name="btn_submit" value="선택삭제" onclick="document.pressed=this.value" class="btn btn-<?php echo $btn1;?> btn-sm"><i class="fa fa-times"></i><span class="hidden-xs"> 선택삭제1</span></button>
 							<button type="submit" name="btn_submit" value="선택복사" onclick="document.pressed=this.value" class="btn btn-<?php echo $btn1;?> btn-sm"><i class="fa fa-clipboard"></i><span class="hidden-xs"> 선택복사</span></button>
 							<button type="submit" name="btn_submit" value="선택이동" onclick="document.pressed=this.value" class="btn btn-<?php echo $btn1;?> btn-sm"><i class="fa fa-arrows"></i><span class="hidden-xs"> 선택이동</span></button>
 						<?php } ?>

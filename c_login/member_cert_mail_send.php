@@ -96,4 +96,13 @@ $subject = $ma['ma_subject'];
         usleep($sleepsec);
 //        $texts = $to_email.$subject;
         $texts = '';
-       alert("인증용 메일이 발송되었습니다.");
+
+// 2022.09.05. 멘트 이후 마이페이지 이동
+//       alert("인증용 메일이 발송되었습니다.");
+?>
+<script>
+    alert('인증용 메일이 발송되었습니다.');
+    location.href = '/c_my/my_page01.php';
+</script>
+<?
+// end 2022.09.05. 멘트 이후 마이페이지 이동

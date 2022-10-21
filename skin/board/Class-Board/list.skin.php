@@ -78,7 +78,7 @@ $list_cnt = count($list);
 	<?php @include_once($list_skin_path.'/list.head.skin.php'); // 헤드영역 ?>
 
 	<div class="list-wrap">
-		<form name="fboardlist" id="fboardlist" action="./board_list_update.php" onsubmit="return fboardlist_submit(this);" method="post" role="form" class="form">
+		<form name="fboardlist" id="fboardlist" action="./board.php" onsubmit="return fboardlist_submit(this);" method="post" role="form" class="form">
 			<input type="hidden" name="bo_table" value="<?php echo $bo_table ?>">
 			<input type="hidden" name="sfl" value="<?php echo $sfl ?>">
 			<input type="hidden" name="stx" value="<?php echo $stx ?>">

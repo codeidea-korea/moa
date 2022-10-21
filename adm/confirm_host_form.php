@@ -44,14 +44,36 @@ else {
 if (isset($_POST['mode']) && $_POST['mode'] == 'pform') {
 
 
+    // 2022.09.13. 호스트 권한 박탈시 호스트 승인 일시도 수정되어야 함 (기존 다른 로직에서 체크중)
+    $mb_level = $_POST['mb_level'];
+    $pt_level = $_POST['pt_level'];
+    $pt_register = $_POST['pt_register'];
+    $pt_partner = $_POST['pt_partner'];
+    if(!$pt_partner) {
+        $pt_level = '1';
+        $pt_register = '';
+        $pt_partner = '';
+
+        sql_query("update g5_member set mb_level = '1', as_partner='' where mb_id = '$pt_id'");
+    } else {
+        if(!$pt_register || $pt_register == '') {
+            $pt_register = date("Ymd");
+        }
+        $pt_partner = 1;
+        $pt_level = 2;
+        $mb_level = 3;
+
+        sql_query("update g5_member set mb_level = '3', as_partner='1' where mb_id = '$pt_id'");
+    }
+
     $sql = " update {$g5['apms_partner']}
                     set pt_type					= '{$_POST['pt_type']}'
-                        , pt_register			= '{$_POST['pt_register']}'
+                        , pt_register			= '{$pt_register}'
                         , pt_leave				= '{$_POST['pt_leave']}'
                         , pt_name				= '{$_POST['pt_name']}'
                         , pt_hp					= '{$_POST['pt_hp']}'
                         , pt_email				= '{$_POST['pt_email']}'
-                        , pt_partner			= '{$_POST['pt_partner']}'
+                        , pt_partner			= '{$pt_partner}'
                         , pt_marketer			= '{$_POST['pt_marketer']}'
                         , pt_company			= '{$_POST['pt_company']}'
                         , pt_company_name		= '{$_POST['pt_company_name']}'
@@ -67,7 +89,7 @@ if (isset($_POST['mode']) && $_POST['mode'] == 'pform') {
                         , pt_flag				= '{$_POST['pt_flag']}'
                         , pt_point				= '{$_POST['pt_point']}'
                         , pt_benefit			= '{$_POST['pt_benefit']}'
-                        , pt_level				= '{$_POST['pt_level']}'
+                        , pt_level				= '{$pt_level}'
                         , pt_limit				= '{$_POST['pt_limit']}'
                         , pt_commission_1		= '{$_POST['pt_commission_1']}'
                         , pt_commission_2		= '{$_POST['pt_commission_2']}'
@@ -102,7 +124,14 @@ if($_POST['pt_register']) { // 승인정보가 있을 경우
    
     sql_query(" update {$g5['member_table']} set as_partner = '{$_POST['pt_partner']}', as_marketer = '{$_POST['pt_marketer']}' where mb_id = '$pt_id' ", false);
     if ($newis) {
-        doAssignPoint($pt_id,'hostreg');
+//        doAssignPoint($pt_id,'hostreg');
+        // 2022-08-11. botbinoo, 호스트 승인시 포인트 지급
+        if($config['cf_use_host_reg'] == 1) {
+            $config = sql_fetch("select * from {$g5['config_table']} ");
+            $cf_host_reg_point = isset($config['cf_host_reg_point']) && $config['cf_host_reg_point'] > 0 ? $config['cf_host_reg_point'] : 0;
+            $sql = "update g5_member set mb_point = mb_point + {$cf_host_reg_point} where mb_id = '{$pt_id}' ";
+            $user = sql_fetch($sql);
+        }
     }
 
 } else { // 없다면
@@ -215,7 +244,19 @@ this.form.pt_leave.value=this.value; } else { this.form.pt_leave.value=this.form
                     <tr>
                         <th scope="row">호스트 영역</th>
                         <td>
+                        <!-- 2022.09.13. botbinoo, 호스트 필드를 잘못된 것으로 보고 있어 수정 -->
+                        <!-- 
                             <label><input type="checkbox" name="pt_partner" value="1"<?php echo ($mb['pt_partner'] == "1") ? ' checked' : '';?>> 호스트</label>
+                            -->
+                            <?
+                            $ptLevelOption = '';
+                            if($mb['pt_partner'] != '1') {
+                                $ptLevelOption = '';
+                            }else {
+                                $ptLevelOption = 'checked';
+                            }
+                            ?>
+                            <label><input type="checkbox" name="pt_partner" value="1" <?php echo $ptLevelOption;?>> 호스트</label>
                             &nbsp;
                             <!-- <label><input type="checkbox" name="pt_marketer" value="1"<?php echo ($mb['pt_marketer'] == "1") ? ' checked' : '';?>> 추천인(마케터)</label> -->
                         </td>
@@ -291,10 +332,11 @@ this.form.pt_leave.value=this.value; } else { this.form.pt_leave.value=this.form
                         <td><input type="text" name="pt_bank_holder" value="<?php echo $mb['pt_bank_holder'] ?>" class="frm_input" size="30"></td>
                     </tr>
                     <tr>
-                        <th scope="row">정산유형</th>
+                        <th scope="row"><label id="pt_company_select">정산유형</label></th>
                         <td>
                             <input type="hidden" name="pt_company" id="pt_company" value="<?php echo $mb['pt_company'];?>">
-                            <select name="pt_company_select" id="pt_company_select" required onChange="$('#pt_company').val($(this).val());">
+                            
+                            <select name="pt_company_select" id="pt_company_select" onChange="$('#pt_company').val($(this).val());">
                                 <option value="">선택해 주세요</option>
                                 <option value="개인(원천징수)"<?php if($mb['pt_company'] == '개인(원천징수)') echo ' selected';?>>개인(원천징수)</option>
                                 <option value="개인사업자(일반과세)"<?php if($mb['pt_company'] == '개인사업자(일반과세)') echo ' selected';?>>개인사업자(일반과세)</option>
@@ -304,10 +346,10 @@ this.form.pt_leave.value=this.value; } else { this.form.pt_leave.value=this.form
                                 <option value="법인사업자(일반면세)"<?php if($mb['pt_company'] == '법인사업자(일반면세)') echo ' selected';?>>법인사업자(일반면세)</option>
                             </select>
                         </td>
-                        <th scope="row">정산방법</th>
+                        <th scope="row"><label id="pt_flag_select">정산방법</label></th>
                         <td>
                             <input type="hidden" name="pt_flag" id="pt_flag" value="<?php echo $mb['pt_flag'];?>">
-                            <select name="pt_flag_select" id="pt_flag_select" required onChange="$('#pt_flag').val($(this).val())">
+                            <select name="pt_flag_select" id="pt_flag_select" onChange="$('#pt_flag').val($(this).val())">
                                 <option value="">선택해 주세요</option>
                                 <option value="1"<?php if($mb['pt_flag'] == "1") echo ' selected';?>>신청금액</option>
                                 <option value="2"<?php if($mb['pt_flag'] == "2") echo ' selected';?>>신청금액 - 부가세</option>
@@ -430,7 +472,12 @@ this.form.pt_leave.value=this.value; } else { this.form.pt_leave.value=this.form
 
             <div class="btn_fixed_top">
                 <a href="/adm/confirm_host_list.php" class="btn btn_02">목록</a>
+
+                <!-- 2022.09.13. botbinoo, 태그 정의 잘못되어 submit 이 안되는 오류 수정 -->
+                <!--
                 <input type="submit" value="확인" class="btn_submit btn" accesskey='s'>
+                -->
+                <button type="button" value="확인" class="btn_submit btn" accesskey='s' onclick="submitFmemberFrm()">확인</button>
             </div>
 
         </form>
@@ -441,6 +488,9 @@ this.form.pt_leave.value=this.value; } else { this.form.pt_leave.value=this.form
         function fmember_submit(f) {
 
             return true;
+        }
+        function submitFmemberFrm(){
+            $('#fmember').submit();
         }
     </script>
 

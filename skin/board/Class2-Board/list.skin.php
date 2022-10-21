@@ -91,6 +91,10 @@ $list_cnt = count($list);
 					echo '<div class="well text-center"><i class="fa fa-bell red"></i> 설정하신 목록스킨('.$boset['list_skin'].')이 존재하지 않습니다.</div>';
 				}
 			?>
+
+			<?php
+			if ($is_member) {
+			?> 
 			<div class="list-btn-set">
 				<span class="openner"></span>
 				<div class="btnContainer">
@@ -101,6 +105,10 @@ $list_cnt = count($list);
 				</div>
 				<div class="cover"></div>
 			</div>
+			<?php
+			}
+			?> 
+
 
 			<div class="list-btn none">
 				<div class="form-group pull-right">

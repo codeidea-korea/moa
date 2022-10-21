@@ -38,6 +38,12 @@ if ($view['file']['count']) {
 $view_font = (G5_IS_MOBILE) ? '' : ' font-12';
 $view_subject = get_text($view['wr_subject']);
 
+
+$arr_notice = explode(',', trim($board['bo_notice']));
+if(in_array($view['wr_id'], $arr_notice)) {
+	$view['ca_name'] = '공지';
+}
+
 ?>
 
 <section class="s_content">
@@ -46,10 +52,10 @@ $view_subject = get_text($view['wr_subject']);
 			<div class="com_img mt0">
 				<!-- 프로필 이미지 공간  -->
 				<?php 
-				$member = apms_member($view['mb_id']);
+				$member_p = apms_member($view['mb_id']);
 				//print_r2($member);
-				if ($member['photo']) { ?>
-					<img src="<?php echo $member['photo'];?> " alt="">
+				if ($member_p['photo']) { ?>
+					<img src="<?php echo $member_p['photo'];?> " alt="">
 				<?php } 
 				else { ?>
 					<img src="../images/default_img.svg" alt="">
@@ -57,7 +63,8 @@ $view_subject = get_text($view['wr_subject']);
 				
 			</div>
 			<div class="com_dt">
-				<p>익명</p>
+				<!-- <p>익명</p> -->
+				<p><? echo $view['wr_name']; ?></p>
 				<p class="ellipsis2"><?php echo cut_str(get_text($view['wr_subject']), 70); ?></p>
 				<span itemprop="datePublished" content="<?php echo date('Y-m-dTH:i:s', $view['date']);?>">
 					<?php echo apms_date($view['date'], 'orangered', 'before'); //시간 ?>
@@ -165,11 +172,73 @@ $view_subject = get_text($view['wr_subject']);
 			<div class="s_content mt25">
 				<div class="com_like">
 					<div class="ic_area">
-						<span class="on" onclick="apms_good('<?php echo $bo_table;?>', '<?php echo $wr_id;?>', 'good', 'wr_good'); return false;"><?php echo $view['wr_good']; //추천수 ?></span>
-						<span><?php echo ($view['wr_comment']) ?></span>
+						<div style="display:flex;justify-content: space-between;">
+							<div>
+								<span class="<?=$my_goods_board_id?>" onclick="fn_deb_apms_like(this, '<?php echo $bo_table;?>', '<?php echo $wr_id;?>', 'good', 'wr_good'); return false;"><?php echo $view['wr_good']; //추천수 ?></span>
+								<span onclick="fn_deb_comment_focus();"><?php echo ($view['wr_comment']) ?></span>
+							</div>
+							<div style="display:flex;gap:5px;">
+								<?php if ($update_href) { ?>
+									<a role="button" href="<?php echo $update_href ?>" class="btn btn-<?php echo $btn1;?> btn-sm" title="수정"<?php echo $modal_target;?>>수정</span></a>
+								<?php } ?>
+								<?php if ($delete_href) { ?>
+									<a role="button" href="<?php echo $delete_href ?>" class="btn btn-<?php echo $btn1;?> btn-sm" title="삭제" onclick="<?php echo (APMS_PIM) ? 'modal_' : '';?>del(this.href); return false;">삭제</a>
+								<?php } ?>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
+			
+			<script>
+				function fn_deb_apms_like(target, bo_table, wr_id, act, id, wc_id){
+					var href;
+					const targetTag = target;
+
+					if(wr_id && wc_id) {
+						href = './deb.like.comment.php?bo_table=' + bo_table + '&wr_id=' + wr_id + '&good=' + act + '&wc_id=' + wc_id;
+					} else {
+						if(wr_id) {
+							href = './deb.like.apms.php?bo_table=' + bo_table + '&wr_id=' + wr_id + '&good=' + act;
+						} else {
+							href = './deb.like.php?bo_table=' + bo_table + '&good=' + act;
+						}
+					}
+
+					$.ajaxSetup({ async:false });
+					$.post(href, { js: "on" }, function(data) {
+						if(data.error) {
+							alert(data.error);
+							/*
+							$(targetTag).removeClass('on');
+							setTimeout(() => {
+								$(targetTag).removeClass('on');
+							}, (150));
+							*/
+							return false;
+						} else if(data.success) {
+							alert(data.success);
+							$(targetTag).text(number_format(String(data.count)));
+							
+							$(targetTag).addClass('on');
+							setTimeout(() => {
+								$(targetTag).addClass('on');
+							}, (150));
+						}
+					}, "json");
+				}
+				$(document).ready(function(){
+					$(".ic_area span").off();
+					setTimeout(() => {
+						$(".ic_area span").off();
+					}, (250));
+				});
+				function fn_deb_comment_focus(){
+					$('#bo_vc_w').show();
+					$('#wr_content').focus();
+				}
+			</script>
+
 		<?php } else { //여백주기 ?>
 			<div class="h40"></div>
 		<?php } ?>
@@ -180,4 +249,4 @@ $view_subject = get_text($view['wr_subject']);
 	</article>
 </section>
 
-<?php include_once('./view_comment.php'); ?>
+<?php include_once(G5_BBS_PATH . '/view_comment.php'); ?>

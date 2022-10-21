@@ -59,7 +59,9 @@ if (!$is_member)
 $list = array();
 
 $limit = " limit $from_record, $rows ";
-$sql = " select o.*, c.it_id, c.it_name, wc.as_thumb, i.it_time, i.it_4
+$sql = " select o.*, c.it_id, c.it_name, wc.as_thumb, i.it_time, i.it_4, wc.moa_form as class_status, 
+			(select min(deb.day) min_day from deb_class_item as deb where wc.wr_id = deb.wr_id) as min_day,
+			(select max(deb.day) max_day from deb_class_item as deb where wc.wr_id = deb.wr_id) as max_day 
 		   from {$g5['g5_shop_order_table']} as o join g5_shop_cart as c on o.od_id = c.od_id join g5_shop_item as i on c.it_id = i.it_id JOIN g5_write_class wc ON i.it_2 = wc.wr_id
 		  where o.mb_id = '{$member['mb_id']}' and o.od_id = c.od_id and c.it_id = i.it_id
 		  order by o.od_id desc
