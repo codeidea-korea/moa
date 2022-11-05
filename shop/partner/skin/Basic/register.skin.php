@@ -616,6 +616,8 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 							</span>
 						</div>
 
+						<input type="hidden" name="pt_name" value="<?= $member['mb_name'] ?>">
+						<!--
 						<div class="mt20">
 							<p class="m_title">호스트 명</p>
 							<div class="input_flex">
@@ -626,6 +628,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 								·게스트들에게 보여지는 닉네임 입니다.
 							</span>
 						</div>
+						-->
 
 						<div class="mt20" style="display:none;">
 							<p class="m_title">공개연락처 <span class="tre">(선택)</span></p>

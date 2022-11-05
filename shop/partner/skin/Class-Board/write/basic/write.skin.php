@@ -41,18 +41,26 @@ if(!$header_skin) {
 			<div class="wr-list-con">
 				<div class="fileContainer">									
 					<div class="inner">
-						<input type="file" name="bf_file[]" id="upload-01" class="multiple" multiple>
+						<input type="file" name="bf_file[]" id="upload-01" class="multiple" accept="image/*" multiple>
 						<label for="upload-01" class="upload-btn">모임 대표 이미지 업로드</label>
 						<p class="help-block fs13">
 							최소 1장 최대 5장의 이미지를 올려주세요.<br>
 							권장 사이즈 : 가로 1000px * 세로 1000px<br>
-							최소 사이즈 : 가로 600px * 세로 600px <br>
+<!--							최소 사이즈 : 가로 600px * 세로 600px <br> -->
 							용량 : 10MB 이하 <br>
 							파일 유형 : JPG, PNG, GIF
 						</p>										
 					</div>
+					<input type="file" name="bf_file[]" id="upload-011">
+					<input type="file" name="bf_file[]" id="upload-012">
+					<input type="file" name="bf_file[]" id="upload-013">
+					<input type="file" name="bf_file[]" id="upload-014">
+					<input type="file" name="bf_file[]" id="upload-015">
+							
 					<ul class="upImg-list mt5">
-                        <li><img src="<?php echo $write['as_thumb'] ?>"><span class="del"></span></li>
+                        <li>
+							<img src="<?php echo $write['as_thumb'] ?>"><span class="del"></span>
+						</li>
                         <li><label for="upload-01" class="upload-empty">사진 추가</label></li>
 					</ul>
 				</div>
@@ -895,7 +903,7 @@ function add_moim_program3_list() {
 	$('select').selectpicker('refresh');
 }
 
-
+var uploadKey = 1;
 //업로드 이미지 미리보기
 $('.fileContainer input[type="file"].multiple').each(function(index) {
 	var inp = $(this);
@@ -903,6 +911,7 @@ $('.fileContainer input[type="file"].multiple').each(function(index) {
 	$(this).parent().parent().find('.upImg-list').attr('id', 'holder_' + index);
 	var holder = document.getElementById('holder_' + index);
 	var last = $(holder).find('li:last');
+	console.log(inp);
 	upload.onchange = function (e) {
 		e.preventDefault();
 		var file = upload.files[0],
@@ -910,10 +919,24 @@ $('.fileContainer input[type="file"].multiple').each(function(index) {
 		reader.onload = function (event) {
 			var img = new Image();
 			img.src = event.target.result;
-			var imgtag = '<img src="' + reader.result + '">';
-			//holder.children('img').remove();
-			last.before('<li>' + imgtag + '<span class="del"></span></li>');
-			deleteImageAction('.del');
+			img.onload = function(e) {
+				var imgtag = '<img src="' + reader.result + '">';
+				//holder.children('img').remove();
+				if(img.width != 1000 || img.height != 1000) {
+					alert('가로/세로는 1000px 이어야 합니다.');
+					console.log(img.width);
+					console.log(img.height);
+					return;
+				} 
+				const key = new Date().getTime();
+				last.before('<li>' + imgtag + '<span class="del" data-key="'+(key)+'"></span></li>');
+				// upload-011
+				$('#upload-01' + uploadKey).attr('data-key', key);
+				uploadKey = uploadKey + 1;
+				$('.upload-btn').attr('for', 'upload-01'+uploadKey);
+				$('.upload-empty').attr('for', 'upload-01'+uploadKey);
+				deleteImageAction('.del');
+			};
 		};			
 		reader.readAsDataURL(file);			
 		return false;		
@@ -922,9 +945,13 @@ $('.fileContainer input[type="file"].multiple').each(function(index) {
 function deleteImageAction(el) {
 	$(el).click(function() {
 		$(this).parent('li').remove(); 
+		var key = $(this).attr('data-key');
+		$('input[type=file][data-key=' + key + ']').val('');
 	});
 }
 deleteImageAction('.upImg-list .del');
+$('.upload-btn').attr('for', 'upload-01'+uploadKey);
+$('.upload-empty').attr('for', 'upload-01'+uploadKey);
 </script>
 
 

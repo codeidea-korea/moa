@@ -10,7 +10,10 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 if ($is_member) {
 ?> 
 <!--로그인한 사용자 링크 -->
+<!--
 <a href="/shop/partner/register.php"><img src="../images/visual_img/bt_banner.png" alt=""></a>
+-->
+<a href="/c_hostJ/host_join01.php"><img src="../images/visual_img/bt_banner.png" alt=""></a>
 <?php 
 } else { ?>
 <!--비회원 링크 / 로그인페이지로이동-->

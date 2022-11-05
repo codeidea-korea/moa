@@ -17,9 +17,11 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                     <div class="swiper-slide">
                         <a href="/shop/item.php?it_id=<?= $row['it_id']; ?>">
                             <div class="title_area">
+                                <!--
                                 <div class="t_text">
                                     <?php echo $row['wr_subject'] ?>
                                 </div>
+                                -->
                                 <span class="location_area ellipsis1">
                                 <?= get_common_type($row['moa_area1'])['type_name']; ?>
                                 <?= get_common_code_name($row['moa_area1'], $row['moa_area2'])['cd_name']; ?>
