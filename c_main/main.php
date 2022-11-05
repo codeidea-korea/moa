@@ -11,9 +11,9 @@ include_once(CLASS_PATH."/main_head.php");
 $sql = "select * from g5_shop_banner where bn_position = '메인' and (bn_begin_time <= '".date('Y-m-d H:i:s')."' and bn_end_time >= '".date('Y-m-d H:i:s')."') order by bn_order asc limit 0, 3";
 $main = sql_query($sql);
 include_once(MOA_MAIN_SKIN."/main_slide.skin.php");
-$query = "select * from g5_shop_category where ca_id LIKE '10%' order by ca_id";
+$query = "select * from g5_shop_category where ca_id LIKE '10%' order by ca_order, ca_id";
 $category = sql_query($query);
-include_once(MOA_MAIN_SKIN."/menu_slide.skin.php");
+// include_once(MOA_MAIN_SKIN."/menu_slide.skin.php");
 
 $joinQuery = 'join deb_class_item as deb on si.it_id = deb.it_id';
 $whereQuery = "and (wc.moa_form = '자율형' or (wc.moa_form = '고정형' and deb.day > '".date('Y-m-d')." 00:00:00')) ";
