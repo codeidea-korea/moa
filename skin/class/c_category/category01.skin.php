@@ -38,7 +38,7 @@ $area  = (isset($_GET['area']))?$_GET['area']:'지역선택';
             <a href="javascript:" onclick="gocategory('<?php echo $row['ca_name'];?>');">
                 <div>
                     <p><?php echo $row['ca_name'];?></p>
-                    <img src="../images/<?php echo $category_img[$row['ca_name']];?>" alt="">
+                    <img src="../images/<?php echo $row['as_mobile_icon'];?>" alt="">
                 </div>
             </a>
             <?php if ($cnt % 2 == 0) {?>
