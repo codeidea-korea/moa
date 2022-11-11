@@ -68,8 +68,10 @@ if(!isset($payed_deb_class)){
 						<form id="ocancelForm" method="post" action="./orderinquirycancel.php">
 							<input type="text" name="od_id"  value="<?php echo $od['od_id']; ?>">
 							<input type="text" name="token"  value="<?php echo $token; ?>">
+                            <!--
 							<label for="cancel_memo" class="sound_only">취소사유</label>
 							<input type="text" name="cancel_memo" id="cancel_memo" required class="frm_input required" size="40" maxlength="100" placeholder="취소사유" value="주문취소사유입니다.">
+                            -->
 						</form>
 					</div>
 				<?php }else if($allowedCancelOrder == false){?>

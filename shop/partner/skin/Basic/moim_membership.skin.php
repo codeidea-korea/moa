@@ -5,6 +5,7 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 <?php
 //html 팝업
 include_once($skin_path.'/pop.confirm-reservation.php'); //예약확정
+include_once($skin_path.'/pop.cancel-reservation.php'); //예약취소
 ?>
 
 <div class="section-title">모임 신청자 관리</div>
@@ -62,7 +63,7 @@ include_once($skin_path.'/pop.confirm-reservation.php'); //예약확정
 					// 의 it_id값을 업데이트하면 되지만 애초에 영카트에는 order테이블에 it_id 컬럼이 없음. 
 					// 영카트 특히 결제쪽은 가능하면 건들지 않는쪽으로 함. 
 					// 현재 모아는 장바구니 개념이 없음. (상품 여러개를 한번에 결제하지 않음) (22.07.07 박경호)
-					$aSql = "select od_status FROM g5_shop_order a, g5_shop_cart b WHERE a.od_id=b.od_id AND b.it_id='".$row['it_id']."' AND a.mb_id='".$row['uid']."'";
+					$aSql = "select od_status, a.od_id FROM g5_shop_order a, g5_shop_cart b WHERE a.od_id=b.od_id AND b.it_id='".$row['it_id']."' AND a.mb_id='".$row['uid']."'";
 					$aRow = sql_fetch_array(sql_query($aSql));
 					?>
 					<tr>
@@ -91,8 +92,11 @@ include_once($skin_path.'/pop.confirm-reservation.php'); //예약확정
 							<?php // 기획에 예약확정후의 내용도 없고 확정이외의 루트에 대한 내용도 없음. (22.07.07 박경호)?>
 							<?php if ($row['status'] == '예약확정'){?>
 								예약확정
+							<?php } else if ($aRow['od_status'] == '취소'){?>
+								취소
 							<?php }else{?>
 								<span data-href="#pop-confirm-reservation" class="pop-inline btn small" data-idx="<?php echo $row['idx']; ?>">예약확정</span>
+								<span data-href="#pop-cancel-reservation" class="pop-inline btn small" onclick="setCancelPup('<?php echo $aRow['od_id']; ?>', '<?php echo $row['uid']; ?>')" data-orderid="<?php echo $aRow['od_id']; ?>" data-userid="<?php echo $row['uid']; ?>">취소</span>
 							<?php }?>
 							
 						</td>
@@ -101,6 +105,12 @@ include_once($skin_path.'/pop.confirm-reservation.php'); //예약확정
                 } ?>
 			</tbody>
 		</table>
+		<script>
+		function setCancelPup(od_id, uid) {
+			$('input[name=odid]').val(od_id);
+			$('input[name=uid]').val(uid);
+		}
+		</script>
 	</div>
         <?php
             $total_count = $row['cnt'];

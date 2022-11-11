@@ -1,16 +1,26 @@
 <?php
 include_once('./_common.php');
 
-// 세션에 저장된 토큰과 폼으로 넘어온 토큰을 비교하여 틀리면 에러
-if ($token && get_session("ss_token") == $token) {
-    // 맞으면 세션을 지워 다시 입력폼을 통해서 들어오도록 한다.
-    set_session("ss_token", "");
+$mb_id = $member['mb_id'];
+$type = $_POST['stype'];
+$ment = '주문자 본인 취소';
+if($type == 'host') {
+    // 호스트가 취소처리를 할 경우
+    $mb_id = $_POST['uid'];
+    $od_id = $_POST['odid'];
+    $ment = '호스트의 예약 취소';
 } else {
-    set_session("ss_token", "");
-    alert("토큰 에러", G5_SHOP_URL);
+    // 세션에 저장된 토큰과 폼으로 넘어온 토큰을 비교하여 틀리면 에러
+    if ($token && get_session("ss_token") == $token) {
+        // 맞으면 세션을 지워 다시 입력폼을 통해서 들어오도록 한다.
+        set_session("ss_token", "");
+    } else {
+        set_session("ss_token", "");
+        alert("토큰 에러", G5_SHOP_URL);
+    }
 }
 
-$od = sql_fetch(" select * from {$g5['g5_shop_order_table']} where od_id = '$od_id' and mb_id = '{$member['mb_id']}' ");
+$od = sql_fetch(" select * from {$g5['g5_shop_order_table']} where od_id = '$od_id' and mb_id = '{$mb_id}' ");
 
 if (!$od['od_id']) {
     alert("존재하는 주문이 아닙니다.");
@@ -25,6 +35,11 @@ $sql = " select SUM(IF((ct_status = '입금' || ct_status='완료'), 1, 0)) as o
 $ct = sql_fetch($sql);
 
 $uid = md5($od['od_id'].$od['od_time'].$od['od_ip']);
+$sendUrl = G5_SHOP_URL."/orderinquiryview.php?od_id=$od_id&amp;uid=$uid&amp;p=history";
+
+if($type == 'host') {
+    $sendUrl = G5_SHOP_URL."/partner/?ap=moim_membership";
+}
 
 if($od['od_cancel_price'] > 0 || $ct['od_count1'] != $ct['od_count2']) {
     alert("취소할 수 있는 주문이 아닙니다.", G5_SHOP_URL."/orderinquiryview.php?od_id=$od_id&amp;uid=$uid&amp;p=history");
@@ -65,7 +80,7 @@ if($od['od_tno']) {
             break;
         case 'inicis':
             include_once(G5_SHOP_PATH.'/settle_inicis.inc.php');
-            $cancel_msg = iconv_euckr('주문자 본인 취소-'.$cancel_memo);
+            $cancel_msg = iconv_euckr($ment . '-'.$cancel_memo);
 
             /*********************
              * 3. 취소 정보 설정 *
@@ -120,7 +135,7 @@ if($od['od_tno']) {
                 if($od['od_settle_case'] == '가상계좌')
                     $_POST['mod_type'] = 'STE5';
             }
-            $_POST['mod_desc'] = iconv("utf-8", "euc-kr", '주문자 본인 취소-'.$cancel_memo);
+            $_POST['mod_desc'] = iconv("utf-8", "euc-kr", $ment . '-'.$cancel_memo);
             $_POST['site_cd'] = $default['de_kcp_mid'];
 
             // 취소내역 한글깨짐방지
@@ -151,13 +166,13 @@ $sql = " update {$g5['g5_shop_order_table']}
                 od_coupon = '0',
                 od_send_coupon = '0',
                 od_status = '취소',
-                od_shop_memo = concat(od_shop_memo,\"\\n주문자 본인 직접 취소 - ".G5_TIME_YMDHIS." (취소이유 : {$cancel_memo})\")
+                od_shop_memo = concat(od_shop_memo,\"\\n{$ment} - ".G5_TIME_YMDHIS." (취소이유 : {$cancel_memo})\")
             where od_id = '$od_id' ";
 sql_query($sql);
 
 // 주문취소 회원의 포인트를 되돌려 줌
 if ($od['od_receipt_point'] > 0)
-    insert_point($member['mb_id'], $od['od_receipt_point'], "주문번호 $od_id 본인 취소");
+    insert_point($mb_id, $od['od_receipt_point'], "주문번호 $od_id " . $ment);
 
-goto_url(G5_SHOP_URL."/orderinquiryview.php?od_id=$od_id&amp;uid=$uid&amp;p=history");
+goto_url($sendUrl);
 ?>
