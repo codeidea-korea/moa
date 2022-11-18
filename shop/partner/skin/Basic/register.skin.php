@@ -559,6 +559,8 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 				</div>
 
 				<div class="tab_content p0" id="group_content">
+				<?
+				/*
 					<div class="mt20">
 						<p class="m_title">프로필</p>
 						<!-- <div class="citation_photo02">
@@ -583,6 +585,8 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 						<button>촬영</button>
 					</div> -->
 					</div>
+					*/
+					?>
 
 					<div class="common_input">
 						<div class="mt20">
