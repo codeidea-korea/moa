@@ -47,6 +47,12 @@ include_once($skin_path.'/pop.cancel-reservation.php'); //예약취소
 					<th scope="col">모임명</th>
 					<th scope="col">모임 날짜</th>
 					<th scope="col">신청자</th>
+
+					<th scope="col">성별</th>
+					<th scope="col">나이</th>
+					<th scope="col">직업</th>
+					<th scope="col">전화번호</th>
+
 					<th scope="col">모임금액</th>
 					<th scope="col">모임 신청일</th>
 					<th scope="col">정산 상태</th>
@@ -70,7 +76,13 @@ include_once($skin_path.'/pop.cancel-reservation.php'); //예약취소
 						<td><?php echo $i; ?></td>
 						<td><?php echo $row['it_name'] ?></td>
 						<td><?php echo $row['aplydate'] . " " . $row['aplytime'].':00'; ?></td>
-						<td><?php echo $row['mb_name'] ?></td>
+						<td><?php echo $row['mb_name']; ?></td>
+						
+						<td><?php echo $row['mb_sex']; ?></td>
+						<td><?php echo date('Y') - substr($row['mb_birth'], 0, 4); ?></td>
+						<td><?php echo $row['job_group']; ?></td>
+						<td><?php echo $row['mb_hp']; ?></td>
+
 						<td><?php echo number_format($row['pay']); ?></td>
 						<td><?php echo date('Y-m-d', strtotime($row['regdate'])); ?></td>
 						<td>

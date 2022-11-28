@@ -254,7 +254,16 @@ include_once($skin_path.'/pop.moim-info.php'); //모임신청인원정보
 							<!-- [고정형, 자율형] -->
 							<?php echo $list[$i]['moa_form'];?><sub class="block"><?php echo $list[$i]['day'].' '.$list[$i]['time'];?></sub>
 						</td>
-						<td><?php echo getStatusValue($list[$i]['moa_status']); ?></td><!-- [승인, 대기중, 반려] -->
+						<td>
+							<?php 
+								$moa_status = getStatusValue($list[$i]['moa_status']);
+								if($moa_status == '반려') {
+									echo '<span class="aplyInfo pop-inline color-blue" onclick="openRefusePup(\''.$list[$i]['moa_refuse_reason'].'\')">' .$moa_status. '</span>';
+								} else {
+									echo $moa_status;
+								}
+							?>
+						</td><!-- [승인, 대기중, 반려] -->
 						<td class="td_mng td_mng_s">
 							<?
 							if($row['moa_status'] == 6) {
@@ -304,7 +313,33 @@ include_once($skin_path.'/pop.moim-info.php'); //모임신청인원정보
 
 </div>
 
+<div class="layer-popup" id="popup01">
+	<div class="popContainer">
+		<div class="pop-inner">
+			<span class="pop-closer">팝업닫기</span>
+			
+			<header class="pop-header">
+				반려사유
+			</header>
+
+			<div class="text_area">
+				<span id="refuse_msg"></span>
+			</div>
+
+			<div class="btn_choice">
+				<button type="button" class="btnSubmit">확인</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="pop-bg"></div>
+</div>
+
 <script>
+function openRefusePup(msg){
+	$('#refuse_msg').text(msg);
+	$('#popup01').addClass('open');
+}
 function fitemlist_submit(f)
 {
     if (!is_checked("chk[]")) {

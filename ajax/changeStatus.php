@@ -61,25 +61,27 @@ if($status == 2) {
         $sql = " insert into {$g5['memo_table']} ( me_id, me_recv_mb_id, me_send_mb_id, me_send_datetime, me_memo, me_read_datetime ) values ( '$me_id', '{$recv_mb_id}', '{$send_mb_id}', '".G5_TIME_YMDHIS."', '모임신청이 반려되었습니다. [사유] : {$refuse_msg}', '0000-00-00 00:00:00' ) ";
         sql_query($sql);
         // 쪽지 INSERT
+        /*
         // 쪽지 알림
         $sql = " update {$g5['member_table']} set mb_memo_call = '{$send_mb_id}', mb_memo_cnt = '".get_memo_not_read($recv_mb_id)."' where mb_id = '$recv_mb_id' ";
         sql_query($sql);
+*/
 
-
-        $data = $row;
+//        $data = $row;
     }
     
     if($wr_id) {
-        $sql = "update g5_write_class set moa_status = {$status} where wr_id in ({$wr_id})";
+        $sql = "update g5_write_class set moa_status = {$status}, moa_refuse_reason = '{$refuse_msg}' where wr_id in ('{$wr_id}')";
     } else {
-        $sql = "update g5_write_class set moa_status = {$status}";
+        $sql = "update g5_write_class set moa_status = {$status}, moa_refuse_reason = '{$refuse_msg}'";
     }
+    sql_query($sql);
     exit;
 }
 
 
 if($wr_id) {
-    $sql = "update g5_write_class set moa_status = {$status} where wr_id in ({$wr_id})";
+    $sql = "update g5_write_class set moa_status = {$status} where wr_id in ('{$wr_id}')";
 } else {
     $sql = "update g5_write_class set moa_status = {$status}";
 }

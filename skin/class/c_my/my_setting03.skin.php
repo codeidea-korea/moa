@@ -148,7 +148,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 cache: false,
                 async: false,
                 success: function(data) {
-                    alert('회원 탈퇴 되었습니다.');
+                    alert('회원 탈퇴 신청이 되었습니다.');
                     location.href = '/c_login/logout.php';
                 }
             })

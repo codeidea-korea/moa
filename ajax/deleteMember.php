@@ -19,8 +19,12 @@ $query = sql_query($sql);
 */
 $mb = sql_fetch(" select * from g5_member where mb_no = '{$mb_no}' ", false);
 
+if($mb['mb_apply_yn'] == 1) {
+    alert('회원 탈퇴 신청중입니다. 관리자 승인후 탈퇴 처리 됩니다.');
+}
+
 $today = date("Ymd", time());
-$sql = "update g5_member set mb_leave_date = '{$today}' where mb_no = '{$mb_no}'";
+$sql = "update g5_member set mb_apply_leave_date = '{$today}', mb_apply_yn = 1 where mb_no = '{$mb_no}'";
 $query = sql_query($sql);
 
 return 'success';

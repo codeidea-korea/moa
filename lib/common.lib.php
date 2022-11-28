@@ -1244,6 +1244,8 @@ function get_category_option($bo_table='', $ca_name='')
         $category = trim($categories[$i]);
         if (!$category || $category == '인기글') continue;
 
+        if ($category == '오리지널' && !$is_admin) continue;
+
         $str .= "<option value=\"$categories[$i]\"";
         if ($category == $ca_name) {
             $str .= ' selected="selected"';

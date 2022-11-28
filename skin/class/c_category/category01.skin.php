@@ -16,9 +16,27 @@ $area  = (isset($_GET['area']))?$_GET['area']:'지역선택';
                 <option value="오프라인" <?php if ($moa_onoff == '오프라인') {echo ' selected ';}?>>오프라인</option>
                 <option value="온라인" <?php if ($moa_onoff == '온라인') {echo ' selected ';}?>>온라인</option>
             </select>
+            <!--
             <div class="cla_cho slctRgn">
                 <button  onclick="location.href='<?php echo MOA_CATEGORY_URL;?>/category02.php?moa_onoff='+$('#moa_onoff').val();"><?php echo $area;?></button>
             </div>
+            -->
+            <div class="cla_cho slctRgn" style="
+                font-size: 1.6rem;
+                width:123px;
+                padding:5px 10px;
+                font-weight:500;
+                color:var(--dark-gray);
+                background:url(../images/b_arrow.svg) 90% 50%  no-repeat;
+                background-color:#EEEEEE;
+                margin-right:10px;
+                border-radius:30px;
+                margin: 0px;
+            ">
+                            <button onclick="location.href='<?php echo MOA_CATEGORY_URL;?>/category02.php?moa_onoff='+$('#moa_onoff').val();" style="
+                font-size: 1.6rem;
+            "><?php echo $area;?></button>
+                        </div>
         </div>
         <a href="<?php echo G5_BBS_URL;?>/board.php?bo_table=class"><img src="../images/icon_magnifier_1.svg" alt=""></a>
     </div>

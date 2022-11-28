@@ -592,7 +592,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 						<div class="mt20">
 							<p class="m_title">이메일</p>
 							<div class="input_flex">
-								<input type="email" name="pt_email" id="pt_email" value="<?= $member['mb_id'] ?>" placeholder="이메일을 입력해주세요.">
+								<input type="email" name="pt_email" id="pt_email" value="<?= $member['mb_email'] ?>" placeholder="이메일을 입력해주세요.">
 							</div>
 							<span class="inform02 ">
 								·실제 사용하시는 이메일 주소를 입력해주세요.<br />

@@ -3,6 +3,8 @@ include_once("./_common.php");
 
 function sendSMS($phoneNo, $wr_subject)
 {
+	return;
+	
 	$result = array();
 	
 	$sender = "01054405414";                    //필수입력

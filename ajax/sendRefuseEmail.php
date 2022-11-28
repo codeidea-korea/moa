@@ -11,8 +11,7 @@ $sql = "update g5_member set mb_level = 2 where mb_id IN ('{$mb_id}')";
 $result = sql_query($sql);
 
 
-
-$sql = "SELECT mb_nick, mb_email, mb_hp FROM g5_member where mb_id IN ('{$mb_id}')";
+$sql = "SELECT mb_nick, mb_email, mb_hp, mb_id FROM g5_member where mb_id IN ('{$mb_id}')";
 $result = sql_query($sql);
 
 $html = '<!doctype html>
@@ -48,7 +47,15 @@ while($row = sql_fetch_array($result)) {
     $receiver = '['.$receiver.']';
     $bodytag = '0';
     $mail_type = 'NORMAL';
-    sendDirectMail($subject, $body, $config['cf_admin_email'], $config['cf_admin_email_name'], $receiver, $bodytag, $mail_type);
+	sendDirectMail($subject, $body, $config['cf_admin_email'], $config['cf_admin_email_name'], $receiver, $bodytag, $mail_type);
+	
+	// 쪽지 INSERT
+	$tmp_row = sql_fetch(" select max(me_id) as max_me_id from {$g5['memo_table']} ");
+	$me_id = $tmp_row['max_me_id'] + 1;
+	$sql = " insert into {$g5['memo_table']} ( me_id, me_recv_mb_id, me_send_mb_id, me_send_datetime, me_memo, me_read_datetime ) values 
+		( '$me_id', '{$row['mb_id']}', 'admin', '".G5_TIME_YMDHIS."', $msg, '0000-00-00 00:00:00' ) ";
+	sql_query($sql);
+
     $data = $row;
 }
 

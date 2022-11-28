@@ -45,6 +45,48 @@ if($od['od_cancel_price'] > 0 || $ct['od_count1'] != $ct['od_count2']) {
     alert("취소할 수 있는 주문이 아닙니다.", G5_SHOP_URL."/orderinquiryview.php?od_id=$od_id&amp;uid=$uid&amp;p=history");
 }
 
+$cancel_price = $od['od_cart_price'];
+// 첫 모임 남은 날짜 기준 환불 수수료 처리 
+$sql ="select player.idx, player.status, cart.od_id  
+    from deb_class_aplyer player 
+        join g5_shop_item item on player.wr_id = item.it_2 
+        join g5_shop_cart cart on item.it_id = cart.it_id and cart.od_id = '{$od_id}' 
+    where player.mb_id = '{$mb_id}'";
+$player = sql_fetch($sql);
+
+if($player['status'] == '예약확정') {
+    // 부분 취소 체크
+    $sql = "select cart.od_id, deb.day 
+        from deb_class_item deb 
+            join g5_shop_item si on si.it_id = deb.it_id 
+            join g5_write_class wc on wc.wr_id = si.it_2 
+            join g5_shop_cart cart on si.it_id = cart.it_id 
+        where cart.od_id = '{$od_id}' and wc.moa_form = '고정형' 
+        order by deb.day asc 
+        limit 1 ";
+    $classItems = sql_fetch($sql);
+
+    $today = date("Y-m-d");
+    if(empty($classItems['day']) || $classItems['day'] == ''){
+        // 자율형이던가, 날짜 미기입 과거건 등 시스템 이슈는 환불처리
+    } else {
+        $targetTime = strtotime($classItems['day']);
+        if($targetTime < strtotime('-6 days')) {
+            $remain_price = 0;
+        } else if($targetTime > strtotime('-1 days')) {
+            $remain_price = 70 * ((int)$cancel_price) / 100;
+            $cancel_price = ((int)$cancel_price) - ((int) $remain_price);
+        } else {
+            alert("취소할 수 있는 주문이 아닙니다. (모임 전일부터 취소/환불이 불가능합니다.) ", $sendUrl);
+        }
+    }
+} else {
+    // 전체 취소
+    $remain_price = 0;
+}
+
+$isAllCancel = $cancel_price == $remain_price ? 1 : 0;
+
 // PG 결제 취소
 if($od['od_tno']) {
     switch($od['od_pg']) {
@@ -85,7 +127,7 @@ if($od['od_tno']) {
             /*********************
              * 3. 취소 정보 설정 *
              *********************/
-            $inipay->SetField("type",      "cancel");                        // 고정 (절대 수정 불가)
+            $inipay->SetField("type",      ($isAllCancel == 1 ? "Refund" : "PartialRefund"));                        // 고정 (절대 수정 불가)
             $inipay->SetField("mid",       $default['de_inicis_mid']);       // 상점아이디
             /**************************************************************************************************
              * admin 은 키패스워드 변수명입니다. 수정하시면 안됩니다. 1111의 부분만 수정해서 사용하시기 바랍니다.
@@ -96,6 +138,11 @@ if($od['od_tno']) {
             $inipay->SetField("admin",     $default['de_inicis_admin_key']); //비대칭 사용키 키패스워드
             $inipay->SetField("tid",       $od['od_tno']);                   // 취소할 거래의 거래아이디
             $inipay->SetField("cancelmsg", $cancel_msg);                     // 취소사유
+            if($isAllCancel == 1) {
+                $inipay->SetField("price", $cancel_price);                   
+                $inipay->SetField("confirmPrice", $remain_price);            
+                $inipay->SetField("clientIp", $_SERVER["REMOTE_ADDR"]);            
+            }   
 
             /****************
              * 4. 취소 요청 *
@@ -128,12 +175,20 @@ if($od['od_tno']) {
 
             $_POST['tno'] = $od['od_tno'];
             $_POST['req_tx'] = 'mod';
-            $_POST['mod_type'] = 'STSC';
+            if($isAllCancel == 1) {
+                $_POST['mod_type'] = 'STSC';
+            } else {
+                $_POST['mod_type'] = 'STPC';
+            }
             if($od['od_escrow']) {
                 $_POST['req_tx'] = 'mod_escrow';
                 $_POST['mod_type'] = 'STE2';
                 if($od['od_settle_case'] == '가상계좌')
                     $_POST['mod_type'] = 'STE5';
+            }
+            if($isAllCancel != 1) {
+                $_POST['mod_mny'] = $cancel_price;
+                $_POST['rem_mny'] = $remain_price;
             }
             $_POST['mod_desc'] = iconv("utf-8", "euc-kr", $ment . '-'.$cancel_memo);
             $_POST['site_cd'] = $default['de_kcp_mid'];
@@ -153,10 +208,10 @@ sql_query(" update {$g5['g5_shop_cart_table']} set ct_status = '취소' where od
 
 // 주문 취소
 $cancel_memo = addslashes(strip_tags($cancel_memo));
-$cancel_price = $od['od_cart_price'];
+// $cancel_price = $od['od_cart_price'];
 
 $sql = " update {$g5['g5_shop_order_table']}
-            set od_send_cost = '0',
+            set od_send_cost = '$remain_price',
                 od_send_cost2 = '0',
                 od_receipt_price = '0',
                 od_receipt_point = '0',
