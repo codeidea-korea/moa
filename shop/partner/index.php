@@ -8,6 +8,17 @@ include_once('./_common.php');
 if($is_guest) {
 	alert('로그인해 주세요.', APMS_PARTNER_URL.'/login.php');
 }
+$mobile_agent = "/(iPod|iPhone|Android|BlackBerry|SymbianOS|SCH-M\d+|Opera Mini|Windows CE|Nokia|SonyEricsson|webOS|PalmOS)/";
+
+if(preg_match($mobile_agent, $_SERVER['HTTP_USER_AGENT'])){
+//	alert('본 페이지는 pc에 최적화된 페이지입니다');
+    echo "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">";
+    echo "<script>";
+    echo "alert(\"본 페이지는 pc에 최적화된 페이지입니다\");";
+    echo "</script>";
+}else{
+}
+
 
 // 회원정보가공
 thema_member();

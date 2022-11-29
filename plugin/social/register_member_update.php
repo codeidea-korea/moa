@@ -50,6 +50,12 @@ $mb_email       = get_email_address($mb_email);
 $mb_hp = trim($_POST['mb_hp']);
 $mb_birth = trim($_POST['mb_birth']);
 
+$mb_sex          = isset($_POST['mb_sex'])            ? trim($_POST['mb_sex'])          : "";
+$job_group          = isset($_POST['job_group'])            ? trim($_POST['job_group'])          : "";
+$job_kind          = isset($_POST['job_kind'])            ? trim($_POST['job_kind'])          : "";
+$company_name          = isset($_POST['company_name'])            ? trim($_POST['company_name'])          : "";
+$career          = isset($_POST['career'])            ? trim($_POST['career'])          : "";
+
 // 이름, 닉네임에 utf-8 이외의 문자가 포함됐다면 오류
 // 서버환경에 따라 정상적으로 체크되지 않을 수 있음.
 $tmp_mb_name = iconv('UTF-8', 'UTF-8//IGNORE', $mb_name);
@@ -127,6 +133,13 @@ $sql = " insert into {$g5['member_table']}
                 mb_birth = '{$mb_birth}',
                 mb_open = '{$mb_open}',
                 mb_hp = '{$mb_hp}',
+                
+                mb_sex = '{$mb_sex}',
+                job_group = '{$job_group}',
+                job_kind = '{$job_kind}',
+                company_name = '{$company_name}',
+                career = '{$career}',
+                
                 mb_status = '대기',
                 mb_open_date = '".G5_TIME_YMD."' ";
 
@@ -248,6 +261,7 @@ if($result) {
     
     // kakao send
     {
+        include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
         $replaceText = ' [모아프렌즈]
         안녕하세요. '.$mb_name.' 님
         
@@ -256,7 +270,7 @@ if($result) {
         진심으로 감사드립니다~😊';
         $reserve_type = 'NORMAL';
         $start_reserve_time = date('Y-m-d H:i:s');
-        $reciver = '{"name":"'.$mb_name.'","mobile":"'.$mb_hp.'","note1":"https://www.moa-friends.com/"}';
+        $reciver = '{"name":"'.$mb_name.'","mobile":"'.$mb_hp.'","note1":"https://\"'.$_SERVER['HTTP_HOST'].'}';
         sendBfAlimTalk(6, $replaceText, $reserve_type, $reciver, $start_reserve_time);
     }
 

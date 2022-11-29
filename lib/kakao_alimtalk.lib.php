@@ -20,7 +20,7 @@ function sendBfAlimTalk($templetNo, $replaceText, $reserve_type = 'NORMAL', $rec
     $kakao_faild_type = "1";          // 1 : 대체문자(SMS) / 2 : 대체문자(LMS) / 3 : 대체문자(MMS) 대체문자 사용시 필수 입력
     $title = $replaceText;
     $message = '[$NAME]님 알림 문자 입니다. 전화번호 : [$MOBILE] 비고1 : [$NOTE1] 비고2 : [$NOTE2] 비고3 : [$NOTE3] 비고4 : [$NOTE4] 비고5 : [$NOTE5]';             //대체문자 사용시 필수입력
-    $sender = "발신자번호";                    //대체문자 사용시 필수입력
+    $sender = "010-9570-8831";                    //대체문자 사용시 필수입력
 
     // 예약발송 정보 추가
     $end_reserve_time = $start_reserve_time;

@@ -1,5 +1,6 @@
 <?php
 include_once("./_common.php");
+include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
 include_once("../shop/orderinquirysubcancel.php");
 
 $mb_id = $_POST['mb_id'];
@@ -7,11 +8,12 @@ $status = $_POST['status'];
 if(is_array($mb_id)) {
     $mb_id = implode("','", $mb_id);
 }
+
 if($mb_id) {
     $today = date("Ymd", time());
 
     $sql = "select * from g5_member where mb_id in ('{$mb_id}') and mb_apply_yn = 1";
-    $result = sql_fetch($sql);
+    $result = sql_query($sql);
 
     $html = '<!doctype html>
     <html lang="ko">
@@ -51,7 +53,7 @@ if($mb_id) {
         if($host){
             // step 1: 탈퇴할 계정의 모임 조회 (승인 상태)
             $qr = "select wr_id, wr_subject from g5_write_class where mb_id = '".$row['mb_id']."' and moa_status = 1";
-            $moimResult = sql_fetch($sql);
+            $moimResult = sql_query($sql);
             $moims = array();
             $moim_ids = '';
             while($moim = sql_fetch_array($moimResult)) {
@@ -67,7 +69,7 @@ if($mb_id) {
                     from g5_shop_cart cart, 
                         (select mb_id, it_id, wr_id from deb_class_aplyer where wr_id in (".$moim_ids.") and status = '예약확정') deb
                     where cart.mb_id = deb.mb_id and cart.it_id = deb.it_id and (cart.ct_status = '입금' or cart.ct_status='완료')";
-            $orderResult = sql_fetch($sql);
+            $orderResult = sql_query($sql);
 
             // step 4: 참여자 주문번호별 환불 진행
             // step 5: 조회된 모임내 승인된 참여자 취소 처리
@@ -84,7 +86,7 @@ if($mb_id) {
                     from g5_shop_cart cart, 
                         (select mb_id, it_id, wr_id from deb_class_aplyer where mb_id = '".$row['mb_id']."' and status = '예약확정') deb
                     where cart.mb_id = deb.mb_id and cart.it_id = deb.it_id and (cart.ct_status = '입금' or cart.ct_status='완료')";
-            $orderResult = sql_fetch($sql);
+            $orderResult = sql_query($sql);
 
             // step 4: 주문번호별 환불 진행
             // step 5: 조회된 모임내 승인된 참여자 취소 처리
@@ -95,10 +97,10 @@ if($mb_id) {
 
         // step 7: 탈퇴 처리
         $sql = "update g5_member set mb_leave_date = '{$today}' where mb_id = '".$row['mb_id']."'";
-        sql_query($sql);
+        sql_fetch($sql);
 
         sendDirectMail($subject, $body, $config['cf_admin_email'], $config['cf_admin_email_name'], $receiver, $bodytag, $mail_type);
-        sendBfAlimTalk(3, '[모아]에서 탈퇴되었습니다. 등록하셨던 모임, 참여한 모임에서 모두 해지 되었습니다. 카드사 환불기간후 약관에 따라 환불됩니다.', 'NORMAL', $receiver);
+        sendBfAlimTalk(3, '[모아]에서 탈퇴되었습니다. 등록하셨던 모임, 참여한 모임에서 모두 해지 되었습니다. 카드사 환불기간후 약관에 따라 환불됩니다.', 'NORMAL', $receiver, null);
     }
 
     echo json_encode($result);

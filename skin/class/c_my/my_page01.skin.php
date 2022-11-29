@@ -22,7 +22,11 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
             else { ?>
 
             <div class="id_txt">
-                <p class="ellipsis1"><?php echo $member['mb_id']."(".$member['mb_nick'].")";?></p>
+                <p class="" style="
+    text-align: right;
+">
+                    <?php echo ''.$member['mb_nick'].'<br><span class="ellipsis1" style="font-weight: 700;">'.$member['mb_email']."</span>";?>
+                </p>
                 <!-- <button><span class="ellipsis1">추천코드 CALSQ2M1D 가나다라마바사 아자차카 타파하</span> <img src="../images/ic_up.png" alt=""></button> -->
             </div>
             <div class="profile_imgarea">

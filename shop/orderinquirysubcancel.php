@@ -1,25 +1,6 @@
 <?php
 include_once('./_common.php');
-/*
-$mb_id = $member['mb_id'];
-$type = $_POST['stype'];
-$ment = '부분 환불';
-if($type == 'host') {
-    // 호스트가 취소처리를 할 경우
-    $mb_id = $_POST['uid'];
-    $od_id = $_POST['odid'];
-    $ment = '호스트의 예약 취소';
-} else {
-    // 세션에 저장된 토큰과 폼으로 넘어온 토큰을 비교하여 틀리면 에러
-    if ($token && get_session("ss_token") == $token) {
-        // 맞으면 세션을 지워 다시 입력폼을 통해서 들어오도록 한다.
-        set_session("ss_token", "");
-    } else {
-        set_session("ss_token", "");
-        alert("토큰 에러", G5_SHOP_URL);
-    }
-}
-*/
+
 function get_member_level_select($mb_id, $type='host', $ment='부분 환불', $od_id)
 {
     global $g5, $is_admin;
@@ -41,13 +22,6 @@ function get_member_level_select($mb_id, $type='host', $ment='부분 환불', $o
     $ct = sql_fetch($sql);
 
     $uid = md5($od['od_id'].$od['od_time'].$od['od_ip']);
-    $sendUrl = G5_SHOP_URL."/orderinquiryview.php?od_id=$od_id&amp;uid=$uid&amp;p=history";
-
-    if($type == 'host') {
-        $sendUrl = G5_SHOP_URL."/partner/?ap=moim_membership";
-    } else {
-        $sendUrl = (isset($_POST['sendUrl']) ? $_POST['sendUrl'] : $sendUrl);
-    }
 
     if($od['od_cancel_price'] > 0 || $ct['od_count1'] != $ct['od_count2']) {
         $res['error'] = true;

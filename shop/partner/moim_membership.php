@@ -4,10 +4,14 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 $wr_id = $_GET['wr_id'];
 $exculusiveOutofTimeMoimWhenAdmin = '';
 
-if(!$is_admin) {
+if($is_admin == false) {
+    $afterOneDay = date('Y-m-d', strtotime("+1 hours"));
+    $afterOneTime = date('H:i:s', strtotime("+1 hours"));
     $afterOneHour = date('Y-m-d H:i:s', strtotime("+1 hours"));
-    $exculusiveOutofTimeMoimWhenAdmin = "and (c.moa_form = '자율형' or (c.moa_form = '고정형' and deb.first_day > '".$afterOneHour."')) ";
+    $exculusiveOutofTimeMoimWhenAdmin = "and (c.moa_form = '자율형' or (c.moa_form = '고정형' and deb.first_day > '".$afterOneHour."'))
+        and (a.aplydate > '".$afterOneDay."' or (a.aplydate = '".$afterOneDay."' and a.aplytime > '".$afterOneTime."' )) ";
 }
+
 if($wr_id == '') {
     $query = "select distinct a.*, m.mb_name, m.mb_sex, m.mb_birth, m.mb_hp, m.job_group, m.mb_id as uid, i.it_name as it_name 
         from deb_class_aplyer a left join g5_member m on m.mb_id = a.mb_id left join g5_write_class c on a.wr_id = c.wr_id left join g5_shop_item i on i.it_2 = a.wr_id 

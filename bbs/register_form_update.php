@@ -73,6 +73,11 @@ $agree7          = isset($_POST['agree7'])            ? trim($_POST['agree7'])  
 $agree8          = isset($_POST['agree8'])            ? trim($_POST['agree8'])          : "";
 $invite_code          = isset($_POST['invite_code'])            ? trim($_POST['invite_code'])          : "";
 
+$job_group          = isset($_POST['job_group'])            ? trim($_POST['job_group'])          : "";
+$job_kind          = isset($_POST['job_kind'])            ? trim($_POST['job_kind'])          : "";
+$company_name          = isset($_POST['company_name'])            ? trim($_POST['company_name'])          : "";
+$career          = isset($_POST['career'])            ? trim($_POST['career'])          : "";
+
 $mb_name        = clean_xss_tags($mb_name);
 $mb_email       = get_email_address($mb_id);
 $mb_homepage    = clean_xss_tags($mb_homepage);
@@ -85,6 +90,22 @@ $mb_addr3       = clean_xss_tags($mb_addr3);
 $mb_addr_jibeon = preg_match("/^(N|R)$/", $mb_addr_jibeon) ? $mb_addr_jibeon : '';
 
 
+// 체크
+$nick = "SELECT count(*) cnt from g5_member WHERE mb_nick = '{$mb_nick}'";
+$result = sql_fetch($nick);
+if($result['cnt'] > 0) {
+    alert('이미 등록된 닉네임입니다.', "", true, false);
+}
+
+// 2022.09.04. botbinoo, 14세 체크 로직 추가
+$year = date("Y", time());
+$birthYear = isset($_POST['mb_birth']) ? $_POST['mb_birth'] : date("Y-m-d", time());
+$birthYear = substr($birthYear, 0, 4);
+
+if((int)$year - (int)$birthYear < 14) {
+	alert('14세 이상만 회원가입 하실 수 있습니다.', "", true, false);
+}
+// end 2022.09.04. botbinoo, 14세 체크 로직 추가
 
 if ($w == '' || $w == 'u') {
     if ($msg = empty_mb_id($mb_id))         alert($msg, "", true, true); // alert($msg, $url, $error, $post);
@@ -179,8 +200,8 @@ if ($config['cf_cert_use'] && $cert_type && $md5_cert_no) {
 //        $sql_certify .= " , mb_hp = '{$mb_hp}' ";
         $sql_certify .= " , mb_certify  = '{$cert_type}' ";
         $sql_certify .= " , mb_adult = '{$_SESSION['ss_cert_adult']}' ";
-        $sql_certify .= " , mb_birth = '{$_SESSION['ss_cert_birth']}' ";
-        $sql_certify .= " , mb_sex = '{$_SESSION['ss_cert_sex']}' ";
+//        $sql_certify .= " , mb_birth = '{$_SESSION['ss_cert_birth']}' ";
+//        $sql_certify .= " , mb_sex = '{$_SESSION['ss_cert_sex']}' ";
         $sql_certify .= " , mb_dupinfo = '{$_SESSION['ss_cert_dupinfo']}' ";
         if($w == 'u')
             $sql_certify .= " , mb_name = '{$mb_name}' ";
@@ -188,16 +209,16 @@ if ($config['cf_cert_use'] && $cert_type && $md5_cert_no) {
 //        $sql_certify .= " , mb_hp = '{$mb_hp}' ";
         $sql_certify .= " , mb_certify  = '' ";
         $sql_certify .= " , mb_adult = 0 ";
-        $sql_certify .= " , mb_birth = '{$mb_birth}' ";
-        $sql_certify .= " , mb_sex = '' ";
+//        $sql_certify .= " , mb_birth = '{$mb_birth}' ";
+//        $sql_certify .= " , mb_sex = '' ";
     }
 } else {
     if (get_session("ss_reg_mb_name") != $mb_name || get_session("ss_reg_mb_hp") != $mb_hp) {
 //        $sql_certify .= " , mb_hp = '{$mb_hp}' ";
         $sql_certify .= " , mb_certify = '' ";
         $sql_certify .= " , mb_adult = 0 ";
-        $sql_certify .= " , mb_birth = '{$mb_birth}' ";
-        $sql_certify .= " , mb_sex = '' ";
+//        $sql_certify .= " , mb_birth = '{$mb_birth}' ";
+//        $sql_certify .= " , mb_sex = '' ";
     }
 }
 
@@ -246,6 +267,14 @@ if ($w == '') { /******************** 회원 insert Start **********************
                      agree6 = '{$agree6}',
                      agree7 = '{$agree7}',
                      agree8 = '{$agree8}',
+                     
+                     mb_birth = '{$mb_birth}',
+                    mb_sex = '{$mb_sex}',
+                    job_group = '{$job_group}',
+                    job_kind = '{$job_kind}',
+                    company_name = '{$company_name}',
+                    career = '{$career}',
+
                      mb_status = '대기'
                      {$sql_certify} ";
 
@@ -300,10 +329,24 @@ if ($w == '') { /******************** 회원 insert Start **********************
     if (!$config['cf_use_email_certify'])
         set_session('ss_mb_id', $mb_id);
 
+        
+    {
+        include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
+        $replaceText = ' [모아프렌즈]
+        안녕하세요. '.$mb_name.' 님
+        
+        모아프렌즈에
+        회원가입 해주셔서 
+        진심으로 감사드립니다~😊';
+        $reserve_type = 'NORMAL';
+        $start_reserve_time = date('Y-m-d H:i:s');
+        $reciver = '{"name":"'.$mb_name.'","mobile":"'.$mb_hp.'","note1":"https://\"'.$_SERVER['HTTP_HOST'].'}';
+        sendBfAlimTalk(6, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+    }
     set_session('ss_mb_reg', $mb_id);
 
 	/******************** 회원 insert End ************************************************************************************************/
-echo $sql;
+//echo $sql;
 // exit;
 } else if ($w == 'u') {
     if (!trim($_SESSION['ss_mb_id']))
