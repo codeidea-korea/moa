@@ -421,6 +421,41 @@ if($od['od_pg'] == 'lg') {
     }
 }
 
+
+$sql = "select cart.od_id, wc.wr_subject, mem.mb_name, mem.mb_hp  
+from g5_write_class wc  
+	join g5_shop_item si on wc.wr_id = si.it_2 
+	join g5_shop_cart cart on si.it_id = cart.it_id
+	join g5_member mem on wc.mb_id = mem.mb_id
+	where cart.od_id = '{$od_id}' ";
+$classItems = sql_fetch($sql);
+
+include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
+{
+	$replaceText = ' [모아프렌즈] #{이름} 사원 님!
+	#{비고1} 모임을 신청해 주셔서 감사합니다. 
+	모임 참여 시 주의사항을 확인해 보세요.
+	
+	모임 가이드 보기
+	☞#{비고2}';
+	$reserve_type = 'NORMAL';
+	$start_reserve_time = date('Y-m-d H:i:s');
+	$reciver = '{"name":"'.$member['mb_name'].'","mobile":"'.$member['mb_hp'].'","note1":"'.$classItems['wr_subject'].',"note2":"https:\/\/moafriendshost.notion.site\/4d5d50f6bf2e4534b178ce6c13235b3b"}';
+	sendBfAlimTalk(36, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+}
+{
+	$replaceText = ' [모아프렌즈] [게스트 신청 알림]
+
+	호스트 님께서 오픈하신 #{비고1} 모임에 새로운 게스트님이 참여를 신청하셨습니다!
+	
+	[마이페이지] - [호스트관리모드] - [모임 관리] - [모임 신청자관리]에서
+	게스트 님의 예약을 확정지어 주세요!';
+	$reserve_type = 'NORMAL';
+	$start_reserve_time = date('Y-m-d H:i:s');
+	$reciver = '{"name":"'.$classItems['mb_name'].'","mobile":"'.$classItems['mb_hp'].'","note1":"'.$classItems['wr_subject'].'"}';
+	sendBfAlimTalk(75, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+}
+
 // 주문내역 스킨 불러오기
 //include_once($skin_path.'/orderinquiryview.skin.php');
 include_once(MOA_DETAIL_SKIN . '/d_p_list.skin.php');

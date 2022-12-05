@@ -25,6 +25,45 @@ if($mb_id) {
         $result = sql_query($sql);
     }
 
+    include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
+    $sql = "SELECT m.* FROM g5_member m where m.mb_id in ('{$mb_id}')";
+    $result = sql_query($sql);
+    while($memb = sql_fetch_array($result)) {
+        if($status == '반려'){
+            {
+                $memb = sql_fetch($sql);
+                $replaceText = ' [모아프렌즈] [게스트 승인 반려 알림]
+        
+                #{이름} 사원 님!
+                모아 게스트 승인 요청이 반려되었습니다 :(
+                
+                아래 사유에 해당되는지 확인 후 다시 신청해 주세요!
+                
+                1. 작성해 주신 사용자 정보가 불충분해요!
+                2. 회사 명함, 사업자 증빙 서류 등의 기타 증빙 사진이 선명하지 않아요!';
+                $reserve_type = 'NORMAL';
+                $start_reserve_time = date('Y-m-d H:i:s');
+                $reciver = '{"name":"'.$memb['mb_name'].'","mobile":"'.$memb['mb_hp'].'","note1":""}';
+                sendBfAlimTalk(24, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+            }
+        } else if($status == '승인'){
+            {
+                $sql = "SELECT m.* FROM g5_member m where m.mb_id = '" . $row['mb_id'] . "'";
+                $memb = sql_fetch($sql);
+                $replaceText = ' [모아프렌즈] [게스트 승인 알림]
+    
+                #{이름} 사원 님!
+                게스트 승인이 완료되었습니다!
+                
+                모아에서 즐겁고 알찬 시간 보내세요 :)';
+                $reserve_type = 'NORMAL';
+                $start_reserve_time = date('Y-m-d H:i:s');
+                $reciver = '{"name":"'.$memb['mb_name'].'","mobile":"'.$memb['mb_hp'].'","note1":""}';
+                sendBfAlimTalk(21, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+            }
+        }
+    }
+    
     $sql = "update g5_member set mb_status = '{$status}' where mb_id in ('{$mb_id}')";
 } else {
     $sql = "update g5_member set mb_status = '{$status}'";

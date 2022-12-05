@@ -191,27 +191,30 @@ $colspan = ($is_membership) ? 17 : 16;
 $(function() {
 
     $('#approval_btn').click(function(){
-        if(confirm('정말 회원 탈퇴 처리하시겠습니까?')) {
-            var chk = $('.chk_btn:checked').length;
-            var arr = [];
-            for (var i = 0; i < chk; i++) {
-                arr.push($('.chk_btn:checked').eq(i).val());
-            }
-            $.ajax({
-                type: "POST",
-                url: '/ajax/changeDeleteMemberStatus.php',
-                data: {'status': '승인', 'mb_id': arr},
-                cache: false,
-                async: false,
-                dataType: "json",
-                success: function (data) {
-                    alert('상태가 변경되었습니다.');
-                    location.reload();
-                }
-            })
-        } else {
+        if(!confirm('정말 회원 탈퇴 처리하시겠습니까?')) {
             return false;
         }
+		var chk = $('.chk_btn:checked').length;
+		var arr = [];
+		for (var i = 0; i < chk; i++) {
+			arr.push($('.chk_btn:checked').eq(i).val());
+		}
+		$.ajax({
+			type: "POST",
+			url: '/ajax/changeDeleteMemberStatus.php',
+			data: {'status': '승인', 'mb_id': arr},
+			cache: false,
+			async: false,
+			dataType: "json",
+			success: function (data) {
+				if(data.status == 0){
+					alert('상태가 변경되었습니다.');
+					location.reload();
+				} else {
+					
+				}
+			}
+		})
     })
 
     $('.btnReset').click(function(){

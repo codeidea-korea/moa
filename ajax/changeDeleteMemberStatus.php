@@ -9,8 +9,11 @@ if(is_array($mb_id)) {
     $mb_id = implode("','", $mb_id);
 }
 
+$res = array();
+
 if($mb_id) {
     $today = date("Ymd", time());
+    $res['leave_date'] = $today;
 
     $sql = "select * from g5_member where mb_id in ('{$mb_id}') and mb_apply_yn = 1";
     $result = sql_query($sql);
@@ -39,6 +42,7 @@ if($mb_id) {
 
     $subject = '[MOA] 회원 탈퇴되었습니다.';
     $body = urlencode($html);
+    $res['leave_member_count'] = 0;
 
     while($row = sql_fetch_array($result)) {
         $receiver = '{"name":"'.$row['mb_nick'].'", "email":"'.$row['mb_email'].'", "mobile":"'.$row['mb_hp'].'", "note1":"", "note2":"", "note3":"", "note4":"", "note5":""}';
@@ -74,7 +78,7 @@ if($mb_id) {
             // step 4: 참여자 주문번호별 환불 진행
             // step 5: 조회된 모임내 승인된 참여자 취소 처리
             while($order = sql_fetch_array($orderResult)) {
-                get_member_level_select($order['mb_id'], $type='host', $ment='부분 환불', $order['od_id']);
+                get_member_refund_order($order['mb_id'], $type='host', $ment='부분 환불', $order['od_id']);
             }
             // step 6: 탈퇴할 계정의 모임 폐강 처리
             $sql = "update g5_write_class set moa_status = 5 where wr_id in (".$moim_ids.")";
@@ -91,17 +95,20 @@ if($mb_id) {
             // step 4: 주문번호별 환불 진행
             // step 5: 조회된 모임내 승인된 참여자 취소 처리
             while($order = sql_fetch_array($orderResult)) {
-                get_member_level_select($order['mb_id'], $type='host', $ment='부분 환불', $order['od_id']);
+                get_member_refund_order($order['mb_id'], $type='host', $ment='부분 환불', $order['od_id']);
             }
         }
 
         // step 7: 탈퇴 처리
         $sql = "update g5_member set mb_leave_date = '{$today}' where mb_id = '".$row['mb_id']."'";
         sql_fetch($sql);
+        $res['leave_member_count'] = $res['leave_member_count'] + 1;
 
         sendDirectMail($subject, $body, $config['cf_admin_email'], $config['cf_admin_email_name'], $receiver, $bodytag, $mail_type);
-        sendBfAlimTalk(3, '[모아]에서 탈퇴되었습니다. 등록하셨던 모임, 참여한 모임에서 모두 해지 되었습니다. 카드사 환불기간후 약관에 따라 환불됩니다.', 'NORMAL', $receiver, null);
+        
+        $start_reserve_time = date('Y-m-d H:i:s');
+        sendBfAlimTalk(3, '[모아]에서 탈퇴되었습니다. 등록하셨던 모임, 참여한 모임에서 모두 해지 되었습니다. 카드사 환불기간후 약관에 따라 환불됩니다.', 'NORMAL', $receiver, $start_reserve_time);
     }
 
-    echo json_encode($result);
+//    echo json_encode($res);
 }

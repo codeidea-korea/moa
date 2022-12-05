@@ -240,7 +240,7 @@ if($ap == 'list') {
     $status = $_POST['status'];
     $idx = $_POST['idx'];
     
-    $sql = "select member.*, class.wr_subject, class.moa_status from deb_class_aplyer player, g5_member member, g5_write_class class   
+    $sql = "select member.*, class.wr_subject, class.moa_addr1, player.aplydate, player.aplytime, class.moa_status from deb_class_aplyer player, g5_member member, g5_write_class class   
             where player.idx = '{$idx}' and member.mb_id = player.mb_id and class.wr_id = player.wr_id ";
     $row = sql_fetch($sql);
 
@@ -289,6 +289,21 @@ if($ap == 'list') {
         $message = '안녕하세요. MOA 입니다. ['.$wr_subject.'] 모임에 예약 확정되었습니다. 모임 시간 : '.$row['aplydate'].' '.$row['aplytime'];             //필수입력
         include_once(G5_LIB_PATH.'/send_sms.lib.php');
         $response = sendSMS($row['mb_hp'], $title, $message, $wr_subject);
+    }
+    include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
+    {
+        $replaceText = ' [모아프렌즈] #{이름} 사원 님께서 신청해 주신 모임의 예약이 확정되었습니다!
+
+        모임명: #{비고1}
+        일시: #{비고2}
+        장소: #{비고3}';
+        $reserve_type = 'NORMAL';
+        $start_reserve_time = date('Y-m-d H:i:s');
+        $reciver = '{"name":"'.$row['mb_name'].'","mobile":"'.$row['mb_hp'].'",
+            "note1":"'.$row['mb_name'].'",
+            "note2":"'.$row['aplydate'] . ' '. $row['aplytime'].'",
+            "note3":"'.$row['moa_addr1'].'"}';
+        sendBfAlimTalk(39, $replaceText, $reserve_type, $reciver, $start_reserve_time);
     }
 
     $sql = " update deb_class_aplyer
@@ -1150,6 +1165,25 @@ if($ap == 'list') {
                 }
             }
         }
+    }
+
+    include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
+    {
+        
+        $sql = "SELECT m.* FROM g5_member m where m.mb_id = ('{$mb_id}')";
+        $memb = sql_fetch($sql);
+        $replaceText = ' [모아프렌즈] [모임 신청 완료]
+
+        호스트 님께서 신청해 주신 #{비고1} 모임오픈 신청이 정상적으로 제출되었습니다!
+
+        모임 검토 및 승인 완료 후 모임이 노출됩니다.
+        빠르게 처리해드릴게요. 조금만 기다려 주세요!
+
+        모임 승인까지 최소 1~3일이 소요될 수 있습니다.';
+        $reserve_type = 'NORMAL';
+        $start_reserve_time = date('Y-m-d H:i:s');
+        $reciver = '{"name":"'.$memb['mb_name'].'","mobile":"'.$memb['mb_hp'].'","note1":"'.$wr_subject.'"}';
+        sendBfAlimTalk(66, $replaceText, $reserve_type, $reciver, $start_reserve_time);
     }
 	
     // 사용자 코드 실행

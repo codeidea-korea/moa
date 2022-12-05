@@ -538,7 +538,13 @@ if ($ca['ca_include_head'] && is_include_path_check($ca['ca_include_head']))
 else
     include_once(G5_SHOP_PATH.'/_head.php');
 
+$sql = " select wc.*, item.it_id from g5_write_class wc join g5_shop_item item on wc.wr_id = item.it_2 where item.it_id = '$it_id'";
+$tmp_class = sql_fetch($sql);
+$board['bo_table'] = 'class';
+$file = get_file('class', $tmp_class['wr_id']);
+	
 $item_skin_file = $item_skin_path.'/item.skin.php';
+
 //echo "스킨영역 대신 <BR>";
 if(file_exists($item_skin_file)) {
 	include_once($item_skin_file);

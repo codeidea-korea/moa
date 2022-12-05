@@ -175,4 +175,23 @@ if ($w == '' || $w == 'r') {
 
 delete_cache_latest($bo_table);
 
+
+$sql = "select * from g5_shop_item where it_id='".$it_id."'";
+$tmpr = sql_fetch($sql);
+$sql = "select * from g5_write_class where wr_id=".$tmpr['it_2'];
+$tmpi = sql_fetch($sql);
+$sql = "select * from g5_member where mb_id=".$tmpi['mb_id'];
+$class_owner = sql_fetch($sql);
+
+include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
+{
+    $replaceText = ' [모아프렌즈] 띠링! 💌
+    '.$tmpi['wr_subject'].' 모임에 참여한 게스트에게서 후기가 도착했어요! 
+    
+    [마이페이지] - [호스트관리모드] - [모임 관리] - [후기 관리]에서 소중한 후기를 확인해 보세요!';
+    $reserve_type = 'NORMAL';
+    $start_reserve_time = date('Y-m-d H:i:s');
+    $reciver = '{"name":"'.$class_owner['mb_name'].'","mobile":"'.$class_owner['mb_hp'].'","note1":"'.$tmpi['wr_subject'].'"}';
+    sendBfAlimTalk(90, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+}
 alert('리뷰가 등록되었습니다.', '/shop/item.php?it_id=' . $it_id);

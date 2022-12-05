@@ -101,9 +101,9 @@ function sendBfAlimTalk($templetNo, $replaceText, $reserve_type = 'NORMAL', $rec
 
     //curl 에러 확인
     if(curl_errno($ch)){
-        echo 'Curl error: ' . curl_error($ch);
+//        echo 'Curl error: ' . curl_error($ch);
     }else{
-        print_r($response);
+//        print_r($response);
     }
 
     curl_close ($ch);

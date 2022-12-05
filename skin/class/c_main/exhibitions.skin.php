@@ -17,6 +17,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                     <a href="/shop/item.php?it_id=<?php echo $row['it_id'] ?>">
                         <div class="bsw">
                             <div class="title_area">
+                                <!--
                                 <div class="t_text">
                                     <?php echo $row['it_name']; ?>
                                 </div>
@@ -24,6 +25,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                                     <p><?php echo $row['it_model'] ?>
                                     </p>
                                 </div>
+                                -->
                             </div>
                             <img src="<?php echo filter_var($row['as_thumb'], FILTER_VALIDATE_URL) != '' ? $row['as_thumb'] : G5_URL . "/images/moa_logo.svg" ?>" alt="">
                             <div class="con_txt">

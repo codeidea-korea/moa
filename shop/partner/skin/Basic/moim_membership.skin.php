@@ -108,7 +108,10 @@ include_once($skin_path.'/pop.cancel-reservation.php'); //예약취소
 								취소
 							<?php }else{?>
 								<span data-href="#pop-confirm-reservation" class="pop-inline btn small" data-idx="<?php echo $row['idx']; ?>">예약확정</span>
+								
+								<? if(strtotime($row['aplydate']) > strtotime(date("Y-m-d") . " +1 days")) { ?>
 								<span data-href="#pop-cancel-reservation" class="pop-inline btn small" onclick="setCancelPup('<?php echo $aRow['od_id']; ?>', '<?php echo $row['uid']; ?>')" data-orderid="<?php echo $aRow['od_id']; ?>" data-userid="<?php echo $row['uid']; ?>">취소</span>
+								<? } ?>
 							<?php }?>
 							
 						</td>

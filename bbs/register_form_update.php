@@ -77,6 +77,7 @@ $job_group          = isset($_POST['job_group'])            ? trim($_POST['job_g
 $job_kind          = isset($_POST['job_kind'])            ? trim($_POST['job_kind'])          : "";
 $company_name          = isset($_POST['company_name'])            ? trim($_POST['company_name'])          : "";
 $career          = isset($_POST['career'])            ? trim($_POST['career'])          : "";
+$allowed_marketting_news          = isset($_POST['allowed_marketting_news'])            ? trim($_POST['allowed_marketting_news'])          : "0";
 
 $mb_name        = clean_xss_tags($mb_name);
 $mb_email       = get_email_address($mb_id);
@@ -222,6 +223,10 @@ if ($config['cf_cert_use'] && $cert_type && $md5_cert_no) {
     }
 }
 
+if($allowed_marketting_news == "1") {
+    $query_allowed_marketting_news = ' allowed_marketting_news = 1, allowed_marketting_news_date = NOW(), ';
+}
+
 if ($w == '') { /******************** 회원 insert Start ************************************************************************************************/
     $sql = " insert into {$g5['member_table']}
                 set mb_id = '{$mb_id}',
@@ -274,6 +279,8 @@ if ($w == '') { /******************** 회원 insert Start **********************
                     job_kind = '{$job_kind}',
                     company_name = '{$company_name}',
                     career = '{$career}',
+
+                    {$query_allowed_marketting_news}
 
                      mb_status = '대기'
                      {$sql_certify} ";
@@ -389,6 +396,10 @@ if ($w == '') { /******************** 회원 insert Start **********************
                     mb_addr_jibeon = '{$mb_addr_jibeon}',
                     mb_signature = '{$mb_signature}',
                     mb_profile = '{$mb_profile}',
+
+                    
+                    {$query_allowed_marketting_news}
+                    
                     mb_1 = '{$mb_1}',
                     mb_2 = '{$mb_2}',
                     mb_3 = '{$mb_3}',

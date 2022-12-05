@@ -14,10 +14,12 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
             <hr class="hr02">
             
             <div class="tab_content p0 bt" id="host_content">
+                <!--
                 <div class="h_termbox">
                     <p class="h_terms">이용약관</p>
                     <p class="h_thermstxt">Moa 서비스 이용 계약을 포한하는 약관(이용약관, 개인 정보 취급 방침)이니 꼭 확인해주세요. (Moa 이용 수수료율은 [중계수수료 (13%) + PG수수료(5%) / VAT 10%별도]이며, 자세한 사항은 이용약관을 확인해주시기 바랍니다.</p>
                 </div>
+-->
                 <div class="t_list_area">
                     <input type="checkbox" id="box1">
                     <label for="box1" class="terms_list">개인정보 취급 방침</label>

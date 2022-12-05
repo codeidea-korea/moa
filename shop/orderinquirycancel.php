@@ -47,7 +47,7 @@ if($od['od_cancel_price'] > 0 || $ct['od_count1'] != $ct['od_count2']) {
 
 $cancel_price = $od['od_cart_price'];
 // 첫 모임 남은 날짜 기준 환불 수수료 처리 
-$sql ="select player.idx, player.status, cart.od_id  
+$sql ="select player.idx, player.status, cart.od_id, player.aplydate   
     from deb_class_aplyer player 
         join g5_shop_item item on player.wr_id = item.it_2 
         join g5_shop_cart cart on item.it_id = cart.it_id and cart.od_id = '{$od_id}' 
@@ -56,6 +56,7 @@ $player = sql_fetch($sql);
 
 if($player['status'] == '예약확정') {
     // 부분 취소 체크
+    /*
     $sql = "select cart.od_id, deb.day 
         from deb_class_item deb 
             join g5_shop_item si on si.it_id = deb.it_id 
@@ -65,12 +66,13 @@ if($player['status'] == '예약확정') {
         order by deb.day asc 
         limit 1 ";
     $classItems = sql_fetch($sql);
+    */
 
     $today = date("Y-m-d");
-    if(empty($classItems['day']) || $classItems['day'] == ''){
+    if(empty($player['aplydate']) || $player['aplydate'] == ''){
         // 자율형이던가, 날짜 미기입 과거건 등 시스템 이슈는 환불처리
     } else {
-        $targetTime = strtotime($classItems['day']);
+        $targetTime = strtotime($player['aplydate']);
         if($targetTime < strtotime('-6 days')) {
             $remain_price = 0;
         } else if($targetTime > strtotime('-1 days')) {
@@ -124,24 +126,43 @@ if($od['od_tno']) {
             include_once(G5_SHOP_PATH.'/settle_inicis.inc.php');
             $cancel_msg = iconv_euckr($ment . '-'.$cancel_memo);
 
-            /*********************
-             * 3. 취소 정보 설정 *
-             *********************/
-            $inipay->SetField("type",      ($isAllCancel == 1 ? "Refund" : "PartialRefund"));                        // 고정 (절대 수정 불가)
-            $inipay->SetField("mid",       $default['de_inicis_mid']);       // 상점아이디
-            /**************************************************************************************************
-             * admin 은 키패스워드 변수명입니다. 수정하시면 안됩니다. 1111의 부분만 수정해서 사용하시기 바랍니다.
-             * 키패스워드는 상점관리자 페이지(https://iniweb.inicis.com)의 비밀번호가 아닙니다. 주의해 주시기 바랍니다.
-             * 키패스워드는 숫자 4자리로만 구성됩니다. 이 값은 키파일 발급시 결정됩니다.
-             * 키패스워드 값을 확인하시려면 상점측에 발급된 키파일 안의 readme.txt 파일을 참조해 주십시오.
-             **************************************************************************************************/
-            $inipay->SetField("admin",     $default['de_inicis_admin_key']); //비대칭 사용키 키패스워드
-            $inipay->SetField("tid",       $od['od_tno']);                   // 취소할 거래의 거래아이디
-            $inipay->SetField("cancelmsg", $cancel_msg);                     // 취소사유
             if($isAllCancel == 1) {
-                $inipay->SetField("price", $cancel_price);                   
-                $inipay->SetField("confirmPrice", $remain_price);            
-                $inipay->SetField("clientIp", $_SERVER["REMOTE_ADDR"]);            
+                /*********************
+                 * 3. 취소 정보 설정 *
+                 *********************/
+                $inipay->SetField("type",      "Refund");                        // 고정 (절대 수정 불가)
+                $inipay->SetField("mid",       $default['de_inicis_mid']);       // 상점아이디
+                /**************************************************************************************************
+                 * admin 은 키패스워드 변수명입니다. 수정하시면 안됩니다. 1111의 부분만 수정해서 사용하시기 바랍니다.
+                 * 키패스워드는 상점관리자 페이지(https://iniweb.inicis.com)의 비밀번호가 아닙니다. 주의해 주시기 바랍니다.
+                 * 키패스워드는 숫자 4자리로만 구성됩니다. 이 값은 키파일 발급시 결정됩니다.
+                 * 키패스워드 값을 확인하시려면 상점측에 발급된 키파일 안의 readme.txt 파일을 참조해 주십시오.
+                 **************************************************************************************************/
+                $inipay->SetField("admin",     $default['de_inicis_admin_key']); //비대칭 사용키 키패스워드
+                $inipay->SetField("tid",       $od['od_tno']);                   // 취소할 거래의 거래아이디
+                $inipay->SetField("cancelmsg", $cancel_msg);                     // 취소사유
+            } else {
+                $vat_mny       = round((int)$tax_mny / 1.1);
+                
+                $currency      = 'WON';
+                $oldtid        = $od['od_tno'];
+                $buyeremail    = $od['od_email'];
+                
+                /***********************
+                 * 3. 재승인 정보 설정 *
+                 ***********************/
+                $inipay->SetField("type",          "repay");                         // 고정 (절대 수정 불가)
+                $inipay->SetField("pgid",          "INIphpRPAY");                    // 고정 (절대 수정 불가)
+                $inipay->SetField("subpgip",       "203.238.3.10");                  // 고정
+                $inipay->SetField("mid",           $default['de_inicis_mid']);       // 상점아이디
+                $inipay->SetField("admin",         $default['de_inicis_admin_key']); //비대칭 사용키 키패스워드
+                $inipay->SetField("oldtid",        $oldtid);                         // 취소할 거래의 거래아이디
+                $inipay->SetField("currency",      $currency);                       // 화폐단위
+                $inipay->SetField("price",         $cancel_price);                   // 취소금액
+                $inipay->SetField("confirm_price", $remain_price);                   // 승인요청금액
+                $inipay->SetField("buyeremail",    $buyeremail);                     // 구매자 이메일 주소
+                $inipay->SetField("tax",           0);                            // 부가세금액
+                $inipay->SetField("taxfree",       0);                        // 비과세금액
             }   
 
             /****************
@@ -160,14 +181,42 @@ if($od['od_tno']) {
              * (현금영수증 발급 취소시에만 리턴됨)                          *
              ****************************************************************/
 
-            $res_cd  = $inipay->getResult('ResultCode');
-            $res_msg = $inipay->getResult('ResultMsg');
-
-            if($res_cd != '00') {
-                if($res_cd == '01') {
-                    alert('이미 취소된 거래입니다.');
+            if($isAllCancel == 1){
+                $res_cd  = $inipay->getResult('ResultCode');
+                $res_msg = $inipay->getResult('ResultMsg');
+    
+                if($res_cd != '00') {
+                    if($res_cd == '01') {
+                        alert('이미 취소된 거래입니다.' . iconv_utf8($res_msg));
+                    }
+                    alert(iconv_utf8($res_msg).' 코드 : '.$res_cd);
                 }
-                alert(iconv_utf8($res_msg).' 코드 : '.$res_cd);
+            } else {
+                if($inipay->getResult('ResultCode') == '00') {
+                    // 환불금액기록
+                   $tno      = $inipay->getResult('PRTC_TID');
+                   $re_price = $inipay->getResult('PRTC_Price');
+               
+                   $sql = " update {$g5['g5_shop_order_table']}
+                               set od_refund_price = od_refund_price + '$re_price',
+                                   od_shop_memo = concat(od_shop_memo, \"$mod_memo\")
+                               where od_id = '{$od['od_id']}'
+                                 and od_tno = '$tno' ";
+                   sql_query($sql);
+               
+                   // 미수금 등의 정보 업데이트
+                   $info = get_order_info($od_id);
+               
+                   $sql = " update {$g5['g5_shop_order_table']}
+                               set od_misu     = '{$info['od_misu']}',
+                                   od_tax_mny  = '{$info['od_tax_mny']}',
+                                   od_vat_mny  = '{$info['od_vat_mny']}',
+                                   od_free_mny = '{$info['od_free_mny']}'
+                               where od_id = '$od_id' ";
+                   sql_query($sql);
+                } else {
+                    alert(iconv_utf8($inipay->GetResult("ResultMsg")).' 코드 : '.$inipay->GetResult("ResultCode"));
+                }
             }
             break;
         default:
@@ -175,7 +224,7 @@ if($od['od_tno']) {
 
             $_POST['tno'] = $od['od_tno'];
             $_POST['req_tx'] = 'mod';
-            if($isAllCancel == 1) {
+            if($isAllCancel != 1) {
                 $_POST['mod_type'] = 'STSC';
             } else {
                 $_POST['mod_type'] = 'STPC';
@@ -229,5 +278,80 @@ sql_query($sql);
 if ($od['od_receipt_point'] > 0)
     insert_point($mb_id, $od['od_receipt_point'], "주문번호 $od_id " . $ment);
 
+if($type == 'host') {
+    include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
+    $sql = "select cart.od_id, wc.wr_subject, mem.mb_name, mem.mb_hp  
+    from g5_write_class wc  
+        join g5_shop_item si on wc.wr_id = si.it_2 
+        join g5_shop_cart cart on si.it_id = cart.it_id
+        join g5_member mem on wc.mb_id = mem.mb_id
+        where cart.od_id = '{$od_id}' ";
+    $classItems = sql_fetch($sql);
+
+    {
+        $sql = "select mem.*   
+        from g5_shop_cart cart 
+            join g5_member mem on cart.mb_id = mem.mb_id
+            where cart.od_id = '{$od_id}' ";
+        $mem = sql_fetch($sql);
+
+        $replaceText = ' [모임 신청 취소 안내]
+ 
+        #{이름} 사원 님께서 신청해 주신 #{비고1} 모임이 
+        #{비고2}의 사유로 아쉽게도 신청 취소되었습니다 :(
+        
+        모시지 못하게 되어 대단히 안타깝습니다.
+        다음에 더 즐거운 모임에서 꼭 뵐 수 있길 바랍니다.
+        
+        감사합니다!';
+        $reserve_type = 'NORMAL';
+        $start_reserve_time = date('Y-m-d H:i:s');
+        $reciver = '{"name":"'.$mem['mb_name'].'","mobile":"'.$mem['mb_hp'].'",
+            "note1":"'.$classItems['wr_subject'].'",
+            "note2":"'.$cancel_memo.'"}';
+        sendBfAlimTalk(42, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+    }
+} else {
+    $sql = "select cart.od_id, wc.wr_subject, mem.mb_name, mem.mb_hp  
+    from g5_write_class wc  
+        join g5_shop_item si on wc.wr_id = si.it_2 
+        join g5_shop_cart cart on si.it_id = cart.it_id
+        join g5_member mem on wc.mb_id = mem.mb_id
+        where cart.od_id = '{$od_id}' ";
+    $classItems = sql_fetch($sql);
+
+    include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
+    {
+        $sql = "select mem.*   
+        from g5_shop_cart cart 
+            join g5_member mem on cart.mb_id = mem.mb_id
+            where cart.od_id = '{$od_id}' ";
+        $mem = sql_fetch($sql);
+
+        $replaceText = ' [모아프렌즈] [결제 취소 안내]
+
+        #{이름} 사원 님께서 신청해 주신 #{비고1} 모임의 결제가
+        정상적으로 취소되었습니다.
+        
+        결제 금액은 환불정책에 따라 환불되며, 영업일 기준 3~7일이 소요될 수 있습니다.
+        
+        감사합니다.';
+        $start_reserve_time = date('Y-m-d H:i:s');
+        $reciver = '{"name":"'.$mem['mb_name'].'","mobile":"'.$mem['mb_hp'].'","note1":"'.$classItems['wr_subject'].'"}';
+        sendBfAlimTalk(45, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+    }
+    {
+        $replaceText = ' [모아프렌즈] [게스트 신청 취소]
+
+        #{비고1} 모임 게스트가 신청을 취소했습니다 ㅠ.ㅠ
+        
+        [마이페이지] - [호스트관리모드] - [모임 관리] - [모임 신청자관리]에서
+        참석 인원을 다시 한 번 확인해 주세요!';
+        $reserve_type = 'NORMAL';
+        $start_reserve_time = date('Y-m-d H:i:s');
+        $reciver = '{"name":"'.$classItems['mb_name'].'","mobile":"'.$classItems['mb_hp'].'","note1":"'.$classItems['wr_subject'].'"}';
+        sendBfAlimTalk(78, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+    }
+}
 goto_url($sendUrl);
 ?>

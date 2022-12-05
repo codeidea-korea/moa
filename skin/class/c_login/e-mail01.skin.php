@@ -611,6 +611,13 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                                 </p>
                             </div>
                         </div> <!-- END OF TOGGLE -->
+                        <div class="all_agree">
+                            <span class="title-name">
+                                <input type="checkbox" name="allowed_marketting_news" value="1" id="allowed_marketting_news">
+                                <label for="allowed_marketting_news">마케팅 정보 수신 동의 (선택)</label>
+                            </span>
+                        </div>
+
                     </div>
                 </div>
                 <!-- 1128 추가 끝 -->
@@ -633,7 +640,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
             var slider2 = new rSlider({
                 target: '#slider2',
-                values: ['1년', '2년', '3년', '4년', '5년~'],
+                        values: ['1', '2', '3', '4', '5'],
                 range: false,
                 set: [2],
                 tooltip: true,

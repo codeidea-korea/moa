@@ -31,7 +31,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                             <?php echo ($member['photo']) ? '<img src="'.$member['photo'].'" alt="">' : '<span class="no-img"></span>'; //사진 ?>
                             </div>
 							<div class="inner">
-								<input type="file" name="mb_icon2" id="upload-01" class="preview">
+								<input type="file" name="pt_file" id="upload-01" class="preview">
 								<label for="upload-01" class="upload-btn">사진 수정하기</label>
 								<p class="msg">2MB 이하의 png, jpg파일로 올려주세요.</p>
 							</div>

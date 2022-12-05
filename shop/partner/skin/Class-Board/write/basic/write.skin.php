@@ -51,16 +51,26 @@ if(!$header_skin) {
 							파일 유형 : JPG, PNG, GIF
 						</p>										
 					</div>
-					<input type="file" name="bf_file[]" id="upload-011">
-					<input type="file" name="bf_file[]" id="upload-012">
-					<input type="file" name="bf_file[]" id="upload-013">
-					<input type="file" name="bf_file[]" id="upload-014">
-					<input type="file" name="bf_file[]" id="upload-015">
+					<input type="file" name="bf_file[]" id="upload-011" <? echo 'data-key="'.date("Y-m-d").'1"'; ?> value="<? echo addslashes(get_text($file[0]['bf_content'])); ?>">
+					<input type="file" name="bf_file[]" id="upload-012" <? echo 'data-key="'.date("Y-m-d").'2"'; ?> value="<? echo addslashes(get_text($file[1]['bf_content'])); ?>">
+					<input type="file" name="bf_file[]" id="upload-013" <? echo 'data-key="'.date("Y-m-d").'3"'; ?> value="<? echo addslashes(get_text($file[2]['bf_content'])); ?>">
+					<input type="file" name="bf_file[]" id="upload-014" <? echo 'data-key="'.date("Y-m-d").'4"'; ?> value="<? echo addslashes(get_text($file[3]['bf_content'])); ?>">
+					<input type="file" name="bf_file[]" id="upload-015" <? echo 'data-key="'.date("Y-m-d").'5"'; ?> value="<? echo addslashes(get_text($file[4]['bf_content'])); ?>">
 							
 					<ul class="upImg-list mt5">
                         <li>
-							<img src="<?php echo $write['as_thumb'] ?>"><span class="del"></span>
+							<img src="<?php echo $write['as_thumb'] ?>"><span class="del" <? echo 'data-key="'.date("Y-m-d").$i.'"'; ?>></span>
 						</li>
+						<?
+						if ($w == "u") {
+							for ($i=1; $i<$file['count']; $i++) {
+								echo '
+								<li>
+									'.($file[$i]['view']).'<span class="del" data-key="'.date("Y-m-d").$i.'"></span>
+								</li>';
+							}
+						}
+						?>
                         <li><label for="upload-01" class="upload-empty">사진 추가</label></li>
 					</ul>
 				</div>
@@ -593,6 +603,8 @@ if(!$header_skin) {
 				</div> -->
 			</div>
 		</div>
+		<?
+		/*
 		<div class="wr-list">
 			<div class="wr-list-label">키워드(해시태그)<small class="block gray">(선택)</small></div>
 			<div class="wr-list-con">
@@ -607,6 +619,8 @@ if(!$header_skin) {
 				</div> -->
 			</div>
 		</div>
+		*/
+		?>
 		<?php 
 			$statuscombo = array(
 				'0'=>'준비',
@@ -905,7 +919,7 @@ function add_moim_program3_list() {
 
 var uploadKey = 1;
 //업로드 이미지 미리보기
-$('.fileContainer input[type="file"].multiple').each(function(index) {
+$('.fileContainer input[type="file"]').each(function(index) {
 	var inp = $(this);
 	var upload = $(this)[0];
 	$(this).parent().parent().find('.upImg-list').attr('id', 'holder_' + index);
@@ -922,8 +936,9 @@ $('.fileContainer input[type="file"].multiple').each(function(index) {
 			img.onload = function(e) {
 				var imgtag = '<img src="' + reader.result + '">';
 				//holder.children('img').remove();
-				if(img.width != 1000 || img.height != 1000) {
-					alert('가로/세로는 1000px 이어야 합니다.');
+//				if(img.width != 1000 || img.height != 1000) {
+				if(img.width != img.height) {
+					alert('가로/세로는 같은 사이즈여야 합니다.');
 					console.log(img.width);
 					console.log(img.height);
 					return;
@@ -1043,7 +1058,7 @@ function fwrite_submit(f) {
 	<?
 	if($w == '') {
 		?>
-		var file = $('#upload-01').val();
+		var file = $('#upload-011').val();
 		if(!file || file == '') {
 			alert("모임 대표이미지를 등록해주세요.");
 			return false;
@@ -1111,7 +1126,20 @@ function fwrite_submit(f) {
 	}
 
 
-//	if ($('input[name*=cls_day]').val() == ""){ alert('모임스케쥴을 입력하세요.'); return false; }
+	if ($('input[name*=cls_day]').val() == ""){ 
+//		alert('모임스케쥴을 입력하세요.'); return false; 
+	} else {
+		if ($('input[name*=cls_time]').val() == ""){ 
+			alert('모임 시각(시간)을 입력하세요.'); return false; 
+		}
+		if ($('input[name*=cls_minute]').val() == ""){ 
+			alert('모임 시각(분)을 입력하세요.'); return false; 
+		}
+		if ($('input[name*=cls_timelimit]').val() == ""){ 
+			alert('모임 진행시간을 입력하세요.'); return false; 
+		}
+	}
+	// $('input[name*="cls_timelimit"]').val()
 	
 	if (checkedGatherType != "자율형" && $('input[name*=cls_day]').val() == ""){
 		alert('모임스케쥴을 입력하세요.');

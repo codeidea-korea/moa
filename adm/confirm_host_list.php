@@ -7,6 +7,7 @@ include_once('./_common.php');
 		if (!count($_POST['chk'])) {
 			alert($_POST['act_button']." 하실 항목을 하나 이상 체크하세요.");
 		}
+		include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
 
 		$pt_register = date("Ymd"); //등록일
 		for ($i=0; $i<count($_POST['chk']); $i++) {
@@ -34,6 +35,24 @@ include_once('./_common.php');
 				$cf_host_reg_point = isset($config['cf_host_reg_point']) && $config['cf_host_reg_point'] > 0 ? $config['cf_host_reg_point'] : 0;
 				$sql = "update g5_member set mb_point = mb_point + {$cf_host_reg_point} where mb_id = '{$_POST['pt_id'][$k]}' ";
 				$user = sql_fetch($sql);
+			}
+			
+			{
+				$sql = "SELECT m.* FROM g5_member m where m.mb_id = '{$pt_id}'";
+				$memb = sql_fetch($sql);
+				$replaceText = ' [모아프렌즈] [호스트 승인 알림]
+
+				#{이름} 호스트 님!
+				호스트 신청 승인이 완료되었습니다!
+				
+				아래 링크를 통해 모임 개설 방법을 안내해 드릴게요!
+				
+				모임 개설 가이드 보기
+				☞#{비고1}';
+				$reserve_type = 'NORMAL';
+				$start_reserve_time = date('Y-m-d H:i:s');
+				$reciver = '{"name":"'.$memb['mb_name'].'","mobile":"'.$memb['mb_hp'].'","note1":"https:\/\/moafriendshost.notion.site\/0ce44224a51746d2be52e2c05a2303ac"}';
+				sendBfAlimTalk(60, $replaceText, $reserve_type, $reciver, $start_reserve_time);
 			}
 		}
 

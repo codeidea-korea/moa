@@ -87,7 +87,7 @@ if($nav_title) {
 }
 
 if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level'] < 3)) {
-    alert('승인된 회원만 조회가 가능합니다.', G5_URL);
+    alert('마이프로필에서 소속을 인증해주세요.', G5_URL);
 }
 ?>
 <!-- <link rel="stylesheet" href="/dist/typicons.css">
@@ -112,6 +112,11 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
 						?>
                         <img src="<?php echo $data['as_thumb']; ?>" alt="" height="298px">
                     </div>
+						<?
+						for ($i=1; $i<$file['count']; $i++) {
+							echo '<div class="swiper-slide">'.($file[$i]['view']).'</div>';
+						}
+						?>
                     <?php
                         $likechk = checkLikeOn('class',$it_id, $member['mb_id']);
                         $likeon = ($likechk)?"on":"";
@@ -340,8 +345,16 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
                     <?php } ?>
 					<!-- map -->
 					<div class="mt25">
-						<div id="map" style="width:700px;height:600px;"></div>
-					</div>
+						<div id="map" style="width:700px;height:200px;">
+						<!-- 마커 코드 -->
+						<!--
+						<div class="marker_custom" style="top:0;left:0;">
+							<img src="../../../../skin/apms/item/MoaItem/img/marker_ic.png" alt="">
+						</div>
+						-->
+						<!-- 마커 코드 끝 -->
+						</div>
+					</div>					
 					<!--신고버튼-->
 					<div class="d_tit cr mt14">
 						<div class="com_chip color_red">
@@ -879,7 +892,7 @@ function report_btn(val){
 								if ($it['it_price'] == $it['it_cust_price']){
 									echo number_format($it['it_price']) . '원';
 								}else{
-									echo '<s>' . number_format($it['it_cust_price']) . '원</s><br>' . number_format($it['it_price']) . '원';
+									echo '<s>' . number_format($it['it_cust_price']) . '원</s>' . number_format($it['it_price']) . '원';
 								}
 							}else{
 								echo "무료";
@@ -976,11 +989,25 @@ function report_btn(val){
 
                         var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
+						var random_x = (Math.random() * 3) / 100000000;
+						var random_y = (Math.random() * 3) / 100000000;
+
+						const markeroverlay = new kakao.maps.CustomOverlay({
+							content: '<div class="marker_custom">'
+								+ '    <img src="/skin/apms/item/MoaItem/img/marker_ic.png" alt="">'
+								+ '</div>',
+							position: new kakao.maps.LatLng(Number(result[0].y) + random_x, Number(result[0].x) + random_y),
+							map: map
+						});
+
+						markeroverlay.setMap(map);
+/*
                         // 결과값으로 받은 위치를 마커로 표시합니다
                         var marker = new kakao.maps.Marker({
                             map: map,
                             position: coords
                         });
+						*/
 
                         // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
                         map.setCenter(coords);

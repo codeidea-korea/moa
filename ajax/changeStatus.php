@@ -9,10 +9,11 @@ if(is_array($wr_id)) {
     $wr_id = implode(',', $wr_id);
 }
 
+include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
 
 if($status == 2) {
     
-    $sql = "SELECT m.* FROM g5_write_class cl left join g5_member m on cl.mb_id = m.mb_id where cl.wr_id IN ('{$wr_id}')";
+    $sql = "SELECT m.*, cl.wr_subject FROM g5_write_class cl left join g5_member m on cl.mb_id = m.mb_id where cl.wr_id IN ('{$wr_id}')";
     $result = sql_query($sql);
 
     $html = '<!doctype html>
@@ -68,7 +69,22 @@ if($status == 2) {
 */
 
 //        $data = $row;
+        {
+            $replaceText = ' [모아프렌즈] [모임 신청 반려]
+
+            호스트 님께서 신청해 주신 #{비고1} 모임의 승인이 반려되었습니다 :(
+            
+            아래 링크를 통해 모임 개설 유의사항을 다시 한 번 확인 하시고 수정 부탁 드립니다!
+            
+            모임 개설 가이드 보기
+            ☞#{비고2}';
+            $reserve_type = 'NORMAL';
+            $start_reserve_time = date('Y-m-d H:i:s');
+            $reciver = '{"name":"'.$row['mb_name'].'","mobile":"'.$row['mb_hp'].'","note1":"'.$row['wr_subject'].'","note2":"https:\/\/moafriendshost.notion.site\/0ce44224a51746d2be52e2c05a2303ac"}';
+            sendBfAlimTalk(72, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+        }
     }
+    exit;
     
     if($wr_id) {
         $sql = "update g5_write_class set moa_status = {$status}, moa_refuse_reason = '{$refuse_msg}' where wr_id in ('{$wr_id}')";
@@ -81,6 +97,24 @@ if($status == 2) {
 
 
 if($wr_id) {
+    $sql = "SELECT m.*, cl.wr_subject FROM g5_write_class cl left join g5_member m on cl.mb_id = m.mb_id where cl.wr_id IN ('{$wr_id}')";
+    $result = sql_query($sql);
+    while($row = sql_fetch_array($result)) {
+        {
+            $replaceText = ' [모아프렌즈] [모임 승인 완료]
+
+            호스트 님께서 신청해 주신 #{비고1} 모임의 승인이 완료되었습니다!
+            모아 메인페이지를 통해 호스트 님의 모임이 노출됩니다.
+            
+            즐거운 모임 되세요!';
+            $reserve_type = 'NORMAL';
+            $start_reserve_time = date('Y-m-d H:i:s');
+            $reciver = '{"name":"'.$row['mb_name'].'","mobile":"'.$row['mb_hp'].'","note1":"'.$row['wr_subject'].'"}';
+            sendBfAlimTalk(69, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+        }
+    }
+    exit;
+
     $sql = "update g5_write_class set moa_status = {$status} where wr_id in ('{$wr_id}')";
 } else {
     $sql = "update g5_write_class set moa_status = {$status}";

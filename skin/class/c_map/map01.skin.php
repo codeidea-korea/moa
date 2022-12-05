@@ -185,6 +185,9 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
     var overlay = null;
 
+    function openMarkerOverlayByIdx(idx){
+        openMarkerOverlay(idx, map);
+    }
     function openMarkerOverlay(idx, map){
         if(overlay != null){
             closeOverlay();
@@ -196,7 +199,26 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
         const latitude = $('.hidden_moa_latitude').eq(idx).val();
         const longitude = $('.hidden_moa_longitude').eq(idx).val();
         
-                        
+        /*
+        overlay = new kakao.maps.CustomOverlay({
+            content: '<div class="wrap location_map">' +
+                '    <div class="info">' +
+                '        <div class="close" onclick="overlay.setMap(null);" title="닫기"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg></div>' +
+                '        <div class="body">' + 
+                '            <a href=\'/shop/item.php?it_id='+it_id+'\' target="_blank">' +
+                '               <div class="img">' +
+                '                    <img src="'+ imageSrc +'" width="50" height="50">' +
+                '               </div>' +
+                '               <div class="title">' + subject +
+                '               <div class="desc">' +
+                '                 <div class="ellipsis">'+ point +'</div>' +
+                '               </div>' +
+                '               </a>' +
+                '           </div>' +
+                '        </div>' + 
+                '    </div>' +
+                '</div>',
+        */
         overlay = new kakao.maps.CustomOverlay({
             content: '<div class="wrap location_map">' +
                 '    <div class="info">' +
@@ -242,6 +264,22 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
                         var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
+                        var random_x = (Math.random() * 3) / 100000000;
+                        var random_y = (Math.random() * 3) / 100000000;
+
+                        const markeroverlay = new kakao.maps.CustomOverlay({
+                            content: '<div class="marker_custom" onclick="openMarkerOverlayByIdx('+idx+')">'
+                                + '    <img src="/skin/apms/item/MoaItem/img/marker_ic.png" alt="">'
+                                + '</div>',
+                            position: new kakao.maps.LatLng(Number(result[0].y) + random_x, Number(result[0].x) + random_y),
+                            map: map
+                        });
+
+                        markeroverlay.setMap(map);
+
+                        $(latitudeTag).val(Number(result[0].y) + random_x);
+                        $(longitudeTag).val(Number(result[0].x) + random_y);
+/*
                         // 결과값으로 받은 위치를 마커로 표시합니다
                         var marker = new kakao.maps.Marker({
                             map: map,
@@ -254,6 +292,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                         kakao.maps.event.addListener(marker, 'click', function(event) {
                             openMarkerOverlay(idx, map);
                         });
+                        */
                     }
                 });
             }

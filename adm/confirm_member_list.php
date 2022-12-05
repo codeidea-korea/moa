@@ -220,6 +220,7 @@ $(function() {
               success: function (data) {
                   console.log(data);
                   alert('반려 메일이 발송되었습니다.');
+                    location.reload();
               }
           })
     });
@@ -260,6 +261,7 @@ $(function() {
                 dataType: "json",
                 success: function (data) {
                     alert('상태가 변경되었습니다.');
+                    location.reload();
                 }
             })
         } else {
@@ -282,8 +284,10 @@ $(function() {
                 async: false,
                 dataType: "json",
                 success: function (data) {
+                    console.log(data);
+
                     alert('상태가 변경되었습니다.');
-                    location.reload();
+//                    location.reload();
                 }
             })
         } else {
