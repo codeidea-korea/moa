@@ -1,7 +1,7 @@
 <?php
 include_once('./_common.php');
 
-function get_member_refund_order($mb_id, $type='host', $ment='부분 환불', $od_id)
+function get_member_refund_order($mb_id, $type='host', $ment='부분 환불', $od_id, $isAllCancel = false)
 {
     global $g5, $is_admin;
 
@@ -28,48 +28,53 @@ function get_member_refund_order($mb_id, $type='host', $ment='부분 환불', $o
         $res['msg'] = "취소할 수 있는 주문이 아닙니다.";
         return $res;
     }
+
     $cancel_price = $od['od_cart_price'];
-    // 첫 모임 남은 날짜 기준 환불 수수료 처리 
-    $sql ="select player.idx, player.status, cart.od_id  
-        from deb_class_aplyer player 
-            join g5_shop_item item on player.wr_id = item.it_2 
-            join g5_shop_cart cart on item.it_id = cart.it_id and cart.od_id = '{$od_id}' 
-        where player.mb_id = '{$mb_id}'";
-    $player = sql_fetch($sql);
+    $remain_price = 0;
 
-    if($player['status'] == '예약확정') {
-        // 부분 취소 체크
-        /*
-        $sql = "select cart.od_id, deb.day 
-            from deb_class_item deb 
-                join g5_shop_item si on si.it_id = deb.it_id 
-                join g5_write_class wc on wc.wr_id = si.it_2 
-                join g5_shop_cart cart on si.it_id = cart.it_id 
-            where cart.od_id = '{$od_id}' and wc.moa_form = '고정형' 
-            order by deb.day asc 
-            limit 1 ";
-        $classItems = sql_fetch($sql);
-        */
+    if($isAllCancel == true){
+        // 첫 모임 남은 날짜 기준 환불 수수료 처리 
+        $sql ="select player.idx, player.status, cart.od_id  
+            from deb_class_aplyer player 
+                join g5_shop_item item on player.wr_id = item.it_2 
+                join g5_shop_cart cart on item.it_id = cart.it_id and cart.od_id = '{$od_id}' 
+            where player.mb_id = '{$mb_id}'";
+        $player = sql_fetch($sql);
 
-        $today = date("Y-m-d");
-        if(empty($player['aplydate']) || $player['aplydate'] == ''){
-            // 자율형이던가, 날짜 미기입 과거건 등 시스템 이슈는 환불처리
-        } else {
-            $targetTime = strtotime($player['aplydate']);
-            if($targetTime < strtotime('-6 days')) {
-                $remain_price = 0;
-            } else if($targetTime > strtotime('-1 days')) {
-                $remain_price = 70 * ((int)$cancel_price) / 100;
-                $cancel_price = ((int)$cancel_price) - ((int) $remain_price);
+        if($player['status'] == '예약확정') {
+            // 부분 취소 체크
+            /*
+            $sql = "select cart.od_id, deb.day 
+                from deb_class_item deb 
+                    join g5_shop_item si on si.it_id = deb.it_id 
+                    join g5_write_class wc on wc.wr_id = si.it_2 
+                    join g5_shop_cart cart on si.it_id = cart.it_id 
+                where cart.od_id = '{$od_id}' and wc.moa_form = '고정형' 
+                order by deb.day asc 
+                limit 1 ";
+            $classItems = sql_fetch($sql);
+            */
+
+            $today = date("Y-m-d");
+            if(empty($player['aplydate']) || $player['aplydate'] == ''){
+                // 자율형이던가, 날짜 미기입 과거건 등 시스템 이슈는 환불처리
             } else {
-                $res['error'] = true;
-                $res['msg'] = "취소할 수 있는 주문이 아닙니다. (모임 전일부터 취소/환불이 불가능합니다.)";
-                return $res;
+                $targetTime = strtotime($player['aplydate']);
+                if($targetTime < strtotime('-6 days')) {
+                    $remain_price = 0;
+                } else if($targetTime > strtotime('-1 days')) {
+                    $remain_price = 70 * ((int)$cancel_price) / 100;
+                    $cancel_price = ((int)$cancel_price) - ((int) $remain_price);
+                } else {
+                    $res['error'] = true;
+                    $res['msg'] = "취소할 수 있는 주문이 아닙니다. (모임 전일부터 취소/환불이 불가능합니다.)";
+                    return $res;
+                }
             }
+        } else {
+            // 전체 취소
+            $remain_price = 0;
         }
-    } else {
-        // 전체 취소
-        $remain_price = 0;
     }
 
     $isAllCancel = $cancel_price == $remain_price ? 1 : 0;
@@ -249,6 +254,11 @@ function get_member_refund_order($mb_id, $type='host', $ment='부분 환불', $o
                 setlocale(LC_CTYPE, '');
         }
     }
+
+    $sql = " update deb_class_aplyer 
+                set status = '취소' 
+                where idx = '{$player['idx']}' ";
+    sql_query($sql);
 
     // 장바구니 자료 취소
     sql_query(" update {$g5['g5_shop_cart_table']} set ct_status = '취소' where od_id = '$od_id' ");

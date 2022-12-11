@@ -343,7 +343,7 @@ this.form.mb_intercept_date.value=this.form.mb_intercept_date.defaultValue; }">
             $row = "SELECT file_path, bf_file, cert_yn, count(*) cnt FROM deb_certi_image WHERE mb_id = '{$mb['mb_id']}'";
             $result = sql_fetch($row);
             ?>
-            <input type="hidden" name="com_cert_yn" value="<?php echo $mb['mb_status'] ?>" id="com_cert_yn" class="span250" />
+            <input type="hidden" name="com_cert_yn" value="<?php echo $mb['com_cert_yn'] ?>" id="com_cert_yn" class="span250" />
             <span><?php echo $mb['mb_status']; ?></span>
         </td>
     </tr>

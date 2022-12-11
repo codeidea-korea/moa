@@ -229,7 +229,7 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
 			<div class="hpro_img"><?php echo ($result['as_photo']) ? '<img src="'.$result['as_photo'].'" alt="">' : '<span class="no-img"></span>'; //사진 ?></div>
 			<div class="t_area">
 				<?php $cnt = getDashBoardInfo($data['mb_id']); ?>
-				<p><?php echo $result['mb_nick']; ?><span>모임개수<?php echo $cnt['moa_count']; ?></span><span>리뷰<?php echo $cnt['moa_use'] ?>개</span></p>
+				<p><?php echo $result['mb_nick']; ?><span>모임<?php echo $cnt['moa_count']; ?>개</span><span>리뷰<?php echo $cnt['moa_use'] ?>개</span></p>
 				<p class="txt">
 					<?php echo $result['mb_signature']; ?>
 				</p>
@@ -473,7 +473,26 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
 			<div class="tab_content" id="rfnd_content">
 				<div class="s_content detail_con">
 					<div class="tab_refund">
-						<div class="refund_tit">환불정책</div>
+<!--						<div class="refund_tit">환불정책</div> -->
+						<div class="refund_tit">*모아 환불정책</div>
+&gt;1회 고정형&lt;
+<ul>
+<li>참여신청 후 승인 전 취소 시 전액 환불</li>
+<li>참여신청 승인&참여 6일 전까지 결제액 전액 환불(자정 기준)</li>
+<li>참여신청 승인&참여 2~5일 전까지 결제액 30% 환불(자정 기준)</li>
+<li>참여 전일과 당일 및 노쇼의 경우, 환불이 불가합니다.</li>
+<li>사전 예약 확정이 필요한 모임은 예약 확정 이후 신청마감일 이전이라도 취소 및 환불이 불가합니다.</li>
+</ul>
+&gt;다회차 고정형&lt;
+<ul>
+<li>참여신청 후 승인 전 취소 시 전액 환불됩니다.</li>
+<li>참여신청 승인&첫 모임 참여 6일 전까지 결제액 전액 환불(자정 기준)됩니다.</li>
+<li>참여신청 승인&첫 모임 참여 2~5일 전까지 결제액 30% 환불(자정 기준)됩니다.</li>
+<li>첫 모임 전일과 당일 및 노쇼의 경우, 환불이 불가합니다.</li>
+<li>첫 모임 이후 다회차의 나머지 모임에 대한 부분 환불이 불가합니다.</li>
+<li>모임별로 별도의 환불 규정이 적용될 수 있으며, 이는 해당 모임에서 꼭 확인하시고 신청해주세요.</li>
+</ul>
+<!--
 						<ul>
 							<li>1. 모임결제 후 1시간 이내 취소 시, 100% 환불(포인트/쿠폰 복원).</li>
 							<li>2. 모임 6일 전 취소 시, 60% 환불</li>
@@ -483,6 +502,7 @@ if(!$member['mb_id'] || ($member['mb_status'] != '승인' && $member['mb_level']
 							<li>6. 모임 2일 전 취소 시, 20% 환불</li>
 							<li>7. 모임 1일 전 취소 시, 10% 환불</li>
 						</ul>
+						-->
 					</div>
 				</div>
 			</div>

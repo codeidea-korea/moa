@@ -28,7 +28,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 					<td>
 						<div class="fileContainer flex">
 							<div class="upImg-preview profile-thumb">
-                            <?php echo ($member['photo']) ? '<img src="'.$member['photo'].'" alt="">' : '<span class="no-img"></span>'; //사진 ?>
+                            <?php echo ($member['photo']) ? '<img src="'.$member['photo'].'?v='.time().'" alt="">' : '<span class="no-img"></span>'; //사진 ?>
                             </div>
 							<div class="inner">
 								<input type="file" name="pt_file" id="upload-01" class="preview">

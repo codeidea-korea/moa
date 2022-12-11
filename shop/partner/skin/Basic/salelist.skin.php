@@ -124,7 +124,7 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 					<th scope="col">상품명</th>
 					<th scope="col">결제금액</th>
 					<th scope="col">쿠폰 사용</th>
-					<th scope="col">포인트사용</th>
+<!--					<th scope="col">포인트사용</th>-->
 					<!-- <th scope="col">취소수수료</th>
 					<th scope="col">세금계산서<br>발행수수료</th> -->
 				</tr>
@@ -142,7 +142,7 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 					<td><?php echo $list[$i]['it_name'];?></td>
 					<td><?php echo number_format($list[$i]['ct_price']);?>원</td>
 					<td><?php echo number_format($list[$i]['od_coupon']);?></td>
-					<td><?php echo number_format($list[$i]['od_receipt_point']);?>P</td>
+<!--					<td><?php echo number_format($list[$i]['od_receipt_point']);?>P</td> -->
 					<!-- <td><?php echo $list[$i]['od_status'];?></td>
 					<td><?php echo $list[$i]['od_status'];?></td> -->
 				</tr>

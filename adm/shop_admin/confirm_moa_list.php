@@ -290,15 +290,8 @@ function reject(){
         async: false,
         dataType: "json",
         success: function (data) {
-            if(data.msg) {
-                alert(data.msg);
-                
-                location.reload();
-                return false;
-            }else {
                 alert('상태가 변경되었습니다.');
                 location.reload();
-            }
         }
     });
 }

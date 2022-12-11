@@ -233,7 +233,7 @@ if($ap == 'list') {
               where wr_id = '{$wr_id}' ";
     sql_query($sql);
 
-    alert('모임이 폐강되었습니다.');
+    alert('모임이 폐강되었습니다.', $_SERVER['HTTP_REFERER']);
 
 } else if($ap == 'moim_membership') {
 
@@ -812,7 +812,8 @@ if($ap == 'list') {
         if (isset($_POST['bf_file_del'][$i]) && $_POST['bf_file_del'][$i]) {
             $upload[$i]['del_check'] = true;
 
-            $row = sql_fetch(" select bf_file from {$g5['board_file_table']} where bo_table = '{$bo_table}' and wr_id = '{$wr_id}' and bf_no = '{$i}' ");
+            $seq = ($i+1) % 5;
+            $row = sql_fetch(" select bf_file from {$g5['board_file_table']} where bo_table = '{$bo_table}' and wr_id = '{$wr_id}' and bf_no = '{$seq}' ");
             @unlink(G5_DATA_PATH.'/file/'.$bo_table.'/'.$row['bf_file']);
             // 썸네일삭제
             if(preg_match("/\.({$config['cf_image_extension']})$/i", $row['bf_file'])) {
@@ -821,7 +822,7 @@ if($ap == 'list') {
         }
         else
             $upload[$i]['del_check'] = false;
-
+        
         $tmp_file  = $_FILES['bf_file']['tmp_name'][$i];
         $filesize  = $_FILES['bf_file']['size'][$i];
         $filename  = $_FILES['bf_file']['name'][$i];
@@ -896,6 +897,8 @@ if($ap == 'list') {
         }
     }
 
+//    exit;
+
 	// 나중에 테이블에 저장하는 이유는 $wr_id 값을 저장해야 하기 때문입니다.
     for ($i=0; $i<count($upload); $i++)
     {
@@ -908,7 +911,8 @@ if($ap == 'list') {
             // 삭제에 체크가 있거나 파일이 있다면 업데이트를 합니다.
             // 그렇지 않다면 내용만 업데이트 합니다.
 
-            if ($upload[$i]['del_check'] || $upload[$i]['file']){
+            // 교체인 경우
+            if ($upload[$i]['del_check'] && $upload[$i]['file']){
                 $sql = " update {$g5['board_file_table']}
                         set bf_source = '{$upload[$i]['source']}',
                              bf_file = '{$upload[$i]['file']}',
@@ -921,6 +925,14 @@ if($ap == 'list') {
                       where bo_table = '{$bo_table}'
                                 and wr_id = '{$wr_id}'
                                 and bf_no = '{$i}' ";
+                sql_query($sql);
+            }else if($upload[$i]['del_check']){
+                // 삭제인 경우
+                $seq = ($i+1) % 5;
+                $sql = " delete from {$g5['board_file_table']} 
+                        where bo_table = '{$bo_table}'
+                                and wr_id = '{$wr_id}'
+                                and bf_no = '{$seq}' ";
                 sql_query($sql);
             }else{
                 $sql = " update {$g5['board_file_table']}

@@ -165,7 +165,13 @@ echo $filename;
                     where mb_id = '{$member['mb_id']}' ";
 		sql_query($sql);
 
-		alert('회원정보수정이 완료되었습니다.', '/shop/partner/?ap=register_form');
+		// 사용자 마이페이지 > 프로필 수정쪽에서 온 요청일 경우 callbackurl 지정
+		$callBackUrl = $_SERVER['HTTP_REFERER'];
+		if(isset($_POST['callBackUrl'])){
+			$callBackUrl = $_POST['callBackUrl'];
+		}
+		
+		alert('회원정보수정이 완료되었습니다.', $callBackUrl);
 	}
 } else {
 	$is_seller = (isset($apms['apms_partner']) && $apms['apms_partner']) ? true : false;

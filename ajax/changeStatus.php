@@ -84,14 +84,14 @@ if($status == 2) {
             sendBfAlimTalk(72, $replaceText, $reserve_type, $reciver, $start_reserve_time);
         }
     }
-    exit;
     
     if($wr_id) {
         $sql = "update g5_write_class set moa_status = {$status}, moa_refuse_reason = '{$refuse_msg}' where wr_id in ('{$wr_id}')";
     } else {
         $sql = "update g5_write_class set moa_status = {$status}, moa_refuse_reason = '{$refuse_msg}'";
     }
-    sql_query($sql);
+    $result = sql_query($sql);
+//    echo json_encode($result);
     exit;
 }
 
@@ -113,7 +113,6 @@ if($wr_id) {
             sendBfAlimTalk(69, $replaceText, $reserve_type, $reciver, $start_reserve_time);
         }
     }
-    exit;
 
     $sql = "update g5_write_class set moa_status = {$status} where wr_id in ('{$wr_id}')";
 } else {
@@ -121,4 +120,4 @@ if($wr_id) {
 }
 $result = sql_query($sql);
 
-echo json_encode($result);
+// echo json_encode($result);

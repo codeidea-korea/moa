@@ -24,8 +24,10 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
             <div class="id_txt">
                 <p class="" style="
     text-align: right;
+    font-size: 1.4rem;
+    color: 000000;
 ">
-                    <?php echo ''.$member['mb_nick'].'<br><span class="ellipsis1" style="font-weight: 700;">'.$member['mb_email']."</span>";?>
+                    <?php echo ''.$member['mb_nick'].'<br><span class="ellipsis1" style="font-weight: 700;color: #a5a5a5;font-size: 1.2rem;">'.$member['mb_email']."</span>";?>
                 </p>
                 <!-- <button><span class="ellipsis1">추천코드 CALSQ2M1D 가나다라마바사 아자차카 타파하</span> <img src="../images/ic_up.png" alt=""></button> -->
             </div>
@@ -42,10 +44,11 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
         </div>
         <?php if ($member['mb_id']) {?>
         <div class="point_coupon mt25">
+        <!--
             <a class="m_point" href="<?php echo MOA_MY_URL;?>/my_coupon03.php">
                 <div>포인트</div>
                 <div><?php echo number_format($member['mb_point']);?>P</div>
-            </a>
+            </a> -->
             <a class="m_coupon" href="<?php echo MOA_MY_URL;?>/my_coupon01.php">
                 <div>쿠폰</div>
                 <div><?php echo $result['cnt']; ?><span>장</span></div>

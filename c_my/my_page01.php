@@ -8,9 +8,7 @@ $sql = "select * from {$g5['apms_partner']} where pt_id = '{$member['mb_id']}'";
 $result = sql_fetch($sql);
 $prow = sql_fetch_array($result);
 
-$partner = sql_fetch("select * from {$g5['apms_partner']} where pt_id = '{$member['mb_id']}'");
-
-$host = $partner['pt_level'] > 1;
+$host = $member['as_partner'];
 
 $hostlink = MOA_HOSTJ_URL.'/host_join01.php';
 if ($host)

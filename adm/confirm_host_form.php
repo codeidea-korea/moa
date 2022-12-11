@@ -153,7 +153,8 @@ if($_POST['pt_register']) { // 승인정보가 있을 경우
     }
 
 } else { // 없다면
-    sql_query(" update {$g5['member_table']} set as_partner = '0', as_marketer = '0' where mb_id = '$pt_id' ", false);
+    // 기 승인 유저도 화면 진입시 미승인 처리가 되어 로직 삭제
+//    sql_query(" update {$g5['member_table']} set as_partner = '0', as_marketer = '0' where mb_id = '$pt_id' ", false);
 }
 
 //파일등록

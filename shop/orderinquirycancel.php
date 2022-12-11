@@ -274,6 +274,11 @@ $sql = " update {$g5['g5_shop_order_table']}
             where od_id = '$od_id' ";
 sql_query($sql);
 
+$sql = " update deb_class_aplyer 
+            set status = '취소' 
+            where idx = '{$player['idx']}' ";
+sql_query($sql);
+
 // 주문취소 회원의 포인트를 되돌려 줌
 if ($od['od_receipt_point'] > 0)
     insert_point($mb_id, $od['od_receipt_point'], "주문번호 $od_id " . $ment);

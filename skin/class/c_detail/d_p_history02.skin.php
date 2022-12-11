@@ -39,6 +39,7 @@ if(!isset($payed_deb_class)){
                 <p>쿠폰 할인금액</p>
                 <span><?php echo number_format($result['od_coupon']); ?>원</span>
             </div>
+            <!--
 			<div class="bothSides">
                 <p>포인트 사용금액</p>
                 <span><?php echo number_format($result['od_receipt_point']); ?>원</span>
@@ -47,6 +48,7 @@ if(!isset($payed_deb_class)){
                 <p><?php echo $result['od_settle_case']; ?></p>
                 <span><?php echo number_format($result['od_receipt_price']); ?>원</span>
             </div>
+            -->
         </div>
     </div>
 </section>
@@ -75,7 +77,9 @@ if(!isset($payed_deb_class)){
 						</form>
 					</div>
 				<?php }else if($allowedCancelOrder == false){?>
+                <!--
 					<p>모임 3일 전부터 모임 취소가 불가합니다.</p>
+                    -->
 				<?php }else{?>
 					<p>주문 취소, 반품, 품절된 내역이 있습니다.</p>
 				<?php }?>

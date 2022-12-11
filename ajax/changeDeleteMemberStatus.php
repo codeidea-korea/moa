@@ -53,6 +53,8 @@ if($mb_id) {
         $partner = sql_fetch("select * from {$g5['apms_partner']} where pt_id = '{$row['mb_id']}'");
         $host = $partner['pt_level'] > 1;
 
+        // 2022.12.10. 일단 탈퇴시 자동 환불은 수동으로 진행하기로 하여 하위 트랜잭션은 모두 주석으로 둠
+        /*
         // 호스트인 경우 : 남은 모임 환불 처리
         if($host){
             // step 1: 탈퇴할 계정의 모임 조회 (승인 상태)
@@ -78,10 +80,17 @@ if($mb_id) {
             // step 4: 참여자 주문번호별 환불 진행
             // step 5: 조회된 모임내 승인된 참여자 취소 처리
             while($order = sql_fetch_array($orderResult)) {
-                get_member_refund_order($order['mb_id'], $type='host', $ment='부분 환불', $order['od_id']);
+                // 호스트 탈퇴시 남은 날짜/모임진행 관계없이 전액 환불처리
+//                get_member_refund_order($order['mb_id'], $type='host', $ment='부분 환불', $order['od_id']);
+                get_member_refund_order($order['mb_id'], $type='host', $ment='환불', $order['od_id'], true);
             }
-            // step 6: 탈퇴할 계정의 모임 폐강 처리
-            $sql = "update g5_write_class set moa_status = 5 where wr_id in (".$moim_ids.")";
+            // step 6: 탈퇴할 계정의 모임 폐강 처리 : 승인 -> 폐강, 준비 -> 취소
+            $close_time = date('Y-m-d H:i:s');
+            $sql = "update g5_write_class set moa_status = 5, moa_close_time = '{$close_time}', moa_close_reason = '호스트 회원 탈퇴에 의한 폐강' 
+                where wr_id in (".$moim_ids.") and moa_status = 1 ";
+            sql_fetch($sql);
+            $sql = "update g5_write_class set moa_status = 2, moa_close_time = '{$close_time}', moa_close_reason = '호스트 회원 탈퇴에 의한 반려' 
+                where wr_id in (".$moim_ids.") and moa_status = 0 ";
             sql_fetch($sql);
         } else {
             // 일반 회원인 경우, 내가 주문한 모든 주문의 환불 처리
@@ -97,7 +106,11 @@ if($mb_id) {
             while($order = sql_fetch_array($orderResult)) {
                 get_member_refund_order($order['mb_id'], $type='host', $ment='부분 환불', $order['od_id']);
             }
+            // 내가 신청한 강의 상태 취소
+            $sql = "update deb_class_aplyer set status = '취소' where mb_id = '".$row['mb_id']."' ";
+            sql_fetch($sql);
         }
+        */
 
         // step 7: 탈퇴 처리
         $sql = "update g5_member set mb_leave_date = '{$today}' where mb_id = '".$row['mb_id']."'";

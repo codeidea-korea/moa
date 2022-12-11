@@ -80,7 +80,7 @@ include_once($skin_path.'/pop.cancel-reservation.php'); //예약취소
 						
 						<td><?php echo $row['mb_sex']; ?></td>
 						<td><?php echo date('Y') - substr($row['mb_birth'], 0, 4); ?></td>
-						<td><?php echo $row['job_group']; ?></td>
+						<td><?php echo $row['company_name']; ?></td>
 						<td><?php echo $row['mb_hp']; ?></td>
 
 						<td><?php echo number_format($row['pay']); ?></td>

@@ -6,6 +6,10 @@ $status = $_POST['status'];
 if(is_array($mb_id)) {
     $mb_id = implode("','", $mb_id);
 }
+    
+if($status == '승인') {
+    $sql_com_cert_yn = ", com_cert_yn = '1' ";
+}
 if($mb_id) {
     // 2022-08-11. botbinoo, 최초 회원가입시 [대기->승인] 처리일때 포인트 지급 추가
     $sql = "select mb_status,mb_recommend from g5_member where mb_id in ('{$mb_id}')";
@@ -63,10 +67,9 @@ if($mb_id) {
             }
         }
     }
-    
-    $sql = "update g5_member set mb_status = '{$status}' where mb_id in ('{$mb_id}')";
+    $sql = "update g5_member set mb_status = '{$status}' {$sql_com_cert_yn} where mb_id in ('{$mb_id}')";
 } else {
-    $sql = "update g5_member set mb_status = '{$status}'";
+    $sql = "update g5_member set mb_status = '{$status}' {$sql_com_cert_yn} ";
 }
 $result = sql_query($sql);
 

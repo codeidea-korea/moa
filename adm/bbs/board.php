@@ -2,7 +2,8 @@
 $bbslist = array(
     'community'=>'490100',
     'notice'=>'490200',
-    'qa'=>'490300',
+//    'qa'=>'490300',
+    'qa'=>'580300',
 );
 $sub_menu = $bbslist[$_GET['bo_table']];
 
@@ -218,7 +219,8 @@ if (isset($wr_id) && $wr_id) {
 
     if (!isset($page) || (isset($page) && $page == 0)) $page = 1;
 
-    $g5['title'] = ((G5_IS_MOBILE && $board['bo_mobile_subject']) ? $board['bo_mobile_subject'] : $board['bo_subject']).' '.$page.' '.$aslang['bo_page']; //페이지
+//    $g5['title'] = ((G5_IS_MOBILE && $board['bo_mobile_subject']) ? $board['bo_mobile_subject'] : $board['bo_subject']).' '.$page.' '.$aslang['bo_page']; //페이지
+    $g5['title'] = ((G5_IS_MOBILE && $board['bo_mobile_subject']) ? $board['bo_mobile_subject'] : $board['bo_subject']) ; //.' '.$page.' '.$aslang['bo_page']; //페이지
 }
 
 // 테마설정

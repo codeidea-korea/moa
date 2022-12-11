@@ -119,7 +119,7 @@ $total_page  = ceil($total_count / $rows);  // 전체 페이지 계산
 if ($page < 1) $page = 1; // 페이지가 없으면 첫 페이지 (1 페이지)
 $from_record = ($page - 1) * $rows; // 시작 열을 구함
 
-$sql = " select a.*, b.mb_nick, b.mb_email, b.mb_homepage {$sql_common} where (1) {$sql_search} {$sql_order} limit {$from_record}, {$rows} ";
+$sql = " select a.*, b.mb_nick, b.mb_email, b.mb_homepage, b.as_partner {$sql_common} where (1) {$sql_search} {$sql_order} limit {$from_record}, {$rows} ";
 $result = sql_query($sql);
 
 $listall = '<a href="/adm/confirm_host_list.php" class="ov_listall">전체목록</a>';
@@ -200,7 +200,7 @@ include_once('./admin.head.php');
 		if($row['pt_leave']) { //탈퇴
 			$p_active = '<span class="mb_leave_msg">탈퇴</span>';
 			$p_status = '<span class="mb_leave_msg"><strike>'.preg_replace("/([0-9]{4})([0-9]{2})([0-9]{2})/", "\\1-\\2-\\3", $row['pt_leave']).'</strike></span>';
-		} else if(($row['pt_level'] == '1' && $row['pt_register']) || ($row['pt_level'] != '1' && $row['pt_register'])) { //등록
+		} else if($row['as_partner'] == '1' && $row['pt_register']) { //등록
 			$p_active = '활동';
 			$p_status = preg_replace("/([0-9]{4})([0-9]{2})([0-9]{2})/", "\\1-\\2-\\3", $row['pt_register']);
 		} else { //신청

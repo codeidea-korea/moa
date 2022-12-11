@@ -54,7 +54,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
         <div class="s_content detail_con">
             <div class="dt_con1">
                 <h3>
-                    쿠폰/포인트
+                    쿠폰
                 </h3>
             </div>
             <ul class="a_layout mt25 coupon_area">
@@ -66,12 +66,14 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 						<button type="button" id="od_coupon_btn" class="cp_btn btn btn-black btn-sm">쿠폰적용</button>
                     </a>
                 </li>
+				<!--
                 <li>
                     <a href="javascript:" >
                         <p>포인트</p>
                         <span> <?php echo number_format($member['mb_point'])?>Point 보유, 1000점 이상 사용 가능</span>
                     </a>
                 </li>
+				-->
             </ul>
         </div>
 
@@ -96,6 +98,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 						</div>
                     </a>
                 </li>
+				<!--
                 <li>
                     <a href="javascript:" >
 						<p>포인트</p>
@@ -113,6 +116,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 						</div>
                     </a>
                 </li>
+				-->
             </ul>
         </div>
 

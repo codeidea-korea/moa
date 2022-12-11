@@ -19,8 +19,8 @@ include_once($skin_path.'/pop.moim-info.php'); //모임신청인원정보
 				<div class="fx-list-label">검색</div>
 				<div class="fx-list-con">
 					<select name="sfl" class="">
-						<option value="it_name"  <?php if ($sfl == 'it_name') { echo "selected";}?>>모임명</option>
-						<option value="it_id"  <?php if ($sfl == 'it_id') { echo "selected";}?>>모임ID</option>
+						<option value="a.it_name"  <?php if ($sfl == 'a.it_name') { echo "selected";}?>>모임명</option>
+						<option value="a.it_id"  <?php if ($sfl == 'a.it_id') { echo "selected";}?>>모임ID</option>
 						<!-- <option>호스트명</option> -->
 					</select>
 					<input type="text" name="stx" value="<?php echo $stx?>" class="span160" placeholder="모임명/호스트명">
@@ -92,8 +92,8 @@ include_once($skin_path.'/pop.moim-info.php'); //모임신청인원정보
 								$(".year5").addClass("active"); 
 								break;
 							default : 
-								sdt = '2022-01-01';
-								edt = today; 
+								sdt = '';
+								edt = ''; 
 								$(".allday").addClass("active"); 
 								break;
 						}
@@ -392,7 +392,7 @@ $('.aplyInfo').click(function(){
                     $('#applyPeople').append('<tr>' +
                         '<td>' + info[i]['aplydate'] + ' ' + info[i]['aplytime'] + '</td>' +
                         '<td>' + info[i]['timelimit'] + '</td>' +
-                        '<td>' + su['cnt'] + '/' + su['tot'] + '</td>' +
+//                        '<td>' + su['cnt'] + '/' + su['tot'] + '</td>' +
                         '<td>' + info[i]['status'] + '</td>' +
                         '<td>' + info[i]['mb_name'] + '</td>' +
                         '<td>' + info[i]['mb_hp'] + '</td>' +

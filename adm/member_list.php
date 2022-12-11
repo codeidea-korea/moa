@@ -356,7 +356,7 @@ $colspan = ($is_membership) ? 17 : 16;
         <th scope="col" id="mb_list_id" ><?php echo subject_sort_link('mb_id') ?>아이디</a></th>
 		<th scope="col" id="mb_list_nick"><?php echo subject_sort_link('mb_nick') ?>닉네임</a></th>
 		<th scope="col" id="mb_list_name"><?php echo subject_sort_link('mb_name') ?>이름</a></th>
-		<!-- <th scope="col" id="mb_list_mobile">휴대폰 번호</th> -->
+		<th scope="col" id="mb_list_mobile">휴대폰 번호</th>
 		<th scope="col">이메일</th>
 		<!-- <th scope="col">성별</th> -->
 		<!-- <th scope="col">생년월일</th> -->
@@ -494,7 +494,7 @@ $colspan = ($is_membership) ? 17 : 16;
         </td>
 		<td headers="mb_list_nick" class="td_name sv_use"><div><?php echo $mb_nick ?></div></td>
 		<td headers="mb_list_name" class="td_mbname"><?php echo get_text($row['mb_name']); ?></td>        
-		<!-- <td headers="mb_list_mobile" class="td_tel"><?php echo get_text($row['mb_hp']); ?></td> -->
+		<td headers="mb_list_mobile" class="td_tel"><?php echo get_text($row['mb_hp']); ?></td>
 		<td><?php echo get_text($row['mb_email']);?></td>
 		<!-- <td>남</td> -->
 		<!-- <td>1995-05-04</td> -->
@@ -606,6 +606,10 @@ $colspan = ($is_membership) ? 17 : 16;
         $('input[name="sch_enddt"]').val('');
     })
 function submitDeleteUserForm(){
+    if (!alert("선택된 회원을 삭제 하시겠습니까?")) {
+        return false;
+    }
+
 	$('#fmemberlist').attr('action', './member_list_delete.php');
 	$('#fmemberlist').submit();
 }

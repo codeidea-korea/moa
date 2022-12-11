@@ -6,6 +6,8 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 <div class="boxContainer padding40">
     <form class="form" role="form" name="fregister" id="fregister" action="<?php echo G5_SHOP_URL ?>/partner/register_form.update.php" onsubmit="return fregister_submit(this);" method="POST" enctype="multipart/form-data" autocomplete="off">
         <input type="hidden" name="ap" value="register_form" />
+        <input type="hidden" name="callBackUrl" value="/c_my/my_page01.php" />
+
         <div class="s_content">
             <div class="p_area fileContainer">
                 <div class="profile_img upImg-preview">
@@ -96,11 +98,11 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                             <p class="m_title">성별</p>
                             <div class="radio_area">
                                 <span class="info_radio">
-                                    <input type="radio" value="남" <?php echo $member['mb_sex'] == '남' ? 'checked = "checked"' : ''; ?> name="mb_sex" id="radio1">
+                                    <input type="radio" value="남" <?php echo $member['mb_sex'] == '남' ? 'checked = "checked"' : ''; ?> name="mb_sex" id="radio1" disabled>
                                     <label for="radio1">남</label>
                                 </span>
                                 <span class="info_radio">
-                                    <input type="radio" value="여" <?php echo $member['mb_sex'] == '여' ? 'checked = "checked"' : ''; ?> name="mb_sex" id="radio2">
+                                    <input type="radio" value="여" <?php echo $member['mb_sex'] == '여' ? 'checked = "checked"' : ''; ?> name="mb_sex" id="radio2" disabled>
                                     <label for="radio2">여</label>
                                 </span>
                             </div>

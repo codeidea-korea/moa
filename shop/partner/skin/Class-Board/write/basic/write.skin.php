@@ -51,23 +51,34 @@ if(!$header_skin) {
 							파일 유형 : JPG, PNG, GIF
 						</p>										
 					</div>
-					<input type="file" name="bf_file[]" id="upload-011" <? echo 'data-key="'.date("Y-m-d").'1"'; ?> value="<? echo addslashes(get_text($file[0]['bf_content'])); ?>">
-					<input type="file" name="bf_file[]" id="upload-012" <? echo 'data-key="'.date("Y-m-d").'2"'; ?> value="<? echo addslashes(get_text($file[1]['bf_content'])); ?>">
-					<input type="file" name="bf_file[]" id="upload-013" <? echo 'data-key="'.date("Y-m-d").'3"'; ?> value="<? echo addslashes(get_text($file[2]['bf_content'])); ?>">
-					<input type="file" name="bf_file[]" id="upload-014" <? echo 'data-key="'.date("Y-m-d").'4"'; ?> value="<? echo addslashes(get_text($file[3]['bf_content'])); ?>">
-					<input type="file" name="bf_file[]" id="upload-015" <? echo 'data-key="'.date("Y-m-d").'5"'; ?> value="<? echo addslashes(get_text($file[4]['bf_content'])); ?>">
-							
+					<?
+					$today = date("Y-m-d");
+					$fileSeq = 0;
+					for($inx = 1; $inx <= 5; $inx++){
+						$fileVal = addslashes(get_text($file[$fileSeq]['bf_content']));
+						?>
+						<input type="file" name="bf_file[]" id="upload-01<?= $inx ?>" <? echo 'data-key="'.$today.''.$inx.'"'; ?> value="<? echo $fileVal; ?>">
+						<input type="hidden" name="bf_file_del[]" id="upload-del-01<?= $inx ?>" <? echo 'data-key="'.$today.''.$inx.'"'; ?>>
+						<?
+					} ?>	
 					<ul class="upImg-list mt5">
+					<!--
                         <li>
 							<img src="<?php echo $write['as_thumb'] ?>"><span class="del" <? echo 'data-key="'.date("Y-m-d").$i.'"'; ?>></span>
 						</li>
+						-->
 						<?
+						$uploadKey = 0;
 						if ($w == "u") {
 							for ($i=1; $i<$file['count']; $i++) {
+								if($file[$i]['view'] == null || $file[$i]['view'] == '') {
+									continue;
+								}
 								echo '
 								<li>
 									'.($file[$i]['view']).'<span class="del" data-key="'.date("Y-m-d").$i.'"></span>
 								</li>';
+								$uploadKey++;
 							}
 						}
 						?>
@@ -86,7 +97,9 @@ if(!$header_skin) {
 		<div class="wr-list">
 			<div class="wr-list-label required">모임 유형</div>
 			<div class="wr-list-con">
+			<!--
 				<input type="radio" name="moa_form" value="자율형" <?php if($write['moa_form'] == '자율형') echo 'checked'?> data-label="자율형" />
+-->
 				<input type="radio" name="moa_form" value="고정형" <?php if(!$write['moa_form'] | $write['moa_form'] == '고정형') echo 'checked'?> data-label="고정형" />	
 			</div>
 		</div>
@@ -917,7 +930,7 @@ function add_moim_program3_list() {
 	$('select').selectpicker('refresh');
 }
 
-var uploadKey = 1;
+var uploadKey = <? echo ($uploadKey % 5) + 1; ?>;
 //업로드 이미지 미리보기
 $('.fileContainer input[type="file"]').each(function(index) {
 	var inp = $(this);
@@ -950,6 +963,8 @@ $('.fileContainer input[type="file"]').each(function(index) {
 				uploadKey = uploadKey + 1;
 				$('.upload-btn').attr('for', 'upload-01'+uploadKey);
 				$('.upload-empty').attr('for', 'upload-01'+uploadKey);
+				
+				$('#upload-del-01'+uploadKey).val('1');
 				deleteImageAction('.del');
 			};
 		};			
@@ -962,6 +977,7 @@ function deleteImageAction(el) {
 		$(this).parent('li').remove(); 
 		var key = $(this).attr('data-key');
 		$('input[type=file][data-key=' + key + ']').val('');
+		$('input[name*=bf_file_del][data-key=' + key + ']').val('1');		
 	});
 }
 deleteImageAction('.upImg-list .del');

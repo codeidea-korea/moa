@@ -28,7 +28,7 @@ $sql_order = "order by mb_no desc";
 
 
 // 자료 생성
-$headers = array('NO', '승인', '호스트/게스트', '직장인/프리랜서', '회원코드', '아이디', '닉네임', '이름', '이메일', '가입일', '직장');
+$headers = array('NO', '승인', '호스트/게스트', '직장인/프리랜서', '회원코드', '아이디', '닉네임', '이름', '휴대폰번호', '이메일', '가입일', '직장');
 
 $rows = array();
 
@@ -41,6 +41,7 @@ $sql = "SELECT
         mb_id,
         mb_nick,
         mb_name,
+        mb_hp,
         mb_email,
         mb_datetime,
         company_name
@@ -60,6 +61,7 @@ while ($row = sql_fetch_array($result)) {
         "".$row['mb_id'],
         "".$row['mb_nick'],
         "".$row['mb_name'],
+        "".$row['mb_hp'],
         "".$row['mb_email'],
         "".$row['mb_datetime'],
         "".$row['company_name']
