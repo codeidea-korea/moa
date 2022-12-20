@@ -56,8 +56,8 @@ if($sfd) {
     $sql_search .= " ) ";
 }
 
-if($cp_method) {
-    $sql_search = ' and cp_method = ' . $cp_method;
+if(isset($cp_method)) {
+    $sql_search .= ' and cp_method = ' . $cp_method;
 }
 
 if (!$sst) {
@@ -78,17 +78,17 @@ $total_page  = ceil($total_count / $rows);  // 전체 페이지 계산
 if ($page < 1) $page = 1; // 페이지가 없으면 첫 페이지 (1 페이지)
 $from_record = ($page - 1) * $rows; // 시작 열을 구함
 
-$sql = " select *
+$sqlA = " select *
             {$sql_common}
             {$sql_search}
             {$sql_order}
             limit {$from_record}, {$rows} ";
-echo $sql;
-$result = sql_query($sql);
+echo $sqlA;
 
 $g5['title'] = '쿠폰관리';
 include_once (G5_ADMIN_PATH.'/admin.head.php');
 
+$result = sql_query($sqlA);
 $colspan = 9;
 ?>
 
@@ -126,7 +126,8 @@ $colspan = 9;
 		<div class="fx-list-label">적용대상</div>
 		<div class="fx-list-con">
 			<select name="sfl" title="검색대상" class="span150">
-                <option value="cp_subject"<?php echo get_selected($_GET['sfl'], "cp_subject"); ?>>쿠폰명</option>
+                <!-- <option value="cp_subject"<?php echo get_selected($_GET['sfl'], "cp_subject"); ?>>쿠폰명</option> -->
+                <option value="cp_subject" selected>쿠폰명</option>
                 <option value="cp_id"<?php echo get_selected($_GET['sfl'], "cp_id"); ?>>쿠폰번호</option>
 			</select>
 			<input type="text" name="stx" value="<?php echo $stx ?>" id="stx" class="span250" placeholder="검색할 이름을 입력해주세요.">
@@ -260,6 +261,8 @@ $colspan = 9;
         <th scope="col">쿠폰코드</th>
         <th scope="col">쿠폰이름</th>
         <th scope="col">적용대상</th>
+        <th scope="col">할인금액</th>
+        <th scope="col">최소주문금액</th>
         <th scope="col"><?php echo subject_sort_link('mb_id') ?>회원아이디</a></th>
         <th scope="col"><?php echo subject_sort_link('cp_end') ?>사용기한</a></th>
         <th scope="col">사용회수</th>
@@ -312,6 +315,8 @@ $colspan = 9;
         <td><?php echo $row['cp_id']; ?></td>
         <td class="td_left"><?php echo $row['cp_subject']; ?></td>
         <td><?php echo $cp_target; ?></td>
+        <td><?php echo $row['cp_price']; ?></td>
+        <td><?php echo $row['cp_minimum'] ; ?></td>
         <td class="td_name sv_use"><div><?php echo $row['mb_id']; ?></div></td>
         <td class="td_datetime"><?php echo substr($row['cp_start'], 2, 8); ?> ~ <?php echo substr($row['cp_end'], 2, 8); ?></td>
         <td class="td_cntsmall"><?php echo number_format($used_count); ?></td>

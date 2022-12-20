@@ -24,12 +24,67 @@ $cmt_amt = count($list);
 
 ?>
 
+<? if($bo_table != 'qa'){ ?>
 <div class="view-comment font-18 en">
 	<i class="fa fa-commenting"></i> <span class="orangered"><?php echo number_format($write['wr_comment']);?></span> Comments
 </div>
 <div>
     <a href="/bbs/board.php?bo_table=qa">목록보기</a>
 </div>
+<? } else { ?>
+<div class="view-comment font-18 en">
+	답변
+	<br>
+	<?
+	$reply = sql_fetch("SELECT * FROM classboard01.g5_board_new n join g5_write_qa c on n.wr_id = c.wr_id
+	where n.bo_table = 'qa' 
+	and n.wr_id != n.wr_parent 
+	and n.wr_parent = '{$wr_id}'  
+	order by n.bn_id");
+	?>
+	<div class="re">
+		<p><? echo $reply['wr_name']; ?><span><? echo $reply['wr_datetime']; ?></span></p>
+		<p class="re_text">
+			<textarea id="answer" value="<? echo $reply['wr_content']; ?>" <? echo empty($reply['wr_content']) ? '' : 'disabled'; ?>><? echo $reply['wr_content']; ?></textarea>
+		</p>
+		<? if(empty($reply)) { ?>
+		<button onclick="replyAnswer()">답변하기</button>
+		<? } ?>
+	</div>
+	<script>
+	function replyAnswer(){
+		if(!confirm('해당 내용으로 답변하시겠습니까?')){
+			return false;
+		}
+		var answer = $('#answer').val();
+		$.ajax({
+			url: "/ajax/answerQa.php",
+			type: "POST",
+			data: {
+				"mb_id": '<? echo $member['mb_id']; ?>',
+				"wr_name": '<? echo $member['mb_name']; ?>',
+				"wr_parent": '<? echo $wr_id; ?>',
+				"answer": answer,
+			},
+			dataType: "json",
+			async: false,
+			cache: false,
+			success: function(data, textStatus) {
+				if(data.successed) {
+					alert('답변을 작성하였습니다.');
+					location.href = '/adm/bbs/board.php?bo_table=qa';
+				} else {
+					alert(data.msg);
+				}
+			}
+		});
+	}
+	</script>
+</div>
+<div class="back_list">
+    <a href="/adm/bbs/board.php?bo_table=qa">목록보기</a>
+</div>
+<? } ?>
 
 <script>
 // 글자수 제한

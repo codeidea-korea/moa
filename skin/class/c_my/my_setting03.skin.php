@@ -14,12 +14,14 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                     <span><img src="../images/r_arrow_o.svg" alt=""></span>
                 </a>
             </li>
+            <!--
             <li>
                 <a href="/c_my/my_setting01.php">
                     <p>알림 설정</p>
                     <span><img src="../images/r_arrow_o.svg" alt=""></span>
                 </a>
             </li>
+            -->
         </ul>
     </div>
 </section>
@@ -148,7 +150,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 cache: false,
                 async: false,
                 success: function(data) {
-                    alert('회원 탈퇴 되었습니다.');
+                    alert('회원 탈퇴 신청이 되었습니다.');
                     location.href = '/c_login/logout.php';
                 }
             })

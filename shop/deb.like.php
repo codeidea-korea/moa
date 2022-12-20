@@ -56,9 +56,21 @@ if($_POST['js'] == "on") {
         $sql = " select pg_flag from {$g5['apms_good']} where it_id = '{$it_id}' and mb_id = '{$member['mb_id']}' and pg_flag in ('good', 'nogood') ";
         $row = sql_fetch($sql);
         if ($row['pg_flag']) {
-            $status = ($row['pg_flag'] == 'good') ? '좋아요' : '싫어요';
+            $status = ($good == 'good') ? '좋아요' : '싫어요';
+            //            $error = "이미 $status 하셨습니다.";
 
-            $error = "이미 $status 하셨습니다.";
+            // 2022.12.20. 토글 효과로 변경
+            $notGood = $good == 'good' ? 'nogood' : 'good';
+            
+            sql_query(" update {$g5['g5_shop_item_table']} set pt_{$good} = pt_{$good} + 1 where it_id = '{$it_id}' ");
+            sql_query(" update {$g5['g5_shop_item_table']} set pt_{$notGood} = pt_{$notGood} - 1 where it_id = '{$it_id}' ");
+
+			// 내역 생성
+            sql_query(" delete from {$g5['apms_good']} where it_id = '{$it_id}' and mb_id = '{$member['mb_id']}' and pg_flag = '{$row['pg_flag']}' ");
+            sql_query(" insert {$g5['apms_good']} set it_id = '{$it_id}', mb_id = '{$member['mb_id']}', pg_flag = '{$good}', pg_datetime = '".G5_TIME_YMDHIS."' ");
+
+            $success = $status.' 하셨습니다.';
+            
 	        print_result($error, $success, $count);
         } else {
             // 좋아요(찬성), 싫어요(반대) 카운트 증가

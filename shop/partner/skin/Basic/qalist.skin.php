@@ -124,12 +124,14 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 				<col>
 				<col>
 				<col>
+				<col>
 				<col width="150">
 			</colgroup>
 			<thead>
 				<tr>
 					<th scope="col">상태</th>
 					<th scope="col">비밀글</th>
+					<th scope="col">모임명</th>
 					<th scope="col">문의내용</th>
 					<th scope="col">문의한 게스트</th>
 					<th scope="col">최종 문의일</th>
@@ -142,6 +144,7 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 				<tr>
 					<td><?=$list[$i]['iq_answer']?'답변완료':'답변대기'?></td>
 					<td><?=$list[$i]['iq_secret']?'비밀글':'공개글'?></td>
+					<td><?=$list[$i]['it_name']?></td>
 					<td><?php echo nl2br($list[$i]['iq_question']); ?></td>
 					<td><?php echo $list[$i]['iq_name']; ?></td>
 					<td><?php echo apms_datetime($list[$i]['iq_time'], 'Y-m-d');?></td>

@@ -19,8 +19,8 @@ include_once($skin_path.'/pop.moim-info.php'); //모임신청인원정보
 				<div class="fx-list-label">검색</div>
 				<div class="fx-list-con">
 					<select name="sfl" class="">
-						<option value="it_name"  <?php if ($sfl == 'it_name') { echo "selected";}?>>모임명</option>
-						<option value="it_id"  <?php if ($sfl == 'it_id') { echo "selected";}?>>모임ID</option>
+						<option value="a.it_name"  <?php if ($sfl == 'a.it_name') { echo "selected";}?>>모임명</option>
+						<option value="a.it_id"  <?php if ($sfl == 'a.it_id') { echo "selected";}?>>모임ID</option>
 						<!-- <option>호스트명</option> -->
 					</select>
 					<input type="text" name="stx" value="<?php echo $stx?>" class="span160" placeholder="모임명/호스트명">
@@ -92,8 +92,8 @@ include_once($skin_path.'/pop.moim-info.php'); //모임신청인원정보
 								$(".year5").addClass("active"); 
 								break;
 							default : 
-								sdt = '2022-01-01';
-								edt = today; 
+								sdt = '';
+								edt = ''; 
 								$(".allday").addClass("active"); 
 								break;
 						}
@@ -207,9 +207,15 @@ include_once($skin_path.'/pop.moim-info.php'); //모임신청인원정보
 				<?php for ($i=0; $i < count($list); $i++) {  ?>
 					<tr>
 						<td>
+							<?
+							if($row['moa_status'] == 6) {
+								?>&nbsp;<?
+							} else {
+							?>
 							<label for="chk_<?php echo $i; ?>" class="sound_only"><?php echo get_text($list[$i]['it_name']); ?></label>
 							<input type="checkbox" name="chk[]" value="<?php echo $i ?>" id="chk_<?php echo $i; ?>">
 							<input type="hidden" name="it_id[<?php echo $i; ?>]" value="<?php echo $list[$i]['it_id']; ?>">
+							<? } ?>
 						</td>
 						<!-- <td>
 							<input type="text" name="pt_show[<?php echo $i; ?>]" value="<?php echo $list[$i]['pt_show']; ?>" size="4" class="span55">
@@ -218,10 +224,16 @@ include_once($skin_path.'/pop.moim-info.php'); //모임신청인원정보
 							<a href="<?php echo $list[$i]['href']; ?>"><nobr><?php echo $list[$i]['it_id'];?></nobr></a>
 						</td>
 						<td>
-							<a href="<?php echo $list[$i]['href']; ?>"><img src="<?php echo $list[$i]['as_thumb']; ?>" alt="" width="80px" height="80px"></a>
+							<a <?php echo getStatusValue($list[$i]['moa_status']) == '폐강' ? ('class="closed"') : '' ; ?> href="<?php echo $list[$i]['href']; ?>"><img src="<?php echo $list[$i]['as_thumb']; ?>" alt="" width="80px" height="80px"></a>
 						</td>				
 						<td class="tleft">
+						<!--
 							<a href="<?php echo $list[$i]['href']; ?>"><b><?php echo $list[$i]['wr_subject'];?></b></a>
+							-->
+							<span data-href="#pop-moim-info" class="aplyInfo pop-inline color-blue" data-it_id="<?php echo $list[$i]['it_id']; ?>">
+								<b><?php echo $list[$i]['wr_subject'];?></b>
+							</span>
+
 							<sub class="block">
 								<?=$list[$i]['moa_onoff']?> / <?=$list[$i]['ca_name']?> / <?=$list[$i]['moa_type']?>
 							</sub>
@@ -242,11 +254,34 @@ include_once($skin_path.'/pop.moim-info.php'); //모임신청인원정보
 							<!-- [고정형, 자율형] -->
 							<?php echo $list[$i]['moa_form'];?><sub class="block"><?php echo $list[$i]['day'].' '.$list[$i]['time'];?></sub>
 						</td>
-						<td><?php echo getStatusValue($list[$i]['moa_status']); ?></td><!-- [승인, 대기중, 반려] -->
+						<td>
+							<?php 
+								$moa_status = getStatusValue($list[$i]['moa_status']);
+								if($moa_status == '반려') {
+									echo '<span class="aplyInfo pop-inline color-blue" onclick="openRefusePup(\''.$list[$i]['moa_refuse_reason'].'\')">' .$moa_status. '</span>';
+								} else {
+									echo $moa_status;
+								}
+							?>
+						</td><!-- [승인, 대기중, 반려] -->
 						<td class="td_mng td_mng_s">
-							<span data-href="#pop-cancel-class" data-wr_id="<?php echo $list[$i]['wr_id']; ?>" class="close_moim pop-inline btn mini span50">폐강</span>
-							<a href="./?ap=moa_write&amp;w=u&amp;wr_id=<?php echo $list[$i]['wr_id']?>" class="btn btn_03 mini">수정</a>
-							<!-- <a href="#" class="btn btn_01 mini">삭제</a> -->
+							<?
+							if($row['moa_status'] == 6) {
+								?>정산됨<?
+							} else {
+							?>
+							<?
+								if(getStatusValue($list[$i]['moa_status']) == '폐강') {
+									?>&nbsp;<?
+								} else {
+									?>
+									<span data-href="#pop-cancel-class" data-wr_id="<?php echo $list[$i]['wr_id']; ?>" class="close_moim pop-inline btn mini span50">폐강</span>
+									<a href="./?ap=moa_write&amp;w=u&amp;wr_id=<?php echo $list[$i]['wr_id']?>" class="btn btn_03 mini">수정</a>
+									<!-- <a href="#" class="btn btn_01 mini">삭제</a> -->
+									<?
+								}
+							}
+							?>
 						</td>
 					</tr>
 				<?php } ?>
@@ -278,7 +313,33 @@ include_once($skin_path.'/pop.moim-info.php'); //모임신청인원정보
 
 </div>
 
+<div class="layer-popup" id="popup01">
+	<div class="popContainer">
+		<div class="pop-inner">
+			<span class="pop-closer">팝업닫기</span>
+			
+			<header class="pop-header">
+				반려사유
+			</header>
+
+			<div class="text_area">
+				<span id="refuse_msg"></span>
+			</div>
+
+			<div class="btn_choice">
+				<button type="button" class="btnSubmit">확인</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="pop-bg"></div>
+</div>
+
 <script>
+function openRefusePup(msg){
+	$('#refuse_msg').text(msg);
+	$('#popup01').addClass('open');
+}
 function fitemlist_submit(f)
 {
     if (!is_checked("chk[]")) {
@@ -315,26 +376,35 @@ $('.aplyInfo').click(function(){
             var info = data.info;
             var su = data.su;
 
-            $('#applyInfo').append('<tr>' +
-                '<td rowspan="3">' + data.it_id + '</td>' +
-                '<td rowspan="3">' + data.it_name + '</td>' +
-                '<td>' + data.it_time + '</td>' +
-                '<td>' + data.it_4 + '</td>' +
-                '<td>'+ su['cnt'] + '/' + su['tot'] + '</td>' +
-            '</tr>');
-            console.log(data.info[0]['status']);
+			$('#applyInfo').html('');
+			$('#applyPeople').html('');
+			
+			var sum = 0;
             if(data.info.length > 0) {
                 for(var i=0; i<info.length; i++) {
+					if(info[i]['status'] != '예약확정') {
+						continue;
+					}
+					sum++;
                     $('#applyPeople').append('<tr>' +
                         '<td>' + info[i]['aplydate'] + ' ' + info[i]['aplytime'] + '</td>' +
                         '<td>' + info[i]['timelimit'] + '</td>' +
-                        '<td>' + su['cnt'] + '/' + su['tot'] + '</td>' +
+//                        '<td>' + su['cnt'] + '/' + su['tot'] + '</td>' +
                         '<td>' + info[i]['status'] + '</td>' +
                         '<td>' + info[i]['mb_name'] + '</td>' +
                         '<td>' + info[i]['mb_hp'] + '</td>' +
                         '</tr>');
                 }
             }
+
+			$('#applyInfo').append('<tr>' +
+				'<td rowspan="3">' + data.it_id + '</td>' +
+				'<td rowspan="3">' + data.it_name + '</td>' +
+				'<td>' + data.it_time + '</td>' +
+				'<td>' + data.it_4 + '</td>' +
+				'<td>'+ (sum ? sum + '/' + su['tot'] : '') + '</td>' +
+			'</tr>');
+
             console.log(data);
         }, error: function(error) {
             console.log(error);

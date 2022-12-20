@@ -8,6 +8,10 @@ $btn2 = (isset($boset['btn2']) && $boset['btn2']) ? $boset['btn2'] : 'color';
 // 보드상단출력
 $is_bo_content_head = false;
 
+
+
+include_once(CLASS_SKIN_PATH."/head.skin.php");
+
 ?>
 <!-- 컨텐츠 -->
 <div class="contents container grid-lg">

@@ -18,11 +18,11 @@ if(!$header_skin) {
 <!------------------------------------------------------------------------------------------------------------------------------------------------------------------>
 <!------------------------------------------------------------------------------------------------------------------------------------------------------------------>
 
-
 <div class="boxContainer padding40">
 	<form name="fwrite" id="fwrite" action="<?php echo $action_url ?>" onsubmit="return fwrite_submit(this);" method="post" enctype="multipart/form-data" autocomplete="off" role="form" class="form-horizontal">
 	<input type="hidden" name="uid" value="<?php echo get_uniqid(); ?>">
         <input type="hidden" name="ap" value="moa_write" />
+        <input type="hidden" name="returnUrl" value="<? echo $returnUrl; ?>" />
 	<input type="hidden" name="w" value="<?php echo $w ?>">
 	<input type="hidden" name="bo_table" value="<?php echo $bo_table ?>">
 	<input type="hidden" name="wr_id" value="<?php echo $wr_id ?>">
@@ -41,18 +41,47 @@ if(!$header_skin) {
 			<div class="wr-list-con">
 				<div class="fileContainer">									
 					<div class="inner">
-						<input type="file" name="bf_file[]" id="upload-01" class="multiple" multiple>
+						<input type="file" name="bf_file[]" id="upload-01" class="multiple" accept="image/*" multiple>
 						<label for="upload-01" class="upload-btn">모임 대표 이미지 업로드</label>
 						<p class="help-block fs13">
 							최소 1장 최대 5장의 이미지를 올려주세요.<br>
 							권장 사이즈 : 가로 1000px * 세로 1000px<br>
-							최소 사이즈 : 가로 600px * 세로 600px <br>
+<!--							최소 사이즈 : 가로 600px * 세로 600px <br> -->
 							용량 : 10MB 이하 <br>
 							파일 유형 : JPG, PNG, GIF
 						</p>										
 					</div>
+					<?
+					$today = date("Y-m-d");
+					$fileSeq = 0;
+					for($inx = 1; $inx <= 5; $inx++){
+						$fileVal = addslashes(get_text($file[$fileSeq]['bf_content']));
+						?>
+						<input type="file" name="bf_file[]" id="upload-01<?= $inx ?>" <? echo 'data-key="'.$today.''.$inx.'"'; ?> value="<? echo $fileVal; ?>">
+						<input type="hidden" name="bf_file_del[]" id="upload-del-01<?= $inx ?>" <? echo 'data-key="'.$today.''.$inx.'"'; ?>>
+						<?
+					} ?>	
 					<ul class="upImg-list mt5">
-                        <li><img src="<?php echo $write['as_thumb'] ?>"><span class="del"></span></li>
+					<!--
+                        <li>
+							<img src="<?php echo $write['as_thumb'] ?>"><span class="del" <? echo 'data-key="'.date("Y-m-d").$i.'"'; ?>></span>
+						</li>
+						-->
+						<?
+						$uploadKey = 0;
+						if ($w == "u") {
+							for ($i=1; $i<$file['count']; $i++) {
+								if($file[$i]['view'] == null || $file[$i]['view'] == '') {
+									continue;
+								}
+								echo '
+								<li>
+									'.($file[$i]['view']).'<span class="del" data-key="'.date("Y-m-d").$i.'"></span>
+								</li>';
+								$uploadKey++;
+							}
+						}
+						?>
                         <li><label for="upload-01" class="upload-empty">사진 추가</label></li>
 					</ul>
 				</div>
@@ -68,8 +97,10 @@ if(!$header_skin) {
 		<div class="wr-list">
 			<div class="wr-list-label required">모임 유형</div>
 			<div class="wr-list-con">
-				<input type="radio" name="moa_form" value="자율형" data-label="자율형" />
-				<input type="radio" name="moa_form" value="고정형" checked data-label="고정형" />	
+			<!--
+				<input type="radio" name="moa_form" value="자율형" <?php if($write['moa_form'] == '자율형') echo 'checked'?> data-label="자율형" />
+-->
+				<input type="radio" name="moa_form" value="고정형" <?php if(!$write['moa_form'] | $write['moa_form'] == '고정형') echo 'checked'?> data-label="고정형" />	
 			</div>
 		</div>
 
@@ -208,12 +239,16 @@ if(!$header_skin) {
 			</div>
 		</div>
 
+		<!--
 		<div class="wr-list" id="moimSchedule2">
 			<div class="wr-list-label required">신청 가능 시간</div>
 			<div class="wr-list-con">
 				<input type="number" min="3" name="moa_reglimittime"  id="moa_reglimittime" value="<?php echo $write['moa_reglimittime']; ?>" class="span100" placeholder="" min="1" max="100" data-label="모임" data-label-inline="일"> 이전까지 신청 가능 (최소 3일)
 			</div>
 		</div>
+		-->
+		<input type="hidden" name="moa_reglimittime"  id="moa_reglimittime" value="0">
+		
         <script>
 		$('#moa_reglimittime').focusout(function(){
 			if (($(this).val() < 3 || !$.isNumeric($(this).val())) && $(this).val() != '') {
@@ -255,6 +290,7 @@ if(!$header_skin) {
 					<div class="wr-list-con">
 						<input type="<?php if ($i < 5) {echo "number";} else { echo "text";} ?>"
 							name="wr_<?php echo $i ?>" value="<?php echo $write['wr_'.$i]; ?>" required 
+							<?php if($i == 4) echo ' step="100" '; ?>
 							id="wr_<?php echo $i ?>"
 							max="<?php if ($i==2 || $i==5) { echo "100";} else { echo "1000000"; } ?>"
 							class="form-control input-sm  required onlyNumbers"  style="width:<?php if ($i < 5) {echo "200";} else { echo "400";} ?>px" placehonder="<?php echo $addkind2[$i];?>">
@@ -271,11 +307,41 @@ if(!$header_skin) {
 		}
 		?>
 		<script>
+			function checkValidCost(){
+				var cost = $('#wr_3').val();
+				var discountedCost = $('#wr_4').val();
+
+				if(Number(cost) < Number(discountedCost)) {
+					alert('할인 참가료는 참가료보다 클 수 없습니다.');
+					$('#wr_4').val(0);
+					return false;
+				}
+				return true;
+			}
 		$(document).ready(function(){
 			$('#wr_4').change(function(){
 				var n = $(this).val(); 
-				n = Math.floor(n/1000) * 1000; 
+				var cost = $('#wr_3').val();
+				if(!checkValidCost()) {
+					return false;
+				}
+//				n = Math.floor(n/1000) * 1000; 
+				n = Math.floor(n/100) * 100; 
 				$(this).val(n);
+			});
+			$('#wr_3').change(function(){
+				if(!checkValidCost()) {
+					return false;
+				}
+			});
+			$('#wr_2').change(function(){
+				var wr_1 = $('#wr_1').val();
+				var wr_2 = $('#wr_2').val();
+				if(Number(wr_2) <= Number(wr_1)) {
+					alert("모임 정원은 최소 인원보다 크게 설정해주세요.");
+					return false;
+				}
+				return true;
 			});
 		});
         </script>
@@ -559,6 +625,8 @@ if(!$header_skin) {
 				</div> -->
 			</div>
 		</div>
+		<?
+		/*
 		<div class="wr-list">
 			<div class="wr-list-label">키워드(해시태그)<small class="block gray">(선택)</small></div>
 			<div class="wr-list-con">
@@ -573,6 +641,8 @@ if(!$header_skin) {
 				</div> -->
 			</div>
 		</div>
+		*/
+		?>
 		<?php 
 			$statuscombo = array(
 				'0'=>'준비',
@@ -869,14 +939,15 @@ function add_moim_program3_list() {
 	$('select').selectpicker('refresh');
 }
 
-
+var uploadKey = <? echo ($uploadKey % 5) + 1; ?>;
 //업로드 이미지 미리보기
-$('.fileContainer input[type="file"].multiple').each(function(index) {
+$('.fileContainer input[type="file"]').each(function(index) {
 	var inp = $(this);
 	var upload = $(this)[0];
 	$(this).parent().parent().find('.upImg-list').attr('id', 'holder_' + index);
 	var holder = document.getElementById('holder_' + index);
 	var last = $(holder).find('li:last');
+	console.log(inp);
 	upload.onchange = function (e) {
 		e.preventDefault();
 		var file = upload.files[0],
@@ -884,10 +955,29 @@ $('.fileContainer input[type="file"].multiple').each(function(index) {
 		reader.onload = function (event) {
 			var img = new Image();
 			img.src = event.target.result;
-			var imgtag = '<img src="' + reader.result + '">';
-			//holder.children('img').remove();
-			last.before('<li>' + imgtag + '<span class="del"></span></li>');
-			deleteImageAction('.del');
+			img.onload = function(e) {
+				var imgtag = '<img src="' + reader.result + '">';
+				//holder.children('img').remove();
+//				if(img.width != 1000 || img.height != 1000) {
+				if(img.width != img.height) {
+//					alert('가로/세로는 같은 사이즈여야 합니다.');
+					alert('가로/세로는 같은 사이즈를 권장합니다.');
+					console.log(img.width);
+					console.log(img.height);
+//					upload.files[0] = null;
+//					return;
+				} 
+				const key = new Date().getTime();
+				last.before('<li>' + imgtag + '<span class="del" data-key="'+(key)+'"></span></li>');
+				// upload-011
+				$('#upload-01' + uploadKey).attr('data-key', key);
+				uploadKey = uploadKey + 1;
+				$('.upload-btn').attr('for', 'upload-01'+uploadKey);
+				$('.upload-empty').attr('for', 'upload-01'+uploadKey);
+				
+				$('#upload-del-01'+uploadKey).val('1');
+				deleteImageAction('.del');
+			};
 		};			
 		reader.readAsDataURL(file);			
 		return false;		
@@ -896,9 +986,14 @@ $('.fileContainer input[type="file"].multiple').each(function(index) {
 function deleteImageAction(el) {
 	$(el).click(function() {
 		$(this).parent('li').remove(); 
+		var key = $(this).attr('data-key');
+		$('input[type=file][data-key=' + key + ']').val('');
+		$('input[name*=bf_file_del][data-key=' + key + ']').val('1');		
 	});
 }
 deleteImageAction('.upImg-list .del');
+$('.upload-btn').attr('for', 'upload-01'+uploadKey);
+$('.upload-empty').attr('for', 'upload-01'+uploadKey);
 </script>
 
 
@@ -987,7 +1082,100 @@ function fwrite_submit(f) {
 		}
 	}
 
-	if ($('input[name*=cls_day]').val() == ""){ alert('모임스케쥴을 입력하세요.'); return false; }
+	<?
+	if($w == '') {
+		?>
+		var file = $('#upload-011').val();
+		if(!file || file == '') {
+			alert("모임 대표이미지를 등록해주세요.");
+			return false;
+		}
+		<?
+	} else if($w == 'u') {
+		?>
+		<?
+	} 
+	?>
+	var moa_reglimittime = $('#moa_reglimittime').val();
+	let checkedGatherType = $('input[name=moa_form]:checked').val();
+
+	if(checkedGatherType != "자율형" && (!moa_reglimittime || moa_reglimittime == '')) {
+		alert("신청 가능 시간을 입력해주세요.");
+		return false;
+	}
+	var wr_1 = $('#wr_1').val();
+	if(!wr_1 || wr_1 == '') {
+		alert("모임 최소 인원을 입력해주세요.");
+		return false;
+	}
+	var wr_2 = $('#wr_2').val();
+	if(!wr_2 || wr_2 == '') {
+		alert("모임 정원을 입력해주세요.");
+		return false;
+	}
+	if(Number(wr_2) <= Number(wr_1)) {
+		alert("모임 정원은 최소 인원보다 크게 설정해주세요.");
+		return false;
+	}
+	var wr_3 = $('#wr_3').val();
+	if(!wr_3 || wr_3 == '') {
+		alert("참가료를 입력해주세요.");
+		return false;
+	}
+	var wr_4 = $('#wr_4').val();
+	if(!wr_4 || wr_4 == '') {
+		alert("할인 참가료를 입력해주세요.");
+		return false;
+	}
+	if(!checkValidCost()) {
+		return false;
+	}
+	var wr_subject = $('#wr_subject').val();
+	if(!wr_subject ||wr_subject == '') {
+		alert("모임 제목을 입력해주세요.");
+		return false;
+	}
+	var ca_name = $('#ca_name').val();
+	if(!ca_name ||ca_name == '') {
+		alert("카테고리를 선택해주세요.");
+		return false;
+	}
+	var moa_type = $('input[name=moa_type]:checked').val();
+	if(!moa_type ||moa_type == '') {
+		alert("모임 타입을 선택해주세요.");
+		return false;
+	}
+	var moa_jibun = $('#moa_jibun').val();
+	if(!moa_jibun ||moa_jibun == '') {
+		alert("주소를 입력해주세요.");
+		return false;
+	}
+	var moa_curriculum = $('#moa_curriculum').val();
+	if(!moa_curriculum ||moa_curriculum == '') {
+		alert("모아 커리큘럼을 입력해주세요.");
+		return false;
+	}
+
+
+	if ($('input[name*=cls_day]').val() == ""){ 
+//		alert('모임스케쥴을 입력하세요.'); return false; 
+	} else {
+		if ($('input[name*=cls_time]').val() == ""){ 
+			alert('모임 시각(시간)을 입력하세요.'); return false; 
+		}
+		if ($('input[name*=cls_minute]').val() == ""){ 
+			alert('모임 시각(분)을 입력하세요.'); return false; 
+		}
+		if ($('input[name*=cls_timelimit]').val() == ""){ 
+			alert('모임 진행시간을 입력하세요.'); return false; 
+		}
+	}
+	// $('input[name*="cls_timelimit"]').val()
+	
+	if (checkedGatherType != "자율형" && $('input[name*=cls_day]').val() == ""){
+		alert('모임스케쥴을 입력하세요.');
+		return false;
+	}
 
 	<?php echo $captcha_js; // 캡챠 사용시 자바스크립트에서 입력된 캡챠를 검사함  ?>
 
@@ -995,7 +1183,11 @@ function fwrite_submit(f) {
     alert('관리자 승인 완료 후 모임이 노출됩니다.');
 	return true;
 }
-
+$('input[type="text"]').keydown(function() {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+    }
+});
 $(function(){
 	$("#wr_content").addClass("form-control input-sm write-content");
 });

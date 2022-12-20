@@ -58,6 +58,7 @@ $at = apms_page_thema($pid);
 include_once(G5_LIB_PATH.'/apms.thema.lib.php');
 
 $skin_path = get_social_skin_path();
+// /home/classboard01/www/mobile/skin/social
 $skin_url = get_social_skin_url();
 
 // 설정값 불러오기

@@ -750,7 +750,8 @@ if($is_member) {
 
 // APMS : 주문처리 - 2014.07.21
 apms_order($od_id, $od_status, $member['mb_recommend']);
-echo "<p>mobile/shop/</p>"; exit;
+echo "<p>mobile/shop/</p>"; 
+// exit;
 // 쿠폰업데이트
 apms_coupon_update($member['mb_id']);
 
@@ -941,7 +942,7 @@ if($is_member) {
     sql_query($sql);
 }
 
-procClassAplyer($member['mb_id'], $aply_it_id);
+procClassAplyer($member['mb_id'], $aply_it_id, '신청', $od_id);
 
 // Push - 최고관리자에게 보냄 ---------------------------------------
 	$mb_list = $config['cf_admin'].','.$config['as_admin'];

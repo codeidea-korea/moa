@@ -96,11 +96,15 @@ if($act == "update") {
     if (!$is_admin) {
         $point = (int)$config['cf_memo_send_point'];
         //포인트 체크
+        // 2022.08.21. botbinoo, 쪽지 발송시 포인트 차감 로직 삭제
+        /*
         if ($point) {
             if ($member['mb_point'] - $point < 0) {
                 $data['error_msg'] = '보유하신 보인트가 부족하여 대화를 시작할 수 없습니다.';
             }
         }
+        */
+        // end 2022.08.21. botbinoo, 쪽지 발송시 포인트 차감 로직 삭제
     }
 
     if(!$data['error_msg']) {
@@ -121,10 +125,14 @@ if($act == "update") {
         $sql = " update {$g5['member_table']} set mb_memo_call = '{$member['mb_id']}', mb_memo_cnt = '".get_memo_not_read($recv_mb_id)."' where mb_id = '$recv_mb_id' ";
         sql_query($sql);
 
+        // 2022.08.21. botbinoo, 쪽지 발송시 포인트 차감 로직 삭제
+        /*
         if (!$is_admin) {
             insert_point($send_mb_id, (int)$config['cf_memo_send_point'] * (-1), $recv_mb_nick.'('.$recv_mb_id.')님께 쪽지 발송', '@memo', $recv_mb_id, $me_id);
             
         }
+        */
+        // end 2022.08.21. botbinoo, 쪽지 발송시 포인트 차감 로직 삭제
     }
 }
 

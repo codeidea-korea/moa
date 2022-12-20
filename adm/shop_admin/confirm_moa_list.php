@@ -81,11 +81,14 @@ $result = sql_query($sql);
 					<td><input type="checkbox" class="chk_btn" name="chk[]" value="<?php echo $row['wr_id']; ?>" id="chk_<?php echo $i ?>"></td>
 					<td><?php echo $i; ?></td>
 					<td><img src="<?php echo $row['as_thumb']; ?>" alt="샘플이미지" width="30px" height="30px"></td>
-					<td><a href="" class="color-blue underline"><?php echo $row['it_id']; ?></a>
-					<td><?php echo $row['wr_subject']; ?></td>
+					<td><a href="/shop/item.php?it_id=<?php echo $row['it_id']; ?>" class="color-blue underline"><?php echo $row['it_id']; ?></a>
+					<td><a href="/adm/shop_admin/moa_write.php?bo_table=class&w=u&wr_id=<? echo $row['wr_id']; ?>" class="color-blue underline"><?php echo $row['wr_subject']; ?></a></td>
 					<td><?php echo $row['moa_onoff']; ?></td>
 					<td><?php echo $row['cls_no'] ? $row['cls_no'] : 1; ?>회차</td>
+                    <!--
 					<td><?php echo date('Y-m-d', strtotime($row['day'])) . ' confirm_moa_list.php' . date('H시', strtotime($row['time'])); ?></td>
+                    -->
+					<td><?php echo date('Y-m-d', strtotime($row['day'])) . ' ' . date('H시', strtotime($row['time'])); ?></td>
 					<td><?php echo number_format($row['it_price']); ?>원</td>
 <!--					<td>2022.03.14 ~ 2022.05.14</td>-->
 <!--                    --><?php //$apply_info = countAplyerMoaClass($row['it_id']);
@@ -94,11 +97,17 @@ $result = sql_query($sql);
 //                    ?>
 <!--					<td>--><?php //echo $apply_info['aplyer'] . '/' . $apply_info['tot']; ?><!--</td>-->
 					<td>
+                        <?
+                        if($row['moa_status'] == 6) {
+                            ?>정산됨<?
+                        } else {
+                        ?>
 						<select name="moa_status" class="moa_status" class="span90" data-wr_id="<?php echo $row['wr_id']; ?>">
 							<option value="0" <?php echo $row['moa_status'] == '0' ? 'selected' : ''; ?>>준비</option>
 							<option value="1" <?php echo $row['moa_status'] == '1' ? 'selected' : ''; ?>>승인</option>
 							<option value="2" <?php echo $row['moa_status'] == '2' ? 'selected' : ''; ?>>반려</option>
 						</select>
+                        <? } ?>
 					</td>
 				</tr>
             <?php $i++;
@@ -109,7 +118,7 @@ $result = sql_query($sql);
 
 	<div class="btn_list01 btn_list">
 		<input type="button" name="act_button" id="approval_btn" value="선택 승인" onclick="document.pressed=this.value" class="btn btn_02">
-		<input type="button" name="act_button" id="refuse_btn" value="선택 거절" onclick="document.pressed=this.value" class="btn btn_02">
+		<input type="button" name="act_button" id="refuse_btn" onclick="$('#popup01').addClass('open');" value="선택 거절" onclick="document.pressed=this.value" class="btn btn_02">
 		<input type="button" name="act_button" id="all_approval_btn" value="모두 일괄 승인" onclick="document.pressed=this.value" class="btn btn_01">
 	</div>
 
@@ -122,6 +131,28 @@ $result = sql_query($sql);
 
 	<?php echo get_paging(G5_IS_MOBILE ? $config['cf_mobile_pages'] : $config['cf_write_pages'], $page, $total_page, '?'.$qstr.'&amp;page='); ?>
 
+</div>
+
+<div class="layer-popup" id="popup01">
+	<div class="popContainer">
+		<div class="pop-inner">
+			<span class="pop-closer">팝업닫기</span>
+			
+			<header class="pop-header">
+				반려사유
+			</header>
+
+			<div class="text_area">
+				<textarea id="refuse_msg" placeholder="반려 사유를 입력해 주세요." required></textarea>
+			</div>
+
+			<div class="btn_choice">
+				<button type="button" class="btnSubmit" onclick="reject()">확인</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="pop-bg"></div>
 </div>
 
 <script>
@@ -219,24 +250,51 @@ $('#approval_btn').click(function(){
     }
 })
 
+var target;
 $('.moa_status').change(function(){
-    if(confirm('상태를 바꾸시겠습니까?')) {
-        $.ajax({
-            type: "POST",
-            url: '/ajax/changeStatus.php',
-            data: {'status': $(this).val(), 'wr_id': $(this).data('wr_id') },
-            cache: false,
-            async: false,
-            dataType: "json",
-            success: function (data) {
-                alert('상태가 변경되었습니다.');
-                location.reload();
-            }
-        })
+    if($(this).val() == 2) {
+        $('#popup01').addClass('open');
+        target = this;
     } else {
+        if(confirm('상태를 바꾸시겠습니까?')) {
+            $.ajax({
+                type: "POST",
+                url: '/ajax/changeStatus.php',
+                data: {'status': $(this).val(), 'wr_id': $(this).data('wr_id') },
+                cache: false,
+                async: false,
+                dataType: "json",
+                success: function (data) {
+                    alert('상태가 변경되었습니다.');
+                    location.reload();
+                }
+            })
+        } else {
+            return false;
+        }
+    }
+});
+function reject(){
+    let refuse_msg = $('#refuse_msg').val();
+    if(refuse_msg == '') {
+        alert('반려 사유를 입력해주세요.');
+        $('#refuse_msg').focus();
         return false;
     }
-})
+
+    $.ajax({
+        type: "POST",
+        url: '/ajax/changeStatus.php',
+        data: {'status': $(target).val(), 'wr_id': $(target).data('wr_id'), 'refuse_msg': refuse_msg },
+        cache: false,
+        async: false,
+        dataType: "json",
+        success: function (data) {
+                alert('상태가 변경되었습니다.');
+                location.reload();
+        }
+    });
+}
 </script>
 
 <?php

@@ -1,4 +1,7 @@
 <?php
+  error_reporting( E_ALL );
+  ini_set( "display_errors", 1 );
+
 include_once('./_common.php');
 include_once(G5_LIB_PATH.'/naver_syndi.lib.php');
 include_once(G5_CAPTCHA_PATH.'/captcha.lib.php');
@@ -17,6 +20,207 @@ if($ap == 'list') {
     $moa_close_time = $_POST['ca_name'];
     $moa_close_reason = $_POST['ca_name'];
     $wr_id = $_POST['wr_id'];
+    
+    $sql = "select * from {$write_table} where wr_id = {$wr_id} ";
+    $row = sql_fetch($sql);
+    $wr_subject = $row['wr_subject'];
+    $phoneNo = $member['mb_hp'];
+
+    if($row['moa_status'] == 6 || $row['moa_status'] == '정산'){
+        alert("정산된 모임은 폐강할 수 없습니다.");
+    }
+
+    ob_start();
+    include_once ($misc_skin_path.'basic/write_update_mail_close_class.php');
+    $content = ob_get_contents();
+    ob_end_clean();
+
+    $sender = 'admin@moa.codeidea.com';
+    $reciver = array();
+    array_push($reciver, $member['mb_email']);
+
+    // mail send
+    {
+        include_once(G5_LIB_PATH.'/send_mail.lib.php');
+        sendMail($sender, $member['mb_email'], '['.$wr_subject . '] 모임이 폐강되었습니다.', $content);
+    }
+    // sms send
+    {
+        $title = "[MOA] 모임이 폐강 되었습니다.";
+        $message = '안녕하세요. MOA 입니다. ['.$wr_subject.'] 모임이 폐강되었습니다.';             //필수입력
+        include_once(G5_LIB_PATH.'/send_sms.lib.php');
+        $response = sendSMS($phoneNo, $title, $message, $wr_subject);
+    }
+    // 결제정보 환불처리
+    // 
+    {
+        // 해당 모임의 참여자와 주문정보를 가져온다. 
+        $oders = array();
+        
+        $sql = " select player.*, player.mb_id, memb.mb_email, memb.mb_hp 
+        from deb_class_aplyer player join g5_member memb on player.mb_id = memb.mb_id 
+        where 1=1 
+        and player.wr_id = '{$wr_id}' ";
+        $result = sql_query($sql);
+
+        while($row = sql_fetch_array($result)) {
+            array_push($oders, $row);
+        }
+
+        for($inx = 0; $inx < count($oders); $inx++){
+            $od = sql_fetch(" select * from {$g5['g5_shop_order_table']} where od_id = '{$oders[$inx]['od_id']}' and mb_id = '{$oders[$inx]['mb_id']}' ");
+
+            if (!$od['od_id']) {
+//                alert("존재하는 주문이 아닙니다.");
+                continue;
+            }
+
+            // PG 결제 취소
+            if($od['od_tno']) {
+                switch($od['od_pg']) {
+                    case 'lg':
+                        require_once('../settle_lg.inc.php');
+                        $LGD_TID    = $od['od_tno'];        //LG유플러스으로 부터 내려받은 거래번호(LGD_TID)
+
+                        $xpay = new XPay($configPath, $CST_PLATFORM);
+
+                        // Mert Key 설정
+                        $xpay->set_config_value('t'.$LGD_MID, $config['cf_lg_mert_key']);
+                        $xpay->set_config_value($LGD_MID, $config['cf_lg_mert_key']);
+                        $xpay->Init_TX($LGD_MID);
+
+                        $xpay->Set("LGD_TXNAME", "Cancel");
+                        $xpay->Set("LGD_TID", $LGD_TID);
+
+                        if ($xpay->TX()) {
+                            //1)결제취소결과 화면처리(성공,실패 결과 처리를 하시기 바랍니다.)
+                            /*
+                            echo "결제 취소요청이 완료되었습니다.  <br>";
+                            echo "TX Response_code = " . $xpay->Response_Code() . "<br>";
+                            echo "TX Response_msg = " . $xpay->Response_Msg() . "<p>";
+                            */
+                        } else {
+                            //2)API 요청 실패 화면처리
+                            $msg = "결제 취소요청이 실패하였습니다.\\n";
+                            $msg .= "TX Response_code = " . $xpay->Response_Code() . "\\n";
+                            $msg .= "TX Response_msg = " . $xpay->Response_Msg();
+
+                            alert($msg);
+                        }
+                        break;
+                    case 'inicis':
+                        include_once(G5_SHOP_PATH.'/settle_inicis.inc.php');
+                        $cancel_msg = iconv_euckr('주문자 본인 취소-'.$cancel_memo);
+
+                        /*********************
+                         * 3. 취소 정보 설정 *
+                         *********************/
+                        $inipay->SetField("type",      "cancel");                        // 고정 (절대 수정 불가)
+                        $inipay->SetField("mid",       $default['de_inicis_mid']);       // 상점아이디
+                        /**************************************************************************************************
+                         * admin 은 키패스워드 변수명입니다. 수정하시면 안됩니다. 1111의 부분만 수정해서 사용하시기 바랍니다.
+                         * 키패스워드는 상점관리자 페이지(https://iniweb.inicis.com)의 비밀번호가 아닙니다. 주의해 주시기 바랍니다.
+                         * 키패스워드는 숫자 4자리로만 구성됩니다. 이 값은 키파일 발급시 결정됩니다.
+                         * 키패스워드 값을 확인하시려면 상점측에 발급된 키파일 안의 readme.txt 파일을 참조해 주십시오.
+                         **************************************************************************************************/
+                        $inipay->SetField("admin",     $default['de_inicis_admin_key']); //비대칭 사용키 키패스워드
+                        $inipay->SetField("tid",       $od['od_tno']);                   // 취소할 거래의 거래아이디
+                        $inipay->SetField("cancelmsg", $cancel_msg);                     // 취소사유
+
+                        /****************
+                         * 4. 취소 요청 *
+                         ****************/
+                        $inipay->startAction();
+
+                        /****************************************************************
+                         * 5. 취소 결과                                           	*
+                         *                                                        	*
+                         * 결과코드 : $inipay->getResult('ResultCode') ("00"이면 취소 성공)  	*
+                         * 결과내용 : $inipay->getResult('ResultMsg') (취소결과에 대한 설명) 	*
+                         * 취소날짜 : $inipay->getResult('CancelDate') (YYYYMMDD)          	*
+                         * 취소시각 : $inipay->getResult('CancelTime') (HHMMSS)            	*
+                         * 현금영수증 취소 승인번호 : $inipay->getResult('CSHR_CancelNum')    *
+                         * (현금영수증 발급 취소시에만 리턴됨)                          *
+                         ****************************************************************/
+
+                        $res_cd  = $inipay->getResult('ResultCode');
+                        $res_msg = $inipay->getResult('ResultMsg');
+
+                        if($res_cd != '00') {
+                            if($res_cd == '01') {
+//                                alert('이미 취소된 거래입니다.');
+                            }
+//                            alert(iconv_utf8($res_msg).' 코드 : '.$res_cd);
+                        }
+                        break;
+                    default:
+                        require_once('../settle_kcp.inc.php');
+
+                        $_POST['tno'] = $od['od_tno'];
+                        $_POST['req_tx'] = 'mod';
+                        $_POST['mod_type'] = 'STSC';
+                        if($od['od_escrow']) {
+                            $_POST['req_tx'] = 'mod_escrow';
+                            $_POST['mod_type'] = 'STE2';
+                            if($od['od_settle_case'] == '가상계좌')
+                                $_POST['mod_type'] = 'STE5';
+                        }
+                        $_POST['mod_desc'] = iconv("utf-8", "euc-kr", '주문자 본인 취소-'.$cancel_memo);
+                        $_POST['site_cd'] = $default['de_kcp_mid'];
+
+                        // 취소내역 한글깨짐방지
+                        setlocale(LC_CTYPE, 'ko_KR.euc-kr');
+
+                        include G5_SHOP_PATH.'/kcp/pp_ax_hub.php';
+
+                        // locale 설정 초기화
+                        setlocale(LC_CTYPE, '');
+                }
+            }
+            // 쿠폰 사용 이력 취소 (삭제)
+            $sql = " delete from {$g5['g5_shop_coupon_log_table']} where mb_id = '{$oders[$inx]['mb_id']}' and od_id = '{$oders[$inx]['od_id']}' ";
+            sql_query($sql);
+
+            // 장바구니 자료 취소
+            sql_query(" update {$g5['g5_shop_cart_table']} set ct_status = '취소' where od_id = '{$oders[$inx]['od_id']}' ");
+
+            // 주문 취소
+            $cancel_price = $od['od_cart_price'];
+
+            $sql = " update {$g5['g5_shop_order_table']}
+                        set od_send_cost = '0',
+                            od_send_cost2 = '0',
+                            od_receipt_price = '0',
+                            od_receipt_point = '0',
+                            od_misu = '0',
+                            od_cancel_price = '$cancel_price',
+                            od_cart_coupon = '0',
+                            od_coupon = '0',
+                            od_send_coupon = '0',
+                            od_status = '취소',
+                            od_shop_memo = concat(od_shop_memo,\"\\모임 폐강으로인한 자동 취소 - ".G5_TIME_YMDHIS."\")
+                        where od_id = '{$oders[$inx]['od_id']}' ";
+            sql_query($sql);
+
+            // 주문취소 회원의 포인트를 되돌려 줌
+            if ($od['od_receipt_point'] > 0){
+                insert_point($oders[$inx]['mb_id'], $od['od_receipt_point'], "주문번호 {$oders[$inx]['od_id']} 본인 취소");
+            }
+
+            // mail send
+            {
+                include_once(G5_LIB_PATH.'/send_mail.lib.php');
+                sendMail($sender, $oders[$inx]['mb_email'], '['.$wr_subject . '] 모임이 폐강되어 환불처리되었습니다.', $content);
+            }
+            // sms send
+            {
+                $title = "[MOA] 모임이 폐강 되었습니다.";
+                $message = '안녕하세요. MOA 입니다. ['.$wr_subject.'] 모임이 폐강되어 환불처리되었습니다.';             //필수입력
+                include_once(G5_LIB_PATH.'/send_sms.lib.php');
+                $response = sendSMS($oders[$inx]['mb_hp'], $title, $message, $wr_subject);
+            }
+        }
+    }
 
     $sql = " update g5_write_class
                 set moa_close_time = '{$moa_close_time}',
@@ -25,11 +229,78 @@ if($ap == 'list') {
               where wr_id = '{$wr_id}' ";
     sql_query($sql);
 
-    alert('모임이 폐강되었습니다.');
+    alert('모임이 폐강되었습니다.', $_SERVER['HTTP_REFERER']);
+
 } else if($ap == 'moim_membership') {
 
     $status = $_POST['status'];
     $idx = $_POST['idx'];
+    
+    $sql = "select member.*, class.wr_subject, class.moa_addr1, player.aplydate, player.aplytime, class.moa_status from deb_class_aplyer player, g5_member member, g5_write_class class   
+            where player.idx = '{$idx}' and member.mb_id = player.mb_id and class.wr_id = player.wr_id ";
+    $row = sql_fetch($sql);
+
+    if($row['moa_status'] == 5) {
+        alert('폐강된 모임입니다.');
+    }
+    if($row['moa_status'] == 6) {
+        alert('이미 정산된 모임입니다.');
+    }
+
+    $sql = "select * from {$write_table} where idx = '{$idx}' ";
+    $row = sql_fetch($sql);
+    $wr_subject = $row['wr_subject'];
+    $phoneNo = $member['mb_hp'];
+
+    ob_start();
+    include_once ($misc_skin_path.'basic/write_update_mail_reservation_class.php');
+    $content = ob_get_contents();
+    ob_end_clean();
+
+    $sender = 'admin@moa.codeidea.com';
+    $reciver = array();
+    array_push($reciver, $member['mb_email']);
+
+    // mail send
+    {
+        include_once(G5_LIB_PATH.'/send_mail.lib.php');
+        sendMail($sender, $member['mb_email'], '['.$wr_subject . '] 모임에 예약 확정되었습니다.', $content);
+    }
+    // sms send
+    {
+        $title = "[MOA] 모임에 예약 확정 되었습니다.";
+        $message = '안녕하세요. MOA 입니다. ['.$wr_subject.'] 모임에 예약 확정되었습니다. 모임 시간 : '.$row['aplydate'].' '.$row['aplytime'];             //필수입력
+        include_once(G5_LIB_PATH.'/send_sms.lib.php');
+        $response = sendSMS($phoneNo, $title, $message, $wr_subject);
+    }
+    // 모임 참여자에게도 메일/문자 발송    
+    // mail send
+    {
+        include_once(G5_LIB_PATH.'/send_mail.lib.php');
+        sendMail($sender, $row['mb_email'], '['.$wr_subject . '] 모임에 예약 확정되었습니다.', $content);
+    }
+    // sms send
+    {
+        $title = "[MOA] 모임에 예약 확정 되었습니다.";
+        $message = '안녕하세요. MOA 입니다. ['.$wr_subject.'] 모임에 예약 확정되었습니다. 모임 시간 : '.$row['aplydate'].' '.$row['aplytime'];             //필수입력
+        include_once(G5_LIB_PATH.'/send_sms.lib.php');
+        $response = sendSMS($row['mb_hp'], $title, $message, $wr_subject);
+    }
+    include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
+    {
+        $replaceText = ' [모아프렌즈] #{이름} 사원 님께서 신청해 주신 모임의 예약이 확정되었습니다!
+
+        모임명: #{비고1}
+        일시: #{비고2}
+        장소: #{비고3}';
+        $reserve_type = 'NORMAL';
+        $start_reserve_time = date('Y-m-d H:i:s');
+        $reciver = '{"name":"'.$row['mb_name'].'","mobile":"'.$row['mb_hp'].'",
+            "note1":"'.$row['mb_name'].'",
+            "note2":"'.$row['aplydate'] . ' '. $row['aplytime'].'",
+            "note3":"'.$row['moa_addr1'].'"}';
+        sendBfAlimTalk(39, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+    }
 
     $sql = " update deb_class_aplyer
                 set status = '예약확정'
@@ -455,7 +726,11 @@ if($ap == 'list') {
         $sql_password = $wr_password ? " , wr_password = '".get_encrypt_string($wr_password)."' " : "";
 
         $sql_ip = '';
-        if (!$is_admin) { $sql_ip = " , wr_ip = '{$_SERVER['REMOTE_ADDR']}' "; } 
+        $updateSet = "";
+        if (!$is_admin) { 
+            $sql_ip = " , wr_ip = '{$_SERVER['REMOTE_ADDR']}' "; 
+            $updateSet = ", moa_status = 0 ";
+        } 
         
         if($board['as_save']) { // 외부 이미지 저장
             $wr_content = apms_content_image($wr_content);
@@ -470,7 +745,7 @@ if($ap == 'list') {
 					as_type = '{$as_type}', as_img = '{$as_img}', as_publish = '{$as_publish}', as_extra = '{$as_extra}',
 					as_extend = '{$as_extend}', as_down = '{$as_down}', as_view = '{$as_view}', as_tag = '{$as_tag}', 
 					as_map = '{$as_map}', as_icon = '{$as_icon}', as_update = '{$as_update}'
-					{$sql_ip} {$sql_password} 
+					{$sql_ip} {$sql_password} {$updateSet} 
               where wr_id = '{$wr['wr_id']}' ";
         sql_query($sql);
 
@@ -478,7 +753,11 @@ if($ap == 'list') {
 		// deb_class_item 수정
 
         // 분류가 수정되는 경우 해당되는 코멘트의 분류명도 모두 수정함 (코멘트의 분류를 수정하지 않으면 검색이 제대로 되지 않음)
-        $sql = " update {$write_table} set ca_name = '{$ca_name}' where wr_parent = '{$wr['wr_id']}' ";
+        $updateSet = "";
+        if ($is_admin !== 'super'){
+            $updateSet = ", moa_status = 0 ";
+        }
+        $sql = " update {$write_table} set ca_name = '{$ca_name}' {$updateSet} where wr_parent = '{$wr['wr_id']}' ";
         sql_query($sql);
 		// ### 모임 수정 처리 End ######################################################################################################################
     }
@@ -529,7 +808,8 @@ if($ap == 'list') {
         if (isset($_POST['bf_file_del'][$i]) && $_POST['bf_file_del'][$i]) {
             $upload[$i]['del_check'] = true;
 
-            $row = sql_fetch(" select bf_file from {$g5['board_file_table']} where bo_table = '{$bo_table}' and wr_id = '{$wr_id}' and bf_no = '{$i}' ");
+            $seq = ($i+1) % 5;
+            $row = sql_fetch(" select bf_file from {$g5['board_file_table']} where bo_table = '{$bo_table}' and wr_id = '{$wr_id}' and bf_no = '{$seq}' ");
             @unlink(G5_DATA_PATH.'/file/'.$bo_table.'/'.$row['bf_file']);
             // 썸네일삭제
             if(preg_match("/\.({$config['cf_image_extension']})$/i", $row['bf_file'])) {
@@ -538,7 +818,7 @@ if($ap == 'list') {
         }
         else
             $upload[$i]['del_check'] = false;
-
+        
         $tmp_file  = $_FILES['bf_file']['tmp_name'][$i];
         $filesize  = $_FILES['bf_file']['size'][$i];
         $filename  = $_FILES['bf_file']['name'][$i];
@@ -613,6 +893,8 @@ if($ap == 'list') {
         }
     }
 
+//    exit;
+
 	// 나중에 테이블에 저장하는 이유는 $wr_id 값을 저장해야 하기 때문입니다.
     for ($i=0; $i<count($upload); $i++)
     {
@@ -625,7 +907,8 @@ if($ap == 'list') {
             // 삭제에 체크가 있거나 파일이 있다면 업데이트를 합니다.
             // 그렇지 않다면 내용만 업데이트 합니다.
 
-            if ($upload[$i]['del_check'] || $upload[$i]['file']){
+            // 교체인 경우
+            if ($upload[$i]['del_check'] && $upload[$i]['file']){
                 $sql = " update {$g5['board_file_table']}
                         set bf_source = '{$upload[$i]['source']}',
                              bf_file = '{$upload[$i]['file']}',
@@ -638,6 +921,14 @@ if($ap == 'list') {
                       where bo_table = '{$bo_table}'
                                 and wr_id = '{$wr_id}'
                                 and bf_no = '{$i}' ";
+                sql_query($sql);
+            }else if($upload[$i]['del_check']){
+                // 삭제인 경우
+                $seq = ($i+1) % 5;
+                $sql = " delete from {$g5['board_file_table']} 
+                        where bo_table = '{$bo_table}'
+                                and wr_id = '{$wr_id}'
+                                and bf_no = '{$seq}' ";
                 sql_query($sql);
             }else{
                 $sql = " update {$g5['board_file_table']}
@@ -883,6 +1174,25 @@ if($ap == 'list') {
             }
         }
     }
+
+    include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
+    {
+        
+        $sql = "SELECT m.* FROM g5_member m where m.mb_id = ('{$mb_id}')";
+        $memb = sql_fetch($sql);
+        $replaceText = ' [모아프렌즈] [모임 신청 완료]
+
+        호스트 님께서 신청해 주신 #{비고1} 모임오픈 신청이 정상적으로 제출되었습니다!
+
+        모임 검토 및 승인 완료 후 모임이 노출됩니다.
+        빠르게 처리해드릴게요. 조금만 기다려 주세요!
+
+        모임 승인까지 최소 1~3일이 소요될 수 있습니다.';
+        $reserve_type = 'NORMAL';
+        $start_reserve_time = date('Y-m-d H:i:s');
+        $reciver = '{"name":"'.$memb['mb_name'].'","mobile":"'.$memb['mb_hp'].'","note1":"'.$wr_subject.'"}';
+        sendBfAlimTalk(66, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+    }
 	
     // 사용자 코드 실행
     @include_once($board_skin_path.'/write_update.skin.php');
@@ -890,7 +1200,9 @@ if($ap == 'list') {
     @include_once($board_skin_path.'/write_update.tail.skin.php');
 
     delete_cache_latest($bo_table);
-    goto_url(G5_URL . '/shop/partner/?ap=list');
+
+    $returnUrl = $_POST['returnUrl'];
+    goto_url($returnUrl);
 }
 ?>
 

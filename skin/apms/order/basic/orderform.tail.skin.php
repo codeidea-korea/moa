@@ -106,10 +106,12 @@ $(function() {
         var $s_el = $cp_row_el.find(".total_price");;
         sell_price = parseInt($cp_row_el.find("input[name^=it_price]").val());
         sell_price = sell_price - parseInt(price);
+        /*
         if(sell_price < 0) {
             alert("쿠폰할인금액이 주문금액보다 크므로 쿠폰을 적용할 수 없습니다.");
             return false;
         }
+        */
         $s_el.text(number_format(String(sell_price)));
         $cp_row_el.find("input[name^=cp_id]").val(cp_id);
         $cp_row_el.find("input[name^=cp_price]").val(price);
@@ -169,11 +171,12 @@ $(function() {
                 return false;
             }
         }
+        /*
         if(od_price - price <= 0) {
             alert("쿠폰할인금액이 주문금액보다 크므로 쿠폰을 적용할 수 없습니다.");
             return false;
         }
-
+*/
         $("input[name=sc_cp_id]").val("");
         $("input[name=od_price]").val(od_price - price);
         $("input[name=od_cp_id]").val(cp_id);
@@ -386,7 +389,7 @@ function calculate_order_price() {
     var send_cost = parseInt($("input[name=od_send_cost]").val());
     var send_cost2 = parseInt($("input[name=od_send_cost2]").val());
     var send_coupon = parseInt($("input[name=od_send_coupon]").val());
-	var od_temp_point = parseInt($("input[name=od_temp_point]").val());	// 입력한 포인트
+	var od_temp_point = 0; // parseInt($("input[name=od_temp_point]").val());	// 입력한 포인트
 	// 쿠폰, 포인트가 계산되어진 금액에 > 기타비용과 배송쿠폰을 계산한 금액, 현재 모아는 sell_price가 tot_price나 마찬가지
     var tot_price = sell_price + send_cost + send_cost2 - send_coupon - od_temp_point; 
 

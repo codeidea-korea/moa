@@ -2,7 +2,8 @@
 $bbslist = array(
     'community'=>'490100',
     'notice'=>'490200',
-    'qa'=>'490300',
+//    'qa'=>'490300',
+    'qa'=>'580300',
 );
 $sub_menu = $bbslist[$_GET['bo_table']];
 

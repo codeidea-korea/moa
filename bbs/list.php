@@ -33,8 +33,120 @@ if ($sop != 'and' && $sop != 'or')
 
 // 분류 선택 또는 검색어가 있다면
 $stx = trim($stx);
+$stx = addslashes($stx);
+$stx = htmlspecialchars($stx);
+
 //검색인지 아닌지 구분하는 변수 초기화
 $is_search_bbs = false;
+
+// 2022.08.21. botbinoo, 일자 검색, 정렬, 회차 조건 추가
+/*
+$searchTime = $_POST['searchTime'];
+$composition = $_POST['composition'];
+$sequence = $_POST['sequence'];
+*/
+if($bo_table == 'class') {
+    
+    $where = "";
+    $having = "";
+    $orderBy = "";
+    // g5_write_class + 모임정보 + 모임상세일정(스케쥴) + 댓글
+    $qstr = $qstr . "&searchTime=" . $searchTime . "&composition=" . $composition . "&sequence=" . $sequence;
+    if(isset($searchTime) && $searchTime != '') {
+        $searchTimes = explode( ' ~ ', $searchTime );
+        $startedAt = $searchTimes[0];
+        $endedAt = $searchTimes[1];
+        // 모임 기간이 포함된 경우만 조회
+        $where = $where . " and item.day between '{$startedAt}' and '{$endedAt}' ";
+    }
+
+    $moa_onoff = $_REQUEST['moa_onoff'];
+    if($moa_onoff){
+        $where = $where . " and moa_onoff = '" . $moa_onoff . "' ";
+    }
+    $moa_addr1 = $_REQUEST['area'];
+    if(isset($moa_addr1) && $moa_addr1 != '지역선택'){
+        if(mb_strpos($moa_addr1, "_") > 0){
+            $moa_addr1 = mb_substr($moa_addr1, mb_strpos($moa_addr1, "_") + 1, NULL, "UTF-8");
+        }
+        if(mb_strpos($moa_addr1, "/") > 0){
+            $moa_addrs = explode("/", $moa_addr1);
+    
+            $where = $where . " and ( ";
+            for($inx = 0; $inx < count($moa_addrs); $inx++){
+                $where = $where . " moa_addr1 like '%" . $moa_addrs[$inx] . "%' " . ($inx+1 < count($moa_addrs) ? ' or ' : '');
+            }
+            $where = $where . " ) ";
+        } else {
+            $where = $where . " and moa_addr1 like '%" . $moa_addr1 . "%' ";
+        }
+    }
+
+    if(isset($composition) && $composition != '') {
+        // 구성 갯수로 판단하여 조회
+        switch($composition){
+            case '1':
+                $having = $having . " having count(*) = 1 ";
+                break;
+            case 'n':
+                $having = $having . " having count(*) > 1 ";
+                break;
+            case 'all':
+            default: break;
+        }
+    }
+
+    if(isset($sequence) && $sequence != '') {
+        switch($sequence){
+            case 'recent':
+                $orderBy = $orderBy . " order by wr_datetime desc  ";
+                break;
+            case 'popular':
+    //            $orderBy = $orderBy . " order by count(o.idx) desc  ";
+                break;
+            case 'review':
+                $orderBy = $orderBy . " order by cnt_reply desc  ";
+                break;
+            case 'lowcost':
+                $orderBy = $orderBy . " order by it_price asc  ";
+                break;
+            case 'highcost':
+                $orderBy = $orderBy . " order by it_price desc  ";
+                break;
+            default: break;
+        }
+    }
+    $today = date("Y-m-d", time());
+    if($where != "" || $having != "" || $orderBy != ""){
+        $write_table = "(
+            select 
+                class.*, reply.cnt_reply cnt_reply, shop.it_price it_price, item.day
+            from g5_write_class as class
+                join g5_shop_item as shop on shop.it_2 = class.wr_id
+                join g5_shop_cart as cart on cart.it_id = shop.it_id
+                join (select c.* from deb_class_item as c 
+                    join g5_shop_item as i on i.it_id = c.it_id 
+                    group by it_2 {$having}) as cnt_item on shop.it_id = cnt_item.it_id
+                join deb_class_item as item on shop.it_id = item.it_id
+                left join (select count(*) cnt_reply, it_id from g5_shop_item_use group by it_id) as reply on reply.it_id = shop.it_id
+            where 1=1
+                {$where} 
+            and class.moa_form = '자율형' or (class.moa_form = '고정형' and item.day >= '{$today}') 
+            group by class.wr_id)";
+    } else if($bo_table == 'class'){
+        $write_table = "(
+            select 
+                class.*, item.day
+            from g5_write_class as class
+                join g5_shop_item as shop on shop.it_2 = class.wr_id
+                join deb_class_item as item on shop.it_id = item.it_id
+            where 1=1
+                {$where} 
+            and class.moa_form = '자율형' or (class.moa_form = '고정형' and item.day >= '{$today}') 
+            group by class.wr_id)";
+    }
+}
+// end 2022.08.21. botbinoo, 일자 검색, 정렬, 회차 조건 추가
 
 if ($sca || $stx || $stx === '0') {     //검색이면
     $is_search_bbs = true;      //검색구분변수 true 지정
@@ -54,7 +166,7 @@ if ($sca || $stx || $stx === '0') {     //검색이면
 
     // 원글만 얻는다. (코멘트의 내용도 검색하기 위함)
     // 라엘님 제안 코드로 대체 http://sir.kr/g5_bug/2922
-    $sql = " SELECT COUNT(DISTINCT `wr_parent`) AS `cnt` FROM {$write_table} WHERE {$sql_search} ";
+    $sql = " SELECT COUNT(DISTINCT `wr_parent`) AS `cnt` FROM {$write_table} as l WHERE {$sql_search} ";
     $row = sql_fetch($sql);
     $total_count = $row['cnt'];
     /*
@@ -65,10 +177,24 @@ if ($sca || $stx || $stx === '0') {     //검색이면
 } else {
     $sql_search = "(1)";
     if($bo_table == 'class') { $sql_search .= " and (moa_status = 1)"; }
-    $sql = " SELECT COUNT(DISTINCT `wr_parent`) AS `cnt` FROM {$write_table} WHERE {$sql_search}";
+    $sql = " SELECT COUNT(DISTINCT `wr_parent`) AS `cnt` FROM {$write_table} as l WHERE {$sql_search}";
     $row = sql_fetch($sql);
     $total_count = $row['cnt'];
 }
+if($bo_table == 'class') { 
+    $where = '';
+    if ($sca) {
+        $where .= " and a.ca_name = '{$sca}' ";
+    }
+    if ($stx) {
+        $where .= " and a.wr_subject like '%{$stx}%' ";
+    }
+    $sql = " select count(*) as cnt from {$write_table} a where a.wr_is_comment = 0 {$where} and a.moa_status = 1 ";
+    $row = sql_fetch($sql);
+    $total_count = $row['cnt'];
+    $where = "";
+}
+
 
 if(G5_IS_MOBILE) {
     $page_rows = $board['bo_mobile_page_rows'];
@@ -122,6 +248,45 @@ if (!$stx) {
             break;
     }
 }
+// 2022.08.25. botbinoo, 공지사항 테이블은 사용하지 않고, 각 카테고리에서 관리자가 옵션으로 [공지]를 선택할 경우도 공지로 표현되도록 수정
+if($bo_table == 'community'){
+    
+    $list = array();
+    $notice_count = 0;
+    $notice_array = array();
+
+    $board_notice_count = count($arr_notice);
+    $i = 0;
+
+    for ($k=0; $k<$board_notice_count; $k++) {
+        if (trim($arr_notice[$k]) == '') continue;
+
+        $row = sql_fetch(" select * from {$write_table} where wr_id = '{$arr_notice[$k]}' order by wr_last desc ");
+
+//		$notice_array[] = $row['wr_id'];
+        $list[$i] = $row;
+        // subject
+        $list[$i]['is_notice'] = true;
+        $list[$i]['subject'] = $row['wr_subject'];
+//        $list[$i]['link_href'] = $row['link_href'];
+        $list[$i]['name'] = $row['wr_name'];
+        $list[$i]['photo'] = $row['photo'];
+        $list[$i]['mb_id'] = $row['mb_id'];
+        $list[$i]['date'] = strtotime($row['wr_datetime']);
+        $list[$i]['ca_name'] = $row['ca_name'];
+        $list[$i]['wr_good'] = $row['wr_good'];
+        $list[$i]['content'] = $row['wr_content'];
+        $list[$i]['wr_comment'] = $row['wr_comment'];
+        $list[$i]['wr_link1'] = $row['wr_link1'];
+        $list[$i]['href'] = '/bbs/board.php?bo_table=community&wr_id=' . $row['wr_id'];
+        
+
+        $i++;
+    }
+    
+    $mb_id = $member['mb_id'];
+}
+// end 2022.08.25. botbinoo, 공지사항 테이블은 사용하지 않고, 각 카테고리에서 관리자가 옵션으로 [공지]를 선택할 경우도 공지로 표현되도록 수정
 
 $total_page  = ceil($total_count / $page_rows);  // 전체 페이지 계산
 $from_record = ($page - 1) * $page_rows; // 시작 열을 구함
@@ -176,6 +341,9 @@ if(!$sst)
 if ($sst) {
     $sql_order = " order by {$sql_apms_orderby} {$sst} {$sod} ";
 }
+if($orderBy != "") {
+    $sql_order = $orderBy;
+}
 
 if ($is_search_bbs) {
     if($bo_table == 'class') { $sql_search .= " and (moa_status = 1) "; }
@@ -187,6 +355,18 @@ if ($is_search_bbs) {
         $sql .= " and wr_id not in (".implode(', ', $arr_notice).")";
     $sql .= " {$sql_order} limit {$from_record}, $page_rows ";
 }
+
+if($bo_table == 'class') { 
+    $where = '';
+    if ($sca) {
+        $where .= " and a.ca_name = '{$sca}' ";
+    }
+    if ($stx) {
+        $where .= " and a.wr_subject like '%{$stx}%' ";
+    }
+    $sql = " select * from {$write_table} a where 1=1 {$where} and a.moa_status = 1 {$sql_order} limit {$from_record}, $page_rows ";
+}
+
 // 페이지의 공지개수가 목록수 보다 작을 때만 실행
 $k = 0;
 if($page_rows > 0) {
@@ -257,5 +437,6 @@ if ($board['bo_use_rss_view']) {
 }
 
 $stx = get_text(stripslashes($stx));
+
 include_once($board_skin_path.'/list.skin.php');
 ?>

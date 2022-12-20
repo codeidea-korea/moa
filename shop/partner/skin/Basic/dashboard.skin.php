@@ -15,16 +15,19 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 		<div class="boxContainer flex flex-top span650">
 			<!--<div class="main-profile-thumb no-img" style=""></div> //이미지가 없을때 -->
 			<div class="main-profile-thumb">
-                <?php echo ($member['photo']) ? '<img src="'.$member['photo'].'" alt="" width="100%">' : '<span class="no-img"></span>'; ?>
+                <!-- 2022.09.06. botbinoo, 프로필 이미지 수정 안되는 오류(리소스 캐싱 문제) -->
+                <!--  <?php echo ($member['photo']) ? '<img src="'.$member['photo'].'" alt="" width="100%">' : '<span class="no-img"></span>'; ?> -->
+                <?php echo ($member['photo']) ? '<img src="'.$member['photo'].'?v='.time().'" alt="" width="100%">' : '<span class="no-img"></span>'; ?>
+                <!-- end 2022.09.06. botbinoo, 프로필 이미지 수정 안되는 오류(리소스 캐싱 문제) -->
             </div>
 			<div class="main-profile-con">
 				<div class="header">
 					<span class="name"><?php echo $partner['pt_name'];?> 님</span>
-					<span class="mb-tag super-host">슈퍼 호스트</span>
+<!--					<span class="mb-tag super-host">슈퍼 호스트</span>-->
 <!--					<span class="mb-tag super-host">슈퍼 호스트</span>-->
 <!--					<span class="mb-tag super-guest">슈퍼 게스트</span>-->
 <!--					<span class="mb-tag guest">일반 게스트</span>-->
-<!--					<span class="mb-tag host">일반 호스트</span>-->
+					<span class="mb-tag host">호스트</span>
 					<p class="fs12 color-gray mt5">초대코드 : <?php echo $member['invite_code'];?></p>
 				</div>
 				<div class="con">
@@ -125,7 +128,7 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 		<div class="span320 flex gap5 column">
 			<div class="section-title">고객센터</div>
 			<div class="boxContainer flex1">
-				<a href="#" class="btn reverse gray span chat-link"  data-mb_id="admin">1:1 실시간 상담</a>
+<!--				<a href="#" class="btn reverse gray span chat-link"  data-mb_id="admin">1:1 실시간 상담</a> -->
 				<a href="/c_my/my_service_center02.php" class="btn reverse gray span mt10">문의 상담</a>
 				<div class="span tcenter" style="position:absolute;bottom:30px;left:0;">
 					<p class="fs18">고객센터 0000-0000</p>

@@ -8,11 +8,30 @@ include_once('./_common.php');
 if($is_guest) {
 	alert('로그인해 주세요.', APMS_PARTNER_URL.'/login.php');
 }
+$mobile_agent = "/(iPod|iPhone|Android|BlackBerry|SymbianOS|SCH-M\d+|Opera Mini|Windows CE|Nokia|SonyEricsson|webOS|PalmOS)/";
+
+if(preg_match($mobile_agent, $_SERVER['HTTP_USER_AGENT'])){
+//	alert('본 페이지는 pc에 최적화된 페이지입니다');
+    echo "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">";
+    echo "<script>";
+    echo "alert(\"본 페이지는 pc에 최적화된 페이지입니다\");";
+    echo "</script>";
+}else{
+}
+
 
 // 회원정보가공
 thema_member();
 
-$is_partner = (IS_PARTNER) ? true : false;
+// $is_partner = (IS_PARTNER) ? true : false;
+$partner = array();
+$partner = apms_partner($mb_id);
+
+$partner = sql_fetch("select * from {$g5['apms_partner']} where pt_id = '{$member['mb_id']}'");
+
+$partner['pt_level'] = (isset($partner['pt_level']) && $partner['pt_level'] > 0) ? $partner['pt_level'] : 1;
+
+$is_partner = ($partner['pt_level'] > 1) ? true : false;
 
 if($is_partner) {
 	; // 통과
@@ -27,8 +46,7 @@ define('G5_IS_ADMIN', true);
 $mb_id = $member['mb_id'];
 
 //파트너 정보
-$partner = array();
-$partner = apms_partner($mb_id);
+// $partner = apms_partner($mb_id);
 $partner['pt_level'] = (isset($partner['pt_level']) && $partner['pt_level'] > 0) ? $partner['pt_level'] : 1;
 $plvl = $partner['pt_level'];
 $partner['pt_level_benefit'] = (isset($apms['apms_benefit'.$plvl]) && $apms['apms_benefit'.$plvl] > 0) ? $apms['apms_benefit'.$plvl] : 0;

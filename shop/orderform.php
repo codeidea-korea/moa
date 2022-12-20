@@ -1051,6 +1051,14 @@ var g5_url = "<?php echo G5_URL;?>";
 
 		var tot_price = od_price + send_cost + send_cost2 - send_coupon - temp_point;
 
+		if(tot_price == 0) {
+			// 포인트로 100% 결제 하는 경우
+			f.action = '/shop/orderformupdate.php';
+			f.od_settle_case.value = '포인트';
+			f.submit();
+			return;
+		}
+
 		if (document.getElementById("od_settle_iche")) {
 			if (document.getElementById("od_settle_iche").checked) {
 				if (tot_price < 150) {
@@ -1272,6 +1280,14 @@ var g5_url = "<?php echo G5_URL;?>";
 		}
 
 		var tot_price = od_price + send_cost + send_cost2 - send_coupon - temp_point;
+
+		if(tot_price == 0) {
+			// 포인트로 100% 결제 하는 경우
+			f.action = '/shop/orderformupdate.php';
+			f.od_settle_case.value = '포인트';
+			f.submit();
+			return;
+		}
 
 		if (document.getElementById("od_settle_iche")) {
 			if (document.getElementById("od_settle_iche").checked) {

@@ -11,6 +11,7 @@ $str = "샘플페이지가 정상적으로 나와라";
  * 개발자가 처리할 영역
  */
 
+$register_action_url = "/bbs/register_form_update.php";
  //이메일 가입01 화면
  
 //헤더영역(공통파일)

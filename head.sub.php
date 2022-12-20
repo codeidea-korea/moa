@@ -23,7 +23,7 @@ if(!defined('_RESPONSIVE_')) {
 $begin_time = get_microtime();
 
 if (isset($g5['title']) && $g5['title']) {
-    $g5_head_title = $g5['title'].' > '.$config['cf_title'];
+    $g5_head_title = $g5['title']; //.' > '.$config['cf_title'];
 } else { // 상태바에 표시될 제목
 	$g5['title'] = $config['cf_title'];
     $g5_head_title = $g5['title'];
@@ -133,7 +133,7 @@ if($board['bo_subject']) $header_title = $board['bo_subject'];
 if(strpos($_url, '/c_category/') !== false) $header_title = '카테고리';
 
 if (strpos($_SERVER['REQUEST_URI'], 'c_my/my_inquiry02') > 0 ){
-	$header_title = "문의내역";
+	$header_title = "나의문의";
 }
 
 ?>
@@ -174,7 +174,7 @@ var g5_purl = "<?php echo $seometa['url']; ?>";
 <script src="<?php echo G5_JS_URL ?>/common.js?ver=<?php echo APMS_SVER; ?>"></script>
 <script src="<?php echo G5_JS_URL ?>/wrest.js?ver=<?php echo APMS_SVER; ?>"></script>
 <script src="<?php echo G5_JS_URL ?>/placeholders.min.js"></script>
-<script src="<?php echo G5_JS_URL ?>/apms.js?ver=<?php echo APMS_SVER; ?>"></script>
+<script src="<?php echo G5_JS_URL ?>/apms.js?ver=<?php echo time(); ?>"></script>
 <script src="<?php echo G5_JS_URL ?>/masonry.pkgd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

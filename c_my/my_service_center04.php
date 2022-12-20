@@ -4,7 +4,8 @@ include_once("./_common.php");
 //헤더영역(공통파일)
 include_once(CLASS_PATH."/header.php");
 
-//main head(공통파일)
+$header_title = '자주묻는 질문';
+//main head(공통파일) 
 include_once(CLASS_PATH."/head.php");
 ?>
     <div class="wrapper">

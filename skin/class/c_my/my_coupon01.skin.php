@@ -14,6 +14,8 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 <div class="cou_txe">
                     <p>[<?php echo $cp[$i]['cp_target']; ?>] <?php echo $cp[$i]['cp_subject']; ?></p>
                     <p><?php echo $cp[$i]['cp_price']; ?></p>
+                    <!-- 최소 사용금액 추가 -->
+                    <p>최소 사용금액 : <? echo number_format($cp[$i]['cp_minimum']); ?>원</p>
                     <p>유효기간: <?php echo date('Y.m.d', strtotime($cp[$i]['cp_start'])); ?> ~ <?php echo date('Y.m.d', strtotime($cp[$i]['cp_end'])); ?></p>
                 </div>
                 <div class="use">

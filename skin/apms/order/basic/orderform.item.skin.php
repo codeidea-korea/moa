@@ -54,7 +54,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
         <div class="s_content detail_con">
             <div class="dt_con1">
                 <h3>
-                    쿠폰/포인트
+                    쿠폰
                 </h3>
             </div>
             <ul class="a_layout mt25 coupon_area">
@@ -66,12 +66,14 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 						<button type="button" id="od_coupon_btn" class="cp_btn btn btn-black btn-sm">쿠폰적용</button>
                     </a>
                 </li>
+				<!--
                 <li>
                     <a href="javascript:" >
                         <p>포인트</p>
                         <span> <?php echo number_format($member['mb_point'])?>Point 보유, 1000점 이상 사용 가능</span>
                     </a>
                 </li>
+				-->
             </ul>
         </div>
 
@@ -96,16 +98,25 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 						</div>
                     </a>
                 </li>
+				<!--
                 <li>
                     <a href="javascript:" >
 						<p>포인트</p>
 						<div>
 							<input type="hidden" name="max_temp_point" value="<?php echo $temp_point;?>">
+							<style>
+							input[type="number"]::-webkit-outer-spin-button,
+							input[type="number"]::-webkit-inner-spin-button {
+								-webkit-appearance: none;
+								margin: 0;
+							}
+							</style>
 							<input type="number" name="od_temp_point" value="0" id="od_temp_point" class="frm_input form-control input-sm" size="10" style="text-align:right; padding-right:10px;" pattern="\d*">
 							<span class="input-group-addon">점</span>
 						</div>
                     </a>
                 </li>
+				-->
             </ul>
         </div>
 
@@ -121,6 +132,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 					<?php } ?>
                 </div>
             </div>
+			<!--
             <ul class="a_layout mt25">
                 <li>
                     <a href="javascript:" >
@@ -135,6 +147,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                     </a>
                 </li>
             </ul>
+			-->
 			<?php if(!$is_mobile_order) {?>
 				<button type="button" class="inactive on mt40"  onclick="forderform_check(this.form);">결제하기</button>
 			<?php }?>

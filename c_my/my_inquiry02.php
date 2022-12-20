@@ -29,6 +29,13 @@ include_once(CLASS_PATH."/header.php");
 //main head(공통파일)
 include_once(CLASS_PATH."/head.php");
 
+
+$counselings = "SELECT * FROM classboard01.g5_board_new n join g5_write_qa c on n.wr_id = c.wr_id
+where n.bo_table = 'qa'
+and n.mb_id = '{$member['mb_id']}'
+and n.wr_id = n.wr_parent 
+order by n.bn_id";
+
 //contents 영역
 include_once(MOA_MY_SKIN."/my_inquiry02.skin.php");
 

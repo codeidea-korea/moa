@@ -268,12 +268,13 @@ if ($chks) {
 	include_once(G5_PATH.'/adm/apms_admin/apms.admin.lib.php');
     include_once(G5_PATH.'/adm/admin.head.sub.php');
     include_once(G5_PATH.'/shop/partner/skin/Basic/_head.php');
-}
-else 
+}else {
     include_once(G5_PATH.'/head.sub.php');
+}
 
 
 @include_once($board_skin_path.'/board.head.skin.php');
+
 
 
 //공지제외
@@ -340,6 +341,7 @@ if (isset($wr_id) && $wr_id) {
 	// 공지글인지 체크
 	$is_view_notice = (!empty($bo_notice_arr) && in_array($wr_id, $bo_notice_arr)) ? true : false;
     include_once(G5_BBS_PATH.'/view.php');
+  
 }
 
 // 전체목록보이기 사용이 "예" 또는 wr_id 값이 없다면 목록을 보임

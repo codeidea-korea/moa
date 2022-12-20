@@ -51,16 +51,22 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
             </div>
             <ul class="day_list mt25 last_list">
                 <?php
+                $type = $_REQUEST['type'];
+                $count = 0;
                     $sql = "select b.wr_subject, b.moa_onoff, b.moa_area1, b.wr_3, b.as_thumb, c.it_id from g5_write_class b
                             join g5_shop_item c on b.wr_id = c.it_2
                             join g5_apms_good a on a.it_id = c.it_id 
                             where a.mb_id = '{$member['mb_id']}'
-                            group by b.wr_id;";
+                            group by b.wr_id
+                            order by pg_id desc ";
                     $query = sql_query($sql);
                     if(sql_num_rows($query)) {
                     while($row = sql_fetch_array($query)) {
+                        $count = $count + 1;
                         $use = "select count(*) as cnt, (sum(is_score) / count(*) )as score from g5_shop_item_use where it_id = '{$row['it_id']}'";
                         $uses = sql_fetch($use);
+
+                        if($count < 3 || $type == 'all'){
                 ?>
                 <li>
                     <a href="/shop/item.php?it_id=<?php echo $row['it_id']; ?>">
@@ -68,6 +74,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                         <div class="lctn"><?php echo $row['moa_onoff']; ?></div>
                         <div class="ttl"><?php echo $row['moa_area1'] ? '['.get_common_type($row['moa_area1'])['type_name'].']' : ''; ?> <?php echo $row['wr_subject']; ?></div>
                         <p class="sale"></p>
+                        <!--
                         <div class="rated">
                             <?php for($i=0;$i<$uses['score'];$i++){ ?>
                                 <span class="on"></span>
@@ -77,6 +84,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                             <?php }?>
                             <p>후기 <?php echo $uses['cnt']; ?>개</p>
                         </div>
+                            -->
                         <div class="dsc_price">
                             <span><?php echo number_format($row['wr_3']); ?>원</span>
 <!--                            <p>-->
@@ -87,11 +95,24 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                     <button class="lick_btn on"></button>
                 </li>
                 <?php }
+                }
                     } else { ?>
                         <div style="width:100%;text-align:center;padding:50px 0">
                             현재 찜한 모임 리스트가 없습니다.
                         </div>
                 <?php } ?>
             </ul>
+            
+            <? if($count > 2 && $type != 'all'){ ?>
+            <!-- 더 보기 버튼 -->
+            <div class="centerbtn mt45 more-btn">
+                <button onclick="loadAll();">더보기</button>
+            </div>
+            <script>
+            function loadAll(){
+                location.href='/c_detail/d_wish.php?type=all';
+            }
+            </script>
+            <? } ?>
         </div>
     </div>

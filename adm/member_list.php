@@ -26,7 +26,7 @@ $sql_common = " from {$g5['member_table']} a
 	left outer join {$g5['certi_image']} d on (d.mb_id = a.mb_id) 
 	";
 
-$sql_search = " where (1) ";
+$sql_search = " where (1) and mb_leave_date = '' ";
 
 if ($sch_startdt) {
 	$sql_search .=" and date(a.mb_datetime) between '{$sch_startdt}' and '{$sch_enddt}' ";
@@ -88,11 +88,14 @@ include_once('./admin.head.php');
 $sql = " SELECT 
 		 a.*, 
 		 if (b.pt_id is not null, '호스트','게스트') mb_gubun, 
+
+		 if(a.com_cert_yn = 1, '직장인','미인증') mb_type,
+
 		 if (d.file_type = 'free-file', '프리랜서',
 		 	if (d.file_type = 'namecard' or d.file_type='name-camera', '직장인',
 			 	if (c.cert_yn = 1,'직장인','미인증')
 			)
-		 ) mb_type, 
+		 ) f_mb_type, 
 		 b.*
 		 {$sql_common} 
 		 {$sql_search} 
@@ -356,7 +359,7 @@ $colspan = ($is_membership) ? 17 : 16;
         <th scope="col" id="mb_list_id" ><?php echo subject_sort_link('mb_id') ?>아이디</a></th>
 		<th scope="col" id="mb_list_nick"><?php echo subject_sort_link('mb_nick') ?>닉네임</a></th>
 		<th scope="col" id="mb_list_name"><?php echo subject_sort_link('mb_name') ?>이름</a></th>
-		<!-- <th scope="col" id="mb_list_mobile">휴대폰 번호</th> -->
+		<th scope="col" id="mb_list_mobile">휴대폰 번호</th>
 		<th scope="col">이메일</th>
 		<!-- <th scope="col">성별</th> -->
 		<!-- <th scope="col">생년월일</th> -->
@@ -465,7 +468,10 @@ $colspan = ($is_membership) ? 17 : 16;
 		<td><?php echo $row['mb_gubun']; ?></td>
 		<td><?php echo $row['mb_type']; ?></td>
 		<td><?php echo $row['invite_code']; ?></td>		
-        <td headers="mb_list_id"  class="td_name sv_use">
+        <td headers="mb_list_id"  class="td_name sv_use" style="
+    display: flex;
+    justify-content: center;
+">
             <?php echo $mb_id ?>
             <?php
             //소셜계정이 있다면
@@ -491,7 +497,7 @@ $colspan = ($is_membership) ? 17 : 16;
         </td>
 		<td headers="mb_list_nick" class="td_name sv_use"><div><?php echo $mb_nick ?></div></td>
 		<td headers="mb_list_name" class="td_mbname"><?php echo get_text($row['mb_name']); ?></td>        
-		<!-- <td headers="mb_list_mobile" class="td_tel"><?php echo get_text($row['mb_hp']); ?></td> -->
+		<td headers="mb_list_mobile" class="td_tel"><?php echo get_text($row['mb_hp']); ?></td>
 		<td><?php echo get_text($row['mb_email']);?></td>
 		<!-- <td>남</td> -->
 		<!-- <td>1995-05-04</td> -->
@@ -579,7 +585,7 @@ $colspan = ($is_membership) ? 17 : 16;
 </div>
 
 <div class="btn_list01 btn_list">
-	<input type="submit" name="act_button" value="선택 회원 삭제" onclick="document.pressed=this.value" class="btn btn_02">
+	<input type="button" name="act_button" value="선택 회원 삭제" onclick="submitDeleteUserForm()" class="btn btn_02">
 	<!-- <input type="submit" name="act_button" value="완전 회원 삭제" onclick="document.pressed=this.value" class="btn btn_02"> -->
 </div>
 
@@ -602,6 +608,14 @@ $colspan = ($is_membership) ? 17 : 16;
         $('input[name="sch_startdt"]').val('');
         $('input[name="sch_enddt"]').val('');
     })
+function submitDeleteUserForm(){
+    if (!alert("선택된 회원을 삭제 하시겠습니까?")) {
+        return false;
+    }
+
+	$('#fmemberlist').attr('action', './member_list_delete.php');
+	$('#fmemberlist').submit();
+}
 function fmemberlist_submit(f)
 {
     if (!is_checked("chk[]")) {

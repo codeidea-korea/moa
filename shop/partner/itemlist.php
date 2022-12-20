@@ -75,7 +75,10 @@ $sql_common = " from {$g5['g5_shop_item_table']} a ,
                where a.it_2 = c.wr_id
                 and (a.ca_id = b.ca_id ";
 
-$sql_common .= " and (a.pt_id = '{$mb_id}' or a.it_brand = '{$member['mb_nick']}')";
+// $sql_common .= " and (a.pt_id = '{$mb_id}' or a.it_brand = '{$member['mb_nick']}')";
+// $mb_id = 'kakao_a6ff09e6';
+$sql_common .= " and (c.mb_id = '{$mb_id}' or a.it_brand = '{$member['mb_nick']}')";
+// $sql_common .= " and (c.mb_id = '{$mb_id}')";
 $sql_common .= ") "; //and exists(select 'x' from  {$g5['g5_shop_item_table']} d where d.it_2 = a.it_2 order by it_id asc limit 1) ";
 $sql_common .= $sql_search;
 
@@ -95,7 +98,7 @@ $sql  = " SELECT distinct a.*, b.ca_name, c.*,  d.tot, d.min_tot, d.aply
            $sql_common group by c.wr_id 
            $sql_order
            limit $from_record, $rows ";
-           //echo $sql;
+// echo $sql;
 $result = sql_query($sql);
 for ($i=0; $row=sql_fetch_array($result); $i++) {
 	$list[$i] = $row;

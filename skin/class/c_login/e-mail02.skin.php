@@ -10,6 +10,7 @@ var g5_bbs_url   = "/bbs";
         <input type="hidden" name="w" value="<?php echo $w ?>">
         <input type="hidden" name="url" value="<?php echo $urlencode ?>">
         <input type="hidden" name="token" id="token" value="">
+	    <input type="hidden" name="invite_code" value="<?php echo $POST['invite_code']; ?>">
         
         <input type="hidden" name="cert_type" value="<?php echo $member['mb_certify']; ?>">
         <input type="hidden" name="cert_no" value="">

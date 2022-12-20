@@ -96,7 +96,7 @@ if($header_skin)
 					<?php } ?>
 					<div class="infock_list pb20">
 						<input type="checkbox" id="box_01" name="chk_all" value="1">
-						<label for="box_01">전체약관에 동의합니다</label>
+						<label for="box_01">전체약관에 동의합니다ㅇㄹㅇㄹㅇㄹ</label>
 					</div>
 					<!-- <div class="panel panel-info">
 						<div class="panel-heading">

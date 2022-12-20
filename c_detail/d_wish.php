@@ -16,6 +16,7 @@ $str = "샘플페이지가 정상적으로 나와라";
 //헤더영역(공통파일)
 include_once(CLASS_PATH."/header.php");
 
+$header_title = '최근에 찜한 모임';
 //main head(공통파일)
 include_once(CLASS_PATH."/head.php");
 

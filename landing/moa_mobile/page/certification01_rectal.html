@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="../js/calendar.js"></script>
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <title>MOA</title>
+</head>
+<body>
+    <div class="header">
+        <button class="prev"></button>
+        <h2 class="pageTit">직장인 인증</h2>
+    </div>
+    <div class="wrapper">
+        <div class="content">
+            <div class="con_area">
+                <p class="rectal_t">인증 방식 선택 (택1-필수)</p>
+            </div>
+            <div class="p19">
+                <div class="lounchecL radio">
+                    <input type="radio" id="box1" name="certi">
+                    <label for="box1">회사 이메일로 인증하기 (링크 인증)</label>
+                </div>
+                <div class="common_input p15">
+                    <div class="input_flex">
+                        <input type="text" placeholder="이메일을 입력하세요">
+                        <div class="cominput_btn">
+                            <button>전송</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p22">
+                <div class="lounchecL radio">
+                    <input type="radio" id="box2" name="certi">
+                    <label for="box2">회사 명함으로 인증하기</label>
+                </div>
+                <div class="p15">
+                    <div class="citation_photo">
+                        <img src="../images/Photo_default.svg" alt="">
+                    </div>
+                    <div class="btw_btn p10">
+                        <input type="file" name="file" id="file" style="display:none"/>
+                        <button onclick="onclick=document.all.file.click()">이미지 업로드</button>
+                        <button>촬영</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="lowbtn_layout mt25">
+            <button class="inactive">완료</button>
+        </div>
+    </div>
+</body>
+</html>

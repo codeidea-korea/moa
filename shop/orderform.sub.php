@@ -851,12 +851,12 @@ $(function() {
                 return false;
             }
         }
-
+/*
         if(od_price - price <= 0) {
             alert("쿠폰할인금액이 주문금액보다 크므로 쿠폰을 적용할 수 없습니다.");
             return false;
         }
-
+*/
         $("input[name=sc_cp_id]").val("");
         $("#sc_coupon_btn").text("쿠폰적용");
         $("#sc_coupon_cancel").remove();

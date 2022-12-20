@@ -242,3 +242,6 @@ table tbody .btn:not(.span) + .btn:not(.span){margin-left:5px;}
 /*─────────────── LAYER POPUP (스크립트 없이) ───────────────*/
 .layer-popup .popContainer .pop-header{font-size:24px;font-weight:var(--bold);margin-bottom:20px;}
 .layer-popup .popContainer .pop-header:before{content:'';width:5px;height:23px;background:var(--mainColor);vertical-align:middle;margin-top:-3px;margin-right:10px;}
+
+.closed{position:relative;}
+.closed::before{content:'폐강'; position:absolute;top:0;left:18px;background-color:#ff0000bd;color:#fff;;padding:4px 8px;border-radius: 4px;}

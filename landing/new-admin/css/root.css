@@ -1,0 +1,125 @@
+
+/* 스크롤바 제어 */
+::-webkit-scrollbar{width:6px;height:6px;border-radius:2px;}
+::-webkit-scrollbar-thumb{cursor:pointer;background:#afafaf;border-radius:2px;}
+::selection{background-color:#afafaf;color:#fff;border-radius:2px;}
+-webkit-::selection{background-color:#afafaf;color:#fff;border-radius:2px;}
+::-moz-selection{background-color:#afafaf;color:#fff;border-radius:2px;}
+
+
+
+:root{
+	--left-width:220px; /*왼쪽메뉴영역 가로 사이즈*/
+	--wraper-width:calc(100% - 220px);
+
+	--mainColor:#1bc8a6;
+	--mainColor-light:#25d5b2;
+	--btnColor:#11b897; /*기본버튼 컬러*/
+	--btnColor-active:#04a283; /*기본버튼 롤오버시 컬러*/
+	--btnfontColor:#fff;
+	--tip-bg-color:rgba(0,0,0,0.65); /*말풍선 컬러*/
+
+	--table:#7f90aa; /* thead th bg컬러 */
+	--table-line:#c0c6cf;
+	--table-line2:#d7dce3;
+	--table-radius:4px;
+
+	--font-family:'NanumSquareRound', 'Nanum Gothic', dotum, sans-serif;
+	--navSize:13px;
+	--fontSize:13px;
+	--fontSize-mini:11px;
+	--fontSize-small:12px;
+	--fontSize-large:15px;
+	--bold:bold;
+}
+
+body[data-themeColor='themeColor-green']{
+	--mainColor:#1bc8a6 !important;
+	--mainColor-light:#1cdbb6 !important;
+	--btnColor:#11b897 !important;
+	--btnColor-active:#04a283 !important;
+	--btnfontColor:#fff !important;
+}
+body[data-themeColor='themeColor-red']{
+	--mainColor:#ff3f3f !important;
+	--mainColor-light:#ff5951 !important;
+	--btnColor:#ff3f3f !important;
+	--btnColor-active:#04a283 !important;
+	--btnfontColor:#fff !important;
+}
+body[data-themeColor='themeColor-purple']{
+	--mainColor:#9d6fc8 !important;
+	--mainColor-light:#ad79dd !important;
+	--btnColor:#9d6fc8 !important;
+	--btnColor-active:#04a283 !important;
+	--btnfontColor:#fff !important;
+}
+body[data-themeColor='themeColor-blue']{
+	--mainColor:#4abcdd !important;
+	--mainColor-light:#5fccec !important;
+	--btnColor:#4abcdd !important;
+	--btnColor-active:#04a283 !important;
+	--btnfontColor:#fff !important;
+}
+body[data-themeColor='themeColor-turquoise']{
+	--mainColor:#b7db48 !important;
+	--mainColor-light:#c6ea55 !important;
+	--btnColor:#b7db48 !important;
+	--btnColor-active:#04a283 !important;
+	--btnfontColor:#fff !important;
+}
+body[data-themeColor='themeColor-sun-flower']{
+	--mainColor:#ebbb14 !important;
+	--mainColor-light:#f5c625 !important;
+	--btnColor:#ebbb14 !important;
+	--btnColor-active:#04a283 !important;
+	--btnfontColor:#fff !important;
+}
+body[data-themeColor='themeColor-orange']{
+	--mainColor:#f48522 !important;
+	--mainColor-light:#fe983e !important;
+	--btnColor:#f48522 !important;
+	--btnColor-active:#04a283 !important;
+	--btnfontColor:#fff !important;
+}
+body[data-themeColor='themeColor-emerald']{
+	--mainColor:#2ecc71 !important;
+	--mainColor-light:#40e084 !important;
+	--btnColor:#2ecc71 !important;
+	--btnColor-active:#04a283 !important;
+	--btnfontColor:#fff !important;
+}
+body[data-themeColor='themeColor-wet-asphalt']{
+	--mainColor:#3c546c !important;
+	--mainColor-light:#526f8c !important;
+	--btnColor:#3c546c !important;
+	--btnColor-active:#04a283 !important;
+	--btnfontColor:#fff !important;
+}
+body[data-themeColor='themeColor-gray']{
+	--mainColor:#797979 !important;
+	--mainColor-light:#919191 !important;
+	--btnColor:#797979 !important;
+	--btnColor-active:#04a283 !important;
+	--btnfontColor:#fff !important;
+}
+
+
+
+body[data-font-family='noto']{
+	--font-family:'Noto Sans KR', sans-serif;
+	--navSize:14px;
+	--fontSize:15px;
+	--fontSize-mini:12px;
+	--fontSize-small:13px;
+	--fontSize-large:15px;
+	--bold:500;
+}
+
+
+
+
+
+
+
+.mainColor{color:var(--mainColor);}

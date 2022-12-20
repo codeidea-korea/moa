@@ -11,13 +11,13 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
     </div>
     <div class="s_content">
         <div class="tabs02 pr">
-            <input id="host" type="radio" name="tab_item02" checked>
+            <input id="host" type="radio" name="tab_item02" <?php if (!isset($_REQUEST['ep_day'])){?>checked<?php }?>>
             <label class="tab_item02" for="host">전체내역</label>
-            <input id="group" type="radio" name="tab_item02" >
+            <input id="group" type="radio" name="tab_item02" <?php if ($_REQUEST['ep_day'] != ''){?>checked<?php }?>>
             <label class="tab_item02" for="group">소멸예정</label>
             <hr class="hr02">
             
-            <div class="tab_content p0 bt" id="host_content" <?php if ($_REQUEST['ep_day'] != ''){?>style="display:none!important;"<?php }?>>
+            <div class="tab_content p0 bt" id="host_content" <?php if ($_REQUEST['ep_day'] != ''){?>style="display:none;"<?php }?>>
                 <p class="explan mt60">지난 1년간 적립/사용/소멸된 포인트 내역입니다.</p>
                 <table class="point_table" border="1">
 					<thead>
@@ -51,6 +51,8 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 				<?php }?>
             </div>
         </div>
+        <br>
+        <br>
     </div>
 </div>
 <script>

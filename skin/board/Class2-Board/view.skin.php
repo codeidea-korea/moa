@@ -122,6 +122,8 @@ function modal_del(href) {
 		} else {
 			parent.document.location.href = href;
 		}
+	}else{
+		return false;
 	}
 }
 <?php } ?>

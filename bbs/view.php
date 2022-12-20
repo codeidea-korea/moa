@@ -5,6 +5,7 @@ if($board['as_code']) {
 	apms_script('code');
 }
 
+
 // 게시판에서 두단어 이상 검색 후 검색된 게시물에 코멘트를 남기면 나오던 오류 수정
 $sop = strtolower($sop);
 if ($sop != 'and' && $sop != 'or')
@@ -311,9 +312,23 @@ if(isset($board['as_best_cmt']) && $board['as_best_cmt'] > 0) {
 	if($i) $is_best_cmt = true;
 }
 
+// 좋아요 체크
+$strSql = "select count(bg_id) as cnt from g5_board_good where bo_table='".$bo_table."' and wr_id=".$wr_id." and mb_id='".$member['mb_id']."' and bg_flag='good'";
+$tmp_g = sql_fetch($strSql);
+$my_goods_board_id = "";
+if ($tmp_g['cnt'] > 0){
+	$my_goods_board_id = "on";
+}
+
 include_once($board_skin_path.'/view.skin.php');
 
+
 @include_once($board_skin_path.'/view.tail.skin.php');
+
+if($bo_table == 'community'){
+//	include_once(G5_BBS_PATH.'/view_comment.page.php');
+	include_once(G5_BBS_PATH.'/view_comment.php');
+}
 
 $page = $is_list_page;
 

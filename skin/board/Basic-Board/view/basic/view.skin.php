@@ -40,13 +40,35 @@ $view_subject = get_text($view['wr_subject']);
 
 ?>
 
+
+<style>
+	.articleBody{padding:0 5%;}
+	.title_layout{padding:20px 5% 0 5%;font-size:16px;}
+	.board_title{display: flex;align-items: center;gap:16px;justify-content: space-between;line-height:1.3em;}
+	.board_title h1{font-weight: bold;}
+	.date_time{width:94px;text-align: right;font-size:13px;color:#888;flex-shrink: 0;}
+	.nick_name{color:#888;font-size:13px;margin-bottom:4px;}
+	.board_view_layout{padding:20px 5%;border-bottom:1px solid #eee;}
+	.view-content{padding:0!important;}
+	.view-comment{padding:20px 5% 12px 5%;font-size:13px;}
+	.view-comment textarea{background: #f9f9f9;border:1px solid #eee; border-radius: 8px;margin-top:8px;height:300x;overflow-y: scroll;padding:16px;}
+	.re button{width: 100%;border-radius: 3px;background: var(--main-color);height: 49px;font-size: 1.4rem;font-weight: 500;margin-top:20px;color:#4C4338;}
+	.back_list{padding:0 5%;}
+	.back_list a{display: block; width: 100%;border-radius: 3px;background: #eee;height: 49px;font-size: 1.4rem;font-weight: 500;line-height:49px;text-align: center;color:#4C4338;}
+</style>
+
 <section itemscope itemtype="http://schema.org/NewsArticle">
 	<article itemprop="articleBody">
-		<h1 itemprop="headline" content="<?php echo $view_subject;?>">
-			<?php if($view['photo']) { ?><span class="talker-photo hidden-xs"><?php echo $view['photo'];?></span><?php } ?>
-			<?php echo cut_str(get_text($view['wr_subject']), 70); ?>
-		</h1>
-		<div class="panel panel-default view-head<?php echo ($attach_list) ? '' : ' no-attach';?>">
+		<div class="title_layout">
+			<div class="nick_name">봉구스밥버거</div>
+			<div class="board_title">
+				<h1 itemprop="headline" content="<?php echo $view_subject;?>">
+					<?php if($view['photo']) { ?><span class="talker-photo hidden-xs"><?php echo $view['photo'];?></span><?php } ?>
+					<?php echo cut_str(get_text($view['wr_subject']), 70); ?>
+				</h1>
+				<div class="date_time">2022.12.15 7:00</div>
+			</div>
+			<div class="panel panel-default view-head<?php echo ($attach_list) ? '' : ' no-attach';?>">
 			<div class="panel-heading">
 				<div class="ellipsis text-muted<?php echo $view_font;?>">
 					<span itemprop="publisher" content="<?php echo get_text($view['wr_name']);?>">
@@ -91,8 +113,11 @@ $view_subject = get_text($view['wr_subject']);
 				}
 			?>
 		</div>
+		</div>
 
-		<div class="view-padding">
+		
+
+		<div class="view-padding board_view_layout">
 
 			<?php if ($is_torrent) echo apms_addon('torrent-basic'); // 토렌트 파일정보 ?>
 
@@ -127,6 +152,7 @@ $view_subject = get_text($view['wr_subject']);
 				}
 			?>
 		</div>
+		
 
 		<?php if ($good_href || $nogood_href) { ?>
 			<div class="print-hide view-good-box">
@@ -151,7 +177,7 @@ $view_subject = get_text($view['wr_subject']);
 			</div>
 			<p></p>
 		<?php } else { //여백주기 ?>
-			<div class="h40"></div>
+			<!-- <div class="h40"></div> -->
 		<?php } ?>
 
 		<?php if ($is_tag) { // 태그 ?>

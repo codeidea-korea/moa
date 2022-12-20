@@ -58,7 +58,8 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
             <div class="slider_area">
                 <p>총 경력</p>
                 <div class="slider-container">
-                    <input type="text" id="slider2" class="slider" />
+                                    <input type="hidden" name="career" />
+                                    <input type="text" id="slider2" class="slider" />
                 </div>
             </div>
             <div class="infock_area">
@@ -118,12 +119,29 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
             var slider2 = new rSlider({
                 target: '#slider2',
-                values: [1, 2, 3, 4, 5],
+                values: ['1~3년', '3~6년', '6~9년', '9~12년', '12~15년+'],
                 range: false,
-                set: [2],
-                tooltip: false,
-                onChange: function (vals) {
+                set: ['1~3년'],
+                tooltip: true,
+                onChange: function(vals) {
                     console.log(vals);
+                    switch(vals){
+                        case '1~3년':
+                            $('input[name=career]').val(1);
+                            break;
+                        case '3~6년':
+                            $('input[name=career]').val(2);
+                            break;
+                        case '6~9년':
+                            $('input[name=career]').val(3);
+                            break;
+                        case '9~12년':
+                            $('input[name=career]').val(4);
+                            break;
+                        case '12~15년+':
+                            $('input[name=career]').val(5);
+                            break;
+                    }
                 }
             });
         };

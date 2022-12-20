@@ -29,6 +29,16 @@ if (!$agree2) {
 	alert('개인정보처리방침안내의 내용에 동의하셔야 회원가입 하실 수 있습니다.');
 }
 
+// 2022.09.04. botbinoo, 14세 체크 로직 추가
+$year = date("Y", time());
+$birthYear = isset($_POST['mb_birth']) ? $_POST['mb_birth'] : date("Y-m-d", time());
+$birthYear = substr($birthYear, 0, 4);
+
+if((int)$year - (int)$birthYear < 14) {
+	alert('14세 이상만 회원가입 하실 수 있습니다.');
+}
+// end 2022.09.04. botbinoo, 14세 체크 로직 추가
+
 $sm_id = $user_profile->sid;
 $mb_id = trim($_POST['mb_id']);
 $mb_password    = trim($_POST['mb_password']);
@@ -37,6 +47,14 @@ $mb_nick        = trim(strip_tags($_POST['mb_nick']));
 $mb_email       = trim($_POST['mb_email']);
 $mb_name        = clean_xss_tags(trim(strip_tags($_POST['mb_name'])));
 $mb_email       = get_email_address($mb_email);
+$mb_hp = trim($_POST['mb_hp']);
+$mb_birth = trim($_POST['mb_birth']);
+
+$mb_sex          = isset($_POST['mb_sex'])            ? trim($_POST['mb_sex'])          : "";
+$job_group          = isset($_POST['job_group'])            ? trim($_POST['job_group'])          : "";
+$job_kind          = isset($_POST['job_kind'])            ? trim($_POST['job_kind'])          : "";
+$company_name          = isset($_POST['company_name'])            ? trim($_POST['company_name'])          : "";
+$career          = isset($_POST['career'])            ? trim($_POST['career'])          : "";
 
 // 이름, 닉네임에 utf-8 이외의 문자가 포함됐다면 오류
 // 서버환경에 따라 정상적으로 체크되지 않을 수 있음.
@@ -112,7 +130,17 @@ $sql = " insert into {$g5['member_table']}
                 mb_login_ip = '{$_SERVER['REMOTE_ADDR']}',
                 mb_mailling = '{$mb_mailling}',
                 mb_sms = '0',
+                mb_birth = '{$mb_birth}',
                 mb_open = '{$mb_open}',
+                mb_hp = '{$mb_hp}',
+                
+                mb_sex = '{$mb_sex}',
+                job_group = '{$job_group}',
+                job_kind = '{$job_kind}',
+                company_name = '{$company_name}',
+                career = '{$career}',
+                
+                mb_status = '대기',
                 mb_open_date = '".G5_TIME_YMD."' ";
 
 $result = sql_query($sql, false);
@@ -229,7 +257,22 @@ if($result) {
 			if($res)
 				set_session('ss_member_reg_coupon', 1);
 		}
-	}
+    }
+    
+    // kakao send
+    {
+        include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
+        $replaceText = ' [모아프렌즈]
+        안녕하세요. '.$mb_name.' 님
+        
+        모아프렌즈에
+        회원가입 해주셔서 
+        진심으로 감사드립니다~😊';
+        $reserve_type = 'NORMAL';
+        $start_reserve_time = date('Y-m-d H:i:s');
+        $reciver = '{"name":"'.$mb_name.'","mobile":"'.$mb_hp.'","note1":"https://\"'.$_SERVER['HTTP_HOST'].'}';
+        sendBfAlimTalk(6, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+    }
 
     // 사용자 코드 실행
     @include_once ($member_skin_path.'/register_form_update.tail.skin.php');

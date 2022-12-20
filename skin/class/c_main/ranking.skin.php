@@ -6,7 +6,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 <section class="s_content mt35">
     <!-- 타이틀 -->
     <div class="main_tit">
-        <h1>Top 랭킹 모임</h1>
+        <h1>Top 랭킹 모아</h1>
     </div>
     <!-- Top 랭킹 모임 리스트 -->
     <ul class="rank_list">
@@ -15,13 +15,13 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
              ?>
             <li>
                 <a href="/shop/item.php?it_id=<?php echo $row['it_id'] ?>">
-                    <div class="thumb_box" style="position:relative;height:146px">
-                    <img src="<?php echo filter_var($row['as_thumb'], FILTER_VALIDATE_URL) != '' ? $row['as_thumb'] : G5_URL . "/images/moa_logo.svg" ?>" alt="" style="position:absolute;top: 50%;left:50%;transform: translate(-50%, -50%);"><!-- <div style="background:url('<?php echo $row['as_thumb'] ?>');"></div> -->
+                    <div class="thumb_box" style="">
+                    <img src="<?php echo filter_var($row['as_thumb'], FILTER_VALIDATE_URL) != '' ? $row['as_thumb'] : G5_URL . "/images/moa_logo.svg" ?>" alt=""><!-- <div style="background:url('<?php echo $row['as_thumb'] ?>');"></div> -->
                     </div>
                     <!-- <div class="lctn">성동 • 마포 • 서대문</div> -->
                     <div class="lctn"><?php echo get_common_type($row['moa_area1'])['type_name']; ?></div>
                     <div class="ttl"><?php echo $row['it_name']; ?></div>
-                    <div class="rated">
+                    <div class="rated dpnone">
                         <?php
                         $cc = $rate['cnt'];
                         for ($ii = 0; $ii < 5; $ii++) {

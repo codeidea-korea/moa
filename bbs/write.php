@@ -503,9 +503,11 @@ if ($chks) {
     include_once(G5_PATH.'/shop/partner/skin/Basic/_head.php');
 
     $skin_url = "/shop/partner/skin/Basic";
-}
-else 
+}else {
     include_once(G5_PATH.'/head.sub.php');
+}
+
+@include_once($board_skin_path.'/board.head.skin.php');
 
 
 // $admurl = array("/adm", "/shop/partner");
@@ -536,6 +538,7 @@ include_once('./board_head.php');
 $action_url = https_url(G5_BBS_DIR)."/write_update.php";
 
 echo '<!-- skin : '.(G5_IS_MOBILE ? $board['bo_mobile_skin'] : $board['bo_skin']).' -->';
+
 include_once ($board_skin_path.'/write.skin.php');
 
 

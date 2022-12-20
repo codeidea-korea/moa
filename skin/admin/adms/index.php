@@ -64,9 +64,10 @@ $colspan = 12;
 
 	<div class="mt30"></div>
     <?php
-        $partner = "SELECT count(*) cnt FROM g5_apms_partner WHERE pt_register = '' ";
+        $partner = "SELECT count(*) cnt FROM g5_apms_partner WHERE (pt_register = '' or pt_register is null) ";
         $p_count = sql_fetch($partner);
-        $member = "SELECT count(*) cnt FROM g5_member WHERE mb_status = ''";
+//		$member = "SELECT count(*) cnt FROM g5_member WHERE mb_status = ''";
+		$member = "SELECT count(*) cnt FROM g5_member where com_cert_send is null and mb_status = '대기'";
         $m_count = sql_fetch($member);
         $class = "SELECT count(*) cnt FROM g5_write_class WHERE moa_status in ('0','')";
         $c_count = sql_fetch($class);
@@ -86,7 +87,7 @@ $colspan = 12;
 		<div class="boxContainer flex1 flexCenter column">
 			<span class="fs18 color-gray noto500">모임 승인 요청</span>
 			<span class="new-num"><?php echo $c_count['cnt']?></span>
-			<a href="/adm/shop_admin/itemmoa_list.php" class="mt5 more">더보기<i class="ml5 arrow-right"></i></a>
+			<a href="/adm/shop_admin/confirm_moa_list.php" class="mt5 more">더보기<i class="ml5 arrow-right"></i></a>
 		</div>
 		<div class="boxContainer flex1 flexCenter column">
 			<span class="fs18 color-gray noto500">프로필 수정 승인 요청</span>

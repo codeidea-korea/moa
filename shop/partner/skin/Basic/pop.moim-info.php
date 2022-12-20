@@ -65,13 +65,11 @@
 							<col width="160">
 							<col>
 							<col>
-							<col width="240">
 						</colgroup>
 						<thead>
 							<tr>
 								<th>모임진행일자</th>
 								<th>진행시간</th>
-								<th>신청인원</th>
 								<th>신청상태</th>
 								<th>이름</th>
 								<th>휴대폰번호</th>

@@ -13,7 +13,19 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                     <span><?= date('y/m/d', strtotime($list[$i]['od_time'])) ?> 결제</span>
                     <p class="ellipsis2"><?= $list[$i]['it_name']; ?></p>
                     <?php $yoil = array('일','월','화','수','목','금','토'); ?>
+                    <?
+                    if($list[$i]['class_status'] == '고정형'){
+                    ?>
+                    <!--
                     <p><?= date('y-m-d('. $yoil[date('w', strtotime($list[$i]['it_time']))] .') H:i', strtotime($list[$i]['it_time'])); ?> ~ <?= date('y-m-d('. $yoil[date('w', strtotime($list[$i]['it_4']))] .') H:i', strtotime($list[$i]['it_4'])); ?></p>
+                    -->
+                    <p><?= $list[$i]['min_day']; ?> ~ <?= $list[$i]['max_day']; ?></p>
+                    <?
+                    } else {
+                    ?>
+                    <?
+                    } 
+                    ?>
                 </div>
                 <div class="h_img_area">
                     <div class="his_img">

@@ -31,7 +31,7 @@ if($is_dhtml_editor) {
 <div class="contents container grid-lg">
 	
 	<div class="columns">
-
+	dfdfdfdfd
 <div id="bo_w" class="write-wrap<?php echo (G5_IS_MOBILE) ? ' font-14' : '';?>">
 	<?php include_once($write_skin_path.'/write.skin.php'); // 쓰기스킨 ?>
 </div>

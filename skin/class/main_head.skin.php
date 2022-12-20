@@ -9,7 +9,34 @@ if (defined('_INDEX_')) {?>
         <a href="/"><img src="../images/moa_logo.svg" alt=""></a>
         <div class="ic_area">
 <!--            <a href="javascript:" class="win_pop numchip"><img src="../images/icon_bell.png" alt="">--><?php ////echo $member['response_cnt'];?><!-- <span>10</span></a>-->
+
+        <? if ($is_admin){ ?>
             <a href="javascript:"  class="on chat-main numchip" data-mb_id="<?php echo $member['mb_id'];?>"><img src="../images/icon_chat.png" alt=""><span><?php echo $member['response_cnt'];?></span></a>
+            
+
+            <!-- 비 로그인 시 -->
+            <!-- <div class="header_btn_area"> 
+                <a href="javascript:;" class="h_login_btn color-main">로그인</a>
+            </div>   -->
+
+        <? } ?>
+            <a href="/bbs/board.php?bo_table=class"><img src="../images/icon_search.svg" alt=""></a>
+        <?
+        if(!empty($member) && !empty($member['mb_id'])) {
+            ?>
+            <!-- 로그인 시 -->
+            <div class="header_btn_area"> 
+                <p class="h_nick"><?php echo $member['mb_nick'];?></p>
+            </div>
+            <?
+        } else {
+            ?>
+            <div class="header_btn_area"> 
+                <a href="/c_login/login.php" class="h_login_btn color-main">로그인</a>
+            </div>
+            <?
+        }
+        ?>
         </div>
     </div>
 </header>

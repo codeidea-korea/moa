@@ -9,8 +9,9 @@ if($ap == 'register_form') {
 	if($_POST['mb_password'] != $_POST['mb_password2'] && $_POST['mb_password']) {
 		alert('비밀번호 확인이 일치하지 않습니다.');
 		return false;
-	} else if (substr($_POST['mb_hp'], 0, 3) != '010' ){
-		alert('휴대폰번호는 010으로 시작해야만 합니다.');
+	} else if (substr($_POST['mb_hp'], 0, 3) != '010' || strlen($_POST['mb_hp']) != 11 ){
+//		alert('휴대폰번호는 010으로 시작해야만 합니다.');
+		alert('올바른 휴대폰번호를 입력해주세요.');
 		return false;
 	} else {
 		//파일등록
@@ -125,10 +126,25 @@ echo $filename;
 		$mb_open = $_POST['mb_open'];
 		$mb_birth = $_POST['mb_birth'];
 		$mb_password = get_encrypt_string($_POST['mb_password']);
+		
+		$job_group = $_POST['job_group'];
+		$job_kind = $_POST['job_kind'];
+		$company_name = $_POST['company_name'];
+		$career = $_POST['career'];
+		$allowed_marketting_news          = isset($_POST['allowed_marketting_news'])            ? trim($_POST['allowed_marketting_news'])          : "0";
+		if($allowed_marketting_news == "1") {
+			$query_allowed_marketting_news = ' allowed_marketting_news = 1, allowed_marketting_news_date = NOW(), ';
+		}
 
 		if (!preg_match("/([0-9a-zA-Z_-]+)@([0-9a-zA-Z_-]+)\.([0-9a-zA-Z_-]+)/", $mb_email)) {
 			alert('이메일 주소가 형식에 맞지 않습니다.');
 		}
+		$sql = " SELECT count(mb_id) as cnt FROM  {$g5['member_table']} WHERE mb_id != '{$member['mb_id']}' and mb_nick = '{$mb_nick}' ";
+		$targetMember = sql_fetch($sql);
+		if ($targetMember['cnt'] > 0) {
+			alert('이미 존재하는 닉네임입니다.');
+		}
+
 		apms_photo_upload($member['mb_id'], '', $_FILES);
 		//정보등록
 		$common = '';
@@ -142,12 +158,26 @@ echo $filename;
 					mb_recommend = '{$mb_recommend}',
 					mb_sex = '{$mb_sex}',
 					mb_open = '{$mb_open}',
+					
+					job_group = '{$job_group}',
+					job_kind = '{$job_kind}',
+					company_name = '{$company_name}',
+					career = '{$career}',
+
+					{$query_allowed_marketting_news}
+
 					mb_birth = '{$mb_birth}'
 					{$common}
                     where mb_id = '{$member['mb_id']}' ";
 		sql_query($sql);
 
-		alert('회원정보수정이 완료되었습니다.');
+		// 사용자 마이페이지 > 프로필 수정쪽에서 온 요청일 경우 callbackurl 지정
+		$callBackUrl = $_SERVER['HTTP_REFERER'];
+		if(isset($_POST['callBackUrl'])){
+			$callBackUrl = $_POST['callBackUrl'];
+		}
+		
+		alert('회원정보수정이 완료되었습니다.', $callBackUrl);
 	}
 } else {
 	$is_seller = (isset($apms['apms_partner']) && $apms['apms_partner']) ? true : false;
@@ -293,8 +323,37 @@ echo $filename;
 			//회원정보변경
 			sql_query(" update {$g5['member_table']} set as_partner = '{$pt_partner}', as_marketer = '{$pt_marketer}' where mb_id = '{$member['mb_id']}' ");
 
+			include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
+			{
+				$replaceText = ' [모아프렌즈] [호스트 승인 알림]
+
+				#{이름} 호스트 님!
+				호스트 신청 승인이 완료되었습니다!
+				
+				아래 링크를 통해 모임 개설 방법을 안내해 드릴게요!
+				
+				모임 개설 가이드 보기
+				☞#{비고1}';
+				$reserve_type = 'NORMAL';
+				$start_reserve_time = date('Y-m-d H:i:s');
+				$reciver = '{"name":"'.$member['mb_name'].'","mobile":"'.$member['mb_hp'].'","note1":"https:\/\/moafriendshost.notion.site\/0ce44224a51746d2be52e2c05a2303ac"}';
+				sendBfAlimTalk(60, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+			}
 			alert('호스트 등록이 완료되었습니다.', APMS_PARTNER_URL);
 		} else {
+			
+			include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
+			{
+				$replaceText = ' [모아프렌즈] #{이름} 사원 님!
+				모아 호스트에 지원해 주셔서 감사합니다.
+				빠르게 심사후 승인결과를 안내해드리겠습니다 :)
+				
+				호스트 승인까지 최소 1~3일이 소요될 수 있습니다.';
+				$reserve_type = 'NORMAL';
+				$start_reserve_time = date('Y-m-d H:i:s');
+				$reciver = '{"name":"'.$member['mb_name'].'","mobile":"'.$member['mb_hp'].'","note1":""}';
+				sendBfAlimTalk(57, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+			}
 			alert('호스트 등록을 신청하셨습니다.\\n\\n신청내용에 대한 검토 후 등록이 완료됩니다.', G5_URL);
 		}
 	}

@@ -1081,7 +1081,8 @@ function checkLikeOn($bo_table, $it_id, $mb_id)
     global $g5;
     $sql = "SELECT count(*) cnt from {$g5['apms_good']} 
             where it_id = '{$it_id}'
-            and mb_id = '{$mb_id}' ";
+            and mb_id = '{$mb_id}'
+            and pg_flag = 'good' ";
     $row = sql_fetch($sql);
     if ($row['cnt'] > 0)
         return true;
@@ -1226,7 +1227,8 @@ function getFavoriteClass($limit = 10, $ca_name)
 {
     global $g5;
     $common = '';
-    if($ca_name || $ca_name != '') { $common = " WHERE ca_name = '{$ca_name}'"; }
+    if($ca_name || $ca_name != '') { $common = " AND ca_name = '{$ca_name}'"; }
+    /*
     $sql = "SELECT * FROM (
                 SELECT
                     wr_id   
@@ -1269,6 +1271,22 @@ function getFavoriteClass($limit = 10, $ca_name)
                 ORDER BY wr_hit desc
             ) xx
             WHERE xx.it_id <> '' LIMIT 0, {$limit}";
+            */
+    // NOTICE: 2022.08.23. 조회 조건시 모임일자가 모두 지난 모임의 경우 비노출 조건이 추가됨에 따라 해당 조인(g5_shop_item, deb_class_item) 강제
+    $today = date('Y-m-d');
+    $sql = "SELECT * FROM (
+                SELECT
+                    distinct class.*, deb.it_id
+                FROM g5_write_class AS class 
+                JOIN (select wr_id, it_id, min(day) as first_day from deb_class_item group by wr_id) AS deb ON class.wr_id = deb.wr_id 
+                WHERE 1=1 
+                {$common} 
+                AND class.moa_status = 1
+                AND (class.moa_form = '자율형' or (class.moa_form = '고정형' and deb.first_day >= '{$today}'))
+                ORDER BY class.wr_hit desc
+            ) xx
+            WHERE xx.it_id <> '' LIMIT 0, {$limit}";
+
     $result = sql_query($sql);
     $list = array();
     while ($row = sql_fetch_array($result)) {
@@ -1439,7 +1457,7 @@ if ($member['mb_id'] != "" && $member['invite_code'] == "") {
 
 
 // 모임 신청자 등록처리 
-function procClassAplyer($mb_id, $it_id, $status = '신청') {
+function procClassAplyer($mb_id, $it_id, $status = '신청', $od_id = 0) {
     global $g5;
     echo $it_id."<BR>";
     $sql = "SELECT a.wr_id, a.day, a.time, a.minute, a.moa_form
@@ -1462,6 +1480,7 @@ function procClassAplyer($mb_id, $it_id, $status = '신청') {
                 , pay = '{$row['it_price']}'
                 , regdate = now()
                 , status = '{$status}' 
+                , od_id = '{$od_id}' 
             ";
     $sql = "INSERT INTO {$g5['class_aplyer_table']} SET";
     $sql .= $sql_set;
@@ -1562,15 +1581,19 @@ function checkAbleAplyerMoaClass($it_id, $mb_id) {
 }
 
 //신청자수 카운트
-function countAplyerMoaClass($it_id) {
+function countAplyerMoaClass($it_id, $status = '예약확정') {
     global $g5;
+
+    if($status != '') {
+        $exsql = " and b.status = '{$status}' ";
+    }
 
     $sql = "SELECT a.it_id, a.tot, count(b.mb_id) cnt
             FROM deb_class_item a, 
                 deb_class_aplyer b
             where a.it_id = b.it_id
             and a.it_id = '{$it_id}'
-            and b.status <> '취소'
+            {$exsql}
             group by a.it_id  
             ";
     $row = sql_fetch($sql);
@@ -1807,8 +1830,8 @@ function getStrpointWr2($wr_id)
 if(! function_exists('sendDirectMail')) {
     function sendDirectMail($subject, $body, $sender, $sender_name, $receiver, $bodytag, $mail_type)
     {
-        $username = "codeidea";
-        $key = "mUJrCPVuyMOq02W";
+        $username = "moafriends";
+        $key = "UCL6eiAdjVQqDwY";
 
         $ch = curl_init();
         $postvars = '"subject":"'.$subject.'"';
@@ -1855,8 +1878,8 @@ if(! function_exists('sendDirectMail')) {
 if(! function_exists('sendDirectSMS')) {
     function sendDirectSMS($title, $message, $sender, $receiver)
     {
-        $username = "codeidea";
-        $key = "mUJrCPVuyMOq02W";
+        $username = "moafriends";
+        $key = "UCL6eiAdjVQqDwY";
 
         $ch = curl_init();
 

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="../js/calendar.js"></script>
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <title>MOA</title>
+</head>
+<body>
+    <div class="header">
+        <button class="prev"></button>
+        <h2 class="pageTit">비밀번호 찾기</h2>
+    </div>
+    <div class="wrapper">
+        <div class="s_content">
+            <div class="signup_area">
+                <div class="common_input">
+                    <input type="text" placeholder="이름">
+                </div>
+                <div class="common_input">
+                    <input type="text" placeholder="이메일">
+                </div>
+                <span class="warning p0">
+                    새로운 비밀번호 설정 가능한 링크 전송을 요청했습니다. 이메일이 오지 않으면 입력 정보가 정확한지 다시 확인해주세요.
+                </span>
+                <div class="p45">
+                    <button class="inactive on" onclick="$('#alert01').addClass('on')">이메일로 비밀번호 전송</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert" id="alert01">
+        <div class="layerBody">
+            <div class="confirm">
+                <div class="mentBox">
+                    <img src="../images/comp_ic.svg" alt=""><br/><br/>
+                    <p class="t_bold">
+                        [전송 완료] <br/>
+                        이메일로 보내드린 링크로<br/> 비밀번호재설정을 해주세요.
+                    <div class="p17">
+                        <button class="inactive on h45" onclick="$('#alert01').removeClass('on')">확인</button>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/common.js"></script>
+</body>
+</html>

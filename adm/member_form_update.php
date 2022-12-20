@@ -35,12 +35,14 @@ $mb_zip2 = substr($_POST['mb_zip'], 3);
 
 $mb_email = isset($_POST['mb_id']) ? get_email_address(trim($_POST['mb_id'])) : '';
 $mb_nick = isset($_POST['mb_nick']) ? trim(strip_tags($_POST['mb_nick'])) : '';
+$mb_sex = isset($_POST['mb_sex']) ? trim(strip_tags($_POST['mb_sex'])) : '';
 
 if ($msg = valid_mb_nick($mb_nick))     alert($msg, "", true, true);
 
 $sql_common = "  mb_name = '{$_POST['mb_name']}',
                  mb_nick = '{$mb_nick}',
                  mb_email = '{$mb_email}',
+                 mb_sex = '{$mb_sex}',
                  mb_homepage = '{$_POST['mb_homepage']}',
                  mb_tel = '{$_POST['mb_tel']}',
                  mb_hp = '{$mb_hp}',

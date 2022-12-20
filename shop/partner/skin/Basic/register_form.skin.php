@@ -28,10 +28,10 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 					<td>
 						<div class="fileContainer flex">
 							<div class="upImg-preview profile-thumb">
-                            <?php echo ($member['photo']) ? '<img src="'.$member['photo'].'" alt="">' : '<span class="no-img"></span>'; //사진 ?>
+                            <?php echo ($member['photo']) ? '<img src="'.$member['photo'].'?v='.time().'" alt="">' : '<span class="no-img"></span>'; //사진 ?>
                             </div>
 							<div class="inner">
-								<input type="file" name="mb_icon2" id="upload-01" class="preview">
+								<input type="file" name="pt_file" id="upload-01" class="preview">
 								<label for="upload-01" class="upload-btn">사진 수정하기</label>
 								<p class="msg">2MB 이하의 png, jpg파일로 올려주세요.</p>
 							</div>
@@ -40,14 +40,18 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 				</tr>
                 <tr>
                     <th><span class="m_title required">성별</span></th>
+					<? 
+					$sql_mem = " select * from g5_member where mb_id = '{$member['mb_id']}' ";
+					$user = sql_fetch($sql_mem);
+					?>
                     <td>
                         <div class="radio_area">
                             <span class="info_radio">
-                                <input type="radio" value="남" <?php echo $member['mb_sex'] == '남' ? 'checked = "checked"' : ''; ?> name="mb_sex" id="radio1">
+                                <input type="radio" value="남" <?php echo $user['mb_sex'] == '남' ? 'checked' : ''; ?> name="mb_sex" id="radio1" disabled>
                                 <label for="radio1">남</label>
                             </span>
                             <span class="info_radio">
-                                <input type="radio" value="여" <?php echo $member['mb_sex'] == '여' ? 'checked = "checked"' : ''; ?> name="mb_sex" id="radio2">
+                                <input type="radio" value="여" <?php echo $user['mb_sex'] == '여' ? 'checked' : ''; ?> name="mb_sex" id="radio2" disabled>
                                 <label for="radio2">여</label>
                             </span>
                         </div>
@@ -64,8 +68,10 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 					<th class="vertical-top"><label class="required">닉네임</label></th>
 					<td>
 						<div class="flex gap10">
-							<input type="text" name="mb_nick" required value="<?php echo $member['mb_nick'] ?>" class="span450" placeholder="">
-                            <a href="#" class="btn reverse">중복확인</a>
+							<input type="text" name="mb_nick" required value="<?php echo $member['mb_nick'] ?>" class="span450" placeholder=""
+							onkeyup="characterCheck(this)" onkeydown="characterCheck(this)"  onchange="characterCheck(this)">
+                            <a href="#"  id="search_nick" class="btn reverse">중복확인</a>
+                        <input type="hidden" value="" id="is_nick_search" />
 						</div>
 						<p class="fs13 color-gray mt5">한 달에 3회까지만 수정이 가능합니다.</p>
 					</td>
@@ -126,6 +132,46 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
             $('.textCount').text(content.length);
         }
     })
+    function characterCheck(obj){
+        var regExp = /[ \{\}\[\]\/?,;:|\)*~`!^+┼<>\#$%&@\'\"\\\(\=]/gi; 
+        if( regExp.test(obj.value) ){
+            alert("특수문자는 입력하실수 없습니다.");
+//            obj.value = obj.value.substring( 0 , obj.value.length - 1 );
+            obj.value = obj.value.replace(regExp, '');
+            return false;
+        }
+        return true;
+    }
+	$('#search_nick').click(function() {
+		var nick = $('input[name=mb_nick]').val();
+		if (nick == '') {
+			alert('닉네임을 입력해주세요.');
+			return false;
+		}
+		if(!characterCheck($('input[name=mb_nick]'))) {
+			return false;
+		}
+		$.ajax({
+			type: "POST",
+			url: '/ajax/nickSearch.php',
+			data: {
+				'nick': nick
+			},
+			cache: false,
+			async: false,
+			dataType: "json",
+			success: function(data) {
+				if (data.cnt > 0) {
+					alert('이미 존재하는 닉네임입니다.');
+					$('input[name=mb_nick]').val('');
+					$('input[name=mb_nick]').focus();
+				} else {
+					alert('사용 가능한 닉네임입니다.');
+					$('#is_nick_search').val(1);
+				}
+			}
+		});
+	})
 
     function fregister_submit(f) {
         // if (!f.agree.checked) {
@@ -163,6 +209,11 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 			return false;  
 		}
         */
+		var nick = $('input[name=mb_nick]').val();
+		if (nick != '<? echo $member['mb_nick'] ?>' && !$('#is_nick_search').val()) {
+			alert('중복 검사를 실행해주세요.');
+			return false;
+		}
 
 		if (confirm("프로필을 수정하시겠습니까?")) {
 			f.action = "<?php echo $action_url;?>";

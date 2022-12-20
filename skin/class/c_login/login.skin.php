@@ -26,16 +26,29 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
             <div class="login_button">
                 <button  class="login_btn">로그인</button>
 			    <?php if( social_service_check('kakao') ) {     //카카오 로그인을 사용한다면 ?>	
-                    <button type="button" class="kakao_btn sns-wrap social_link" onClick="winSocial('<?php echo $self_url;?>?provider=kakao');">카카오톡으로 계속하기</button>
+                    <button type="button" class="kakao_btn sns-wrap social_link" onClick="location.href='/plugin/social/kakao_callback.php?provider=kakao'">카카오톡으로 계속하기</button>
 			    <?php }     //end if ?>
                 <?php if( social_service_check('naver') ) {     //네이버 로그인을 사용한다면 ?>
+                    <!--
                     <button  type="button" class="naver_btn sns-wrap social_link" onClick="winSocial('<?php echo $self_url;?>?provider=naver')">네이버로 계속하기</button>
+                    -->
+                    <!--
+                    <button  type="button" class="naver_btn sns-wrap social_link" onClick="location.href='https://.codeidea.io/plugin/social/naver_callback.php?provider=naver'">네이버로 계속하기</button>
+                    -->
                 <?php }     //end if ?>
                 <?php if( social_service_check('google') ) {     //구글 로그인을 사용한다면 ?>
+                    <!--
                     <button  type="button" class="google_btn sns-wrap social_link" onClick="winSocial('<?php echo $self_url;?>?provider=google')">Google 로 계속하기</button>
+                    -->
+                    <!--
+                    <button  type="button" class="google_btn sns-wrap social_link" onClick="location.href='https://.codeidea.io/plugin/social/google_callback.php?provider=google'">Google 로 계속하기</button>
+                    -->
                 <?php }     //end if ?>
                 <?php if( social_service_check('Apple') ) {     //애플 로그인을 사용한다면 ?>
+                    <!--
                     <button  type="button" class="Apple_btn sns-wrap social_link" onClick="winSocial('<?php echo $self_url;?>?provider=apple')">Apple 로 계속하기</button>
+                    -->
+                    <button  type="button" class="Apple_btn sns-wrap social_link" onClick="location.href='/plugin/social/apple_callback.php?provider=apple'">Apple 로 계속하기</button>
                 <?php }     //end if ?>
             </div>
             <?php 
@@ -61,6 +74,9 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                             return false;
                         //});
                     }
+					function kakaoLogin(){
+						location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=93cbf78a4220ab184ef355f10197b699&response_type=code&redirect_uri=<?=urlencode("https://www.moa-friends.com/plugin/social/kakao_callback.php")?>';
+					}
                 </script>
                 <?php } ?>
             <?php } ?>

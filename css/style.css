@@ -5466,6 +5466,12 @@ select option[value=""][disabled] {
     color:var(--gray-color2);
     margin-top: 20px;
 }
+.p_last_child{
+    font-weight: 400;
+    font-size: 1.4rem;
+    color:var(--gray-color2);
+    margin-top: 8px;
+}
 .use{
     width:51px;
     height:51px;

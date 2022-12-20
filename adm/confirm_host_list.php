@@ -2,12 +2,12 @@
 $sub_menu = "450300";
 include_once('./_common.php');
 
-
 	if($_POST['act_button'] == "선택승인") {
 
 		if (!count($_POST['chk'])) {
 			alert($_POST['act_button']." 하실 항목을 하나 이상 체크하세요.");
 		}
+		include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
 
 		$pt_register = date("Ymd"); //등록일
 		for ($i=0; $i<count($_POST['chk']); $i++) {
@@ -20,13 +20,40 @@ include_once('./_common.php');
 				$add_sql .= ", pt_commission_1 = '{$apms['apms_commission_1']}' ";
 			if ($partner['pt_level'] < '3')
 				$_POST['pt_level'][$k] = '3';
-			sql_query(" update {$g5['apms_partner']} set pt_register = '{$pt_register}', pt_partner = '{$_POST['ptr'][$k]}', pt_marketer = '{$_POST['pmkt'][$k]}', pt_level = '{$_POST['pt_level'][$k]}'  {$add_sql} where pt_id = '{$_POST['pt_id'][$k]}' ");
+//			sql_query(" update {$g5['apms_partner']} set pt_register = '{$pt_register}', pt_partner = '{$_POST['ptr'][$k]}', pt_marketer = '{$_POST['pmkt'][$k]}', pt_level = '{$_POST['pt_level'][$k]}'  {$add_sql} where pt_id = '{$_POST['pt_id'][$k]}' ");
+			sql_query(" update {$g5['apms_partner']} set pt_register = '{$pt_register}', pt_partner = '1', pt_marketer = '{$_POST['pmkt'][$k]}', pt_level = '2'  {$add_sql} where pt_id = '{$_POST['pt_id'][$k]}' ");
 			//회원정보변경
 			$mb = get_member($pt_id);
 			$add_sql = "";
 			if ($mb['mb_level'] < '3')
 				$add_sql = ", mb_level = '3'";
-			sql_query(" update {$g5['member_table']} set as_partner = '{$_POST['ptr'][$k]}', as_marketer = '{$_POST['pmkt'][$k]}' {$add_sql} where mb_id = '{$_POST['pt_id'][$k]}' ", false);
+			sql_query(" update {$g5['member_table']} set as_partner = '1', as_marketer = '{$_POST['pmkt'][$k]}' {$add_sql} where mb_id = '{$_POST['pt_id'][$k]}' ", false);
+
+			// 2022-08-11. botbinoo, 호스트 승인시 포인트 지급
+			if($config['cf_use_host_reg'] == 1) {
+				$config = sql_fetch("select * from {$g5['config_table']} ");
+				$cf_host_reg_point = isset($config['cf_host_reg_point']) && $config['cf_host_reg_point'] > 0 ? $config['cf_host_reg_point'] : 0;
+				$sql = "update g5_member set mb_point = mb_point + {$cf_host_reg_point} where mb_id = '{$_POST['pt_id'][$k]}' ";
+				$user = sql_fetch($sql);
+			}
+			
+			{
+				$sql = "SELECT m.* FROM g5_member m where m.mb_id = '{$pt_id}'";
+				$memb = sql_fetch($sql);
+				$replaceText = ' [모아프렌즈] [호스트 승인 알림]
+
+				#{이름} 호스트 님!
+				호스트 신청 승인이 완료되었습니다!
+				
+				아래 링크를 통해 모임 개설 방법을 안내해 드릴게요!
+				
+				모임 개설 가이드 보기
+				☞#{비고1}';
+				$reserve_type = 'NORMAL';
+				$start_reserve_time = date('Y-m-d H:i:s');
+				$reciver = '{"name":"'.$memb['mb_name'].'","mobile":"'.$memb['mb_hp'].'","note1":"https:\/\/moafriendshost.notion.site\/0ce44224a51746d2be52e2c05a2303ac"}';
+				sendBfAlimTalk(60, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+			}
 		}
 
 	} else if($_POST['act_button'] == "일괄수정") {
@@ -48,6 +75,14 @@ include_once('./_common.php');
 			if ($mb['mb_level'] < '3')
 				$add_sql = ", mb_level = '3'";
 			sql_query(" update {$g5['member_table']} set as_partner = '{$_POST['ptr'][$i]}', as_marketer = '{$_POST['pmkt'][$i]}' {$add_sql} where mb_id = '{$_POST['pt_id'][$i]}' ", false);
+
+			// 2022-08-11. botbinoo, 호스트 승인시 포인트 지급
+			if($config['cf_use_host_reg'] == 1) {
+				$config = sql_fetch("select * from {$g5['config_table']} ");
+				$cf_host_reg_point = isset($config['cf_host_reg_point']) && $config['cf_host_reg_point'] > 0 ? $config['cf_host_reg_point'] : 0;
+				$sql = "update g5_member set mb_point = mb_point + {$cf_host_reg_point} where mb_id = '{$_POST['pt_id'][$k]}' ";
+				$user = sql_fetch($sql);
+			}
 		}
 
 	}
@@ -68,6 +103,9 @@ if (!$sst) {
     $sod = "desc";
 }
 
+// 2022-09-04. botbinoo, 호스트 승인을 하기 위한 목록이므로 호스트는 제외 (개인 고객은 0/1) - 아직 불필요 대기
+// $sql_search = $sql_search . " and a.pt_leave = '' and a.pt_register = '' ";
+
 $sql_order = " order by {$sst} {$sod} ";
 
 $sql_common = " from {$g5['apms_partner']} a left join {$g5['member_table']} b on ( a.pt_id = b.mb_id ) ";
@@ -81,7 +119,7 @@ $total_page  = ceil($total_count / $rows);  // 전체 페이지 계산
 if ($page < 1) $page = 1; // 페이지가 없으면 첫 페이지 (1 페이지)
 $from_record = ($page - 1) * $rows; // 시작 열을 구함
 
-$sql = " select a.*, b.mb_nick, b.mb_email, b.mb_homepage {$sql_common} where (1) {$sql_search} {$sql_order} limit {$from_record}, {$rows} ";
+$sql = " select a.*, b.mb_nick, b.mb_email, b.mb_homepage, b.as_partner, b.company_name, b.mb_hp {$sql_common} where (1) {$sql_search} {$sql_order} limit {$from_record}, {$rows} ";
 $result = sql_query($sql);
 
 $listall = '<a href="/adm/confirm_host_list.php" class="ov_listall">전체목록</a>';
@@ -134,7 +172,9 @@ include_once('./admin.head.php');
         <th scope="col">번호</th>
         <th scope="col">구분</th>
 		<th scope="col"><?php echo apms_sort_link('a.pt_register') ?>승인일</a> / <?php echo apms_sort_link('a.pt_leave') ?>탈퇴일</a></th>
-        <th scope="col"><?php echo apms_sort_link('a.pt_partner') ?>호스트</a></th>
+		<!--
+		<th scope="col"><?php echo apms_sort_link('a.pt_partner') ?>호스트</a></th>
+-->
         <th scope="col" col span="2">
 			<!-- <?php echo apms_sort_link('a.pt_marketer') ?>추천인</a>
 			/	 -->
@@ -143,7 +183,8 @@ include_once('./admin.head.php');
 		<th scope="col"><?php echo apms_sort_link('a.pt_type') ?>유형</a></th>
 		<th scope="col"><?php echo apms_sort_link('b.mb_id') ?>닉네임</a></th>
         <th scope="col"><?php echo apms_sort_link('a.pt_name') ?>이름</a></th>
-        <th scope="col"><?php echo apms_sort_link('a.pt_hp') ?>연락처</a></th>
+        <th scope="col"><?php echo apms_sort_link('a.pt_hp') ?>핸드폰</a></th>
+        <th scope="col"><?php echo apms_sort_link('a.company_name') ?>직장</a></th>
         <th scope="col"><?php echo apms_sort_link('a.pt_email') ?>이메일</a></th>
         <th scope="col"><?php echo apms_sort_link('a.pt_company') ?>정산</a></th>
         <th scope="col"><?php echo apms_sort_link('a.pt_bank_limit') ?>출금</a></th>
@@ -160,12 +201,20 @@ include_once('./admin.head.php');
 		if($row['pt_leave']) { //탈퇴
 			$p_active = '<span class="mb_leave_msg">탈퇴</span>';
 			$p_status = '<span class="mb_leave_msg"><strike>'.preg_replace("/([0-9]{4})([0-9]{2})([0-9]{2})/", "\\1-\\2-\\3", $row['pt_leave']).'</strike></span>';
-		} else if($row['pt_register']) { //등록
+		} else if($row['as_partner'] == '1' && $row['pt_register']) { //등록
 			$p_active = '활동';
 			$p_status = preg_replace("/([0-9]{4})([0-9]{2})([0-9]{2})/", "\\1-\\2-\\3", $row['pt_register']);
 		} else { //신청
-			$p_active = '<span class="pt-request">대기</span>';
-			$p_status = '<span class="pt-request">신청</span>';
+			if($row['pt_host_status'] != '반려') {
+				$p_active = '<span class="pt-request">대기</span>';
+			} else {			
+				$p_active = '<span class="pt-request">반려</span>';
+			}
+			if($row['pt_host_status'] != '반려') {
+				$p_status = '<span class="pt-request">신청</span>';
+			} else {			
+				$p_status = '<span class="pt-request">반려</span>';
+			}
 			$is_check = true;
 		}
 
@@ -196,24 +245,44 @@ include_once('./admin.head.php');
         <td align="center"><?php echo $list_num;?></td>
 		<td align="center"><?php echo $p_active;?></td>
 		<td align="center"><?php echo $p_status;?></td>
+		<!--
         <td align="center">
             <input type="checkbox" name="ptr[<?php echo $i ?>]" value="1" id="ptr_<?php echo $i ?>"<?php echo ($row['pt_partner']) ? ' checked' : '';?>>
 		</td>
+			-->
         <td align="center" class="none">
+		<!-- <?echo $row['pt_level']; ?>  -->
             <input type="checkbox" name="pmkt[<?php echo $i ?>]" value="1" id="pmkt_<?php echo $i ?>"<?php echo ($row['pt_marketer']) ? ' checked' : '';?>>
 		</td>
         <td  align="center" style="width:50px;">
 <!--			--><?php //echo get_member_level_select("pt_level[$i]", 1, 3, $row['pt_level']); ?>
+<!--
             <select name="pt_level[<?php echo $i; ?>">
                 <option value="1" <?php echo $row['pt_level'] == '1' ? 'selected' : ''; ?>>게스트</option>
                 <option value="2" <?php echo $row['pt_level'] == '2' ? 'selected' : ''; ?>>호스트</option>
                 <option value="3" <?php echo $row['pt_level'] == '3' ? 'selected' : ''; ?>>슈퍼호스트</option>
-            </select>
+			</select>
+			-->
+			<?php 
+			$memberLevel = '-';
+			if($row['pt_level'] == '1' || $row['pt_level'] == '0') {
+				$memberLevel = '게스트';
+			}
+			if($row['pt_level'] == '2') {
+				$memberLevel = '호스트';
+			}
+			if($row['pt_level'] == '3') {
+				$memberLevel = '슈퍼호스트';
+			}
+			echo $memberLevel; 
+			?>
         </td>
 		<td align="center"><?php echo $p_type;?></td>
 		<td align="center"><?php echo $p_name;?></td>
 		<td align="center"><b><?php echo $row['pt_name'];?></b></td>
-		<td align="center"><?php echo $row['pt_hp'];?></td>
+		
+		<td align="center"><?php echo $row['mb_hp'];?></td>
+		<td align="center"><?php echo $row['company_name'];?></td>
 		<td align="center"><?php echo $row['pt_email'];?></td>
 		<td align="center"><?php echo $row['pt_company'];?></td>
 		<td align="center"><?php echo ($row['pt_bank_limit']) ? '불가' : '가능';?></td>
@@ -232,8 +301,10 @@ include_once('./admin.head.php');
 <div class="btn_fixed_top">
     <input type="submit" name="act_button" value="선택승인" onclick="document.pressed=this.value" class="btn btn_02">
 	<!--기존 onclick document.pressed=this.value; -->
-    <input class="pop-inline btn btn_02"  onclick="$('#popup01').addClass('open');" type="button" name="act_button" value="선택반려" />
-    <input type="submit" name="act_button" value="일괄수정" onclick="document.pressed=this.value" class="btn_submit btn">
+	<input class="pop-inline btn btn_02"  onclick="$('#popup01').addClass('open');" type="button" name="act_button" value="선택반려" />
+	<!--
+	<input type="submit" name="act_button" value="일괄수정" onclick="document.pressed=this.value" class="btn_submit btn">
+	-->
 </div>
 
 <div class="layer-popup" id="popup01">
@@ -250,7 +321,7 @@ include_once('./admin.head.php');
 			</div>
 
 			<div class="btn_choice">
-				<button class="btnSubmit popClose">확인</button>
+				<button type="button" class="btnSubmit popClose">확인</button>
 			</div>
 		</div>
 	</div>
@@ -303,4 +374,12 @@ function fmemberlist_submit(f)
 
     return true;
 }
+function check_all(f)
+{
+    var chk = document.getElementsByName("chk[]");
+
+    for (i=0; i<chk.length; i++)
+        chk[i].checked = f.chkall.checked;
+}
+
 </script>

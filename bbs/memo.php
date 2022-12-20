@@ -1,8 +1,21 @@
 <?php
 include_once('./_common.php');
 
+/*
 if ($is_guest)
     alert_close('회원만 이용하실 수 있습니다.');
+*/
+if ($is_guest){
+    $mobile_str = 'phone|samsung|lgtel|mobile|[^A]skt|nokia|blackberry|android|sony';
+
+    if(preg_match('/'.$mobile_str.'/i', $_SERVER['HTTP_USER_AGENT'])){
+        // Mobile
+        alert('회원만 이용하실 수 있습니다.');
+    }else{
+        // PC
+        alert_close('회원만 이용하실 수 있습니다.');
+    }
+}
 
 set_session('ss_memo_delete_token', $token = uniqid(time()));
 

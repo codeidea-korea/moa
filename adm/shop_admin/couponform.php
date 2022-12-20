@@ -104,7 +104,9 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
            <?php echo help("쿠폰 타입을 변경하시면 입력 서식도 일부 변경됩니다."); ?>
            <select name="cp_type" id="cp_type">
                 <option value="0"<?php echo get_selected('0', $cp['cp_type']); ?>>정액할인(원)</option>
+                <!--
                 <option value="1"<?php echo get_selected('1', $cp['cp_type']); ?>>정률할인(%)</option>
+                -->
            </select>
         </td>
     </tr>

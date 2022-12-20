@@ -4,8 +4,11 @@ include_once("./_common.php");
 //헤더영역(공통파일)
 include_once(CLASS_PATH."/header.php");
 
+$header_title = '공지사항';
 //main head(공통파일)
 include_once(CLASS_PATH."/head.php");
+include_once(G5_LIB_PATH.'/thumbnail.lib.php');
+
 ?>
 
 <div class="wrapper">
@@ -22,7 +25,36 @@ include_once(CLASS_PATH."/head.php");
                     <label for="box<?php echo $i; ?>" class="terms_list"><?php echo $row['wr_subject']; ?></label>
                     <section id="con0<?php echo $i; ?>">
                         <div class="box_txt">
-                            <?php echo $row['wr_content']; ?>
+							<?php
+							$is_img_head = ($row['as_img']) ? false : true; // 상단
+							$is_img_tail = ($row['as_img'] == "1") ? true : false; // 하단
+							// 이미지 상단 출력
+							
+							$strSql = "select * from g5_board_file where bo_table='notice' and wr_id=".$row['wr_id'];
+							$res = sql_query($strSql);
+							if ($res && $is_img_head){
+								echo '<div class="view-img">'.PHP_EOL;
+								while($rowf = sql_fetch_array($res)) {
+									if ($rowf['bf_file'] != "") {
+										echo '<img src="/data/file/notice/'.$rowf['bf_file'].'">';
+									}
+								}
+								echo '</div>'.PHP_EOL;
+							}
+							?>
+                            <?php echo '<pre>'.$row['wr_content'].'</pre>'; ?>
+							<?php
+							// 이미지 하단 출력
+							if($v_img_count && $is_img_tail) {
+								echo '<div class="view-img">'.PHP_EOL;
+								for ($i=0; $i<=count($view['file']); $i++) {
+									if ($view['file'][$i]['view']) {
+										echo '<img src="/data/file/notice/'.$rowf['bf_file'].'">';
+									}
+								}
+								echo '</div>'.PHP_EOL;
+							}
+							?>
                         </div>
                     </section>
                 <?php $i++; } ?>

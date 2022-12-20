@@ -181,7 +181,8 @@ if($is_member) {
 }
 
 if ((int)($row['od_price'] - $tot_cp_price) !== $i_price) {
-    die("Error.");
+    alert('사용할 수 없는 쿠폰입니다.');
+//    die("Error.");
 }
 
 // 배송비가 상이함
@@ -915,7 +916,7 @@ if($is_member && $od_b_name) {
 }
 
 //모임신청자 등록 처리 2022-05-21 pletho
-procClassAplyer($member['mb_id'], $aply_it_id);
+procClassAplyer($member['mb_id'], $aply_it_id, '신청', $od_id);
 
 // Push - 최고관리자에게 보냄 ---------------------------------------
 	$mb_list = $config['cf_admin'].','.$config['as_admin'];
