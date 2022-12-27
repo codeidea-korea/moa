@@ -1,6 +1,12 @@
 <?php
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
+/** 
+ * $write_prefix : g5_write
+ * $bo_table : class
+ * $write_table : g5_write_class
+*/
+
 
 $moa_curriculum = isset($_POST['moa_curriculum'])?$_POST['moa_curriculum']:"";
 $moa_supplies = isset($_POST['moa_supplies'])?$_POST['moa_supplies']:"";

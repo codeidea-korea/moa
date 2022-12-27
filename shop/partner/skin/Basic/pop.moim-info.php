@@ -16,9 +16,9 @@
 						</colgroup>
 						<thead>
 							<tr>
-								<th>모임ID</th>
 								<th>모임명</th>
 								<th>모집기간</th>
+								<th>모임ID</th>
 								<th>모임일시</th>
 								<th>모집인원(최소/최대)</th>
 							</tr>

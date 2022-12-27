@@ -38,7 +38,7 @@ if ($w == 'u' || $w == 'r') {
         alert("글이 존재하지 않습니다.\\n삭제되었거나 이동된 경우입니다.", G5_URL);
     }
 }
-$class = "SELECT day,time,minute,timelimit FROM deb_class_item WHERE wr_id = '{$write['wr_id']}'";
+$class = "SELECT day,time,minute,timelimit,idx FROM deb_class_item WHERE wr_id = '{$write['wr_id']}' order by cls_no asc";
 $result = sql_query($class);
 $i = 0;
 while($row = sql_fetch_array($result)) {
@@ -46,6 +46,7 @@ while($row = sql_fetch_array($result)) {
     $write['cls_no'][$i]['time'] = $row['time'];
     $write['cls_no'][$i]['minute'] = $row['minute'];
     $write['cls_no'][$i]['timelimit'] = $row['timelimit'];
+    $write['cls_no'][$i]['id'] = $row['idx'];
     $i++;
 }
 if ($w == '') {
@@ -542,6 +543,7 @@ echo '<!-- skin : '.(G5_IS_MOBILE ? $board['bo_mobile_skin'] : $board['bo_skin']
 
 $returnUrl = '/shop/partner/?ap=list';
 
+/** $board_skin_path : /home/secondclass/www/shop/partner/skin/Class-Board */
 include_once ($board_skin_path.'/write.skin.php');
 
 //if ($chks) {

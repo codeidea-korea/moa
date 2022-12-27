@@ -30,9 +30,10 @@ if (defined('_INDEX_')) {?>
             </div>
             <?
         } else {
+            //echo "TEST".$member['mb_id'];
             ?>
             <div class="header_btn_area"> 
-                <a href="/c_login/login.php" class="h_login_btn color-main">로그인</a>
+                <a href="<?php echo MOA_LOGIN_URL; ?>/login.php" class="h_login_btn color-main">로그인</a>
             </div>
             <?
         }
@@ -43,7 +44,9 @@ if (defined('_INDEX_')) {?>
 <div id="moa-header-space"></div> 
 <?php 
 }
-else {?>
+else {
+
+    ?>
 
 <div id="moa-header" class="header">
 	<div class="inner">

@@ -287,6 +287,8 @@ if(XenoPostToForm::check()) {
 
 
 @session_start();
+// echo "<div style='z-index:9999;top:0px; position:absolute;'>둘러보기".$_SESSION['ss_mb_id'].$_SERVER['PHP_SELF']."</div>";
+// exit;
 //==============================================================================
 
 
@@ -309,6 +311,7 @@ define('G5_CAPTCHA_URL',    G5_PLUGIN_URL.'/'.G5_CAPTCHA_DIR);
 define('G5_CAPTCHA_PATH',   G5_PLUGIN_PATH.'/'.G5_CAPTCHA_DIR);
 
 // 4.00.03 : [보안관련] PHPSESSID 가 틀리면 로그아웃한다.
+
 if (isset($_REQUEST['PHPSESSID']) && $_REQUEST['PHPSESSID'] != session_id())
     goto_url(G5_BBS_URL.'/logout.php');
 
@@ -430,9 +433,9 @@ if (isset($_REQUEST['gr_id'])) {
 
 // 자동로그인 부분에서 첫로그인에 포인트 부여하던것을 로그인중일때로 변경하면서 코드도 대폭 수정하였습니다.
 $is_first_login = false;
+
 if ($_SESSION['ss_mb_id']) { // 로그인중이라면
     $member = get_member($_SESSION['ss_mb_id']);
-
     // 차단된 회원이면 ss_mb_id 초기화
     if($member['mb_intercept_date'] && $member['mb_intercept_date'] <= date("Ymd", G5_SERVER_TIME)) {
         set_session('ss_mb_id', '');
@@ -447,7 +450,6 @@ if ($_SESSION['ss_mb_id']) { // 로그인중이라면
     // 자동로그인 ---------------------------------------
     // 회원아이디가 쿠키에 저장되어 있다면 (3.27)
     if ($tmp_mb_id = get_cookie('ck_mb_id')) {
-
         $tmp_mb_id = substr(preg_replace("/[^a-zA-Z0-9_]*/", "", $tmp_mb_id), 0, 20);
         // 최고관리자는 자동로그인 금지
         if (strtolower($tmp_mb_id) != strtolower($config['cf_admin'])) {
@@ -477,6 +479,7 @@ if ($_SESSION['ss_mb_id']) { // 로그인중이라면
     }
     // 자동로그인 end ---------------------------------------
 }
+
 
 
 $write = array();

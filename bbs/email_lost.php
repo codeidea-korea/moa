@@ -60,6 +60,7 @@ if($is_lost_sub) {
 					async: false,
 					cache: false,
 					success: function(data) {
+							console.log(data);
                         if (data) {
                             alert(data);
                         }

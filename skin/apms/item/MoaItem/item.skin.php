@@ -179,12 +179,10 @@ if($member['com_cert_yn'] != '1') {
 			<h4>모임 스케쥴</h4>
 		</div>
 		<?php
-		/*
 			$class = "select * from g5_write_class b join g5_shop_item a 
 						on b.wr_id = a.it_2 join deb_class_item c 
-						on a.it_id = c.it_id where a.it_2 = '{$data['wr_id']}'";
-						*/
-			$class = "select * from g5_write_class b join deb_class_item c on b.wr_id = c.wr_id where c.it_id = '{$it_id}'";
+						on a.it_id = c.it_id where a.it_2 = '{$data['wr_id']}' order by c.cls_no asc ";
+			//$class = "select * from g5_write_class b join deb_class_item c on b.wr_id = c.wr_id where c.it_id = '{$it_id}'";
 			$schedules = sql_query($class);
 		?>
 		<div class="schedule">

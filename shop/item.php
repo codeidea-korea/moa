@@ -544,6 +544,7 @@ $board['bo_table'] = 'class';
 $file = get_file('class', $tmp_class['wr_id']);
 	
 $item_skin_file = $item_skin_path.'/item.skin.php';
+/** $item_skin_path : /home/secondclass/www/skin/apms/item/MoaItem */
 
 //echo "스킨영역 대신 <BR>";
 if(file_exists($item_skin_file)) {

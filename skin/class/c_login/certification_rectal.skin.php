@@ -66,7 +66,10 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
         </div>
         <div class="p22 certnamecard">
             <form name="frmnamecard" id="frmnamecard" method="post" enctype="multipart/form-data" 
-                action="<?php echo MOA_LOGIN_URL;?>/certification_loading.php">
+                action="<?php echo MOA_LOGIN_URL;?>/certification_loading.php" 
+                autocomplete="off" 
+        role="form" 
+                OnSubmit="return procfileUpload(this);" >
             <div class="lounchecL radio">
             
                 
@@ -77,7 +80,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
             
             </div>
             <div class="p15 ">
-                <form method="post" enctype="multipart/form-data" action="">
+               
                  <input type="hidden" name="f_kind" id="f_kind" value="namecard">
                  <div id="imgViewArea" class="citation_photo">
                     <img id="imgArea" src="../images/Photo_default.svg" alt=""  onerror="imgAreaError()">
@@ -91,10 +94,11 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 <!--                        <input type="file" accept="image/*" name="camera" id="camera" style="display:none">-->
 <!--                        <button type="button" onclick="onCamera('c');" >촬영</button>-->
                     </div>
+           
                     <div class="lowbtn_layout mt25 p0">
                         <button type="submit" class="inactive on">완료</button>
                     </div>
-                </form>
+                
             </div>
             </form>
         </div>
@@ -149,12 +153,15 @@ $(function() {
 		$('#imgViewArea').css({ 'display' : 'none' });
 	}
 
-    function procfileUpload(obj) {
-        //alert("aaaaa");
-        if (!obj)
-            return false;
-        //alert("show");
-        return true;
-    }
+    
 });
+function procfileUpload(obj) {
+    if ($('#namecard').val() === ""){
+        alert('등록된 인증 이미지가 없습니다.'); return false;
+    }
+    if (!obj)
+        return false;
+    //alert("show");
+    return true;
+}
 </script>

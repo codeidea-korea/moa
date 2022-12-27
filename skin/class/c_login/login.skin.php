@@ -1,5 +1,7 @@
 <?php
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
+
+set_session('prev_url', $_SERVER['HTTP_REFERER']);
 ?>
 <section class="login_wrap">
         <div class="cnter">

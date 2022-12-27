@@ -32,7 +32,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
         </div>
     </div>
     <div class="lowbtn_layout mt25">
-        <input type="submit" class="inactive on" onclick="location.href='<?php echo MOA_LOGIN_URL;?>/certification_loading.php'" value="완료" >
+        <input type="submit" class="inactive on" value="완료" >
     </div>
     </form>
 </section>
@@ -71,7 +71,9 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 	}
 
     function procfileUpload(obj) {
-        //alert("aaaaa");
+        if ($('#namecard').val() === ""){
+            alert('등록된 인증 이미지가 없습니다.'); return false;
+        }
         if (!obj)
             return false;
         //alert("show");

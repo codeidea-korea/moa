@@ -162,7 +162,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 		<nav>
 			<ul>
 				<li>
-					<a class="<?php if (strpos(basename($_SERVER['PHP_SELF']), 'index') !== false) echo 'on'; ?>" href="/">
+					<a class="<?php if (strpos(basename($_SERVER['PHP_SELF']), 'index') !== false) echo 'on'; ?>" href="<?=G5_URL?>">
 						<span class="mn_home"></span>
 						홈
 					</a>

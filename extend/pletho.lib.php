@@ -548,10 +548,11 @@ function procWrite2Item($bo_table, $wr_id)
     $vals['it_1'] = 'moa';
     $vals['it_2'] = $moa['wr_id'];
     $vals['it_3'] = $bo_table;
+
+    $arr_changed_cls_idx = array(); // 회차 변경(생성)된것들
     $list = procClassToItem($vals);
     $cnts = 0;
-    if ($list)
-        $cnts = count($list);
+    if ($list) { $cnts = count($list); }
     for ($i = 0; $i < $cnts; $i++) {
         $vals = array();
         //$genre = "모임";
@@ -623,9 +624,12 @@ function procWrite2Item($bo_table, $wr_id)
             itemdeleteInBbs($vals['it_id']);
             lec_copy_file($bo_table, $moa['wr_id'], $vals['it_id']);
         }
+
+        array_push($arr_changed_cls_idx, $list[$i]['idx']);
     }
     //print_r2($list); 
     //print_r2($vals); exit;
+
     return $vals['it_id'];
 }
 
@@ -1196,7 +1200,12 @@ function getAplyCountIt($it_id)
 // 모임에 승인된 신청인원수 구하기
 function getMoimAdmitApplyCountIt($it_id){
     if (!$it_id) { return 0; }
-	$sql = "SELECT COUNT(idx) AS cnt FROM deb_class_aplyer WHERE it_id='".$it_id."' AND STATUS='예약확정'";
+
+    $sql = "select wr_id from deb_class_item where it_id='{$it_id}'";
+    $tmp_row = sql_fetch($sql);
+
+
+	$sql = "SELECT COUNT(idx) AS cnt FROM deb_class_aplyer WHERE wr_id='".$tmp_row['wr_id']."' AND STATUS='예약확정'";
     $row = sql_fetch($sql);
     return $row['cnt'];
 }
@@ -1546,14 +1555,14 @@ function getCountLike($wr_id, $bo_table = 'class') {
 
 
 // 모임 신청자 목록
-function getAplyerMoaClass($it_id) {
+function getAplyerMoaClass($wr_id) {
     global $g5;
 
     $sql = "SELECT a.`status`, a.it_id, a.wr_id, a.aplydate, a.aplytime, b.*, c.timelimit
             FROM g5_member b join deb_class_aplyer a
             on b.mb_id = a.mb_id join deb_class_item c
             on a.it_id = c.it_id
-            WHERE a.it_id = '{$it_id}'
+            WHERE a.wr_id = '{$wr_id}'
      ";
 
     $result = sql_query($sql);
@@ -1584,6 +1593,9 @@ function checkAbleAplyerMoaClass($it_id, $mb_id) {
 function countAplyerMoaClass($it_id, $status = '예약확정') {
     global $g5;
 
+    $sql = "select wr_id from deb_class_item where it_id='{$it_id}'";
+    $tmp_row = sql_fetch($sql);
+
     if($status != '') {
         $exsql = " and b.status = '{$status}' ";
     }
@@ -1592,10 +1604,12 @@ function countAplyerMoaClass($it_id, $status = '예약확정') {
             FROM deb_class_item a, 
                 deb_class_aplyer b
             where a.it_id = b.it_id
-            and a.it_id = '{$it_id}'
+            and a.wr_id = ".$tmp_row['wr_id']."
             {$exsql}
             group by a.it_id  
             ";
+
+    $sql = "select count(idx) as cnt from deb_class_aplyer where wr_id=".$tmp_row['wr_id']." and status='예약확정'";
     $row = sql_fetch($sql);
     return $row;
 
@@ -1867,7 +1881,8 @@ if(! function_exists('sendDirectMail')) {
         if(curl_errno($ch)){
             'Curl error: ' . curl_error($ch);
         }else{
-            print_R($response);
+            //print_R($response);
+            return true;
         }
 
 //        curl_close ($ch);
@@ -1890,6 +1905,7 @@ if(! function_exists('sendDirectSMS')) {
         $postvars = $postvars.', "receiver":'.$receiver.'';
         $postvars = $postvars.', "key":"'.$key.'"';
         $postvars = '{'.$postvars.'}';
+        //echo $postvars;
 
         $url = "https://directsend.co.kr/index.php/api_v2/sms_change_word";
 
@@ -1906,11 +1922,11 @@ if(! function_exists('sendDirectSMS')) {
 
         if(curl_errno($ch)){
             echo 'Curl error: ' . curl_error($ch);
-            return true;
+            return false;
 
         }else{
-            //print_r($response);
-            return false;
+            print_r($response);
+            return true;
 
         }
 //        curl_close ($ch);

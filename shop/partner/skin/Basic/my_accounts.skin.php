@@ -21,8 +21,7 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 					<th scope="row"><label class="required">상품종류</label></th>
 					<td>
 						<select name="pt_commission_2" class="span" readonly>
-							<option value="<?php echo $apms['apms_commission_2'];?>"><?php echo $apms['apms_commission_2'];?></option>
-							
+							<option value="<?php echo ($partner['pt_commission_2'] != "")?$partner['pt_commission_2']:$apms['apms_commission_2']; ?>"><?php echo ($partner['pt_commission_2'] != "")?$partner['pt_commission_2']:$apms['apms_commission_2']; ?></option>
 						</select>
 					</td>
 				</tr>

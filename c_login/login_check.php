@@ -138,8 +138,8 @@ if ($auto_login) {
     set_cookie('ck_mb_id', '', 0);
     set_cookie('ck_auto', '', 0);
 }
-//echo "9.1"."<BR>";
-//echo $url."<BR>";
+// echo "9.1"."<BR>";
+// echo $url."<BR>"; exit;
 if ($url) {
     // url 체크
     check_url_host($url, '', G5_URL, true);
@@ -178,6 +178,7 @@ if ($url) {
 
 } else  {
     $link = G5_URL;
+    $link = $_SESSION['prev_url'];
 }
 //echo "10.1"."<BR>";
 // 내글반응 체크
@@ -221,5 +222,6 @@ if(defined('G5_USE_SHOP') && G5_USE_SHOP && function_exists('set_cart_id')){
 
     //$mb = get_member_email($mb_id);
     //alert($mb_id." - ".$mb['mb_id']." - ".get_session('ss_mb_id'));
+
 goto_url($link);
 ?>

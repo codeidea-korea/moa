@@ -49,7 +49,9 @@ if($_POST['js'] == "on") {
 
     if ($good == 'good' || $good == 'nogood') {
         if($it['pt_id'] == $member['mb_id']) {
-            $error = '자신의 모임에는 좋아요 또는 싫어요 하실 수 없습니다.';
+            // kij 수정 20221223
+			//$error = '자신의 모임에는 좋아요 또는 싫어요 하실 수 없습니다.';
+			$error = '자신의 모임에는 찜하기 하실 수 없습니다.';
 	        print_result($error, $success, $count);
         }
 
@@ -69,7 +71,11 @@ if($_POST['js'] == "on") {
             sql_query(" delete from {$g5['apms_good']} where it_id = '{$it_id}' and mb_id = '{$member['mb_id']}' and pg_flag = '{$row['pg_flag']}' ");
             sql_query(" insert {$g5['apms_good']} set it_id = '{$it_id}', mb_id = '{$member['mb_id']}', pg_flag = '{$good}', pg_datetime = '".G5_TIME_YMDHIS."' ");
 
-            $success = $status.' 하셨습니다.';
+            if ($good == "good"){
+                $success = $status.' 하셨습니다.';
+            }else{
+                $success = "찜한 모임에서 해제되었습니다.";
+            }
             
 	        print_result($error, $success, $count);
         } else {

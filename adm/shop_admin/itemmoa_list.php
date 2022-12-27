@@ -7,6 +7,8 @@ auth_check($auth[$sub_menu], "r");
 $g5['title'] = '모임관리';
 include_once (G5_ADMIN_PATH.'/admin.head.php');
 
+// g5_shop_category, 
+
 // 카테고리
 $ca_list  = '<option value="">선택</option>'.PHP_EOL;
 $sql = " select * from {$g5['g5_shop_category_table']} ";
@@ -55,17 +57,10 @@ if ($sch_startdt && $sch_enddt) {
 else if ($sch_startdt && !$sch_enddt) {
     $sql_search .= " AND (a.day between '{$sch_startdt}') ";
 }
-/*
-$sql_common = " from g5_member b join deb_class_item a
-                    on b.mb_id = a.mb_id join g5_shop_item c
-                    on a.it_id = c.it_id join g5_write_class d
-                    on c.it_2 = d.wr_id";
-                    */
-$sql_common = " from g5_write_class d
-                    join g5_member b on d.mb_id = b.mb_id 
-                    join deb_class_item a on a.wr_id = d.wr_id 
-                    left join g5_shop_item c on c.it_id = a.it_id ";
 
+/* $sql_common = " from g5_write_class d left join g5_member b on d.mb_id = b.mb_id join deb_class_item a on a.wr_id = d.wr_id 
+                left join g5_shop_item c on c.it_id = a.it_id "; */
+$sql_common = " from g5_write_class d left join g5_member b on d.mb_id = b.mb_id ";
 $sql_common .= $sql_search;
 
 // 테이블의 전체 레코드수만 얻음
@@ -78,18 +73,13 @@ if ($page < 1) { $page = 1; } // 페이지가 없으면 첫 페이지 (1 페이�
 $from_record = ($page - 1) * $rows; // 시작 열을 구함
 
 if (!$sst) {
-    $sst  = "a.it_id";
+    $sst  = "d.wr_id";
     $sod = "desc";
 }
 $sql_order = "order by $sst $sod";
 
-
-$sql  = " select *
-           $sql_common
-           $sql_order
-           limit $from_record, $rows ";
+$sql = " select * " . $sql_common . $sql_order . " limit " . $from_record . ", " . $rows; 
 $result = sql_query($sql);
-//$qstr  = $qstr.'&amp;sca='.$sca.'&amp;page='.$page;
 $qstr  = $qstr.'&amp;sca='.$sca.'&moa_kind='. $moa_kind.'&offline='.$offline.'&amp;page='.$page.'&amp;save_stx='.$stx.'&sch_startdt='.$sch_startdt.'&sch_enddt='.$sch_enddt;
 
 $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목록</a>';
@@ -109,11 +99,13 @@ include_once(G5_ADMIN_PATH.'/_add/pop.cancel-class.php'); //폐강처리
 	<div class="fx-list">
 		<div class="fx-list-label">검색</div>
 		<div class="fx-list-con">
-<!--			<select name="sfl">-->
-<!--				<option value="mb_name" --><?php //echo $sca == 'mb_name' ? 'selected' : ''; ?><!--호스트명</option>-->
-<!--				<option value="it_name" --><?php //echo $sca == 'it_name' ? 'selected' : ''; ?><!--모임명</option>-->
-<!--				<option value="it_id" --><?php //echo $sca == 'it_id' ? 'selected' : ''; ?><!--모임ID</option>-->
-<!--			</select>-->
+            <?/*
+            <select name="sfl">
+                <option value="mb_name"><?php //echo $sca == 'mb_name' ? 'selected' : ''; ?><!--호스트명</option>-->
+                <option value="it_name"><?php //echo $sca == 'it_name' ? 'selected' : ''; ?><!--모임명</option>-->
+                <option value="it_id"><?php //echo $sca == 'it_id' ? 'selected' : ''; ?><!--모임ID</option>-->
+            </select>
+            */?>
 			<input type="text" name="stx" value="<?php echo $stx; ?>" class="span160" placeholder="모임명/호스트명"><!--<a href="#" class="btn reverse span70">조회</a>-->
 		</div>
 	</div>
@@ -125,10 +117,12 @@ include_once(G5_ADMIN_PATH.'/_add/pop.cancel-class.php'); //폐강처리
                 <option value="온라인"<?php echo $offline == '온라인' ? 'selected' : '' ?>>온라인</option>
                 <option value="오프라인"<?php echo $offline == '오프라인' ? 'selected' : '' ?>>오프라인</option>
             </select>
-            <!--			<select class="">				-->
-            <!--				<option>N회차</option>-->
-            <!--				<option>1회차</option>-->
-            <!--			</select>-->
+            <?/*
+            <select class="">
+                <option>N회차</option>
+                <option>1회차</option>
+            </select>
+            */?>
             <select class="span160" name="moa_kind">
                 <option value="">전체</option>
                 <option value="자율형" <?php echo $moa_kind == '자율형' ? 'selected' : ''; ?>>자율형 모임</option>
@@ -216,19 +210,6 @@ include_once(G5_ADMIN_PATH.'/_add/pop.cancel-class.php'); //폐강처리
 <input type="hidden" name="save_stx" value="<?php echo $stx; ?>">
 
 <label for="sca" class="sound_only">카테고리선택</label>
-<!--<select name="sca" id="sca">-->
-<!--    <option value="">전체카테고리</option>-->
-<!--    --><?php
-//    $sql1 = " select ca_id, ca_name from {$g5['g5_shop_category_table']} where ca_id like '10%' order by ca_order, ca_id ";
-//    $result1 = sql_query($sql1);
-//    for ($i=0; $row1=sql_fetch_array($result1); $i++) {
-//        $len = strlen($row1['ca_id']) / 2 - 1;
-//        $nbsp = '';
-//        for ($i=0; $i<$len; $i++) $nbsp .= '&nbsp;&nbsp;&nbsp;';
-//        echo '<option value="'.$row1['ca_id'].'" '.get_selected($sca, $row1['ca_id']).'>'.$nbsp.$row1['ca_name'].'</option>'.PHP_EOL;
-//    }
-//    ?>
-<!--</select>-->
 <label for="sfl" class="sound_only">검색대상</label>
 <select name="sfl" id="sfl">
     <option value="it_name" <?php echo get_selected($sfl, 'it_name'); ?>>모임명</option>
@@ -250,8 +231,6 @@ include_once(G5_ADMIN_PATH.'/_add/pop.cancel-class.php'); //폐강처리
 <input type="hidden" name="page" value="<?php echo $page; ?>">
 
 <div class="box-header">
-<!--	<button type="button" data-onoff="오프라인" class="btn_onoff btn span110">오프라인</button>-->
-<!--    <button type="button" data-onoff="온라인" class="btn_onoff btn span110 gray">온라인</button> 비활성화는 gray -->
         <a href="#" class=ight">
 		<a href="/adm/shop_admin/moa_write.php?bo_table=class" target="_blank" class="btn span150">모임 등록</a>
 		<select name="page_su" id="page_count">
@@ -272,14 +251,12 @@ include_once(G5_ADMIN_PATH.'/_add/pop.cancel-class.php'); //폐강처리
 		<th scope="col"  id="th_pc_title"><?php echo subject_sort_link('it_name', 'sca='.$sca); ?>모임명</a></th>
 		<th scope="col"  id="th_category">모임유형</th>
 		<th scope="col"  id="th_category">모임유형</th>
-		<th scope="col">주소(위치)</th><!-- 오프라인 선택시에만 출력 -->
+		<th scope="col">주소(위치)</th>
 		<th scope="col">호스트명</th>		
 		<th scope="col">휴대폰 번호</th>
 		<th scope="col">상태</th>
-<!--		<th scope="col">승인/대기</th>-->
 		<th scope="col">모임 날짜</th>
 		<th scope="col">폐강 여부</th>
-<!--		<th scope="col">처리자</th>-->
 		<th scope="col" class="none">
             <label for="chkall" class="sound_only">모임 전체</label>
             <input type="checkbox" name="chkall" value="1" id="chkall" onclick="check_all(this.form)">
@@ -298,33 +275,38 @@ include_once(G5_ADMIN_PATH.'/_add/pop.cancel-class.php'); //폐강처리
     <?php
     while ($row = sql_fetch_array($result))
     {
-        $href = G5_SHOP_URL.'/item.php?it_id='.$row['it_id'];
-        $bg = 'bg'.($i%2);
+        // 회차 > 모임ID, 모임날짜
+        $subSql = "select group_concat(it_id) as it_ids, group_concat(day) as days from deb_class_item where wr_id=".$row['wr_id'];
+        $subrow = sql_fetch($subSql);
+        $arr_it_id = explode(',', $subrow['it_ids']);
+        $it_id = $arr_it_id[0];
 
-        $it_point = $row['it_point'];
-        if($row['it_point_type'])
-            $it_point .= '%';
+        $href = G5_SHOP_URL.'/item.php?it_id='.$it_id;
+        $bg = 'bg'.($i%2);
+        //$it_point = $row['it_point'];
+        //if($row['it_point_type']) $it_point .= '%';
     ?>
     <tr class="">
-        
         <td  class="td_num">
-            <input type="hidden" name="it_id[<?php echo $i; ?>]" value="<?php echo $row['it_id']; ?>">
-            <?php echo $row['it_id']; ?>
+            <input type="hidden" name="it_id[<?php echo $i; ?>]" value="<?php echo $subrow['it_ids']; ?>">
+            <?php echo str_replace(",", "<br>", $subrow['it_ids']); ?>
         </td>
 		<td><a href="<?php echo $href; ?>"><img src="<?php echo $row['as_thumb']; ?>" width="30px" height="30px" /></a></td>
-		<td><a href="<?php echo $href; ?>" class="color-blue underline"><?php echo $row['it_name']; ?></a></td>
+		<td><a href="<?php echo $href; ?>" class="color-blue underline"><?php echo $row['wr_subject']; ?></a></td>
 		<td><?php echo $row['moa_onoff'] ?></td>
 		<td><?php echo $row['moa_form']; ?></td>
-		<td class="cell-mainColor">
+		<td>
+            <?/*
             <?php echo get_common_type($row['moa_area1'])['type_name']; ?>
             (<?php echo get_common_code_name($row['moa_area1'], $row['moa_area2'])['cd_name']; ?>)
-        </td><!-- 오프라인 선택시에만 출력 -->
+            */?>
+            <?=$row['moa_addr1']?>
+        </td>
 		<td><?php echo $row['mb_name']; ?></td>
 		<td><?php echo $row['mb_hp']; ?></td>
         <?php $status = array('준비','승인','반려','삭제', '취소','폐강', '정산'); ?>
 		<td><?php echo $status[$row['moa_status']]; ?></td>
-<!--		<td>0/5</td>-->
-		<td><?php echo date('Y.m.d', strtotime($row['day'])); ?></td>
+		<td><?php echo str_replace("-", ".", str_replace(",", "<br>", $subrow['days'])) ?></td>
 		<td>
         <?
         if($status[$row['moa_status']] == '정산') {
@@ -334,8 +316,6 @@ include_once(G5_ADMIN_PATH.'/_add/pop.cancel-class.php'); //폐강처리
         } else {
         ?>
             <span data-href="#pop-cancel-class" data-wr_id="<?php echo $row['wr_id']; ?>" class="close_moim pop-inline btn mini span50">폐강</span></td>
-            <!-- <td>X</td>, <td>O</td> -->
-<!--		<td>어드민#1</td>	-->
             <?    
             }
             ?>
@@ -356,7 +336,7 @@ include_once(G5_ADMIN_PATH.'/_add/pop.cancel-class.php'); //폐강처리
             <input type="checkbox" name="it_use[<?php echo $i; ?>]" <?php echo ($row['it_use'] ? 'checked' : ''); ?> value="1" id="use_<?php echo $i; ?>">
         </td>
         <td  class="td_img none">
-             <a href="<?php echo $href; ?>"><?php echo get_it_image($row['it_id'], 50, 50); ?></a>
+             <a href="<?php echo $href; ?>"><?php echo get_it_image($it_id, 50, 50); ?></a>
         </td>
         <td  class="td_category none">
              <label for="ca_id_<?php echo $i; ?>" class="sound_only"><?php echo get_text($row['it_name']); ?> 기본카테고리</label>
@@ -379,7 +359,6 @@ include_once(G5_ADMIN_PATH.'/_add/pop.cancel-class.php'); //폐강처리
                 <label for="it_skin_<?php echo $i; ?>" class="sound_only">PC 스킨</label>
                 <?php echo get_skin_select('shop', 'it_skin_'.$i, 'it_skin['.$i.']', $row['it_skin']); ?>
             </div>
-        
             <div style="display:none">
                 <label for="it_mobile_skin_<?php echo $i; ?>" class="sound_only">모바일 스킨</label>
                 <?php echo get_mobile_skin_select('shop', 'it_mobile_skin_'.$i, 'it_mobile_skin['.$i.']', $row['it_mobile_skin']); ?>
@@ -391,9 +370,7 @@ include_once(G5_ADMIN_PATH.'/_add/pop.cancel-class.php'); //폐강처리
         </td>
         <td  class="td_num none"><?php echo $row['it_hit']; ?></td>
         <td  class="td_mng td_mng_s none">
-            <a href="./itemmoa_form.php?w=u&amp;it_id=<?php echo $row['it_id']; ?>&amp;ca_id=<?php echo $row['ca_id']; ?>&amp;<?php echo $qstr; ?>" class="btn btn_03"><span class="sound_only"><?php echo htmlspecialchars2(cut_str($row['it_name'],250, "")); ?> </span>수정</a>
-            <!--
-            <a href="./itemcopy.php?it_id=<?php echo $row['it_id']; ?>&amp;ca_id=<?php echo $row['ca_id']; ?>" class="itemcopy btn btn_02" target="_blank"><span class="sound_only"><?php echo htmlspecialchars2(cut_str($row['it_name'],250, "")); ?> </span>복사</a> -->
+            <a href="./itemmoa_form.php?w=u&amp;it_id=<?php echo $it_id; ?>&amp;ca_id=<?php echo $row['ca_id']; ?>&amp;<?php echo $qstr; ?>" class="btn btn_03"><span class="sound_only"><?php echo htmlspecialchars2(cut_str($row['it_name'],250, "")); ?> </span>수정</a>
             <a href="<?php echo $href; ?>" class="btn btn_02"><span class="sound_only"><?php echo htmlspecialchars2(cut_str($row['it_name'],250, "")); ?> </span>보기</a>
         </td>
 		<td class="td_mng td_mng_s">
@@ -404,8 +381,8 @@ include_once(G5_ADMIN_PATH.'/_add/pop.cancel-class.php'); //폐강처리
             </select>
 		</td>
         <td class="td_mng td_mng_s">
-			<a href="/adm/shop_admin/orderer_list.php?it_id=<?php echo $row['it_id']; ?>&page=<?php echo $page ? $page : 1; ?>" class="btn btn_02">참여자</a>
-			<a href="./itemmoa_form.php?w=u&amp;it_id=<?php echo $row['it_id']; ?>&amp;ca_id=<?php echo $row['ca_id']; ?>&amp;<?php echo $qstr; ?>" class="btn btn_03 none">수정</a><!-- 사용자페이지에서 등록 및 수정 가능 -->
+			<a href="/adm/shop_admin/orderer_list.php?it_id=<?php echo $it_id; ?>&page=<?php echo $page ? $page : 1; ?>" class="btn btn_02">참여자</a>
+			<a href="./itemmoa_form.php?w=u&amp;it_id=<?php echo $it_id; ?>&amp;ca_id=<?php echo $row['ca_id']; ?>&amp;<?php echo $qstr; ?>" class="btn btn_03 none">수정</a><!-- 사용자페이지에서 등록 및 수정 가능 -->
 			<button type="button" class="del_class btn btn_01" data-wr_id="<?php echo $row['wr_id']; ?>">삭제</button>
 		</td>
     </tr>
@@ -471,7 +448,7 @@ function excelform(url)
 }
 $('.moim_picks').change(function(){
     var value = $(this).val();
-    if(confirm(value + '로 지정하시겠습니까?')) {
+    if(confirm(value + '으로 지정하시겠습니까?')) {
         $.ajax({
             type: "POST",
             url: '/ajax/moaPick.php',

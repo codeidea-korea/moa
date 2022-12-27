@@ -236,7 +236,8 @@ if($ap == 'list') {
     $status = $_POST['status'];
     $idx = $_POST['idx'];
     
-    $sql = "select member.*, class.wr_subject, class.moa_addr1, player.aplydate, player.aplytime, class.moa_status from deb_class_aplyer player, g5_member member, g5_write_class class   
+    $sql = "select member.*, class.wr_subject, class.moa_addr1, player.aplydate, player.aplytime, class.moa_status, player.it_id  
+            from deb_class_aplyer player, g5_member member, g5_write_class class   
             where player.idx = '{$idx}' and member.mb_id = player.mb_id and class.wr_id = player.wr_id ";
     $row = sql_fetch($sql);
 
@@ -247,8 +248,6 @@ if($ap == 'list') {
         alert('이미 정산된 모임입니다.');
     }
 
-    $sql = "select * from {$write_table} where idx = '{$idx}' ";
-    $row = sql_fetch($sql);
     $wr_subject = $row['wr_subject'];
     $phoneNo = $member['mb_hp'];
 
@@ -260,11 +259,14 @@ if($ap == 'list') {
     $sender = 'admin@moa.codeidea.com';
     $reciver = array();
     array_push($reciver, $member['mb_email']);
+    $subject = '['.$wr_subject . '] 모임에 예약 확정되었습니다.';
 
     // mail send
     {
         include_once(G5_LIB_PATH.'/send_mail.lib.php');
-        sendMail($sender, $member['mb_email'], '['.$wr_subject . '] 모임에 예약 확정되었습니다.', $content);
+        $receiver = '{"name":"'.$member['mb_nick'].'", "email":"'.$member['mb_email'].'", "mobile":"'.$member['mb_hp'].'", "note1":"", "note2":"", "note3":"", "note4":"", "note5":""}';
+        $receiver = '['.$receiver.']';
+        sendDirectMail($subject, urlencode($content), $config['cf_admin_email'], $config['cf_admin_email_name'], $receiver, "1", "NORMAL");
     }
     // sms send
     {
@@ -277,7 +279,9 @@ if($ap == 'list') {
     // mail send
     {
         include_once(G5_LIB_PATH.'/send_mail.lib.php');
-        sendMail($sender, $row['mb_email'], '['.$wr_subject . '] 모임에 예약 확정되었습니다.', $content);
+        $receiver = '{"name":"'.$row['mb_nick'].'", "email":"'.$row['mb_email'].'", "mobile":"'.$row['mb_hp'].'", "note1":"", "note2":"", "note3":"", "note4":"", "note5":""}';
+        $receiver = '['.$receiver.']';
+        sendDirectMail($subject, urlencode($content), $config['cf_admin_email'], $config['cf_admin_email_name'], $receiver, "1", "NORMAL");
     }
     // sms send
     {

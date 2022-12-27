@@ -15,7 +15,7 @@ include_once(G5_LIB_PATH.'/common.lib.php');
 check_token();
 
 $newis = ($mb['pt_register']=='')?true:false;
-echo '['.$mb['pt_register'].']'.$newis."<BR>";
+//echo '['.$mb['pt_register'].']'.$newis."<BR>";
 //삭제시
 if(isset($_POST['pt_del']) && $_POST['pt_del']) {
 
@@ -192,6 +192,7 @@ $mb['pt_9'] = get_text($mb['pt_9']);
 $mb['pt_10'] = get_text($mb['pt_10']);
 
 //print_r3($mb);
+// g5_apms_partner
 ?>
 
     <style>
@@ -316,7 +317,7 @@ this.form.pt_leave.value=this.value; } else { this.form.pt_leave.value=this.form
                     </tr>
                     <tr>
                         <th scope="row">모임 정산 수수료</th>
-                        <td>부가세를 포함한 총판매금액에서 수수료 <input type="number"  step="0.01" name="pt_commission_2" value="<?php echo ($mb['pt_commission_2'])?$mb['pt_commission_2']:$apms['apms_commission_2']; ?>" class="numeric sit_camt frm_input" size="4"> % 를 공제후 호스트에게 적립</td>
+                        <td>부가세를 포함한 총판매금액에서 수수료 <input type="number"  step="0.01" name="pt_commission_2" value="<?php echo ($mb['pt_commission_2'] != "")?$mb['pt_commission_2']:$apms['apms_commission_2']; ?>" class="numeric sit_camt frm_input" size="4"> % 를 공제후 호스트에게 적립</td>
                         <th scope="row" class="none">모임 정산 인센티브</th>
                         <td  class="none">정산금액의 <input type="number"  step="0.01" name="pt_incentive_2" value="<?php echo $mb['pt_incentive_2'] ?>" class="numeric sit_camt frm_input" size="4"> % 를 호스트에게 추가 적립</td>
                     </tr>

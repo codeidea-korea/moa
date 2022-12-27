@@ -35,10 +35,47 @@ if ($hp_no) {
         // 수신번호
         $recv_hp = $mb['mb_hp'];
         // 인증번호
-        $msg = "MOA Email 찾기 인증번호\n".$rnum."\n입니다";
-        $chk = smsSend($send_hp, $recv_hp, $msg);
-        if ($chk) {
+        $msg = "MOA Email 찾기 인증번호 ".$rnum."입니다";
+        //chk = smsSend($send_hp, $recv_hp, $msg);
+        $receiver = '[{"name":"none","mobile":"'.$recv_hp.'","note1":"","note2":"","note3":"","note4":"","note5":""}]';
 
+
+
+
+        $subject = "[MOA] 요청하신 인증번호입니다.";
+        $body = '<!doctype html>
+        <html lang="ko">
+        <head>
+        <meta charset="utf-8">
+        <title>회원정보 찾기 안내</title>
+        </head>
+
+        <body>
+
+        <div style="margin:30px auto;width:600px;border:10px solid #f7f7f7">
+            <div style="border:1px solid #dedede">
+                <h1 style="padding:30px 30px 0;background:#f7f7f7;color:#555;font-size:1.4em">
+                    회원정보 찾기 안내
+                </h1>
+                <span style="display:block;padding:10px 30px 30px;background:#f7f7f7;text-align:right">
+                    <a href="'.G5_URL.'" target="_blank">MOA</a>
+                </span>
+                <p style="margin:20px 0 0;padding:30px 30px 30px;border-bottom:1px solid #eee;line-height:1.7em">
+                    MOA Email 찾기 인증번호 '.$rnum.'입니다.
+                </p>
+            </div>
+        </div>
+        </body>
+        </html>';
+        $body = urlencode($body); //'링크 : ' . $request->down_url;
+        $receiver = '{"name":"'.$mb['mb_name'].'", "email":"'.$mb['mb_email'].'", "mobile":"'.$mb['mb_hp'].'", "note1":"", "note2":"", "note3":"", "note4":"", "note5":""}';
+        $receiver = '['.$receiver.']';
+        $bodytag = '0';
+        $mail_type = 'NORMAL';
+
+
+        $chk = sendDirectMail($subject, $body, 'greenpasskorea@gmail.com', 'moa-admin', $receiver, 0, 'NORMAL');
+        if ($chk) {
             $sql = "UPDATE deb_find_email SET ";
             $sql .= " certi_send_yn = 'Y' ";
             $sql .= " certi_senddate = now() ";

@@ -137,14 +137,14 @@ if(!$header_skin) {
 								<th><span class="num">회차</span></th>
 								<td class="bg">
 									<label class="inp-wrap inline-label span">
-                                        <input type="text" name="cls_day[]" value="<?php echo $write['cls_no'][$j]['day']; ?>" class="span datepicker " placeholder="날짜 선택" >
+                                        <input type="text" name="cls_day[]" value="<?php echo $write['cls_no'][$j]['day']; ?>" class="span datepicker" placeholder="날짜 선택" >
                                         <span class="label-inline"></span>
                                     </label>
 								</td>
 								<td class="bg">
 									<div class="flex">
 										<select name="cls_time[]" class="" title="몇시">
-											<option value="0">몇시</option>
+											<option value="">몇시</option>
 											<?php for($i=1; $i<=24; $i++) {
 												$i = $i < 10 ? '0'.$i:$i;
                                                 $time = $write['cls_no'][$j]['time'] == $i ? 'selected' : '';
@@ -152,7 +152,7 @@ if(!$header_skin) {
 											} ?>
 										</select>
 										<select name="cls_minute[]" class="" title="몇분">
-											<option value="0">몇분</option>
+											<option value="">몇분</option>
 											<?php for($i=0; $i<=59; $i+=10) {
 												$i = $i < 10 ? '0'.$i:$i;
                                                 $minute = $write['cls_no'][$j]['minute'] == $i ? 'selected' : '';
@@ -165,16 +165,6 @@ if(!$header_skin) {
 									<label class="inp-wrap inline-label span">
                                         <input type="text" name="cls_timelimit[]" value="<?php echo $write['cls_no'][$j]['timelimit'] ?>" class="span" min="10" maxlength="3"><span class="label-inline">분</span></label>
 								</td>
-                                <script>
-                                    $('input[name="cls_timelimit[]"]').focusout(function(){
-                                        if (($(this).val() < 0 || !$.isNumeric($(this).val())) && $(this).val() != '') {
-                                            alert('숫자만 입력해주세요.');
-                                            $(this).val('');
-                                            $(this).focus();
-                                        }
-                                    });
-                                </script>
-
 								<!-- <td class="bg">
 									<div class="flex flex-middle">
 										<input type="text" name="cls_minman[]" value="" class="span80" placeholder="" data-label="최소" data-label-inline="명">
@@ -185,7 +175,7 @@ if(!$header_skin) {
                                 <?php if($j>0) { ?>
                                 <td class="bg">
                                     <div class="flex flex-middle relative">
-                                        <span class="btn small gray del-list" style="">삭제</span>
+                                        <span class="btn small gray del-list" style="" clsid="<?=$write['cls_no'][$j]['id']?>">삭제</span>
                                     </div>
                                 </td>
                                 <?php } ?>
@@ -203,14 +193,14 @@ if(!$header_skin) {
                                 <td class="bg">
                                     <div class="flex">
                                         <select name="cls_time[]" class="" title="몇시">
-                                            <option value="0">몇시</option>
+                                            <option value="">몇시</option>
                                             <?php for($i=1; $i<=24; $i++) {
                                                 $i = $i < 10 ? '0'.$i:$i;
                                                 echo '<option value="'.$i.'" >'.$i.'시</option>';
                                             } ?>
                                         </select>
                                         <select name="cls_minute[]" class="" title="몇분">
-                                            <option value="0">몇분</option>
+                                            <option value="">몇분</option>
                                             <?php for($i=0; $i<=59; $i+=10) {
                                                 $i = $i < 10 ? '0'.$i:$i;
                                                 echo '<option value="'.$i.'" >'.$i.'분</option>';
@@ -222,15 +212,6 @@ if(!$header_skin) {
                                     <label class="inp-wrap inline-label span">
                                         <input type="text" name="cls_timelimit[]" value="" class="span" min="10" maxlength="3"><span class="label-inline">분</span></label>
                                 </td>
-                                <script>
-                                    $('input[name="cls_timelimit[]"]').on('focusout',function(){
-                                        if (($(this).val() < 0 || !$.isNumeric($(this).val())) && $(this).val() != '') {
-                                            alert('숫자만 입력해주세요');
-                                            $(this).val('');
-                                            $(this).focus();
-                                        }
-                                    });
-                                </script>
                             </tr>
                         <?php }?>
 						</tbody>
@@ -238,7 +219,6 @@ if(!$header_skin) {
 				</div>
 			</div>
 		</div>
-
 		<!--
 		<div class="wr-list" id="moimSchedule2">
 			<div class="wr-list-label required">신청 가능 시간</div>
@@ -748,10 +728,25 @@ $(function() {
 		add_list();
 	});
 	$(document).on("click", "#moimSchedule .del-list", function() {
-		if(!confirm("선택하신 회차가 삭제됩니다. 계속하시겠습니까?"))
-			return false;
+		if(!confirm("선택하신 회차가 삭제됩니다. 계속하시겠습니까?")) { return false; }
 		var $tr = $(this).closest("tr");
-		$tr.remove();        
+		if ($(this).attr('clsid') != ""){
+			$.ajax({
+				type: "POST", url: '/ajax/moim_schedule_remove.php',
+				data: {'cls_id': $(this).attr('clsid'), 'wr_id': <?=$wr_id?>},
+				cache: false,  async: false, dataType: "text",
+				success: function (data) {
+					//console.log(data); return false;
+					if (data === "success"){
+						$tr.remove();
+					}else{
+						alert('데이터 처리중 오류가 발생하였습니다.'); return false;
+					}
+				}
+			})
+		}else{
+			$tr.remove();
+		}
 	});
 });
 function add_list() {
@@ -789,7 +784,7 @@ function add_list() {
 	// list += '				<span class="color-light">~</span>';
 	// list += '				<label class="inp-wrap left-label inline-label"><span class="label">최대</span>';
 	// list += '<input type="text" name="cls_maxman" value="" class="span80" placeholder=""><span class="label-inline">명</span></label>';
-	list += '				<span class="btn small gray del-list" style="">삭제</span>';
+	list += '				<span class="btn small gray del-list" style="" clsid="">삭제</span>';
 	list += '			</div>';	
 	list += '		</td>';
 	list += '</tr>';
@@ -1032,6 +1027,37 @@ function html_auto_br(obj) {
 }
 
 function fwrite_submit(f) {
+	// 회차 정보 체크
+	for(var i=0; i<$('input[name*=cls_day]').length; i++){
+		if ($('input[name*=cls_day]').eq(i).val() === ""){ alert((i+1) + '회차 스케쥴 날짜를 입력해주세요.'); return false;}
+	}
+	for(var i=0; i<$('select[name*=cls_time]').length; i++){
+		if ($('select[name*=cls_time] option:selected').eq(i).val() === ""){ alert((i+1) + '회차 스케쥴 시간(시)을 선택해주세요.'); return false;}
+	}
+	for(var i=0; i<$('select[name*=cls_minute]').length; i++){
+		if ($('select[name*=cls_minute] option:selected').eq(i).val() === ""){ alert((i+1) + '회차 스케쥴 시간(분)을 입력해주세요.'); return false;}
+	}
+	for(var i=0; i<$('input[name*=cls_timelimit]').length; i++){
+		if ($('input[name*=cls_timelimit]').eq(i).val() === ""){ alert((i+1) + '회차 스케쥴 진행시간을 입력해주세요.'); return false;}
+		if (($('input[name*=cls_timelimit]').eq(i).val() <= 0 || 
+			!$.isNumeric($('input[name*=cls_timelimit]').eq(i).val())) && $('input[name*=cls_timelimit]').eq(i).val() != '') {
+			alert('0이상의 숫자만 입력해주세요');
+			$('input[name*=cls_timelimit]').eq(i).val('')
+			$('input[name*=cls_timelimit]').eq(i).focus();
+			return false;
+		}
+	}
+
+	
+	for(var i=0; i<$('input[name*=cls_day]').length; i++){
+		if (i > 0){
+			let fdate = new Date($('input[name*=cls_day]').eq(i-1).val());
+			let edate = new Date($('input[name*=cls_day]').eq(i).val());
+			if (fdate >= edate){
+				alert('이전 회차보다 모임일이 빠르거나 같은 회차가 있습니다.'); return false;
+			}
+		}
+	}
 
 	<?php echo $editor_js; // 에디터 사용시 자바스크립트에서 내용을 폼필드로 넣어주며 내용이 입력되었는지 검사함   ?>
 
@@ -1096,6 +1122,7 @@ function fwrite_submit(f) {
 		<?
 	} 
 	?>
+
 	var moa_reglimittime = $('#moa_reglimittime').val();
 	let checkedGatherType = $('input[name=moa_form]:checked').val();
 
@@ -1183,6 +1210,7 @@ function fwrite_submit(f) {
     alert('관리자 승인 완료 후 모임이 노출됩니다.');
 	return true;
 }
+
 $('input[type="text"]').keydown(function() {
     if (event.keyCode === 13) {
         event.preventDefault();

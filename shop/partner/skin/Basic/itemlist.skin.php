@@ -230,7 +230,7 @@ include_once($skin_path.'/pop.moim-info.php'); //모임신청인원정보
 						<!--
 							<a href="<?php echo $list[$i]['href']; ?>"><b><?php echo $list[$i]['wr_subject'];?></b></a>
 							-->
-							<span data-href="#pop-moim-info" class="aplyInfo pop-inline color-blue" data-it_id="<?php echo $list[$i]['it_id']; ?>">
+							<span data-href="#pop-moim-info" class="aplyInfo pop-inline color-blue" data-wr_id="<?php echo $list[$i]['wr_id']; ?>" data-it_id="<?php echo $list[$i]['it_id']; ?>">
 								<b><?php echo $list[$i]['wr_subject'];?></b>
 							</span>
 
@@ -369,12 +369,12 @@ $('.aplyInfo').click(function(){
         type: "POST",
         url: '<?php echo G5_URL; ?>/ajax/getMoimInfo.php',
         data: {
-            'it_id': $(this).data('it_id'),
+            'it_id': $(this).data('it_id'), 'wr_id': $(this).data('wr_id')
         },
         dataType: "json",
         success: function(data) {
+			//console.log(data); return false;
             var info = data.info;
-            var su = data.su;
 
 			$('#applyInfo').html('');
 			$('#applyPeople').html('');
@@ -396,16 +396,22 @@ $('.aplyInfo').click(function(){
                         '</tr>');
                 }
             }
-
-			$('#applyInfo').append('<tr>' +
-				'<td rowspan="3">' + data.it_id + '</td>' +
-				'<td rowspan="3">' + data.it_name + '</td>' +
-				'<td>' + data.it_time + '</td>' +
-				'<td>' + data.it_4 + '</td>' +
-				'<td>'+ (sum ? sum + '/' + su['tot'] : '') + '</td>' +
-			'</tr>');
-
-            console.log(data);
+			
+			var applyInfoHtml = "";
+			for(var i=0; i<data.moims.length; i++){
+				applyInfoHtml += '<tr>';
+				if (i == 0){
+					applyInfoHtml += '<td rowspan=' + data.moims.length + '>' + data.moims[i].it_name + '</td>';
+					applyInfoHtml += '<td rowspan=' + data.moims.length + '>' + data.moims[i].it_time + '</td>';
+				}
+				applyInfoHtml += '<td>' + data.moims[i].it_id + '</td>';
+				applyInfoHtml += '<td>' + data.moims[i].it_4 + '</td>';
+				if (i == 0){
+					applyInfoHtml += '<td rowspan=' + data.moims.length + '>' + data.moims[i].wr_2 + '/' + data.moims[i].tot + '</td>';
+				}
+				applyInfoHtml += '</tr>';
+			}
+			$('#applyInfo').append(applyInfoHtml);
         }, error: function(error) {
             console.log(error);
         }
