@@ -6,6 +6,7 @@
                 $sql = "select b.ca_name from deb_class_item a join g5_write_class b on a.wr_id = b.wr_id 
                         where DATE_FORMAT(a.day, '%Y.%c.%d') = DATE_FORMAT('{$date}', '%Y.%c.%d') 
                         group by b.ca_name order by b.wr_id desc";
+                        //echo $sql;
                 $query = sql_query($sql);
                 while($row = sql_fetch_array($query)){
             ?>

@@ -16,15 +16,18 @@ $str = "샘플페이지가 정상적으로 나와라";
 //헤더영역(공통파일)
 include_once(CLASS_PATH."/header.php");
 
-$header_title = '최근에 찜한 모임';
+$header_title = '찜한 목록';
 //main head(공통파일)
 include_once(CLASS_PATH."/head.php");
 
-$query6 = "select si.*, wc.as_thumb from g5_shop_item as si join g5_write_class as wc on si.it_2 = wc.wr_id where si.it_id in (select it_id from g5_apms_good where mb_id = '" . $member['mb_id'] . "')";
+$query6 = "select si.*, wc.as_thumb from g5_shop_item as si join g5_write_class as wc on si.it_2 = wc.wr_id 
+            where si.it_id in (select it_id from g5_apms_good where mb_id = '" . $member['mb_id'] . "')";
+            //echo $query6;
 $result6 = sql_query($query6);
-//contents 영역
-include_once(MOA_DETAIL_SKIN."/d_wish.skin.php");
 
+//contents 영역
+//MOA_DETAIL_SKIN : /home/secondclass/www/skin/class/c_detail
+include_once(MOA_DETAIL_SKIN."/d_wish.skin.php");
 
 //푸터영역(공통파일)
 include_once(CLASS_PATH."/footer.php");

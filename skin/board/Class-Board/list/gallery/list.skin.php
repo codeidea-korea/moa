@@ -253,7 +253,7 @@ $rate = getStrpointWr2($list[$i]['wr_id']);
 				$likeon = ($likechk)?"on":"";
 				$likenoon = ($likechk)?"":"";
 				?>
-				<button class="lick_btn <?php echo $likeon;?>" onclick="deb_goods_like('<?php echo $row['it_id'] ?>', 'good'); return false;"></button>
+				<button class="lick_btn <?php echo $likeon;?>" onclick="deb_goods_like('<?php echo $row['it_id'] ?>', '<? echo $likechk ? 'nogood' : 'good' ?>'); return false;"></button>
 				<p class="sale"></p>	
 				<div class="dsc_price">
 					<!--금액구현-->

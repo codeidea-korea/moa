@@ -357,24 +357,18 @@ if($member['com_cert_yn'] != '1') {
 					
 					<div class="mt25">
 						<?php 
-						$endPoint = stripos($it['moa_addr1'], '구 ');
-						$nextPoint = stripos($it['moa_addr1'], ' ', $endPoint);
-						if($endPoint) {
-							// 동 있음
-							$addr = iconv_substr($it['moa_addr1'], 0, count($it['moa_addr1']) - $endPoint + ($nextPoint - $endPoint));
-						} else {
-							// 동이 없어서 분해 못함
-							$addr = $it['moa_addr1'];
-						} ?>
+						$arr_moim_addr = explode(" ", $it['moa_addr1']);
+						$addr = $arr_moim_addr[0] . " " . $arr_moim_addr[1];
+						?>
 						<p style="margin-bottom:14px;"><? echo $addr; ?></p>
 						<div id="map" style="width:700px;height:200px;">
-						<!-- 마커 코드 -->
-						<!--
-						<div class="marker_custom" style="top:0;left:0;">
-							<img src="../../../../skin/apms/item/MoaItem/img/marker_ic.png" alt="">
-						</div>
-						-->
-						<!-- 마커 코드 끝 -->
+							<!-- 마커 코드 -->
+							<!--
+							<div class="marker_custom" style="top:0;left:0;">
+								<img src="../../../../skin/apms/item/MoaItem/img/marker_ic.png" alt="">
+							</div>
+							-->
+							<!-- 마커 코드 끝 -->
 						</div>
 					</div>					
 					<!--신고버튼-->

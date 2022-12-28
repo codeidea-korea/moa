@@ -46,17 +46,19 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 <!--        </div>-->
         
         <div class="p0">
-            <div class="srchVlm mt25" style="display:none;">
+            <!-- <div class="srchVlm mt25" style="display:none;">
                 <p>찜한 모임 6개</p>
-            </div>
+            </div> -->
             <ul class="day_list mt25 last_list">
                 <?php
                 $type = $_REQUEST['type'];
                 $count = 0;
-                    $sql = "select b.wr_subject, b.moa_onoff, b.moa_area1, b.wr_3, b.as_thumb, c.it_id from g5_write_class b
-                            join g5_shop_item c on b.wr_id = c.it_2
+                    $sql = "select b.wr_subject, b.moa_onoff, b.moa_area1, b.wr_3, b.as_thumb, c.it_id, 
+                            c.it_price, c.it_cust_price  
+                            from g5_write_class b
+                            join g5_shop_item c on b.wr_id = c.it_2 
                             join g5_apms_good a on a.it_id = c.it_id 
-                            where a.mb_id = '{$member['mb_id']}'
+                            where a.mb_id = '{$member['mb_id']}' and a.pg_flag='good' 
                             group by b.wr_id
                             order by pg_id desc ";
                     $query = sql_query($sql);
@@ -65,6 +67,10 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                         $count = $count + 1;
                         $use = "select count(*) as cnt, (sum(is_score) / count(*) )as score from g5_shop_item_use where it_id = '{$row['it_id']}'";
                         $uses = sql_fetch($use);
+
+                        $likechk = checkLikeOn('class',$row['it_id'], $member['mb_id']);
+                        $likeon = ($likechk)?"on":"";
+                        $likenoon = ($likechk)?"":"";
 
                         if($count < 3 || $type == 'all'){
                 ?>
@@ -86,13 +92,29 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                         </div>
                             -->
                         <div class="dsc_price">
-                            <span><?php echo number_format($row['wr_3']); ?>원</span>
-<!--                            <p>-->
-<!--                                <span>당일사용</span>-->
-<!--                            </p>-->
+                            <!--금액구현-->
+                            <span>
+                                <?php 
+                                if ($row['it_price'] > 0){
+                                    if ($row['it_price'] == $row['it_cust_price']){
+                                        echo number_format($row['it_price']) . '원';
+                                    }else{
+                                        echo '<s>' . number_format($row['it_cust_price']) . '원</s><br>' . number_format($row['it_price']) . '원';
+                                    }
+                                }else{
+                                    echo "무료";
+                                }
+                                ?>
+                            </span>
+                            <!--금액구현-->
+                            <!--사용시점구현-->
+                            <p>
+                                <span>당일사용</span>
+                            </p>
+                            <!--사용시점구현-->
                         </div>
                     </a>
-                    <button class="lick_btn on"></button>
+                    <button class="lick_btn <?php echo $likeon;?>" onclick="deb_goods_like('<?php echo $row['it_id'] ?>', '<? echo $likechk ? 'nogood' : 'good' ?>'); return false;"></button>
                 </li>
                 <?php }
                 }
