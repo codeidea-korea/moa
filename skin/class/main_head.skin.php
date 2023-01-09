@@ -156,7 +156,7 @@ $thumb = $result['as_thumb'];
 <?php if($config['cf_kakao_js_apikey']) { ?>
     <script src="//developers.kakao.com/sdk/js/kakao.min.js" charset="utf-8"></script>
     <script type='text/javascript'>
-        // 사용할 앱의 Javascript 키를 설정해 주세요.
+        // 사용할 앱의 Javascript 키를 설정해 주세요123.
         Kakao.init("<?php echo $config['cf_kakao_js_apikey']; ?>");
 
         Kakao.Link.createDefaultButton({
@@ -164,7 +164,7 @@ $thumb = $result['as_thumb'];
             objectType: "feed",
             content: {
                 title: "<?php echo strip_tags($result['wr_subject']); ?>",
-                description: "<?php echo strip_tags($result['wr_content']); ?>",
+                description: "<?php echo strip_tags($result['ca_name']); ?>, <?php echo strip_tags($result['moa_type']); ?>",
                 imageUrl: "<?php echo $thumb ?>",
                 link: {
                     mobileWebUrl: "<?php echo $item_url ?>",

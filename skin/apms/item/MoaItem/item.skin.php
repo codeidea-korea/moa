@@ -152,8 +152,12 @@ if($member['com_cert_yn'] != '1') {
 		<div class="clctn_ic">
 			<div>
 				<img src=".././images/meet_icon/위치.svg" alt="">
-				<p><?php echo $data['moa_area1'] ?></p>
-				<span><?php echo $data['moa_area2']; ?></span>
+					<?php 
+					$arr_moim_addr = explode(" ", $it['moa_addr1']);
+					$addr = $arr_moim_addr[0] . " " . $arr_moim_addr[1];
+					?>
+				<p><?php echo $arr_moim_addr[0] ?></p>
+				<span><?php echo $arr_moim_addr[1]; ?></span>
 			</div>
 			<div>
 				<img src=".././images/meet_icon/clock_ic.svg" alt="">
@@ -1393,7 +1397,6 @@ function closebar(){
 }
 
 function staticbar(){
-
     var ns = (navigator.appName.indexOf("Netscape") != -1);
     var d = document;
     function ml(id){
