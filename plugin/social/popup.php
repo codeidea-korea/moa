@@ -17,7 +17,9 @@ if( !$provider_name ){
     alert('서비스 이름이 넘어오지 않았습니다.');
 }
 
-if( isset( $_REQUEST["redirect_to_idp"] ) ){
+if( $provider_name == "Apple") {
+    header("Location: ".G5_PLUGIN_URL."/social/apple");
+} else if( isset( $_REQUEST["redirect_to_idp"] ) ){
     $content = social_check_login_before(); 
 
     $get_login_url = G5_BBS_URL."/login.php?url=".$urlencode;

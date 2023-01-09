@@ -50,7 +50,7 @@ set_session('prev_url', $_SERVER['HTTP_REFERER']);
                     <!--
                     <button  type="button" class="Apple_btn sns-wrap social_link" onClick="winSocial('<?php echo $self_url;?>?provider=apple')">Apple 로 계속하기</button>
                     -->
-                    <button  type="button" class="Apple_btn sns-wrap social_link" onClick="location.href='/plugin/social/apple_callback.php?provider=apple'">Apple 로 계속하기</button>
+                    <button type="button" class="Apple_btn sns-wrap social_link" onClick="location.href='/plugin/social/apple_callback.php?provider=Apple'">Apple 로 계속하기</button>
                 <?php }     //end if ?>
             </div>
             <?php 

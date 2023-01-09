@@ -28,6 +28,24 @@ for ($i=0; $i<$ext_cnt; $i++) {
 }
 //==========================================================================================================================
 
+// 애플 로그인 - 크롬 보안정책 해결 (80 = SameSite)
+if(!function_exists('session_start_samesite')) {
+    function session_start_samesite($options = array()) {
+        $res = @session_start($options);
+
+        $headers = headers_list();
+        foreach($headers as $header) {
+            if(!preg_match('~^Set-Cookie: PHPSESSID=~', $header))   continue;
+            $header = preg_replace('~; secure(; HttpOnly)?$~', '', $header).'; secure; SameSite=None';
+            header($header, false);
+            break;
+        }
+
+        return $res;
+    }
+}
+session_start_samesite();
+
 function g5_path()
 {
     $chroot = substr($_SERVER['SCRIPT_FILENAME'], 0, strpos($_SERVER['SCRIPT_FILENAME'], dirname(__FILE__)));

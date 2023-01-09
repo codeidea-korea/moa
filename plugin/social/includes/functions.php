@@ -1,7 +1,7 @@
 <?php
 if (!defined('_GNUBOARD_')) exit;
 
-// 애플 로그인 관련 확장기능 불러오기
+// 애플 로그인 key 암호화 기능 때문에 추가
 include_once(G5_PLUGIN_PATH.'/social/vendor/autoload.php');
 
 function get_social_skin_path(){
@@ -362,29 +362,22 @@ function social_extends_get_keys($provider){
                     "trustForwarded" => false
                 );
         
-        // Apple 애플 아이디로 로그인 시작 {
         // Apple
         $r['Apple'] = array(
-            "enabled" => option_array_checked('Apple', $config['cf_social_servicelist']) ? true : false,
-            "keys" => array(
-                "id" => $config['cf_apple_bundle_id'],
-                "secret" => array(
-                    "team_id" => $config['cf_apple_team_id'],
-                    "key_id" => $config['cf_apple_key_id'],
-                    "key_content" => '-----BEGIN PRIVATE KEY-----
-MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgBktVrBnQeYer1bHO
-Caj/Aep6CDw7BTu8qpqso4i4o5SgCgYIKoZIzj0DAQehRANCAAR7CugsI6KoTr1r
-We5I9Gypau83+p+mcRUnKfYRCtu0ypGw6HYtk6xqdhpJJOpOE5ffm7uS9GFkcWoI
-n1m5JDxX
------END PRIVATE KEY-----'
-                ),
-            ),
-            "scope" => "name email",
-            "verifyTokenSignature" => true,
-            "redirect_uri" => get_social_callbackurl('Apple'),
-            "trustForwarded" => false
-            );
-    // } Apple 애플 아이디로 로그인 끝
+                    "enabled" => option_array_checked('apple', $config['cf_social_servicelist']) ? true : false,
+                    "keys" => array(
+                        "id" => $config['cf_apple_bundle_id'],
+                        "secret" => array(
+                            "team_id" => $config['cf_apple_team_id'],
+                            "key_id" => $config['cf_apple_key_id'],
+                            "key_content" => $config['cf_apple_key_file']
+                        ),
+                    ),
+                    "scope" => "name email",
+                    "verifyTokenSignature" => true,
+                    "redirect_uri" => get_social_callbackurl('apple'),
+                    "trustForwarded" => false
+                );
     }
 
     return $r[$provider];

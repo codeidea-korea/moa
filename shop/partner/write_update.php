@@ -1,6 +1,9 @@
 <?php
-  error_reporting( E_ALL );
-  ini_set( "display_errors", 1 );
+// 개발자가 개발 작업을 진행하는 동안에만 아래의 주석을 해제한다.
+/*
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+*/
 
 include_once('./_common.php');
 include_once(G5_LIB_PATH.'/naver_syndi.lib.php');

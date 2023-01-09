@@ -59,10 +59,10 @@ if(!isset($config['cf_facebook_appid'])) {
 
 if(!isset($config['cf_apple_bundle_id'])) {
     sql_query(" ALTER TABLE `{$g5['config_table']}`
-                    ADD `cf_apple_bundle_id` VARCHAR(255) NOT NULL AFTER `cf_googl_shorturl_apikey`,
+                    ADD `cf_apple_bundle_id` VARCHAR(255) NOT NULL AFTER `cf_line_secret`,
                     ADD `cf_apple_team_id` VARCHAR(255) NOT NULL AFTER `cf_apple_bundle_id`,
                     ADD `cf_apple_key_id` VARCHAR(255) NOT NULL AFTER `cf_apple_team_id`,
-                    ADD `cf_apple_key_file` VARCHAR(255) NOT NULL AFTER `cf_apple_key_id` ", true);
+                    ADD `cf_apple_key_file` TEXT NOT NULL AFTER `cf_apple_key_id` ", true);
 }
 
 // uniqid 테이블이 없을 경우 생성
@@ -1166,14 +1166,6 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
                     <p><?php echo get_social_callbackurl('google'); ?></p>
                     </div>
                 </div>
-                <div class="explain_box">
-                    <input type="checkbox" name="cf_social_servicelist[]" id="check_social_google" value="Apple" <?php echo option_array_checked('Apple', $config['cf_social_servicelist']); ?> >
-                    <label for="check_social_google">Apple 로그인을 사용합니다</label>
-                    <div>
-                    <h3>Apple 승인된 리디렉션 URI</h3>
-                    <p><?php echo get_social_callbackurl('apple'); ?></p>
-                    </div>
-                </div>
                 <div class="explain_box none">
                     <input type="checkbox" name="cf_social_servicelist[]" id="check_social_twitter" value="twitter" <?php echo option_array_checked('twitter', $config['cf_social_servicelist']); ?> >
                     <label for="check_social_twitter">트위터 로그인을 사용합니다</label>
@@ -1188,6 +1180,14 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
                     <div>
                     <h3>페이코 CallbackURL</h3>
                     <p><?php echo get_social_callbackurl('payco'); ?></p>
+                    </div>
+                </div>
+                <div class="explain_box">
+                    <input type="checkbox" name="cf_social_servicelist[]" id="check_social_apple" value="apple" <?php echo option_array_checked('apple', $config['cf_social_servicelist']); ?> >
+                    <label for="check_social_apple">애플 로그인을 사용합니다</label>
+                    <div>
+                    <h3>애플 CallbackURL</h3>
+                    <p><?php echo get_social_callbackurl('Apple'); ?></p>
                     </div>
                 </div>
             </td>
@@ -1239,26 +1239,6 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
             </td>
         </tr>
         <tr>
-            <th scope="row"><label for="cf_apple_team_id">Apple Team ID</label></th>
-            <td>
-                <input type="text" name="cf_apple_team_id" value="<?php echo $config['cf_apple_team_id'] ?>" id="cf_apple_team_id" class="frm_input" size="40">
-            </td>
-            <th scope="row"><label for="cf_apple_bundle_id">Apple Bundle ID</label></th>
-            <td>
-                <input type="text" name="cf_apple_bundle_id" value="<?php echo $config['cf_apple_bundle_id'] ?>" id="cf_apple_bundle_id" class="frm_input" size="45">
-            </td>
-        </tr>
-        <tr>
-            <th scope="row"><label for="cf_apple_key_id">Apple Key ID</label></th>
-            <td>
-                <input type="text" name="cf_apple_key_id" value="<?php echo $config['cf_apple_key_id'] ?>" id="cf_apple_key_id" class="frm_input" size="40">
-            </td>
-            <th scope="row"><label for="cf_apple_key_file">Apple Key File</label></th>
-            <td>
-                <textarea name="cf_apple_key_file" id="cf_apple_key_file" class="frm_input" size="45"><?php echo $config['cf_apple_key_file'] ?></textarea>
-            </td>
-        </tr>
-        <tr>
             <th scope="row"><label for="cf_kakao_rest_key">카카오 REST API 키</label></th>
             <td>
                 <input type="text" name="cf_kakao_rest_key" value="<?php echo $config['cf_kakao_rest_key'] ?>" id="cf_kakao_rest_key" class="frm_input" size="40"> <a href="https://developers.kakao.com/apps/new" target="_blank" class="btn_frmline">앱 등록하기</a>
@@ -1282,6 +1262,26 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
             <th scope="row"><label for="cf_payco_secret">페이코 Secret</label></th>
             <td>
                 <input type="text" name="cf_payco_secret" value="<?php echo $config['cf_payco_secret']; ?>" id="cf_payco_secret" class="frm_input" size="45">
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><label for="cf_apple_team_id">애플 Team ID (App ID Prefix)</label></th>
+            <td>
+                <input type="text" name="cf_apple_team_id" value="<?php echo $config['cf_apple_team_id']; ?>" id="cf_apple_team_id" class="frm_input" size="40" />
+                <a href="http://developers.apple.com/" target="_blank" class="btn_frmline">앱 등록하기</a></td>
+            <th scope="row"><label for="cf_apple_bundle_id">애플 Bundle ID (Service IDs)</label></th>
+            <td>
+                <input type="text" name="cf_apple_bundle_id" value="<?php echo $config['cf_apple_bundle_id']; ?>" id="cf_apple_bundle_id" class="frm_input" size="45">
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><label for="cf_apple_key_id">애플 Key ID</label></th>
+                <td>
+                    <input type="text" name="cf_apple_key_id" value="<?php echo $config['cf_apple_key_id']; ?>" id="cf_apple_key_id" class="frm_input" size="40" />
+                </td>
+            <th scope="row"><label for="cf_apple_key_file">애플 Key File</label></th>
+            <td>
+                <textarea name="cf_apple_key_file" id="cf_apple_key_file" style="height:85px;"><?php echo $config['cf_apple_key_file']; ?></textarea>
             </td>
         </tr>
         </tbody>
