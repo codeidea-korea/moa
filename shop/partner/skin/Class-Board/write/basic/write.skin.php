@@ -959,8 +959,9 @@ $('.fileContainer input[type="file"]').each(function(index) {
 					alert('가로/세로는 같은 사이즈를 권장합니다.');
 					console.log(img.width);
 					console.log(img.height);
-//					upload.files[0] = null;
-//					return;
+                    $('input[type="file"]').val("");
+					upload.files[0] = null;
+					return;
 				} 
 				const key = new Date().getTime();
 				last.before('<li>' + imgtag + '<span class="del" data-key="'+(key)+'"></span></li>');
@@ -968,7 +969,7 @@ $('.fileContainer input[type="file"]').each(function(index) {
 				$('#upload-01' + uploadKey).attr('data-key', key);
 				uploadKey = uploadKey + 1;
 				$('.upload-btn').attr('for', 'upload-01'+uploadKey);
-				$('.upload-empty').attr('for', 'upload-01'+uploadKey);
+				$('.upload-empty').attr('for', 'upload-021'+uploadKey);
 				
 				$('#upload-del-01'+uploadKey).val('1');
 				deleteImageAction('.del');
