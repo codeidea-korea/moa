@@ -7,7 +7,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e391ce30-4718-44aa-8c33-5c24fbc3b5dc" name="Changes" comment="">
+    <list default="true" id="e391ce30-4718-44aa-8c33-5c24fbc3b5dc" name="Changes" comment="이미지 첨부파일 초기화 부분 수정">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shop/partner/skin/Class-Board/write/basic/write.skin.php" beforeDir="false" afterPath="$PROJECT_DIR$/shop/partner/skin/Class-Board/write/basic/write.skin.php" afterDir="false" />
     </list>
@@ -157,7 +157,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../BEATS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -218,8 +218,16 @@
       <workItem from="1654149870587" duration="105465000" />
       <workItem from="1655279378055" duration="59234000" />
       <workItem from="1673254059600" duration="1579000" />
-      <workItem from="1674795122427" duration="3120000" />
+      <workItem from="1674795122427" duration="6338000" />
     </task>
+    <task id="LOCAL-00001" summary="이미지 첨부파일 초기화 부분 수정">
+      <created>1674801048620</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1674801048621</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -235,6 +243,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="이미지 첨부파일 초기화 부분 수정" />
+    <option name="LAST_COMMIT_MESSAGE" value="이미지 첨부파일 초기화 부분 수정" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

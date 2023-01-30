@@ -969,7 +969,7 @@ $('.fileContainer input[type="file"]').each(function(index) {
 				$('#upload-01' + uploadKey).attr('data-key', key);
 				uploadKey = uploadKey + 1;
 				$('.upload-btn').attr('for', 'upload-01'+uploadKey);
-				$('.upload-empty').attr('for', 'upload-01'+uploadKey);
+				$('.upload-empty').attr('for', 'upload-021'+uploadKey);
 				
 				$('#upload-del-01'+uploadKey).val('1');
 				deleteImageAction('.del');
