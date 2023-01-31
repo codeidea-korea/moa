@@ -76,7 +76,7 @@ if(!$header_skin) {
 								}
 								echo '
 								<li>
-									'.($file[$i]['view']).'<span class="del" data-key="'.date("Y-m-d").$i.'"></span>
+									'.($file[$i]['view']).'<span class="btn small del" data-key="'.date("Y-m-d").$i.'">삭제</span>
 								</li>';
 								$uploadKey++;
 							}

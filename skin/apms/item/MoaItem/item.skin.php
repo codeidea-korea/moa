@@ -541,21 +541,28 @@ if($member['com_cert_yn'] != '1') {
             <span class="ex_cost">예상비용</span>
             <div class="cost"><?php $data['wr_4'] > 0 ? number_format($data['wr_4']) . '원 <span>(회당)</span>':  '무료'; ?></div>
         </div>
-		<?php 
-		if($isMine == true) {
-			// 본인이 개최한 모임의 경우
-			?><button type="button" onclick="alert('본인의 모임은 결제하실 수 없습니다.');" disabled><? if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) echo '마감'; else echo '등록중'; ?></button><?
-		} else if($isAleadyJoined == true){
-			// 이미 결제한 모임의 경우
-			?><button type="button" onclick="alert('이미 결제된 모임입니다.');" disabled><? if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) echo '마감'; else echo '결제됨'; ?></button><?
-		} else {
-			if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) { ?>
-				<button type="button" onclick="$('.btn_submit').click();">결제하기</button>
-			<?php } else { ?>
-				<button type="button" onclick="alert('인원이 초과 되었습니다.');" disabled>마감</button>
-			<?php 
-			}
-		}
+		<?php
+        if($data['moa_status'] == 5){
+            //폐강
+        ?>
+            <button type="button" onclick="alert('폐강처리된 모임은 결제하실 수 없습니다.');" disabled>폐강</button>
+        <?php
+        }else{
+            if($isMine == true) {
+                // 본인이 개최한 모임의 경우
+                ?><button type="button" onclick="alert('본인의 모임은 결제하실 수 없습니다.');" disabled><? if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) echo '마감'; else echo '등록중'; ?></button><?
+            } else if($isAleadyJoined == true){
+                // 이미 결제한 모임의 경우
+                ?><button type="button" onclick="alert('이미 결제된 모임입니다.');" disabled><? if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) echo '마감'; else echo '결제됨'; ?></button><?
+            } else {
+                if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) { ?>
+                    <button type="button" onclick="$('.btn_submit').click();">결제하기</button>
+                <?php } else { ?>
+                    <button type="button" onclick="alert('인원이 초과 되었습니다.');" disabled>마감</button>
+                    <?php
+                }
+            }
+        }
 		?>
     </div>
 </div> 
@@ -960,20 +967,27 @@ function report_btn(val){
 						$paymentText = '마감';
 						$paymentStyle = 'disabled';
 					}
-					if($isMine == true) {
-						// 본인이 개최한 모임의 경우
-						?><button type="button" type="button" class="btn btn-lg btn-block application" onclick="alert('본인의 모임은 결제하실 수 없습니다.');" <?= $paymentStyle; ?>><?= $paymentText; ?></button><?
-					} else if($isAleadyJoined == true){
-						// 이미 결제한 모임의 경우
-						?><button type="button" type="button" class="btn btn-lg btn-block application" onclick="alert('이미 결제된 모임입니다.');" <?= $paymentStyle; ?>><?= $paymentText; ?></button><?
-					} else {
-						if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) { ?>
-							<button class="btn btn-primary btn-lg btn-block application"  onclick="document.pressed=this.value;" value="바로구매">결제하기</button>
-						<?php } else { ?>
-							<button type="button" class="btn btn-lg btn-block application" onclick="alert('인원이 초과 되었습니다.');" disabled>마감</button>
-						<?php 
-						} 
-					}
+                    if($data['moa_status'] == 5) {
+                        ?>
+                        <button type="button" class="btn btn-lg btn-block application" onclick="alert('폐강처리된 모임은 결제하실 수 없습니다.');" disabled>폐강</button>
+                        <?php
+                    }else{
+                        if($isMine == true) {
+                            // 본인이 개최한 모임의 경우
+                            ?><button type="button" type="button" class="btn btn-lg btn-block application" onclick="alert('본인의 모임은 결제하실 수 없습니다.');" <?= $paymentStyle; ?>><?= $paymentText; ?></button><?
+                        } else if($isAleadyJoined == true){
+                            // 이미 결제한 모임의 경우
+                            ?><button type="button" type="button" class="btn btn-lg btn-block application" onclick="alert('이미 결제된 모임입니다.');" <?= $paymentStyle; ?>><?= $paymentText; ?></button><?
+                        } else {
+                            if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) { ?>
+                                <button class="btn btn-primary btn-lg btn-block application"  onclick="document.pressed=this.value;" value="바로구매">결제하기</button>
+                            <?php } else { ?>
+                                <button type="button" class="btn btn-lg btn-block application" onclick="alert('인원이 초과 되었습니다.');" disabled>마감</button>
+                                <?php
+                            }
+                        }
+                    }
+
 					?>
 				</div>
 				<?php } ?>
