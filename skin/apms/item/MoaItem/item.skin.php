@@ -86,9 +86,9 @@ if($nav_title) {
 	}
 }
 
-if($member['com_cert_yn'] != '1') {
-    alert('마이프로필에서 소속을 인증해주세요.', G5_URL);
-}
+//if($member['com_cert_yn'] != '1') {
+//alert('로그인을 해주세요.', G5_URL);
+//}
 ?>
 <!-- <link rel="stylesheet" href="/dist/typicons.css">
 <link rel="stylesheet" href="/css/q.css"> -->
