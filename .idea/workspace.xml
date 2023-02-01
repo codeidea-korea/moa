@@ -8,6 +8,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e391ce30-4718-44aa-8c33-5c24fbc3b5dc" name="Changes" comment="2023.02.01 임시저장">
+      <change beforePath="$PROJECT_DIR$/adm/admin.lib.php" beforeDir="false" afterPath="$PROJECT_DIR$/adm/admin.lib.php" afterDir="false" />
+    <list default="true" id="e391ce30-4718-44aa-8c33-5c24fbc3b5dc" name="Changes" comment="이미지 첨부파일 초기화 부분 수정">
+      <change beforePath="$PROJECT_DIR$/shop/partner/skin/Class-Board/write/basic/write.skin.php" beforeDir="false" afterPath="$PROJECT_DIR$/shop/partner/skin/Class-Board/write/basic/write.skin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/partner/write_update.php" beforeDir="false" afterPath="$PROJECT_DIR$/shop/partner/write_update.php" afterDir="false" />
+    <list default="true" id="e391ce30-4718-44aa-8c33-5c24fbc3b5dc" name="Changes" comment="2023.02.01 임시저장">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/adm/admin.lib.php" beforeDir="false" afterPath="$PROJECT_DIR$/adm/admin.lib.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/skin/apms/item/MoaItem/item.skin.php" beforeDir="false" afterPath="$PROJECT_DIR$/skin/apms/item/MoaItem/item.skin.php" afterDir="false" />

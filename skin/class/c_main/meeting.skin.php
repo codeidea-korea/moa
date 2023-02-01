@@ -3,7 +3,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 ?>
 
 <!-- New 모임 -->
-<section class="s_content mt35" style="height:260px;">
+<section class="s_content" style="margin-top:30px;">
     <!-- 타이틀 -->
     <div class="main_tit">
         <h1>새로운 모아</h1>
