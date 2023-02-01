@@ -1716,9 +1716,9 @@ bottom:0;
     position:relative;
     padding-bottom:16px;
 }
-.pick a{
+/* .pick a{
     height:218px;
-}
+} */
 .pick .t_badge{
     padding:10px 10px;
     background:var(--main-color);
@@ -1746,7 +1746,7 @@ bottom:0;
 }
 .pick .swiper-horizontal>.swiper-pagination-progressbar, .swiper-pagination-progressbar.swiper-pagination-horizontal, .swiper-pagination-progressbar.swiper-pagination-vertical.swiper-pagination-progressbar-opposite, .swiper-vertical>.swiper-pagination-progressbar.swiper-pagination-progressbar-opposite{
     top:inherit;
-    bottom:-92px;
+    bottom:-10px;
 }
 .pick .swiper-pagination-progressbar .swiper-pagination-progressbar-fill{
     background:var(--main-color);
@@ -1754,9 +1754,9 @@ bottom:0;
 .meeting .swiper-slide{
     width:158px;
 }
-.meeting a{
+/* .meeting a{
     height:130px;
-}
+} */
 .meeting .title_area{
     color:#fff;
     text-align:left;
@@ -1797,11 +1797,11 @@ bottom:0;
 }
 .rank_list .thumb_box{
     overflow:hidden;
-    height:168px!important;
+    /* height:168px!important; */
 }
 .rank_list .thumb_box img{
     width:100%;
-    height:168px;
+    /* height:168px; */
     object-fit: cover;
 }
 .rank_list .thumb_box div{
@@ -6245,9 +6245,9 @@ table.option-tbl{
 .transform{
     transform:rotate(180deg);
 }
-.swiper9{
+/* .swiper9{
     height:298px;
-}
+} */
 .s_con_search{
     border-bottom:1px solid #eee;
     padding-left:27px;
