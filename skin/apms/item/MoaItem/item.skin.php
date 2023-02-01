@@ -102,19 +102,7 @@ if($nav_title) {
         <div class="swiper-container detail_slide">
             <div class="swiper9">
                 <div class="swiper-wrapper">
-				<!--
-                    <div class="swiper-slide">
 						<?php
-						//echo "as : [".$data['as_thumb']."]<BR>";
-						if ($data['as_thumb']=="" || $data['as_thumb']=="1") {
-
-							$data['as_thumb'] = "/images/moa_logo.svg";
-						}
-						?>
-                        <img src="<?php echo $data['as_thumb']; ?>" alt="" height="298px">
-                    </div>
-					-->
-						<?
 						for ($i=1; $i<$file['count']; $i++) {
 							if($file[$i]['view'] == null || $file[$i]['view'] == '') {
 								continue;

@@ -7,8 +7,9 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e391ce30-4718-44aa-8c33-5c24fbc3b5dc" name="Changes" comment="272, 84, 119 작업 완료">
+    <list default="true" id="e391ce30-4718-44aa-8c33-5c24fbc3b5dc" name="Changes" comment="2023.02.01 임시저장">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adm/admin.lib.php" beforeDir="false" afterPath="$PROJECT_DIR$/adm/admin.lib.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/skin/apms/item/MoaItem/item.skin.php" beforeDir="false" afterPath="$PROJECT_DIR$/skin/apms/item/MoaItem/item.skin.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -238,7 +239,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675143909993</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="2023.02.01 임시저장">
+      <created>1675213330560</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1675213330560</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -258,7 +266,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="이미지 첨부파일 초기화 부분 수정" />
     <MESSAGE value="272, 84, 119 작업 완료" />
-    <option name="LAST_COMMIT_MESSAGE" value="272, 84, 119 작업 완료" />
+    <MESSAGE value="2023.02.01 임시저장" />
+    <option name="LAST_COMMIT_MESSAGE" value="2023.02.01 임시저장" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
