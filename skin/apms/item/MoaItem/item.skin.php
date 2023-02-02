@@ -353,7 +353,7 @@ if($member['com_cert_yn'] != '1') {
 						$addr = $arr_moim_addr[0] . " " . $arr_moim_addr[1];
 						?>
 						<p style="margin-bottom:14px;"><? echo $addr; ?></p>
-						<div id="map" style="width:700px;height:200px;">
+						<div id="map">
 							<!-- 마커 코드 -->
 							<!--
 							<div class="marker_custom" style="top:0;left:0;">
