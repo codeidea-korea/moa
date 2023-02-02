@@ -2,6 +2,7 @@
   var swiper = new Swiper('.swiper1', {
     pagination: {
       el: '.swiper-pagination',
+      loopAdditionalSlides : 1,
     },
   });
 
@@ -9,6 +10,7 @@
     slidesPerView: 'auto',
     spaceBetween: 0,
     freeMode: true,
+    loopAdditionalSlides : 1,
     pagination: {
       clickable: true,
     },
@@ -18,6 +20,7 @@
     slidesPerView: 'auto',
     spaceBetween: 0,
     freeMode: true,
+    loopAdditionalSlides : 1,
     pagination: {
       clickable: true,
     },
@@ -32,6 +35,8 @@
   var swiper = new Swiper(".swiper5", {
     slidesPerView: '1.5',
     spaceBetween: 10,
+    loopAdditionalSlides : 1,
+    speed : 1000,
     pagination: {
       el: ".swiper-pagination",
       type: "progressbar",
@@ -41,20 +46,24 @@
   var swiper = new Swiper(".swiper6", {
     slidesPerView: '2.5',
     spaceBetween: 10,
+    loopAdditionalSlides : 1,
   });
 
   var swiper = new Swiper('.swiper7', {
     slidesPerView: 'auto',
     spaceBetween: 0,
     freeMode: true,
+    loopAdditionalSlides : 1,
   });
 
   var swiper = new Swiper('.swiper8', {
     slidesPerView: '1.2',
     spaceBetween: 10,
+    loopAdditionalSlides : 1,
   });
 
   var swiper = new Swiper('.swiper9', {
+    loopAdditionalSlides : 1,
     pagination: {
       el: '.swiper-pagination',
     },
@@ -63,6 +72,7 @@
   var swiper = new Swiper('.swiper10', {
     slidesPerView: '1.2',
     spaceBetween: 5,
+    loopAdditionalSlides : 1,
     pagination: {
       el: '.swiper-pagination',
     },

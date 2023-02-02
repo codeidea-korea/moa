@@ -1,3 +1,6 @@
+.slider .swiper-slide {-webkit-backface-visibility: hidden;-webkit-transform: translate3d(0, 0, 0);}
+
+
 
 /* display_none */
 .includers{
