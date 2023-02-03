@@ -1015,6 +1015,7 @@ function report_btn(val){
                 var mapContainer = document.getElementById('map'), // 지도를 표시할 div
                     mapOption = {
                         center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+                        draggable: false,
                         level: 3 // 지도의 확대 레벨
                     };
 
@@ -1028,8 +1029,8 @@ function report_btn(val){
                 map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 
                 // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
-                var zoomControl = new kakao.maps.ZoomControl();
-                map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+                //var zoomControl = new kakao.maps.ZoomControl();
+                //map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
                 // 주소-좌표 변환 객체를 생성합니다
                 var geocoder = new kakao.maps.services.Geocoder();
