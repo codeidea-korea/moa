@@ -1,3 +1,6 @@
+.slider .swiper-slide {-webkit-backface-visibility: hidden;-webkit-transform: translate3d(0, 0, 0);}
+
+
 
 /* display_none */
 .includers{
@@ -2537,7 +2540,7 @@ span.d_chip{
 }
 
   .tab_item{
-    width:calc(100%/4);
+    width:calc(100%/3);
     height:40px;
     line-height:40px;
     font-size:1.4rem;
@@ -4777,7 +4780,7 @@ background:url('../images/lcheck_off.svg') left no-repeat;
 }
 
 /*─────────────── map01 ───────────────*/
-#map{padding-bottom:150px;}
+#map{padding-bottom:230px;}
 .map_tit p{
     font-weight:700;
     font-size:1.8rem;
@@ -6012,9 +6015,9 @@ button.prev02{
 #map {
     max-width:780px!important;
     width:100%!important;
-    height:231px!important;
+    height:auto!important;
 }
-.marker_custom{position:absolute;z-index: 99;background:#ff000037;padding:30px;width: 200px;height: 200px;border-radius: 10000px;border:1px solid #ff00004b;}
+.marker_custom{position:absolute;z-index: 99;background:#ff000037;padding:30px;border-radius: 10000px;border:1px solid #ff00004b;scale: 2;}
 .marker_custom img{width:40px;height:40px;display: none;}
 .class-schedule{
     display: flex;
