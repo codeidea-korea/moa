@@ -7,10 +7,10 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e391ce30-4718-44aa-8c33-5c24fbc3b5dc" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/shop/partner/skin/Class-Board/write/basic/write.skin.php" beforeDir="false" afterPath="$PROJECT_DIR$/shop/partner/skin/Class-Board/write/basic/write.skin.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/partner/write_update.php" beforeDir="false" afterPath="$PROJECT_DIR$/shop/partner/write_update.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/skin/apms/item/MoaItem/item.skin.php" beforeDir="false" afterPath="$PROJECT_DIR$/skin/apms/item/MoaItem/item.skin.php" afterDir="false" />
+    <list default="true" id="e391ce30-4718-44aa-8c33-5c24fbc3b5dc" name="Changes" comment="지도 줌 기능 제거">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adm/shop_admin/bannerlist.php" beforeDir="false" afterPath="$PROJECT_DIR$/adm/shop_admin/bannerlist.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ajax/bannerOrder.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax/bannerOrder.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -158,7 +158,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../BEATS" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/adm/shop_admin" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -166,6 +166,9 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\web\MOA_github\adm\shop_admin" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/c_my" />
     </key>
@@ -220,6 +223,7 @@
       <workItem from="1655279378055" duration="59234000" />
       <workItem from="1673254059600" duration="1579000" />
       <workItem from="1674795122427" duration="6338000" />
+      <workItem from="1675650988193" duration="5517000" />
     </task>
     <task id="LOCAL-00001" summary="이미지 첨부파일 초기화 부분 수정">
       <created>1674801048620</created>
@@ -228,7 +232,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674801048621</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="지도 줌 기능 제거">
+      <created>1675416109368</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1675416109368</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -248,7 +259,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="이미지 첨부파일 초기화 부분 수정" />
     <MESSAGE value="171.[관리자 호스트모임 수정] 관리자가 일반 호스트의 모임을 수정할 경우, 관리자가 모임 호스트로 전환되는 문제 수정" />
-    <option name="LAST_COMMIT_MESSAGE" value="171.[관리자 호스트모임 수정] 관리자가 일반 호스트의 모임을 수정할 경우, 관리자가 모임 호스트로 전환되는 문제 수정" />
+    <MESSAGE value="지도 줌 기능 제거" />
+    <option name="LAST_COMMIT_MESSAGE" value="지도 줌 기능 제거" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
