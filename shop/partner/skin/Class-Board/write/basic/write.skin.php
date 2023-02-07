@@ -329,7 +329,7 @@ if(!$header_skin) {
 		<div class="wr-list" >
 			<div class="wr-list-label required">모임 제목</div>
 			<div class="wr-list-con">
-				<input type="text" onkeyup="characterCheck(this)" name="wr_subject" value="<?php echo $subject ?>" id="wr_subject" required class="span900" placeholder="모임 제목을 입력해주세요." size="50" maxlength="255">
+				<input type="text" onkeyup="characterCheck(this)" name="wr_subject" value="<?php echo $subject ?>" id="wr_subject" required class="span900" placeholder="모임 제목을 입력해주세요.(한글, 영문, 숫자만 입력해주세요)" size="50" maxlength="255">
 			</div>
 		</div>
         <script>
@@ -1163,6 +1163,11 @@ function fwrite_submit(f) {
 		alert("모임 제목을 입력해주세요.");
 		return false;
 	}
+    var reg = /[\{\}\[\]\/?.,;:|\)*~'!^\-_+<>@\#$%&\\\=\(\'\"]/g;
+    if(reg.test(wr_subject)){
+        alert("모임 제목에 특수문자가 들어가있습니다.");
+        return false;
+    }
 	var ca_name = $('#ca_name').val();
 	if(!ca_name ||ca_name == '') {
 		alert("카테고리를 선택해주세요.");
