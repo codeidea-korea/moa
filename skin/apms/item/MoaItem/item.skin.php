@@ -1016,12 +1016,13 @@ function report_btn(val){
                     mapOption = {
                         center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
                         draggable: false,
-                        level: 3 // 지도의 확대 레벨
+                        level: 5 // 지도의 확대 레벨
                     };
+
 
                 // 지도를 생성합니다
                 var map = new kakao.maps.Map(mapContainer, mapOption);
-
+                map.setDraggable(true);
                 var mapTypeControl = new kakao.maps.MapTypeControl();
 
                 // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
