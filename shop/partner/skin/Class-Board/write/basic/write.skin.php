@@ -396,8 +396,9 @@ if(!$header_skin) {
                 <div class="wr-list-label required">주소</div>
             <div>
                 <input type="hidden" name="moa_postcode" id="moa_postcode" class="form-control span300" />
-                <input type="text" value="<?php echo $write['moa_addr1'] ?>" id="moa_jibun" placeholder="주소를 입력해주세요." name="moa_addr1" class="span700 form-control input-sm" />
-                <button type="button" onclick="sample4_execDaumPostcode()" class="btn">주소 찾기</button>
+                <input type="text" value="<?php echo $write['moa_addr1'] ?>" id="moa_jibun" placeholder="주소를 입력해주세요." name="moa_addr1"  readonly class="span700 form-control input-sm" />
+                <button type="button" onclick="sample4_execDaumPostcode()" class="btn">주소 찾기</button><br>
+                <input type="text" name="moa_addr2" class="span700 form-control input-sm" placeholder=" "/>
             </div>
         </div>
 	</div>
