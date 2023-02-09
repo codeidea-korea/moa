@@ -7,9 +7,11 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e391ce30-4718-44aa-8c33-5c24fbc3b5dc" name="Changes" comment="지도 수정">
+    <list default="true" id="e391ce30-4718-44aa-8c33-5c24fbc3b5dc" name="Changes" comment="주소 처리 수정">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/partner/skin/Class-Board/write/basic/write.skin.php" beforeDir="false" afterPath="$PROJECT_DIR$/shop/partner/skin/Class-Board/write/basic/write.skin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/moa_mobile/page/my_page01.html" beforeDir="false" afterPath="$PROJECT_DIR$/moa_mobile/page/my_page01.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/skin/class/c_hostJ/host_join01.skin.php" beforeDir="false" afterPath="$PROJECT_DIR$/skin/class/c_hostJ/host_join01.skin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/skin/class/c_my/m_btlist.skin.php" beforeDir="false" afterPath="$PROJECT_DIR$/skin/class/c_my/m_btlist.skin.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -226,7 +228,7 @@
       <workItem from="1675733423739" duration="6009000" />
       <workItem from="1675750374929" duration="2728000" />
       <workItem from="1675829673003" duration="4210000" />
-      <workItem from="1675909051513" duration="5206000" />
+      <workItem from="1675909051513" duration="7449000" />
     </task>
     <task id="LOCAL-00001" summary="이미지 첨부파일 초기화 부분 수정">
       <created>1674801048620</created>
@@ -263,7 +265,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675909900391</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="주소 처리 수정">
+      <created>1675921849698</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1675921849698</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -287,7 +296,8 @@
     <MESSAGE value="배너 순위 조절 버그 수정" />
     <MESSAGE value="모임제목 validation check" />
     <MESSAGE value="지도 수정" />
-    <option name="LAST_COMMIT_MESSAGE" value="지도 수정" />
+    <MESSAGE value="주소 처리 수정" />
+    <option name="LAST_COMMIT_MESSAGE" value="주소 처리 수정" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

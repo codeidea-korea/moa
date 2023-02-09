@@ -39,10 +39,29 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
         <!-- <p class="site">www.2교시hostadmin.co.kr</p> -->
         <div class="btn_fixed">
         <?php
+
+
+
+        //if(!$partner['pt_register']) { // 등록심사중이면
+        //		alert('회원님은 현재 등록심사 중입니다.', G5_URL);
+        //	}
+
         if ($is_member) {
+            $partner = array();
+            $partner = apms_partner($member['mb_id']);
+            if(!$partner['pt_register']) { // 등록심사중이면
+                ?>
+                <button class="inactive on" style="height:62px;">등록심사 중</button>
+                <?php
+            }else{
+                ?>
+                <button class="inactive on" onclick="location.href='/shop/partner/register.php'" style="height:62px;">5분안에 호스트 시작하기</button>
+                <?php
+            }
+
         ?> 
         <!--로그인한 사용자 링크 -->
-        <button class="inactive on" onclick="location.href='/shop/partner/register.php'" style="height:62px;">5분안에 호스트 시작하기</button>
+
         <?php 
         } else { ?>
         <button class="inactive on" onclick="location.href='<?php echo C_MAIN_PATH;?>/main.php'" style="height:62px;">5분안에 호스트 시작하기</button>
