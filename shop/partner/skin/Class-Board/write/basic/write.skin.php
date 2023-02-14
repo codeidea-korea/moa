@@ -13,6 +13,17 @@ if(!$header_skin) {
 
 <!--<div class="section-title">모임 --><?php //echo ($w=='u')?'수정':'등록'; ?><!--</div>-->
 
+<style>
+.fileContainer ul.upImg-list{display:inline-flex;gap:15px;padding:25px;background:rgba(71,78,103,0.4);border-radius:5px;}
+.fileContainer ul.upImg-list li{position:relative;max-width:120px;}
+.fileContainer ul.upImg-list li img{border-radius:4px;}
+.fileContainer ul.upImg-list li .upload-empty{width:120px;height:120px;font-size:13px;border-radius:3px;;border:1px dashed #fff;color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:all .2s ease-in-out;}
+.fileContainer ul.upImg-list li .upload-empty:hover{background:rgba(255,255,255,0.1);}
+.fileContainer ul.upImg-list li .upload-empty:after{content:'\e904';font-family:'intaefont';font-size:19px;font-weight:normal;margin-top:8px;}
+.fileContainer ul.upImg-list li .del:before{content:'\e2ba';font-family:'newfont';font-size:10px;font-weight:normal;line-height:1em;color:#fff;width:18px;height:18px;background:#ff636a;cursor:pointer;
+	display:inline-flex;align-items:center;justify-content:center;border-radius:3px;position:absolute;top:-5px;right:-5px;z-index:3;}
+.wr-list .wr-list-con p.help-block:last-child{margin-top:6px;}
+</style>
 
 <!------------------------------------------------------------------------------------------------------------------------------------------------------------------>
 <!------------------------------------------------------------------------------------------------------------------------------------------------------------------>
