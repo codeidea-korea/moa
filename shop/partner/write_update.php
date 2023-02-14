@@ -726,10 +726,18 @@ if($ap == 'list') {
             alert('잘못된 접근입니다.', '/');
         }
 
-        $mb_id = $member['mb_id'];
-		$wr_name = addslashes(clean_xss_tags($board['bo_use_name'] ? $member['mb_name'] : $member['mb_nick']));
-		$wr_email = addslashes($member['mb_email']);
-
+        if ($write_table == "g5_write_class"){
+            $write_class_sql = "select mb_id, wr_name, wr_email from g5_write_class where wr_id = '{$wr_id}' ";
+            $write_class_row = sql_fetch($write_class_sql);
+            $mb_id = $write_class_row['mb_id'];
+            $wr_name = $write_class_row['wr_name'];
+            $wr_email = $write_class_row['wr_email'];
+        }else{
+            $mb_id = $member['mb_id'];
+            $wr_name = addslashes(clean_xss_tags($board['bo_use_name'] ? $member['mb_name'] : $member['mb_nick']));
+            $wr_email = addslashes($member['mb_email']);
+        }
+        
         $sql_password = $wr_password ? " , wr_password = '".get_encrypt_string($wr_password)."' " : "";
 
         $sql_ip = '';
