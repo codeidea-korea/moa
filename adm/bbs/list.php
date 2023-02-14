@@ -355,7 +355,6 @@ if($page_rows > 0) {
         $list[$i]['is_notice'] = false;
         $list_num = $total_count - ($page - 1) * $list_page_rows;
         $list[$i]['num'] = $list_num - $k;
-
         $i++;
         $k++;
     }

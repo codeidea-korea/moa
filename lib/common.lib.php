@@ -446,7 +446,13 @@ function get_list($write_row, $board, $skin_url, $subject_len=40)
         //$list['ca_name'] = preg_replace("/[\<\>\'\"\\\'\\\"\%\=\(\)\/\^\*]/", "", $list['ca_name']);
 	    $list['ca_name'] = preg_replace("/[\<\>\'\"\\\'\\\"\%\=\(\)\^\*]/", "", $list['ca_name']);
 	}
-    $list['href'] = G5_BBS_URL.'/board.php?bo_table='.$board['bo_table'].'&amp;wr_id='.$list['wr_id'].$qstr;
+
+    if ($board['bo_table'] == "notice"){
+        $list['href'] = '/adm/bbs/board.php?bo_table='.$board['bo_table'].'&amp;wr_id='.$list['wr_id'].$qstr;
+    }else{
+        $list['href'] = G5_BBS_URL.'/board.php?bo_table='.$board['bo_table'].'&amp;wr_id='.$list['wr_id'].$qstr;
+    }
+    
     $list['comment_href'] = $list['href'];
 
     $list['icon_new'] = '';
