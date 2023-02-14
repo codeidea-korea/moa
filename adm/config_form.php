@@ -1267,7 +1267,7 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
         <tr>
             <th scope="row"><label for="cf_apple_team_id">애플 Team ID (App ID Prefix)</label></th>
             <td>
-                <input type="text" name="cf_apple_team_id" value="<?php echo $config['cf_apple_team_id']; ?>" id="cf_apple_team_id" class="frm_input" size="40" />
+                <input type="text" name="cf_apple_team_id" value="<?php echo $config['cf_apple_team_id']; ?>" id="cf_apple_team_id" class="frm_input" size="40" /> 
                 <a href="http://developers.apple.com/" target="_blank" class="btn_frmline">앱 등록하기</a></td>
             <th scope="row"><label for="cf_apple_bundle_id">애플 Bundle ID (Service IDs)</label></th>
             <td>

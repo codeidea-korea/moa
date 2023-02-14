@@ -33,6 +33,7 @@ if($mb_id) {
     $sql = "SELECT m.* FROM g5_member m where m.mb_id in ('{$mb_id}')";
     $result = sql_query($sql);
     while($memb = sql_fetch_array($result)) {
+        /*
         if($status == '반려'){
             {
                 $memb = sql_fetch($sql);
@@ -66,6 +67,7 @@ if($mb_id) {
                 sendBfAlimTalk(21, $replaceText, $reserve_type, $reciver, $start_reserve_time);
             }
         }
+        */
     }
     $sql = "update g5_member set mb_status = '{$status}' {$sql_com_cert_yn} where mb_id in ('{$mb_id}')";
 } else {

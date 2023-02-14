@@ -32,7 +32,7 @@ if ($sch_startdt) {
 	$sql_search .=" and date(a.mb_datetime) between '{$sch_startdt}' and '{$sch_enddt}' ";
 }
 if($stx) {
-    $sql_search .= " and (a.mb_hp like '%$stx%' or a.mb_name like '%$stx%')";
+    $sql_search .= " and (a.mb_hp like '%$stx%' or a.mb_name like '%$stx%' or a.mb_id like '%$stx%' or a.mb_email like '%$stx%' or a.mb_nick like '%$stx%')";
 }
 
 if ($is_admin != 'super')
@@ -269,7 +269,7 @@ $colspan = ($is_membership) ? 17 : 16;
 			</div>
             <div class="wr-list">
                 <div class="wr-list-label">검색어</div>
-                <input type="text" name="stx" value="<?php echo $stx?>" class="span280 ml10" placeholder="전화번호/이름">
+                <input type="text" name="stx" value="<?php echo $stx?>" class="span280 ml10" placeholder="전화번호/이름/회원아이디/닉네임/이메일">
             </div>
 		</div>
 	</div>

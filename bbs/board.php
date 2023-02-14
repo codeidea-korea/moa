@@ -341,7 +341,6 @@ if (isset($wr_id) && $wr_id) {
 	// 공지글인지 체크
 	$is_view_notice = (!empty($bo_notice_arr) && in_array($wr_id, $bo_notice_arr)) ? true : false;
     include_once(G5_BBS_PATH.'/view.php');
-  
 }
 
 // 전체목록보이기 사용이 "예" 또는 wr_id 값이 없다면 목록을 보임

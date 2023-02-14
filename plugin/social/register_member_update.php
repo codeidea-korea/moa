@@ -139,6 +139,8 @@ $sql = " insert into {$g5['member_table']}
                 job_kind = '{$job_kind}',
                 company_name = '{$company_name}',
                 career = '{$career}',
+
+                com_cert_yn = '1',
                 
                 mb_status = '대기',
                 mb_open_date = '".G5_TIME_YMD."' ";

@@ -34,7 +34,7 @@ else if ($w == 'u')
 
     $mb['mb_name'] = get_text($mb['mb_name']);
     $mb['mb_nick'] = get_text($mb['mb_nick']);
-    $mb['mb_email'] = get_text($mb['mb_id']);
+    $mb['mb_email'] = get_text($mb['mb_email']);
     $mb['mb_homepage'] = get_text($mb['mb_homepage']);
     $mb['mb_birth'] = get_text($mb['mb_birth']);
     $mb['mb_tel'] = get_text($mb['mb_tel']);
@@ -192,10 +192,10 @@ add_javascript(G5_POSTCODE_JS, 0);    //다음 주소 js
         <th scope="row"><label for="mb_name">이름(실명)<strong class="sound_only">필수</strong></label></th>
         <td><input type="text" name="mb_name" value="<?php echo $mb['mb_name'] ?>" id="mb_name" required class="required frm_input" size="15" maxlength="20"></td>
     </tr>
-<!--	<tr>-->
-<!--        <th scope="row"><label for="mb_email">이메일<strong class="sound_only">필수</strong></label></th>-->
-<!--        <td><input type="text" name="mb_email" value="--><?php //echo $mb['mb_email'] ?><!--" id="mb_email" maxlength="100" required class="required frm_input email" size="30"></td>-->
-<!--    </tr>-->
+	<tr>
+        <th scope="row"><label for="mb_email">이메일<strong class="sound_only">필수</strong></label></th>
+        <td><input type="text" name="mb_email" value="<?php echo $mb['mb_email'] ?>" id="mb_email" maxlength="100" required class="required frm_input email" size="30"></td>
+    </tr>
 	<tr>
         <th scope="row">이메일 수신</th>
         <td>
@@ -353,7 +353,7 @@ this.form.mb_intercept_date.value=this.form.mb_intercept_date.defaultValue; }">
             인증 사진
         </td>
         <td>
-            <img src="<?php echo $result['file_path'] ?>/<?php echo $result['bf_file']; ?>" width="200px" />
+            <img src="<?php echo $result['file_path'] ?>/<?php echo $result['bf_file']; ?>" width="700px" />
         </td>
     </tr>
     <?php } ?>

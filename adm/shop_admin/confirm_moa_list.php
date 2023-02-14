@@ -101,6 +101,8 @@ $result = sql_query($sql);
                         <?
                         if($row['moa_status'] == 6) {
                             ?>정산됨<?
+                        } else if($row['moa_status'] == 5 || $row['moa_status'] == '폐강') {
+                            ?>폐강<?
                         } else {
                         ?>
 						<select name="moa_status" class="moa_status" class="span90" data-wr_id="<?php echo $row['wr_id']; ?>">

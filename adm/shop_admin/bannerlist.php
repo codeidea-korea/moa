@@ -48,106 +48,111 @@ $from_record = ($page - 1) * $rows; // 시작 열을 구함
 
 <div class="boxContainer">
 
-	<div class="tbl-basic outline odd">
-		<div class="tbl-header">메인페이지에 노출될 배너를 설정 관리 합니다.</div>
-		<table>
-		<caption><?php echo $g5['title']; ?> 목록</caption>
-		<thead>
-		<tr>
-			<th scope="col">노출순위</th>
-			<th scope="col">썸네일</th>
-			<th scope="col">제목</th>
-			<th scope="col">기간</th>
-			<th scope="col">등록일</th>
-			<th scope="col">상태</th>
-			<th scope="col">순위조절</th>
-			<th scope="col">관리</th>
-		</tr>
-		</thead>
-		<tbody>
-		<?php
-		$sql = " select * from {$g5['g5_shop_banner_table']} $sql_search
+    <div class="tbl-basic outline odd">
+        <div class="tbl-header">메인페이지에 노출될 배너를 설정 관리 합니다.</div>
+        <table>
+            <caption><?php echo $g5['title']; ?> 목록</caption>
+            <thead>
+            <tr>
+                <th scope="col">노출순위</th>
+                <th scope="col">썸네일</th>
+                <th scope="col">제목</th>
+                <th scope="col">기간</th>
+                <th scope="col">등록일</th>
+                <th scope="col">상태</th>
+                <th scope="col">순위조절</th>
+                <th scope="col">관리</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            $sql = " select * from {$g5['g5_shop_banner_table']} $sql_search
 			  order by bn_order asc
 			  limit $from_record, $rows  ";
-		$result = sql_query($sql);
-		for ($i=0; $row=sql_fetch_array($result); $i++) {
-			// 테두리 있는지
-			$bn_border  = $row['bn_border'];
-			// 새창 띄우기인지
-			$bn_new_win = ($row['bn_new_win']) ? 'target="_blank"' : '';
+            $result = sql_query($sql);
+            $endCnt =  mysqli_num_rows($result);
+            for ($i=0; $row=sql_fetch_array($result); $i++) {
+                // 테두리 있는지
+                $bn_border  = $row['bn_border'];
+                // 새창 띄우기인지
+                $bn_new_win = ($row['bn_new_win']) ? 'target="_blank"' : '';
 
-			$bimg = $row['bn_bimg'];
-			if($bimg != '') {
-				$size = @getimagesize($bimg);
-				if($size[0] && $size[0] > 800)
-					$width = 160;
-				else
-					$width = $size[0];
+                $bimg = $row['bn_bimg'];
+                if($bimg != '') {
+                    $size = @getimagesize($bimg);
+                    if($size[0] && $size[0] > 800)
+                        $width = 160;
+                    else
+                        $width = $size[0];
 
-				$bn_img = "";
-			   
-				$bn_img .= '<img src="'.$row['bn_bimg'].'" width="180" alt="'.get_text($row['bn_alt']).'">';
-			}
+                    $bn_img = "";
 
-			switch($row['bn_device']) {
-				case 'pc':
-					$bn_device = 'PC';
-					break;
-				case 'mobile':
-					$bn_device = '모바일';
-					break;
-				default:
-					$bn_device = 'PC와 모바일';
-					break;
-			}
+                    $bn_img .= '<img src="'.$row['bn_bimg'].'" width="180" alt="'.get_text($row['bn_alt']).'">';
+                }
 
-			$bn_begin_time = substr($row['bn_begin_time'], 2, 14);
-			$bn_end_time   = substr($row['bn_end_time'], 2, 14);
+                switch($row['bn_device']) {
+                    case 'pc':
+                        $bn_device = 'PC';
+                        break;
+                    case 'mobile':
+                        $bn_device = '모바일';
+                        break;
+                    default:
+                        $bn_device = 'PC와 모바일';
+                        break;
+                }
 
-			$bg = 'bg'.($i%2);
-		?>
+                $bn_begin_time = substr($row['bn_begin_time'], 2, 14);
+                $bn_end_time   = substr($row['bn_end_time'], 2, 14);
 
-		<tr class="">
-			<td><?php echo $row['bn_order']; ?></td>
-			<td><?php echo $bn_img; ?></td>
-			<td><?php echo $row['bn_alt']; ?></td>
-			<td><?php echo $bn_begin_time; ?> ~ <?php echo $bn_end_time; ?></td>
-			<td><?php echo date('Y-m-d H:i', strtotime($row['bn_time'])); ?></td>
-			<td>대기</td><!-- [대기,진행,종료] -->
-			<td>
-				<div class="flex flex-center">
-					<button type="button" data-bn_id="<?php echo $row['bn_id']; ?>" class="order-up">위로</button>
-					<button type="button" data-bn_id="<?php echo $row['bn_id']; ?>" class="order-down">아래로</button>
-				</div>
-			</td>
-			<td headers="th_mng" class="td_mng td_mns_m">
-				<a href="./bannerform.php?w=u&amp;bn_id=<?php echo $row['bn_id']; ?>" class="btn btn_03">수정</a>
-				<a href="./bannerformupdate.php?w=d&amp;bn_id=<?php echo $row['bn_id']; ?>" onclick="return delete_confirm(this);" class="btn btn_02">삭제</a>
-			</td>
-		</tr>
-		<?php
-		}
-		if ($i == 0) {
-		echo '<tr><td colspan="8" class="empty_table">자료가 없습니다.</td></tr>';
-		}
-		?>
-		</tbody>
-		</table>
+                $bg = 'bg'.($i%2);
+                ?>
 
-	</div>
+                <tr class="">
+                    <td><?php echo $row['bn_order']; ?></td>
+                    <td><?php echo $bn_img; ?></td>
+                    <td><?php echo $row['bn_alt']; ?></td>
+                    <td><?php echo $bn_begin_time; ?> ~ <?php echo $bn_end_time; ?></td>
+                    <td><?php echo date('Y-m-d H:i', strtotime($row['bn_time'])); ?></td>
+                    <td>대기</td><!-- [대기,진행,종료] -->
+                    <td>
+                        <div class="flex flex-center">
+                            <?php if($i !=0){?>
+                                <button type="button" data-bn_id="<?php echo $row['bn_id']; ?>" onClick="orderUp(<?php echo $row['bn_id']; ?>,<?php echo $row['bn_order']; ?>)" class="order-up">위로</button>
+                            <?php }?>
+                            <?php if($i+1 != $endCnt){?>
+                                <button type="button" data-bn_id="<?php echo $row['bn_id']; ?>" onClick="orderUp(<?php echo $row['bn_id']; ?>,<?php echo $row['bn_order']; ?>)" class="order-down">아래로</button>
+                            <?php }?>
+                        </div>
+                    </td>
+                    <td headers="th_mng" class="td_mng td_mns_m">
+                        <a href="./bannerform.php?w=u&amp;bn_id=<?php echo $row['bn_id']; ?>" class="btn btn_03">수정</a>
+                        <a href="./bannerformupdate.php?w=d&amp;bn_id=<?php echo $row['bn_id']; ?>" onclick="return delete_confirm(this);" class="btn btn_02">삭제</a>
+                    </td>
+                </tr>
+                <?php
+            }
+            if ($i == 0) {
+                echo '<tr><td colspan="8" class="empty_table">자료가 없습니다.</td></tr>';
+            }
+            ?>
+            </tbody>
+        </table>
 
-	<div class="btn_list01 btn_list">
-		<div class="right">			
-			<input type="submit" name="act_button" value="저장하기" onclick="document.pressed=this.value" class="btn btn_01">
-			<a href="./bannerlist.php" class="btn btn_02">취소</a>
-		</div>
-	</div>
+    </div>
 
-	<div class="btn_fixed_top">
-		<a href="./bannerform.php" class="btn_01 btn">배너추가</a>
-	</div>
+    <div class="btn_list01 btn_list">
+        <div class="right">
+            <input type="submit" name="act_button" value="저장하기" onclick="document.pressed=this.value" class="btn btn_01">
+            <a href="./bannerlist.php" class="btn btn_02">취소</a>
+        </div>
+    </div>
 
-	<?php echo get_paging(G5_IS_MOBILE ? $config['cf_mobile_pages'] : $config['cf_write_pages'], $page, $total_page, "{$_SERVER['SCRIPT_NAME']}?$qstr&amp;page="); ?>
+    <div class="btn_fixed_top">
+        <a href="./bannerform.php" class="btn_01 btn">배너추가</a>
+    </div>
+
+    <?php echo get_paging(G5_IS_MOBILE ? $config['cf_mobile_pages'] : $config['cf_write_pages'], $page, $total_page, "{$_SERVER['SCRIPT_NAME']}?$qstr&amp;page="); ?>
 
 </div>
 
@@ -157,124 +162,124 @@ $from_record = ($page - 1) * $rows; // 시작 열을 구함
 <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 
 <div class="local_ov01 local_ov none">
-	<span class="btn_ov01"><span class="ov_txt"> <?php echo ($sql_search) ? '검색' : '등록'; ?>된 배너 </span><span class="ov_num"> <?php echo $total_count; ?>개</span></span>
+    <span class="btn_ov01"><span class="ov_txt"> <?php echo ($sql_search) ? '검색' : '등록'; ?>된 배너 </span><span class="ov_num"> <?php echo $total_count; ?>개</span></span>
 
-	<form name="flist" class="local_sch01 local_sch">
-	<input type="hidden" name="page" value="<?php echo $page; ?>">
+    <form name="flist" class="local_sch01 local_sch">
+        <input type="hidden" name="page" value="<?php echo $page; ?>">
 
-	<label for="bn_position" class="sound_only">검색</label>
-	<select name="bn_position" id="bn_position">
-		<option value=""<?php echo get_selected($bn_position, '', true); ?>>위치 전체</option>
-		<option value="메인"<?php echo get_selected($bn_position, '메인', true); ?>>메인</option>
-		<option value="왼쪽"<?php echo get_selected($bn_position, '왼쪽', true); ?>>왼쪽</option>
-	</select>
+        <label for="bn_position" class="sound_only">검색</label>
+        <select name="bn_position" id="bn_position">
+            <option value=""<?php echo get_selected($bn_position, '', true); ?>>위치 전체</option>
+            <option value="메인"<?php echo get_selected($bn_position, '메인', true); ?>>메인</option>
+            <option value="왼쪽"<?php echo get_selected($bn_position, '왼쪽', true); ?>>왼쪽</option>
+        </select>
 
-	<select name="bn_device" id="bn_device">
-		<option value="both"<?php echo get_selected($bn_device, 'both', true); ?>>PC와 모바일</option>
-		<option value="pc"<?php echo get_selected($bn_device, 'pc'); ?>>PC</option>
-		<option value="mobile"<?php echo get_selected($bn_device, 'mobile'); ?>>모바일</option>
-	</select>
+        <select name="bn_device" id="bn_device">
+            <option value="both"<?php echo get_selected($bn_device, 'both', true); ?>>PC와 모바일</option>
+            <option value="pc"<?php echo get_selected($bn_device, 'pc'); ?>>PC</option>
+            <option value="mobile"<?php echo get_selected($bn_device, 'mobile'); ?>>모바일</option>
+        </select>
 
-	<select name="bn_time" id="bn_time">
-		<option value=""<?php echo get_selected($bn_time, '', true); ?>>배너 시간 전체</option>
-		<option value="ing"<?php echo get_selected($bn_time, 'ing'); ?>>진행중인 배너</option>
-		<option value="end"<?php echo get_selected($bn_time, 'end'); ?>>종료된 배너</option>
-	</select>
+        <select name="bn_time" id="bn_time">
+            <option value=""<?php echo get_selected($bn_time, '', true); ?>>배너 시간 전체</option>
+            <option value="ing"<?php echo get_selected($bn_time, 'ing'); ?>>진행중인 배너</option>
+            <option value="end"<?php echo get_selected($bn_time, 'end'); ?>>종료된 배너</option>
+        </select>
 
-	<input type="submit" value="검색" class="btn_submit">
+        <input type="submit" value="검색" class="btn_submit">
 
-	</form>
+    </form>
 
 </div>
 
 <div class="tbl-basic outline odd none">
     <table>
-    <caption><?php echo $g5['title']; ?> 목록</caption>
-    <thead>
-    <tr>
-        <th scope="col" rowspan="2" id="th_id">ID</th>
-        <th scope="col" id="th_dvc">접속기기</th>
-        <th scope="col" id="th_loc">위치</th>
-        <th scope="col" id="th_st">시작일시</th>
-        <th scope="col" id="th_end">종료일시</th>
-        <th scope="col" id="th_odr">출력순서</th>
-        <th scope="col" id="th_hit">조회</th>
-        <th scope="col" id="th_mng">관리</th>
-    </tr>
-    <tr>
-        <th scope="col" colspan="7" id="th_img">이미지</th>
-    </tr>
-    </thead>
-    <tbody>
-    <?php
-    $sql = " select * from {$g5['g5_shop_banner_table']} $sql_search
+        <caption><?php echo $g5['title']; ?> 목록</caption>
+        <thead>
+        <tr>
+            <th scope="col" rowspan="2" id="th_id">ID</th>
+            <th scope="col" id="th_dvc">접속기기</th>
+            <th scope="col" id="th_loc">위치</th>
+            <th scope="col" id="th_st">시작일시</th>
+            <th scope="col" id="th_end">종료일시</th>
+            <th scope="col" id="th_odr">출력순서</th>
+            <th scope="col" id="th_hit">조회</th>
+            <th scope="col" id="th_mng">관리</th>
+        </tr>
+        <tr>
+            <th scope="col" colspan="7" id="th_img">이미지</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+        $sql = " select * from {$g5['g5_shop_banner_table']} $sql_search
           order by bn_order asc
           limit $from_record, $rows  ";
-    $result = sql_query($sql);
-    for ($i=0; $row=sql_fetch_array($result); $i++) {
-        // 테두리 있는지
-        $bn_border  = $row['bn_border'];
-        // 새창 띄우기인지
-        $bn_new_win = ($row['bn_new_win']) ? 'target="_blank"' : '';
+        $result = sql_query($sql);
+        for ($i=0; $row=sql_fetch_array($result); $i++) {
+            // 테두리 있는지
+            $bn_border  = $row['bn_border'];
+            // 새창 띄우기인지
+            $bn_new_win = ($row['bn_new_win']) ? 'target="_blank"' : '';
 
-        $bimg = G5_DATA_PATH.'/banner/'.$row['bn_id'];
-        if(file_exists($bimg)) {
-            $size = @getimagesize($bimg);
-            if($size[0] && $size[0] > 800)
-                $width = 800;
-            else
-                $width = $size[0];
+            $bimg = G5_DATA_PATH.'/banner/'.$row['bn_id'];
+            if(file_exists($bimg)) {
+                $size = @getimagesize($bimg);
+                if($size[0] && $size[0] > 800)
+                    $width = 800;
+                else
+                    $width = $size[0];
 
-            $bn_img = "";
-           
-            $bn_img .= '<img src="'.G5_DATA_URL.'/banner/'.$row['bn_id'].'" width="'.$width.'" alt="'.get_text($row['bn_alt']).'">';
+                $bn_img = "";
+
+                $bn_img .= '<img src="'.G5_DATA_URL.'/banner/'.$row['bn_id'].'" width="'.$width.'" alt="'.get_text($row['bn_alt']).'">';
+            }
+
+            switch($row['bn_device']) {
+                case 'pc':
+                    $bn_device = 'PC';
+                    break;
+                case 'mobile':
+                    $bn_device = '모바일';
+                    break;
+                default:
+                    $bn_device = 'PC와 모바일';
+                    break;
+            }
+
+            $bn_begin_time = substr($row['bn_begin_time'], 2, 14);
+            $bn_end_time   = substr($row['bn_end_time'], 2, 14);
+
+            $bg = 'bg'.($i%2);
+            ?>
+
+            <tr class="<?php echo $bg; ?>">
+                <td headers="th_id" rowspan="2" class="td_num"><?php echo $row['bn_id']; ?></td>
+                <td headers="th_dvc"><?php echo $bn_device; ?></td>
+                <td headers="th_loc"><?php echo $row['bn_position']; ?></td>
+                <td headers="th_st" class="td_datetime"><?php echo $bn_begin_time; ?></td>
+                <td headers="th_end" class="td_datetime"><?php echo $bn_end_time; ?></td>
+                <td headers="th_odr" class="td_num"><?php echo $row['bn_order']; ?></td>
+                <td headers="th_hit" class="td_num"><?php echo $row['bn_hit']; ?></td>
+                <td headers="th_mng" class="td_mng td_mns_m">
+                    <a href="./bannerform.php?w=u&amp;bn_id=<?php echo $row['bn_id']; ?>" class="btn btn_03">수정</a>
+                    <a href="./bannerformupdate.php?w=d&amp;bn_id=<?php echo $row['bn_id']; ?>" onclick="return delete_confirm(this);" class="btn btn_02">삭제</a>
+                </td>
+            </tr>
+            <tr class="<?php echo $bg; ?>">
+                <td headers="th_img" colspan="7" class="td_img_view sbn_img">
+                    <div class="sbn_image"><?php echo $bn_img; ?></div>
+                    <button type="button" class="sbn_img_view btn_frmline">이미지확인</button>
+                </td>
+            </tr>
+
+            <?php
         }
-
-        switch($row['bn_device']) {
-            case 'pc':
-                $bn_device = 'PC';
-                break;
-            case 'mobile':
-                $bn_device = '모바일';
-                break;
-            default:
-                $bn_device = 'PC와 모바일';
-                break;
+        if ($i == 0) {
+            echo '<tr><td colspan="8" class="empty_table">자료가 없습니다.</td></tr>';
         }
-
-        $bn_begin_time = substr($row['bn_begin_time'], 2, 14);
-        $bn_end_time   = substr($row['bn_end_time'], 2, 14);
-
-        $bg = 'bg'.($i%2);
-    ?>
-
-    <tr class="<?php echo $bg; ?>">
-        <td headers="th_id" rowspan="2" class="td_num"><?php echo $row['bn_id']; ?></td>
-        <td headers="th_dvc"><?php echo $bn_device; ?></td>
-        <td headers="th_loc"><?php echo $row['bn_position']; ?></td>
-        <td headers="th_st" class="td_datetime"><?php echo $bn_begin_time; ?></td>
-        <td headers="th_end" class="td_datetime"><?php echo $bn_end_time; ?></td>
-        <td headers="th_odr" class="td_num"><?php echo $row['bn_order']; ?></td>
-        <td headers="th_hit" class="td_num"><?php echo $row['bn_hit']; ?></td>
-        <td headers="th_mng" class="td_mng td_mns_m">
-            <a href="./bannerform.php?w=u&amp;bn_id=<?php echo $row['bn_id']; ?>" class="btn btn_03">수정</a>
-            <a href="./bannerformupdate.php?w=d&amp;bn_id=<?php echo $row['bn_id']; ?>" onclick="return delete_confirm(this);" class="btn btn_02">삭제</a>
-        </td>
-    </tr>
-    <tr class="<?php echo $bg; ?>">
-        <td headers="th_img" colspan="7" class="td_img_view sbn_img">
-            <div class="sbn_image"><?php echo $bn_img; ?></div>
-            <button type="button" class="sbn_img_view btn_frmline">이미지확인</button>
-        </td>
-    </tr>
-
-    <?php
-    }
-    if ($i == 0) {
-    echo '<tr><td colspan="8" class="empty_table">자료가 없습니다.</td></tr>';
-    }
-    ?>
-    </tbody>
+        ?>
+        </tbody>
     </table>
 </div>
 
@@ -282,30 +287,41 @@ $from_record = ($page - 1) * $rows; // 시작 열을 구함
 
 
 <script>
-jQuery(function($) {
-    $(".sbn_img_view").on("click", function() {
-        $(this).closest(".td_img_view").find(".sbn_image").slideToggle();
+    jQuery(function($) {
+        $(".sbn_img_view").on("click", function() {
+            $(this).closest(".td_img_view").find(".sbn_image").slideToggle();
+        });
     });
 
-    $('.order-up').click(function(){
-        orderUpDown('up', $(this).data('bn_id'));
-    })
-
-    $('.order-down').click(function(){
-        orderUpDown('down', $(this).data('bn_id'));
-    })
-
-    function orderUpDown(order, bn_id) {
+    function orderUp(bn_id,bn_order){
         $.ajax({
             type: "POST",
-            data: {order: order, bn_id: bn_id},
+            data: {
+                order: 'up'
+                , bn_id: bn_id
+                , bn_order: bn_order
+            },
             url: '/ajax/bannerOrder.php',
             success: function(data) {
                 location.reload();
             }
         });
     }
-});
+    function orderDown(bn_id,bn_order){
+        $.ajax({
+            type: "POST",
+            data: {
+                order: 'down'
+                , bn_id: bn_id
+                , bn_order: bn_order
+            },
+            url: '/ajax/bannerOrder.php',
+            success: function(data) {
+                location.reload();
+            }
+        });
+    }
+
 </script>
 
 <?php

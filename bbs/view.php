@@ -322,7 +322,6 @@ if ($tmp_g['cnt'] > 0){
 
 include_once($board_skin_path.'/view.skin.php');
 
-
 @include_once($board_skin_path.'/view.tail.skin.php');
 
 if($bo_table == 'community'){

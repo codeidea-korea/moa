@@ -28,7 +28,7 @@ for ($i=0; $i<$ext_cnt; $i++) {
 }
 //==========================================================================================================================
 
-// 애플 로그인 - 크롬 보안정책 해결 (80 = SameSite)
+// 애플로그인 - 크롬 보안정책 해결 (80 = SameSite)
 if(!function_exists('session_start_samesite')) {
     function session_start_samesite($options = array()) {
         $res = @session_start($options);

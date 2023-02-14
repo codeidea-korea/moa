@@ -280,6 +280,8 @@ if ($w == '') { /******************** 회원 insert Start **********************
                     company_name = '{$company_name}',
                     career = '{$career}',
 
+                    com_cert_yn = '1',
+
                     {$query_allowed_marketting_news}
 
                      mb_status = '대기'
@@ -289,6 +291,28 @@ if ($w == '') { /******************** 회원 insert Start **********************
     if (!$config['cf_use_email_certify'])
         $sql .= " , mb_email_certify = '".G5_TIME_YMDHIS."' ";
     sql_query($sql);
+
+    // 2023-01-26 추가 여건 - 가입시 호스트 등록
+    // 2023-01-27. 가입시 호스트 권한부여 제거
+    /*
+	$pt_register = date("Ymd");
+	$pt_partner = 1;
+    $pt_marketer = 1;
+    $pt_type = 2; // default 개인으로 등록
+    
+    $sql = " insert into {$g5['apms_partner']}
+        set pt_id = '{$mb_id}',
+            pt_partner = '{$pt_partner}',
+            pt_marketer = '{$pt_marketer}',
+            pt_type = '{$pt_type}',
+            pt_level = '2',
+            pt_register = '{$pt_register}',
+            pt_datetime = '".G5_TIME_YMDHIS."',
+            pt_name = '{$mb_name}',
+            pt_hp = '{$mb_hp}',
+            pt_email = '{$mb_email}' ";
+    sql_query($sql);
+    */
 
     // 회원가입 포인트 부여
     $sss = insert_point($mb_id, $config['cf_register_point'], '회원가입 축하', '@member', $mb_id, '회원가입');

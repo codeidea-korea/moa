@@ -364,20 +364,20 @@ function social_extends_get_keys($provider){
         
         // Apple
         $r['Apple'] = array(
-                    "enabled" => option_array_checked('apple', $config['cf_social_servicelist']) ? true : false,
-                    "keys" => array(
-                        "id" => $config['cf_apple_bundle_id'],
-                        "secret" => array(
-                            "team_id" => $config['cf_apple_team_id'],
-                            "key_id" => $config['cf_apple_key_id'],
-                            "key_content" => $config['cf_apple_key_file']
-                        ),
-                    ),
-                    "scope" => "name email",
-                    "verifyTokenSignature" => true,
-                    "redirect_uri" => get_social_callbackurl('apple'),
-                    "trustForwarded" => false
-                );
+            "enabled" => option_array_checked('apple', $config['cf_social_servicelist']) ? true : false,
+            "keys" => array(
+                "id" => $config['cf_apple_bundle_id'],
+                "secret" => array(
+                    "team_id" => $config['cf_apple_team_id'],
+                    "key_id" => $config['cf_apple_key_id'],
+                    "key_content" => $config['cf_apple_key_file']
+                ),
+            ),
+            "scope" => "name email",
+            "verifyTokenSignature" => true,
+            "redirect_uri" => get_social_callbackurl('apple'),
+            "trustForwarded" => false
+        );
     }
 
     return $r[$provider];
@@ -930,7 +930,7 @@ function social_get_provider_service_name($provider='', $all=''){
         'twitter'  =>  '트위터',
         'payco'  =>  '페이코',
         // Apple 애플 아이디로 로그인 시작 {
-        'Apple'  =>  '애플',
+        'apple'  =>  '애플',
         // } Apple 애플 아이디로 로그인 끝
         );
 

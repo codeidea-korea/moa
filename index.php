@@ -37,5 +37,4 @@ require_once(G5_PATH.'/c_main/main.php');
 
 
 include_once('./_tail.php');
-
 ?>

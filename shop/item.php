@@ -11,7 +11,7 @@ if($member['mb_status'] != '승인' && !$member['mb_id']) {
 	$it = sql_fetch($sql);
 	$pageName = $it['it_name'];
 
-    alert('로그인 후 이용해주세요.', '/c_login/login.php', true, false, $pageName);
+ //   alert('로그인 후 이용해주세요.', '/c_login/login.php', true, false, $pageName);
 }
 
 include_once(G5_LIB_PATH.'/iteminfo.lib.php');

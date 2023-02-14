@@ -6,9 +6,9 @@ ZIP file contains following 3 files.
   - mpriv.pem	
   - keypass.enc	
 	
-Copy these 3 files to directory [key/Cyworld014].	
+Copy these 3 files to directory [key/SIRmoafrnd].	
 	
-Merchant ID   : Cyworld014	
+Merchant ID   : SIRmoafrnd	
 Key Password  : 1111	
 Admin Password: 1111	
 	
@@ -16,4 +16,4 @@ please visit https://iniweb.inicis.com
 for your Merchant Administration.	
 This site provides your payment transaction details and account details by calculation period.	
 	
-You can also log on this site using your Merchant ID(Cyworld014).	
+You can also log on this site using your Merchant ID(SIRmoafrnd).	

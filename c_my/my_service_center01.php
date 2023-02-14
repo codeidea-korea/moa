@@ -22,7 +22,7 @@ include_once(G5_LIB_PATH.'/thumbnail.lib.php');
                 while($row = sql_fetch_array($query)) {
                 ?>
                     <input type="checkbox" id="box<?php echo $i; ?>">
-                    <label for="box<?php echo $i; ?>" class="terms_list"><?php echo $row['wr_subject']; ?></label>
+                    <label for="box<?php echo $i; ?>" class="terms_list" style="font-size:1.5rem"><?php echo $row['wr_subject']; ?></label>
                     <section id="con0<?php echo $i; ?>">
                         <div class="box_txt">
 							<?php
@@ -42,7 +42,7 @@ include_once(G5_LIB_PATH.'/thumbnail.lib.php');
 								echo '</div>'.PHP_EOL;
 							}
 							?>
-                            <?php echo '<pre>'.$row['wr_content'].'</pre>'; ?>
+                            <?php echo '<pre style="white-space: pre-wrap;word-break: break-all;overflow: auto;">'.$row['wr_content'].'</pre>'; ?>
 							<?php
 							// 이미지 하단 출력
 							if($v_img_count && $is_img_tail) {
