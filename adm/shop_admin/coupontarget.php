@@ -32,12 +32,13 @@ if($sch_target == 1) {
     $sql_select = " select ca_id as t_id, ca_name as t_name ";
     $sql_order = " order by ca_order, ca_name ";
 } else {
-    $sql_common = " from {$g5['g5_shop_item_table']} ";
-    $sql_where = " where it_use = '1' and it_nocoupon = '0' ";
+    
+    $sql_common = " from {$g5['g5_shop_item_table']} as shop left join (select wr_id, it_id, min(day),concat(day,' ',time,':',minute,':00') as first_day from deb_class_item group by wr_id) as deb on shop.it_id = deb.it_id ";
+    $sql_where = " where it_use = '1' and it_nocoupon = '0' and deb.first_day >= '".date('Y-m-d H:i:s')."'";
     if($sch_word)
         $sql_where .= " and it_name like '%".sql_real_escape_string($sch_word)."%' ";
-    $sql_select = " select it_id as t_id, it_name as t_name ";
-    $sql_order = " order by it_order, it_name ";
+    $sql_select = " select shop.it_id as t_id, it_name as t_name, deb.wr_id, deb.first_day ";
+    $sql_order = " group by it_2 order by it_order, it_name ";
 }
 
 // 테이블의 전체 레코드수만 얻음
@@ -51,6 +52,7 @@ if ($page < 1) { $page = 1; } // 페이지가 없으면 첫 페이지 (1 페이�
 $from_record = ($page - 1) * $rows; // 시작 열을 구함
 
 $sql = $sql_select . $sql_common . $sql_where . $sql_order . " limit $from_record, $rows ";
+//print_r2($sql); 
 
 $result = sql_query($sql);
 

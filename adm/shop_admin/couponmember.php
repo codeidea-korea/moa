@@ -14,7 +14,7 @@ $sql_where = " where mb_id <> '{$config['cf_admin']}' and mb_leave_date = '' and
 
 if($mb_name){
     $mb_name = preg_replace('/\!\?\*$#<>()\[\]\{\}/i', '', strip_tags($mb_name));
-    $sql_where .= " and mb_name like '%".sql_real_escape_string($mb_name)."%' ";
+    $sql_where .= " and (mb_name like '%".sql_real_escape_string($mb_name)."%' or mb_email like '%".sql_real_escape_string($mb_name)."%') ";
 }
 
 // 테이블의 전체 레코드수만 얻음
@@ -27,7 +27,7 @@ $total_page  = ceil($total_count / $rows);  // 전체 페이지 계산
 if ($page < 1) { $page = 1; } // 페이지가 없으면 첫 페이지 (1 페이지)
 $from_record = ($page - 1) * $rows; // 시작 열을 구함
 
-$sql = " select mb_id, mb_name
+$sql = " select mb_id, mb_name, mb_email
             $sql_common
             $sql_where
             order by mb_id
@@ -42,7 +42,7 @@ $qstr1 = 'mb_name='.urlencode($mb_name);
 
     <form name="fmember" method="get">
     <div id="scp_list_find">
-        <label for="mb_name">회원이름</label>
+        <label for="mb_name">이름/이메일</label>
         <input type="text" name="mb_name" id="mb_name" value="<?php echo get_text($mb_name); ?>" class="frm_input required" required size="20">
         <input type="submit" value="검색" class="btn_frmline">
     </div>
@@ -51,8 +51,8 @@ $qstr1 = 'mb_name='.urlencode($mb_name);
         <caption>검색결과</caption>
         <thead>
         <tr>
-            <th>회원이름</th>
-            <th>회원아이디</th>
+            <th>이름</th>
+            <th>이메일</th>
             <th>선택</th>
         </tr>
         </thead>
@@ -62,7 +62,7 @@ $qstr1 = 'mb_name='.urlencode($mb_name);
         ?>
         <tr>
             <td class="td_mbname"><?php echo get_text($row['mb_name']); ?></td>
-            <td class="td_left"><?php echo $row['mb_id']; ?></td>
+            <td class="td_left"><?php echo $row['mb_email']; ?></td>
             <td class="scp_find_select td_mng td_mng_s"><button type="button" class="btn btn_03" onclick="sel_member_id('<?php echo $row['mb_id']; ?>');">선택</button></td>
         </tr>
         <?php
