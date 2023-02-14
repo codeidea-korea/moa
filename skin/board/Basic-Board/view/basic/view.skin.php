@@ -60,13 +60,13 @@ $view_subject = get_text($view['wr_subject']);
 <section itemscope itemtype="http://schema.org/NewsArticle">
 	<article itemprop="articleBody">
 		<div class="title_layout">
-			<div class="nick_name">봉구스밥버거</div>
+			<div class="nick_name"><?php echo $view['name'];?></div>
 			<div class="board_title">
 				<h1 itemprop="headline" content="<?php echo $view_subject;?>">
 					<?php if($view['photo']) { ?><span class="talker-photo hidden-xs"><?php echo $view['photo'];?></span><?php } ?>
 					<?php echo cut_str(get_text($view['wr_subject']), 70); ?>
 				</h1>
-				<div class="date_time">2022.12.15 7:00</div>
+				<div class="date_time"><?php echo apms_date($view['date']);?></div>
 			</div>
 			<div class="panel panel-default view-head<?php echo ($attach_list) ? '' : ' no-attach';?>">
 			<div class="panel-heading">

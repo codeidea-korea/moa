@@ -23,7 +23,7 @@
                 </div>
                 <div class="btnSet">
                     <button type="button" class="btn reverse gray span150 popClose">취소</button>
-                    <button type="submit" class="btn span150 submit" onclick="fcancel_submit(this)">예약 취소하기</button>
+                    <button type="button" class="btn span150" onclick="fcancel_submit(this)">예약 취소하기</button>
                 </div>
             </form>
 
@@ -35,10 +35,10 @@
 
 <script>
     function fcancel_submit(f) {
-        if (confirm("예약을 취소 하시겠습니까?")) {
-            return true;
+        if (!confirm("예약을 취소 하시겠습니까?")) {
+            alert('취소되었습니다.');
+            return false;
         }
-
-        return false;
+        $('#ocancelForm').submit();
     }
 </script>

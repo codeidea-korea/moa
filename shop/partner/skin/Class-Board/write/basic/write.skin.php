@@ -76,7 +76,7 @@ if(!$header_skin) {
 								}
 								echo '
 								<li>
-									'.($file[$i]['view']).'<span class="del" data-key="'.date("Y-m-d").$i.'"></span>
+									'.($file[$i]['view']).'<span class="btn small del" data-key="'.date("Y-m-d").$i.'">삭제</span>
 								</li>';
 								$uploadKey++;
 							}
@@ -329,7 +329,7 @@ if(!$header_skin) {
 		<div class="wr-list" >
 			<div class="wr-list-label required">모임 제목</div>
 			<div class="wr-list-con">
-				<input type="text" onkeyup="characterCheck(this)" name="wr_subject" value="<?php echo $subject ?>" id="wr_subject" required class="span900" placeholder="모임 제목을 입력해주세요." size="50" maxlength="255">
+				<input type="text" onkeyup="characterCheck(this)" name="wr_subject" value="<?php echo $subject ?>" id="wr_subject" required class="span900" placeholder="모임 제목을 입력해주세요.(한글, 영문, 숫자만 입력해주세요)" size="50" maxlength="255">
 			</div>
 		</div>
         <script>
@@ -396,8 +396,9 @@ if(!$header_skin) {
                 <div class="wr-list-label required">주소</div>
             <div>
                 <input type="hidden" name="moa_postcode" id="moa_postcode" class="form-control span300" />
-                <input type="text" value="<?php echo $write['moa_addr1'] ?>" id="moa_jibun" placeholder="주소를 입력해주세요." name="moa_addr1" class="span700 form-control input-sm" />
-                <button type="button" onclick="sample4_execDaumPostcode()" class="btn">주소 찾기</button>
+                <input type="text" value="<?php echo $write['moa_addr1'] ?>" id="moa_jibun" placeholder="주소를 입력해주세요." name="moa_addr1"  readonly class="span700 form-control input-sm" />
+                <button type="button" onclick="sample4_execDaumPostcode()" class="btn">주소 찾기</button><br>
+                <input type="text" name="moa_addr2" class="span700 form-control input-sm" placeholder=" "/>
             </div>
         </div>
 	</div>
@@ -959,8 +960,9 @@ $('.fileContainer input[type="file"]').each(function(index) {
 					alert('가로/세로는 같은 사이즈를 권장합니다.');
 					console.log(img.width);
 					console.log(img.height);
-//					upload.files[0] = null;
-//					return;
+                    $('input[type="file"]').val("");
+					upload.files[0] = null;
+					return;
 				} 
 				const key = new Date().getTime();
 				last.before('<li>' + imgtag + '<span class="del" data-key="'+(key)+'"></span></li>');
@@ -968,7 +970,7 @@ $('.fileContainer input[type="file"]').each(function(index) {
 				$('#upload-01' + uploadKey).attr('data-key', key);
 				uploadKey = uploadKey + 1;
 				$('.upload-btn').attr('for', 'upload-01'+uploadKey);
-				$('.upload-empty').attr('for', 'upload-01'+uploadKey);
+				$('.upload-empty').attr('for', 'upload-021'+uploadKey);
 				
 				$('#upload-del-01'+uploadKey).val('1');
 				deleteImageAction('.del');
@@ -1162,6 +1164,11 @@ function fwrite_submit(f) {
 		alert("모임 제목을 입력해주세요.");
 		return false;
 	}
+    var reg = /[\{\}\[\]\/?.,;:|\)*~'!^\-_+<>@\#$%&\\\=\(\'\"]/g;
+    if(reg.test(wr_subject)){
+        alert("모임 제목에 특수문자가 들어가있습니다.");
+        return false;
+    }
 	var ca_name = $('#ca_name').val();
 	if(!ca_name ||ca_name == '') {
 		alert("카테고리를 선택해주세요.");

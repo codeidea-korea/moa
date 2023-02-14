@@ -107,6 +107,7 @@ $sql = " select a.ct_id,
 				b.pt_msg3,
 				c.as_thumb,
 				c.wr_subject,
+				c.ca_name,
 				c.moa_status
 		   from {$g5['g5_shop_cart_table']} a 
 		   left join {$g5['g5_shop_item_table']} b on ( a.it_id = b.it_id )
@@ -197,11 +198,10 @@ for ($i=0; $row=sql_fetch_array($result); $i++) {
 					  and (
 							( cp_method = '0' and cp_target = '{$row['it_id']}' )
 							OR
-							( cp_method = '1' and ( cp_target IN ( '{$row['ca_id']}', '{$row['ca_id2']}', '{$row['ca_id3']}' ) ) )
+							( cp_method = '1' and ( cp_target IN ( '{$row['ca_id']}', '{$row['ca_id2']}', '{$row['ca_id3']}', '{$row['ca_name']}' ) ) )
 							or 
 							cp_method = '2' 
 						  ) ";
-						  //echo $sql;
 		$res = sql_query($sql);
 
 		for($k=0; $cp=sql_fetch_array($res); $k++) {

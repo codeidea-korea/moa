@@ -67,9 +67,16 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                             <?php echo get_common_code_name($class['moa_area1'], $class['moa_area2'])['cd_name']; ?>
                         </p>
                         <p class="ttl"><?php echo $class['wr_subject'] ?></p>
-                        <p class="dsc_price">
-                            <span>1회</span><?php echo number_format($class['wr_3']); ?>원
-                        </p>
+                        <?php $disp = ($class['wr_3'] - $class['wr_4']) * 100 / $class['wr_3'] ?>
+                        <?php if($disp != 0){?>
+                            <p class="sale"><?php echo number_format($class['wr_3']); ?>원</p>
+                            <p class="dsc_price">
+                                <span class="disp" style="color:red;"><?php echo floor($disp); ?>%</span><span><?php echo number_format($class['wr_4']); ?>원</span>
+                            </p>
+                        <?php }else{?>
+                                <span><?php echo number_format($class['wr_4']); ?>원</span>
+                        <?php }?>
+
                     </div>
                 </a>
 				<!--신고버튼-->
@@ -91,6 +98,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
             <ol class="ppl_list">
                 <?php $cnt = 1; ?>
                 <?php $classes = getFavoriteClass(3, $cat['ca_name']); ?>
+
                 <?php foreach($classes as $class) { ?>
                 <li>
                     <a href="/shop/item.php?it_id=<?php echo $class['it_id'] ?>">
@@ -107,9 +115,16 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                                 <?php echo get_common_code_name($class['moa_area1'], $class['moa_area2'])['cd_name']; ?>
                             </p>
                             <p class="ttl"><?php echo $class['wr_subject'] ?></p>
-                            <p class="dsc_price">
-                                <span>1회</span><?php echo number_format($class['wr_3']); ?>원
-                            </p>
+                            <?php $disp = ($class['wr_3'] - $class['wr_4']) * 100 / $class['wr_3'] ?>
+                            <?php if($disp != 0){?>
+                                <p class="sale"><?php echo number_format($class['wr_3']); ?>원</p>
+                                <p class="dsc_price">
+                                    <span class="disp" style="color:red;"><?php echo floor($disp); ?>%</span><span><?php echo number_format($class['wr_4']); ?>원</span>
+                                </p>
+                            <?php }else{?>
+                                <span><?php echo number_format($class['wr_4']); ?>원</span>
+                            <?php }?>
+
                         </div>
                     </a>
                 </li>

@@ -3,7 +3,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 ?>
 
 <!-- Moa’s pick -->
-<section class="s_content mt35" style="height:360px;">
+<section class="s_content mt35" style="height:100%;padding-bottom:20px;">
     <!-- 타이틀 -->
     <div class="main_tit">
         <h1>추천하는 모아</h1>

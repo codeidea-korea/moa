@@ -2,6 +2,21 @@
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
 set_session('prev_url', $_SERVER['HTTP_REFERER']);
+
+function get_client_ip() {
+    $ipaddress = "";
+
+    if(getenv('HTTP_CLIENT_IP'))                $ipaddress = getenv('HTTP_CLIENT_IP');
+    else if(getenv('HTTP_X_FORWARDED_FOR'))     $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+    else if(getenv('HTTP_X_FORWARDED'))         $ipaddress = getenv('HTTP_X_FORWARDED');
+    else if(getenv('HTTP_FORWARDED_FOR'))       $ipaddress = getenv('HTTP_FORWARDED_FOR');
+    else if(getenv('HTTP_FORWARDED'))           $ipaddress = getenv('HTTP_FORWARDED');
+    else if(getenv('REMOTE_ADDR'))              $ipaddress = getenv('REMOTE_ADDR');
+    else                                        $ipaddress = "UNKNOWN";
+    
+    return $ipaddress;
+}
+
 ?>
 <section class="login_wrap">
         <div class="cnter">
@@ -46,12 +61,18 @@ set_session('prev_url', $_SERVER['HTTP_REFERER']);
                     <button  type="button" class="google_btn sns-wrap social_link" onClick="location.href='https://.codeidea.io/plugin/social/google_callback.php?provider=google'">Google 로 계속하기</button>
                     -->
                 <?php }     //end if ?>
-                <?php if( social_service_check('Apple') ) {     //애플 로그인을 사용한다면 ?>
+				<?php //echo get_client_ip();   //|| strpos($_SERVER['REMOTE_ADDR'], "118.37.1.137") !== false   //임시 테스트 환경 구성(IP로 구분) ?>
+                <?php //if( social_service_check('apple') && strpos(get_client_ip(), "118.37.1.137") !== false ) {     //애플 로그인을 사용한다면 ?>
+                    <!-- 20230105 이전의 흔적들은 일단 주석처리함 -->
                     <!--
-                    <button  type="button" class="Apple_btn sns-wrap social_link" onClick="winSocial('<?php echo $self_url;?>?provider=apple')">Apple 로 계속하기</button>
+                    <button type="button" class="Apple_btn sns-wrap social_link" onClick="winSocial('<?php echo $self_url; ?>?provider=Apple')">Apple 로 계속하기</button>
+                    <button type="button" class="Apple_btn sns-wrap social_link" 
+                    onClick="location.href='https://appleid.apple.com/auth/authorize?client_id=moaFriendsId&redirect_uri=https://www.moa-friends.com/plugin/social/apple_callback.php?provider=apple&response_type=code id_token&state=signin&scope=name email&response_mode=form_post'">Apple 로 계속하기</button>
                     -->
+
+                    <!-- 20230105 애플 로그인 1차 완료 (바로 아래의 주석 1줄을 제거하면 기능 확인 가능-->
                     <button type="button" class="Apple_btn sns-wrap social_link" onClick="location.href='/plugin/social/apple_callback.php?provider=Apple'">Apple 로 계속하기</button>
-                <?php }     //end if ?>
+                <?php //}     //end if ?>
             </div>
             <?php 
             //if( G5_SOCIAL_USE_POPUP && !$social_pop_once ){

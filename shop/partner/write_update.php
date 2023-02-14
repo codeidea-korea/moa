@@ -742,11 +742,23 @@ if($ap == 'list') {
         if($board['as_save']) { // 외부 이미지 저장
             $wr_content = apms_content_image($wr_content);
         }
-
-        $sql = " update {$write_table} set 
+        /*
+        $sql = " update {$write_table} set
 					ca_name = '{$ca_name}', wr_option = '{$html},{$secret},{$mail}',
 					wr_subject = '{$wr_subject}', wr_content = '{$wr_content}', wr_link1 = '{$wr_link1}',
 					wr_link2 = '{$wr_link2}', mb_id = '{$mb_id}', wr_name = '{$wr_name}', wr_email = '{$wr_email}',
+					wr_1 = '{$wr_1}', wr_2 = '{$wr_2}', wr_3 = '{$wr_3}', wr_4 = '{$wr_4}', wr_5 = '{$wr_5}',
+					wr_6 = '{$wr_6}', wr_7 = '{$wr_7}', wr_8 = '{$wr_8}', wr_9 = '{$wr_9}', wr_10 = '{$wr_10}',
+					as_type = '{$as_type}', as_img = '{$as_img}', as_publish = '{$as_publish}', as_extra = '{$as_extra}',
+					as_extend = '{$as_extend}', as_down = '{$as_down}', as_view = '{$as_view}', as_tag = '{$as_tag}',
+					as_map = '{$as_map}', as_icon = '{$as_icon}', as_update = '{$as_update}'
+					{$sql_ip} {$sql_password} {$updateSet}
+              where wr_id = '{$wr['wr_id']}' ";
+        */
+        $sql = " update {$write_table} set 
+					ca_name = '{$ca_name}', wr_option = '{$html},{$secret},{$mail}',
+					wr_subject = '{$wr_subject}', wr_content = '{$wr_content}', wr_link1 = '{$wr_link1}',
+					wr_link2 = '{$wr_link2}',  wr_name = '{$wr_name}', wr_email = '{$wr_email}',
 					wr_1 = '{$wr_1}', wr_2 = '{$wr_2}', wr_3 = '{$wr_3}', wr_4 = '{$wr_4}', wr_5 = '{$wr_5}',
 					wr_6 = '{$wr_6}', wr_7 = '{$wr_7}', wr_8 = '{$wr_8}', wr_9 = '{$wr_9}', wr_10 = '{$wr_10}',
 					as_type = '{$as_type}', as_img = '{$as_img}', as_publish = '{$as_publish}', as_extra = '{$as_extra}',

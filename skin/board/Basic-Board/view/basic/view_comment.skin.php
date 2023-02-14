@@ -32,7 +32,7 @@ $cmt_amt = count($list);
     <a href="/bbs/board.php?bo_table=qa">목록보기</a>
 </div>
 <? } else { ?>
-<div class="view-comment font-18 en">
+<div class="view-comment font-18 en" style="line-height:1.5">
 	답변
 	<br>
 	<?
@@ -43,7 +43,7 @@ $cmt_amt = count($list);
 	order by n.bn_id");
 	?>
 	<div class="re">
-		<p><? echo $reply['wr_name']; ?><span><? echo $reply['wr_datetime']; ?></span></p>
+		<p><? echo $reply['wr_name']; ?> <span style="margin-left:10px;"><? echo $reply['wr_datetime']; ?></span></p>
 		<p class="re_text">
 			<textarea id="answer" value="<? echo $reply['wr_content']; ?>" <? echo empty($reply['wr_content']) ? '' : 'disabled'; ?>><? echo $reply['wr_content']; ?></textarea>
 		</p>

@@ -35,14 +35,14 @@ $sql = " select SUM(IF((ct_status = '입금' || ct_status='완료'), 1, 0)) as o
 $ct = sql_fetch($sql);
 
 $uid = md5($od['od_id'].$od['od_time'].$od['od_ip']);
-$sendUrl = G5_SHOP_URL."/orderinquiryview.php?od_id=$od_id&amp;uid=$uid&amp;p=history";
+$sendUrl = G5_SHOP_URL."/orderinquiryview.php?od_id=$od_id&uid=$uid&p=history";
 
 if($type == 'host') {
     $sendUrl = G5_SHOP_URL."/partner/?ap=moim_membership";
 }
 
 if($od['od_cancel_price'] > 0 || $ct['od_count1'] != $ct['od_count2']) {
-    alert("취소할 수 있는 주문이 아닙니다.", G5_SHOP_URL."/orderinquiryview.php?od_id=$od_id&amp;uid=$uid&amp;p=history");
+    alert("취소할 수 있는 주문이 아닙니다.", G5_SHOP_URL."/orderinquiryview.php?od_id=$od_id&uid=$uid&p=history");
 }
 
 $cancel_price = $od['od_cart_price'];
@@ -131,7 +131,7 @@ if($od['od_tno']) {
                 /*********************
                  * 3. 취소 정보 설정 *
                  *********************/
-                $inipay->SetField("type",      "Refund");                        // 고정 (절대 수정 불가)
+                $inipay->SetField("type",      "cancel");                        // 고정 (절대 수정 불가)
                 $inipay->SetField("mid",       $default['de_inicis_mid']);       // 상점아이디
                 /**************************************************************************************************
                  * admin 은 키패스워드 변수명입니다. 수정하시면 안됩니다. 1111의 부분만 수정해서 사용하시기 바랍니다.
@@ -185,7 +185,7 @@ if($od['od_tno']) {
             if($isAllCancel == 1){
                 $res_cd  = $inipay->getResult('ResultCode');
                 $res_msg = $inipay->getResult('ResultMsg');
-    
+
                 if($res_cd != '00') {
                     if($res_cd == '01') {
                         alert('이미 취소된 거래입니다.' . iconv_utf8($res_msg));
@@ -363,5 +363,9 @@ if($type == 'host') {
         sendBfAlimTalk(78, $replaceText, $reserve_type, $reciver, $start_reserve_time);
     }
 }
+if($type == 'host') {
+    alert("예약을 취소하였습니다.", $sendUrl);
+}
+
 goto_url($sendUrl);
 ?>

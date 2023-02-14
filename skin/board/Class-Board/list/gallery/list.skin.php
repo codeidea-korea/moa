@@ -231,7 +231,7 @@ $rate = getStrpointWr2($list[$i]['wr_id']);
 				<?php
 
 				?>
-				<div class="rated">
+				<div class="rated" style="display:none">
 					<?php
 					$cc = $rate['score'];
 					for ($ii = 0; $ii < 5; $ii++) {
@@ -272,7 +272,7 @@ $rate = getStrpointWr2($list[$i]['wr_id']);
 					</span>
 					<!--금액구현-->
 					<!--사용시점구현-->
-					<p>
+					<p style="display:none">
 						<span>당일사용</span>
 					</p>
 					<!--사용시점구현-->

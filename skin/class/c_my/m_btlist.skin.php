@@ -1,5 +1,9 @@
 <?php
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
+
+$partner = array();
+$partner = apms_partner($member['mb_id']);
+
 ?>
 
 <!-- 전체 리스트 -->
@@ -21,12 +25,30 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 </a>
             </li>
             <?php } else { ?>
-            <li>
-                <a href="<?php echo $hostlink;?>">
-                    <p>호스트 <?php echo $host ? '관리모드' : '지원하기'?></p>
-                    <span><img src="../images/r_arrow_o.svg" alt=""></span>
-                </a>
-            </li>
+
+                    <?php
+                        if(!$partner['pt_register']) { // 등록심사중이면
+                            ?>
+                            <li>
+                                <a href="#">
+                                    <p>호스트 심사중</p>
+                                    <span><img src="../images/r_arrow_o.svg" alt=""></span>
+                                </a>
+                            </li>
+                            <?php
+                        }else{
+                            ?>
+                            <li>
+                                <a href="<?php echo $hostlink;?>">
+                                    <p>호스트 <?php echo $host ? '관리모드' : '지원하기'?></p>
+                                    <span><img src="../images/r_arrow_o.svg" alt=""></span>
+                                </a>
+                            </li>
+                            <?php
+                        }
+
+                  ?>
+
             <?php } ?>
             <li style="display:n one;">
                 <a href="<?php echo MOA_DETAIL_URL;?>/d_p_history01.php">

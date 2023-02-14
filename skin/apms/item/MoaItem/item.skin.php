@@ -86,9 +86,9 @@ if($nav_title) {
 	}
 }
 
-if($member['com_cert_yn'] != '1') {
-    alert('마이프로필에서 소속을 인증해주세요.', G5_URL);
-}
+//if($member['com_cert_yn'] != '1') {
+//alert('로그인을 해주세요.', G5_URL);
+//}
 ?>
 <!-- <link rel="stylesheet" href="/dist/typicons.css">
 <link rel="stylesheet" href="/css/q.css"> -->
@@ -102,19 +102,7 @@ if($member['com_cert_yn'] != '1') {
         <div class="swiper-container detail_slide">
             <div class="swiper9">
                 <div class="swiper-wrapper">
-				<!--
-                    <div class="swiper-slide">
 						<?php
-						//echo "as : [".$data['as_thumb']."]<BR>";
-						if ($data['as_thumb']=="" || $data['as_thumb']=="1") {
-
-							$data['as_thumb'] = "/images/moa_logo.svg";
-						}
-						?>
-                        <img src="<?php echo $data['as_thumb']; ?>" alt="" height="298px">
-                    </div>
-					-->
-						<?
 						for ($i=1; $i<$file['count']; $i++) {
 							if($file[$i]['view'] == null || $file[$i]['view'] == '') {
 								continue;
@@ -365,7 +353,7 @@ if($member['com_cert_yn'] != '1') {
 						$addr = $arr_moim_addr[0] . " " . $arr_moim_addr[1];
 						?>
 						<p style="margin-bottom:14px;"><? echo $addr; ?></p>
-						<div id="map" style="width:700px;height:200px;">
+						<div id="map">
 							<!-- 마커 코드 -->
 							<!--
 							<div class="marker_custom" style="top:0;left:0;">
@@ -541,21 +529,28 @@ if($member['com_cert_yn'] != '1') {
             <span class="ex_cost">예상비용</span>
             <div class="cost"><?php $data['wr_4'] > 0 ? number_format($data['wr_4']) . '원 <span>(회당)</span>':  '무료'; ?></div>
         </div>
-		<?php 
-		if($isMine == true) {
-			// 본인이 개최한 모임의 경우
-			?><button type="button" onclick="alert('본인의 모임은 결제하실 수 없습니다.');" disabled><? if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) echo '마감'; else echo '등록중'; ?></button><?
-		} else if($isAleadyJoined == true){
-			// 이미 결제한 모임의 경우
-			?><button type="button" onclick="alert('이미 결제된 모임입니다.');" disabled><? if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) echo '마감'; else echo '결제됨'; ?></button><?
-		} else {
-			if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) { ?>
-				<button type="button" onclick="$('.btn_submit').click();">결제하기</button>
-			<?php } else { ?>
-				<button type="button" onclick="alert('인원이 초과 되었습니다.');" disabled>마감</button>
-			<?php 
-			}
-		}
+		<?php
+        if($data['moa_status'] == 5){
+            //폐강
+        ?>
+            <button type="button" onclick="alert('폐강처리된 모임은 결제하실 수 없습니다.');" disabled>폐강</button>
+        <?php
+        }else{
+            if($isMine == true) {
+                // 본인이 개최한 모임의 경우
+                ?><button type="button" onclick="alert('본인의 모임은 결제하실 수 없습니다.');" disabled><? if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) echo '마감'; else echo '등록중'; ?></button><?
+            } else if($isAleadyJoined == true){
+                // 이미 결제한 모임의 경우
+                ?><button type="button" onclick="alert('이미 결제된 모임입니다.');" disabled><? if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) echo '마감'; else echo '결제됨'; ?></button><?
+            } else {
+                if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) { ?>
+                    <button type="button" onclick="$('.btn_submit').click();">결제하기</button>
+                <?php } else { ?>
+                    <button type="button" onclick="alert('인원이 초과 되었습니다.');" disabled>마감</button>
+                    <?php
+                }
+            }
+        }
 		?>
     </div>
 </div> 
@@ -960,20 +955,27 @@ function report_btn(val){
 						$paymentText = '마감';
 						$paymentStyle = 'disabled';
 					}
-					if($isMine == true) {
-						// 본인이 개최한 모임의 경우
-						?><button type="button" type="button" class="btn btn-lg btn-block application" onclick="alert('본인의 모임은 결제하실 수 없습니다.');" <?= $paymentStyle; ?>><?= $paymentText; ?></button><?
-					} else if($isAleadyJoined == true){
-						// 이미 결제한 모임의 경우
-						?><button type="button" type="button" class="btn btn-lg btn-block application" onclick="alert('이미 결제된 모임입니다.');" <?= $paymentStyle; ?>><?= $paymentText; ?></button><?
-					} else {
-						if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) { ?>
-							<button class="btn btn-primary btn-lg btn-block application"  onclick="document.pressed=this.value;" value="바로구매">결제하기</button>
-						<?php } else { ?>
-							<button type="button" class="btn btn-lg btn-block application" onclick="alert('인원이 초과 되었습니다.');" disabled>마감</button>
-						<?php 
-						} 
-					}
+                    if($data['moa_status'] == 5) {
+                        ?>
+                        <button type="button" class="btn btn-lg btn-block application" onclick="alert('폐강처리된 모임은 결제하실 수 없습니다.');" disabled>폐강</button>
+                        <?php
+                    }else{
+                        if($isMine == true) {
+                            // 본인이 개최한 모임의 경우
+                            ?><button type="button" type="button" class="btn btn-lg btn-block application" onclick="alert('본인의 모임은 결제하실 수 없습니다.');" <?= $paymentStyle; ?>><?= $paymentText; ?></button><?
+                        } else if($isAleadyJoined == true){
+                            // 이미 결제한 모임의 경우
+                            ?><button type="button" type="button" class="btn btn-lg btn-block application" onclick="alert('이미 결제된 모임입니다.');" <?= $paymentStyle; ?>><?= $paymentText; ?></button><?
+                        } else {
+                            if(number_format($data['wr_2']) > getMoimAdmitApplyCountIt($it['it_id'])) { ?>
+                                <button class="btn btn-primary btn-lg btn-block application"  onclick="document.pressed=this.value;" value="바로구매">결제하기</button>
+                            <?php } else { ?>
+                                <button type="button" class="btn btn-lg btn-block application" onclick="alert('인원이 초과 되었습니다.');" disabled>마감</button>
+                                <?php
+                            }
+                        }
+                    }
+
 					?>
 				</div>
 				<?php } ?>
@@ -1013,12 +1015,14 @@ function report_btn(val){
                 var mapContainer = document.getElementById('map'), // 지도를 표시할 div
                     mapOption = {
                         center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-                        level: 3 // 지도의 확대 레벨
+                        draggable: false,
+                        level: 5 // 지도의 확대 레벨
                     };
+
 
                 // 지도를 생성합니다
                 var map = new kakao.maps.Map(mapContainer, mapOption);
-
+                map.setDraggable(true);
                 var mapTypeControl = new kakao.maps.MapTypeControl();
 
                 // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
@@ -1026,8 +1030,8 @@ function report_btn(val){
                 map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 
                 // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
-                var zoomControl = new kakao.maps.ZoomControl();
-                map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+                //var zoomControl = new kakao.maps.ZoomControl();
+                //map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
                 // 주소-좌표 변환 객체를 생성합니다
                 var geocoder = new kakao.maps.services.Geocoder();

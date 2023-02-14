@@ -35,8 +35,10 @@
                 description: "친구 초대를 받아 가입을 해보세요![초대코드: <?php echo $member['invite_code'] ?>]",
                 imageUrl: "",
                 link: {
-                    mobileWebUrl: "<?php echo G5_URL . '/c_login/e-mail01.php?invite_code=' . $member['invite_code']?>",
-                    webUrl: "<?php echo G5_URL . '/c_login/e-mail01.php?invite_code=' . $member['invite_code']?>"
+                    //webUrl: "https://www.moa-friends.com/c_login/e-mail01.php?invite_code=<?php echo $member['invite_code'] ?>",
+					//mobileWebUrl: "https://www.moa-friends.com/c_login/e-mail01.php?invite_code=<?php echo $member['invite_code'] ?>",
+					mobileWebUrl: "<?php echo G5_URL . '/c_login/e-mail01.php?invite_code=' . $member['invite_code']?>",
+					webUrl: "<?php echo G5_URL . '/c_login/e-mail01.php?invite_code=' . $member['invite_code']?>"
                 }
             }
         });
