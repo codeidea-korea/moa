@@ -269,15 +269,12 @@ include_once($skin_path.'/pop.moim-info.php'); //모임신청인원정보
 							if($row['moa_status'] == 6) {
 								?>정산됨<?
 							} else {
-							?>
-							<?
-								if(getStatusValue($list[$i]['moa_status']) == '폐강') {
+								if($list[$i]['manage_acc'] == "0") {
 									?>&nbsp;<?
 								} else {
 									?>
 									<span data-href="#pop-cancel-class" data-wr_id="<?php echo $list[$i]['wr_id']; ?>" class="close_moim pop-inline btn mini span50">폐강</span>
 									<a href="./?ap=moa_write&amp;w=u&amp;wr_id=<?php echo $list[$i]['wr_id']?>" class="btn btn_03 mini">수정</a>
-									<!-- <a href="#" class="btn btn_01 mini">삭제</a> -->
 									<?
 								}
 							}

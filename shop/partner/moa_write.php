@@ -49,6 +49,16 @@ while($row = sql_fetch_array($result)) {
     $write['cls_no'][$i]['id'] = $row['idx'];
     $i++;
 }
+
+$acc_proc = "1";
+if ($i > 0){
+    echo $write['cls_no'][0]['moa_status'];
+    $moim_start_time = strtotime($write['cls_no'][0]['day'] . ' ' . $write['cls_no'][0]['time'] . ':' . $write['cls_no'][0]['minute']);
+    $diff = strtotime(date("Y-m-d h:i:s")) - $moim_start_time;
+    if ($diff > 0) {
+        $acc_proc = "0";
+    }
+}
 if ($w == '') {
     if ($wr_id) {
         alert('글쓰기에는 \$wr_id 값을 사용하지 않습니다.', G5_BBS_URL.'/board.php?bo_table='.$bo_table);

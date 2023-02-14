@@ -661,7 +661,14 @@ if(!$header_skin) {
 	</div>
 
 	<div class="btn_fixed_top">
-		<button type="submit" id="btn_submit" accesskey="s" class="btn_submit btn">작성완료</button>
+		<?php 
+		// 모임 시작후에는 수정, 삭제 불가, 모임 시작 1시간 후에는 참여자 목록 접근 불가 
+		if($w == 'u' && $acc_proc == "0" && $write['moa_status'] != "0") { 
+		}elseif ($write['moa_status']=="5"){
+		}else{
+			echo '<button type="submit" id="btn_submit" accesskey="s" class="btn_submit btn">작성완료</button>';
+		}
+		?>
 		<a href="./?ap=list" class="btn_02 btn">취소</a>
 	</div>
 

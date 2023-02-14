@@ -35,7 +35,7 @@ if($wr_id == '') {
             left join g5_shop_order o on o.od_id = a.od_id ";
     $query .= "WHERE a.it_id != '' and a.wr_id='" . $wr_id . "' ". $exculusiveOutofTimeMoimWhenAdmin . " order by a.idx DESC";
 }
-// echo $query;
+if ($member['mb_no']=="58") { print_r2($query); }
 $result = sql_query($query);
 
 // 현재 호스트인 모임 목록

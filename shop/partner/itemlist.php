@@ -94,7 +94,7 @@ $from_record = ($page - 1) * $rows; // 시작 열을 구함
 
 $sql_order = "order by a.pt_show, a.pt_num desc, a.it_id desc";
 
-$sql  = " SELECT distinct a.*, b.ca_name, c.*,  d.tot, d.min_tot, d.aply 
+$sql  = " SELECT distinct a.*, b.ca_name, c.*,  d.tot, d.min_tot, d.aply, d.day, d.time, d.minute  
            $sql_common group by c.wr_id 
            $sql_order
            limit $from_record, $rows ";
@@ -112,16 +112,19 @@ for ($i=0; $row=sql_fetch_array($result); $i++) {
 	$list[$i]['ca_name2'] = $category[$c2];
 	$list[$i]['ca_name3'] = $category[$c3];
 
-    // 종료된 모임일 경우 1시간 지나면 호스트는 참여자 목록 볼 수 없도록 처리
+    // 모임 시작후에는 수정, 삭제 불가, 모임 시작 1시간 후에는 참여자 목록 접근 불가 
+    $moim_start_time = strtotime($list[$i]['day'] . ' ' . $list[$i]['time'] . ':' . $list[$i]['minute']);
     $list[$i]['apply_acc'] = "1";
-    if ($row['moa_status'] == "5"){
-        $diff = strtotime(date("Y-m-d h:i:s")) - strtotime($row['moa_close_time']);
-        $hours = floor($diff/3600);
-        if ($hour > 0){
-            $list[$i]['apply_acc'] = "0";
-        }
+    $list[$i]['manage_acc'] = "1";
+    $diff = strtotime(date("Y-m-d h:i:s")) - $moim_start_time;
+    if ($diff > 0 && $list[$i]['moa_status'] != "0" ) {
+        $list[$i]['manage_acc'] = "0";
     }
-    
+    if ($list[$i]['moa_status'] == "5") $list[$i]['manage_acc'] = "0";
+    $hours = floor($diff/3600);
+    if ($hour > 0){
+        $list[$i]['apply_acc'] = "0";
+    }
 }
 
 // 페이징

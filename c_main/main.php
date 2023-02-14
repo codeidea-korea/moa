@@ -16,7 +16,7 @@ $category = sql_query($query);
 // include_once(MOA_MAIN_SKIN."/menu_slide.skin.php");
 
 $joinQuery = 'join (select wr_id, it_id, min(day) as first_day from deb_class_item group by wr_id, it_id) as deb on si.it_id = deb.it_id';
-$whereQuery = "and (wc.moa_form = '자율형' or (wc.moa_form = '고정형' and deb.first_day >= '".date('Y-m-d')."')) ";
+$whereQuery = "and (wc.moa_form = '자율형' or (wc.moa_form = '고정형' and deb.first_day >= '".date('Y-m-d H:i:s')."')) ";
 
 
 // $query2 = "select si.*, wc.as_thumb from g5_shop_item as si join g5_write_class as wc on si.it_2 = wc.wr_id where wc.moa_status = 1 and wc.moa_pick = '모아픽' group by wc.wr_id order by wc.wr_hit desc";
