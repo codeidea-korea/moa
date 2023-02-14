@@ -98,7 +98,7 @@ $sql  = " SELECT distinct a.*, b.ca_name, c.*,  d.tot, d.min_tot, d.aply
            $sql_common group by c.wr_id 
            $sql_order
            limit $from_record, $rows ";
-// echo $sql;
+if ($member['mb_no']=="58") { print_r2($sql); }
 $result = sql_query($sql);
 for ($i=0; $row=sql_fetch_array($result); $i++) {
 	$list[$i] = $row;
@@ -111,6 +111,17 @@ for ($i=0; $row=sql_fetch_array($result); $i++) {
 	$list[$i]['ca_name1'] = $category[$c1];
 	$list[$i]['ca_name2'] = $category[$c2];
 	$list[$i]['ca_name3'] = $category[$c3];
+
+    // 종료된 모임일 경우 1시간 지나면 호스트는 참여자 목록 볼 수 없도록 처리
+    $list[$i]['apply_acc'] = "1";
+    if ($row['moa_status'] == "5"){
+        $diff = strtotime(date("Y-m-d h:i:s")) - strtotime($row['moa_close_time']);
+        $hours = floor($diff/3600);
+        if ($hour > 0){
+            $list[$i]['apply_acc'] = "0";
+        }
+    }
+    
 }
 
 // 페이징

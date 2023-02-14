@@ -20,7 +20,7 @@ $msg = array();
 $ap = $_POST['ap'];
 
 if($ap == 'list') {
-    $moa_close_time = $_POST['ca_name'];
+    $moa_close_time = $_POST['moa_close_time'];
     $moa_close_reason = $_POST['ca_name'];
     $wr_id = $_POST['wr_id'];
     

@@ -230,7 +230,7 @@ include_once($skin_path.'/pop.moim-info.php'); //모임신청인원정보
 						<!--
 							<a href="<?php echo $list[$i]['href']; ?>"><b><?php echo $list[$i]['wr_subject'];?></b></a>
 							-->
-							<span data-href="#pop-moim-info" class="aplyInfo pop-inline color-blue" data-wr_id="<?php echo $list[$i]['wr_id']; ?>" data-it_id="<?php echo $list[$i]['it_id']; ?>">
+							<span <?php if ($list[$i]['apply_acc']=="1"){?>data-href="#pop-moim-info"<?php }?> class="aplyInfo pop-inline color-blue" data-wr_id="<?php echo $list[$i]['wr_id']; ?>" data-it_id="<?php echo $list[$i]['it_id']; ?>">
 								<b><?php echo $list[$i]['wr_subject'];?></b>
 							</span>
 
@@ -246,7 +246,7 @@ include_once($skin_path.'/pop.moim-info.php'); //모임신청인원정보
 						</td>
 						<td>
 							<?php $su = countAplyerMoaClass($list[$i]['it_id']); ?>
-							<span data-href="#pop-moim-info" class="aplyInfo pop-inline color-blue" data-it_id="<?php echo $list[$i]['it_id']; ?>">
+							<span <?php if ($list[$i]['apply_acc']=="1"){?>data-href="#pop-moim-info"<?php }?> class="aplyInfo pop-inline color-blue" data-wr_id="<?php echo $list[$i]['wr_id']; ?>">
 							<?php echo $su['cnt'] ? $su['cnt'] : '0'; ?>/<?php echo $list[$i]['tot'];?>
 							</span>
 						</td>

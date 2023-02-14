@@ -10,7 +10,7 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
 
 $where = array();
 
-$sql_common = " from deb_class_aplyer a join g5_member b on a.mb_id = b.mb_id where it_id = '{$it_id}' ";
+$sql_common = " from deb_class_aplyer a join g5_member b on a.mb_id = b.mb_id where a.wr_id = '{$wr_id}' and a.status='예약확정'";
 
 $sql = " select count(*) as cnt " . $sql_common;
 $row = sql_fetch($sql);
@@ -28,6 +28,7 @@ $sql  = " select *
            */
 $sql  = " select *
            $sql_common ";
+//echo $sql;
 $result = sql_query($sql);
 
 $joinUsers = array();
@@ -47,7 +48,8 @@ $subject = sql_fetch($subject_sql);
 
 <div class="tbl-basic outline th-h5">
 	<div class="tbl-header">
-		<?php echo $subject['wr_subject']; ?> <?php echo date('Y-m-d', strtotime($subject['day'])) . ' ' . date('H:i', strtotime($subject['time'])); ?>(<?php echo $subject['cls_no']; ?>회차)
+		<?php echo $subject['wr_subject']; ?> <?php echo date('Y-m-d', strtotime($subject['day'])) . ' ' . date('H:i', strtotime($subject['time'])); ?>
+        <? /*(<?php echo $subject['cls_no']; ?>회차) */ ?>
 	</div>
     <div class="tbl-header">
         모임 참여자 목록<br>

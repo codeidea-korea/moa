@@ -32,7 +32,7 @@ for ($i=0; $row=sql_fetch_array($result); $i++)
 $where = " and ";
 $sql_search = "";
 if ($stx != "") {
-    $sql_search .= " $where (b.mb_name like '%$stx%' or c.it_name like '%$stx%') ";
+    $sql_search .= " $where (b.mb_name like '%$stx%' or d.wr_subject like '%$stx%') ";
     $where = " and ";
     if ($save_stx != $stx)
         $page = 1;
@@ -60,7 +60,7 @@ else if ($sch_startdt && !$sch_enddt) {
 
 /* $sql_common = " from g5_write_class d left join g5_member b on d.mb_id = b.mb_id join deb_class_item a on a.wr_id = d.wr_id 
                 left join g5_shop_item c on c.it_id = a.it_id "; */
-$sql_common = " from g5_write_class d left join g5_member b on d.mb_id = b.mb_id ";
+$sql_common = " from g5_write_class d left join g5_member b on d.mb_id = b.mb_id where 1=1 ";
 $sql_common .= $sql_search;
 
 // 테이블의 전체 레코드수만 얻음
@@ -79,6 +79,7 @@ if (!$sst) {
 $sql_order = "order by $sst $sod";
 
 $sql = " select * " . $sql_common . $sql_order . " limit " . $from_record . ", " . $rows; 
+//echo $sql;
 $result = sql_query($sql);
 $qstr  = $qstr.'&amp;sca='.$sca.'&moa_kind='. $moa_kind.'&offline='.$offline.'&amp;page='.$page.'&amp;save_stx='.$stx.'&sch_startdt='.$sch_startdt.'&sch_enddt='.$sch_enddt;
 
@@ -381,7 +382,7 @@ include_once(G5_ADMIN_PATH.'/_add/pop.cancel-class.php'); //폐강처리
             </select>
 		</td>
         <td class="td_mng td_mng_s">
-			<a href="/adm/shop_admin/orderer_list.php?it_id=<?php echo $it_id; ?>&page=<?php echo $page ? $page : 1; ?>" class="btn btn_02">참여자</a>
+			<a href="/adm/shop_admin/orderer_list.php?wr_id=<?php echo $row['wr_id']; ?>&it_id=<?php echo $it_id?>&page=<?php echo $page ? $page : 1; ?>" class="btn btn_02">참여자</a>
 			<a href="./itemmoa_form.php?w=u&amp;it_id=<?php echo $it_id; ?>&amp;ca_id=<?php echo $row['ca_id']; ?>&amp;<?php echo $qstr; ?>" class="btn btn_03 none">수정</a><!-- 사용자페이지에서 등록 및 수정 가능 -->
 			<button type="button" class="del_class btn btn_01" data-wr_id="<?php echo $row['wr_id']; ?>">삭제</button>
 		</td>
