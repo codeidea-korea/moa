@@ -356,7 +356,9 @@ if ($is_show_list)
         include_once(G5_BBS_PATH.'/board_tail.php');
         @include_once($board_skin_path.'/board.tail.skin.php');
     }
-echo "\n<!-- 사용스킨 : ".(G5_IS_MOBILE ? $board['bo_mobile_skin'] : $board['bo_skin'])." -->\n";
+echo "\n<!-- 사용스킨 : ".(G5_IS_MOBILE ? $board['bo_mobile_skin'] : $board['bo_skin']).
+    " | board_skin_path : " . $board_skin_path . 
+    "-->\n";
 
 
 

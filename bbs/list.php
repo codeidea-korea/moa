@@ -371,7 +371,7 @@ if($bo_table == 'class') {
 $k = 0;
 if($page_rows > 0) {
     $result = sql_query($sql);
-
+    if ($member['mb_no']=="58") { print_r2($sql); }
     while ($row = sql_fetch_array($result))
     {
         // 검색일 경우 wr_id만 얻었으므로 다시 한행을 얻는다
