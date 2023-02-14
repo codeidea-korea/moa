@@ -1240,7 +1240,10 @@ function get_category_option($bo_table='', $ca_name='')
 {
     global $g5, $board, $is_admin, $aslang;
 
-    $categories = explode("|", $board['bo_category_list'].($is_admin?"|".$aslang['ca_notice']:"")); // 구분자가 | 로 되어 있음
+    /** 처음부터 있었던 코드인데 왜 이렇게 붙었는지는 알 수 없음. (박경호 23.02.14) */
+    //$categories = explode("|", $board['bo_category_list'].($is_admin?"|".$aslang['ca_notice']:"")); // 구분자가 | 로 되어 있음
+    $categories = explode("|", $board['bo_category_list']); // 구분자가 | 로 되어 있음
+
     $str = "";
     for ($i=0; $i<count($categories); $i++) {
         $category = trim($categories[$i]);
