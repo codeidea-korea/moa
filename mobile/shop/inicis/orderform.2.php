@@ -25,6 +25,10 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 
 <div id="display_pay_button" class="btn_confirm">
 	<div class="s_content detail_con">
-		<button type="button" class="inactive on" onclick="pay_approval();">결제하기</button>
+		<?if ($is_guest){?>
+			<button type="button" class="inactive on" onclick="alert('로그인 후 결제 가능합니다.');">결제하기</button>
+		<?}else{?>
+			<button type="button" class="inactive on" onclick="pay_approval();">결제하기</button>
+		<?}?>
 	</div>
 </div>
