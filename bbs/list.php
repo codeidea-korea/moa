@@ -116,7 +116,7 @@ if($bo_table == 'class') {
             default: break;
         }
     }
-    $today = date("Y-m-d", time());
+    $today = date("Y-m-d h:i:s", time());
     if($where != "" || $having != "" || $orderBy != ""){
         $write_table = "(
             select 
@@ -136,13 +136,14 @@ if($bo_table == 'class') {
     } else if($bo_table == 'class'){
         $write_table = "(
             select 
-                class.*, item.day
+                class.*, item.day, deb.first_day 
             from g5_write_class as class
                 join g5_shop_item as shop on shop.it_2 = class.wr_id
                 join deb_class_item as item on shop.it_id = item.it_id
+                join (select wr_id, it_id, min(day),concat(day,' ',time,':',minute,':00') as first_day from deb_class_item group by wr_id) as deb on shop.it_id = deb.it_id 
             where 1=1
                 {$where} 
-            and class.moa_form = '자율형' or (class.moa_form = '고정형' and item.day >= '{$today}') 
+            and class.moa_form = '자율형' or (class.moa_form = '고정형' and deb.first_day >= '{$today}') 
             group by class.wr_id)";
     }
 }
