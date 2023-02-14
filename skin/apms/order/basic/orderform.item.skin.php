@@ -152,7 +152,18 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 				<?if ($is_guest){?>
 					<button type="button" class="inactive on mt40" onclick="alert('로그인 후 결제 가능합니다.');">결제하기</button>
 				<?}else{?>
+					<?php 
+					$tsql = "select c.day,c.time,c.minute from g5_shop_cart s left join deb_class_item c on s.it_id=c.it_id where s.od_id='".$od_id."'";
+					$trow = sql_fetch($tsql);
+					$apply_acc = "1";
+					$moim_start_time = strtotime($trow['day'] . ' ' . $trow['time'] . ':' . $trow['minute']);
+    				$diff = strtotime(date("Y-m-d h:i:s")) - $moim_start_time;
+					$hours = floor($diff/3600);
+					if ($hour > 0) $apply_acc = "0";
+					if ($apply_acc == "1"){
+					?>
 					<button type="button" class="inactive on mt40" onclick="forderform_check(this.form);">결제하기</button>
+					<?}?>
 				<?}?>
 			<?php }?>
         </div>

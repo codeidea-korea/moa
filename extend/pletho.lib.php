@@ -1516,7 +1516,8 @@ function checkAbleClassAply($it_id)
             where it_id = '{$it_id}' ";
     $row = sql_fetch($sql);
     //echo nl2br($sql)."<BR>";
-    return ($row['able']) ? true : false;
+    //return ($row['able']) ? true : false;
+    return true;
 }
 
 
