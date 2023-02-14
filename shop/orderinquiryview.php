@@ -430,30 +430,36 @@ from g5_write_class wc
 	where cart.od_id = '{$od_id}' ";
 $classItems = sql_fetch($sql);
 
-include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
-{
-	$replaceText = ' [모아프렌즈] #{이름} 사원 님!
-	#{비고1} 모임을 신청해 주셔서 감사합니다. 
-	모임 참여 시 주의사항을 확인해 보세요.
-	
-	모임 가이드 보기
-	☞#{비고2}';
-	$reserve_type = 'NORMAL';
-	$start_reserve_time = date('Y-m-d H:i:s');
-	$reciver = '{"name":"'.$member['mb_name'].'","mobile":"'.$member['mb_hp'].'","note1":"'.$classItems['wr_subject'].',"note2":"https:\/\/moafriendshost.notion.site\/4d5d50f6bf2e4534b178ce6c13235b3b"}';
-	sendBfAlimTalk(36, $replaceText, $reserve_type, $reciver, $start_reserve_time);
-}
-{
-	$replaceText = ' [모아프렌즈] [게스트 신청 알림]
+/** 카카오 알림톡 게스트 신청 알림 한번만 보내도록 수정 (박경호 23.02.15) */
+if ($od['kakao_alimtalk_36_75'] == 0){
+	include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
+	{
+		$replaceText = ' [모아프렌즈] #{이름} 사원 님!
+		#{비고1} 모임을 신청해 주셔서 감사합니다. 
+		모임 참여 시 주의사항을 확인해 보세요.
+		
+		모임 가이드 보기
+		☞#{비고2}';
+		$reserve_type = 'NORMAL';
+		$start_reserve_time = date('Y-m-d H:i:s');
+		$reciver = '{"name":"'.$member['mb_name'].'","mobile":"'.$member['mb_hp'].'","note1":"'.$classItems['wr_subject'].',"note2":"https:\/\/moafriendshost.notion.site\/4d5d50f6bf2e4534b178ce6c13235b3b"}';
+		sendBfAlimTalk(36, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+	}
+	{
+		$replaceText = ' [모아프렌즈] [게스트 신청 알림]
 
-	호스트 님께서 오픈하신 #{비고1} 모임에 새로운 게스트님이 참여를 신청하셨습니다!
+		호스트 님께서 오픈하신 #{비고1} 모임에 새로운 게스트님이 참여를 신청하셨습니다!
+		
+		[마이페이지] - [호스트관리모드] - [모임 관리] - [모임 신청자관리]에서
+		게스트 님의 예약을 확정지어 주세요!';
+		$reserve_type = 'NORMAL';
+		$start_reserve_time = date('Y-m-d H:i:s');
+		$reciver = '{"name":"'.$classItems['mb_name'].'","mobile":"'.$classItems['mb_hp'].'","note1":"'.$classItems['wr_subject'].'"}';
+		sendBfAlimTalk(75, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+	}
 	
-	[마이페이지] - [호스트관리모드] - [모임 관리] - [모임 신청자관리]에서
-	게스트 님의 예약을 확정지어 주세요!';
-	$reserve_type = 'NORMAL';
-	$start_reserve_time = date('Y-m-d H:i:s');
-	$reciver = '{"name":"'.$classItems['mb_name'].'","mobile":"'.$classItems['mb_hp'].'","note1":"'.$classItems['wr_subject'].'"}';
-	sendBfAlimTalk(75, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+	$ka_sql = "update g5_shop_order set kakao_alimtalk_36_75=1 where od_id=".$od_id;
+	sql_query($ka_sql);
 }
 
 // 주문내역 스킨 불러오기
