@@ -1,0 +1,1 @@
+write_class, wr_id (9,33,54,55,67) ca_name 커리어 > 자기계발로 수정함. 
