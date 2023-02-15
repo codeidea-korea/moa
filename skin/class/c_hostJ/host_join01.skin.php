@@ -49,7 +49,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
         if ($is_member) {
             $partner = array();
             $partner = apms_partner($member['mb_id']);
-            if(!$partner['pt_register']) { // 등록심사중이면
+            if($partner['pt_no'] != "") { // 등록심사중이면
                 ?>
                 <button class="inactive on" style="height:62px;">등록심사 중</button>
                 <?php

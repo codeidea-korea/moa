@@ -571,7 +571,7 @@ $email_msg = $is_exists_email ? '등록할 이메일이 중복되었습니다.�
                     <tr>
                         <th scope="row"><label for="reg_mb_name">이름<strong class="sound_only">필수</strong></label></th>
                         <td>
-                            <input type="text" name="mb_name" value="<?php echo $user_name ? $user_name : $user_nick ?>" id="reg_mb_name" required class="frm_input required" maxlength="100" placeholder="이름을 입력해주세요.">
+                            <input type="text" name="mb_name" value="" id="reg_mb_name" required class="frm_input required" maxlength="100" placeholder="이름을 입력해주세요.">
                         </td>
                     </tr>
                     <!-- } 애플 로그인 Apple 애플 아이디로 로그인 끝 -->
