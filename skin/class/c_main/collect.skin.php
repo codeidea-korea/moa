@@ -74,7 +74,10 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                                 <span class="disp" style="color:red;"><?php echo floor($disp); ?>%</span><span><?php echo number_format($class['wr_4']); ?>원</span>
                             </p>
                         <?php }else{?>
+                            <p class="sale"></p>
+                            <p class="dsc_price">
                                 <span><?php echo number_format($class['wr_4']); ?>원</span>
+                            </p>
                         <?php }?>
 
                     </div>
