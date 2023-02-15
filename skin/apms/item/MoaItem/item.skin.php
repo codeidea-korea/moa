@@ -227,7 +227,7 @@ if($nav_title) {
 			<div class="hpro_img"><?php echo ($result['as_photo']) ? '<img src="/data/member_image/'.substr($data['mb_id'], 0, 2) .'/'. $data['mb_id'].'.gif?v='.time().'" alt="">' : '<span class="no-img"></span>'; //사진 ?></div>
 			<div class="t_area">
 				<?php $cnt = getDashBoardInfo($data['mb_id']); ?>
-				<p><?php echo $result['mb_nick']; ?><span>모임<?php echo $cnt['moa_count']; ?>개</span><span>리뷰<?php echo $cnt['moa_use'] ?>개</span></p>
+				<p><?php echo $result['mb_nick']; ?><span>모임<?php echo $cnt['moa_count']; ?>개</span><?php /*<span>리뷰<?php echo $cnt['moa_use'] ?>개</span>*/?></p>
 				<p class="txt">
 					<?php 
 //					echo $result['mb_signature']; 
