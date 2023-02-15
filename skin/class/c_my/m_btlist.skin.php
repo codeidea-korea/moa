@@ -27,8 +27,7 @@ $partner = apms_partner($member['mb_id']);
             <?php } else { ?>
 
                     <?php
-              echo $partner['pt_register'];
-                        if($partner['pt_no'] != "") { // 등록심사중이면
+                        if($partner['pt_no'] != "" && $member['as_partner']=="0" && $partner['pt_host_status']!='반려') { // 등록심사중이면
                             ?>
                             <li>
                                 <a href="#">
