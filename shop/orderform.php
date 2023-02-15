@@ -203,6 +203,7 @@ for ($i=0; $row=sql_fetch_array($result); $i++) {
 							cp_method = '2' 
 						  ) ";
 		$res = sql_query($sql);
+		if ($member['mb_no']=="58") { print_r2($sql); }
 
 		for($k=0; $cp=sql_fetch_array($res); $k++) {
 			if(is_used_coupon($member['mb_id'], $cp['cp_id'])){ continue; }

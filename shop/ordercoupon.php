@@ -15,6 +15,7 @@ if($price <= 0) { die('상품금액이 0원이므로 쿠폰을 사용할 수 없
 $list = array();
 
 $sql = " select * from {$g5['g5_shop_coupon_table']} where cp_no in (".$_POST['coupon_ids'].")";
+//echo $sql;
 $result = sql_query($sql);
 $count = sql_num_rows($result);
 $z = 0;

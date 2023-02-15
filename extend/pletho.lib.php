@@ -561,9 +561,11 @@ function procWrite2Item($bo_table, $wr_id)
                  where ca_name like '%{$genre}%' 
                  order by length(ca_id) 
                  desc limit 1 ";
+                 //echo $sqlc; exit;
         $rows = sql_fetch($sqlc);
         $ca_id = $rows['ca_id'];
         $vals['ca_id'] = $ca_id;   // 카테고리는 '모임' 기본 
+        $vals['genre'] = $genre;
         $chkit = true;
         if ($list[$i]['it_id']) {
             $vals['it_id'] = $list[$i]['it_id'];
@@ -648,6 +650,7 @@ function procItemAdd($vals)
     }
     $sqlc = "SELECT * from {$g5['g5_shop_category_table']} a
              where ca_name like '%{$genre}%' order by length(ca_id) desc limit 1 ";
+             //echo 'ttt'.$sqlc; exit;
     $rows = sql_fetch($sqlc);
     $ca_id2 = '';
     if ($rows && $rows['ca_id'])

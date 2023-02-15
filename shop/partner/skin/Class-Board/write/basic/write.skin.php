@@ -53,11 +53,11 @@ if(!$header_skin) {
 				<div class="fileContainer">									
 					<div class="inner">
 						<input type="file" name="bf_file[]" id="upload-01" class="multiple" accept="image/*" multiple>
-						<label for="upload-01" class="upload-btn">모임 대표 이미지 업로드</label>
+					
+						<!-- <label for="upload-01" class="upload-btn">모임 대표 이미지 업로드</label> -->
 						<p class="help-block fs13">
 							최소 1장 최대 5장의 이미지를 올려주세요.<br>
 							권장 사이즈 : 가로 1000px * 세로 1000px<br>
-<!--							최소 사이즈 : 가로 600px * 세로 600px <br> -->
 							용량 : 10MB 이하 <br>
 							파일 유형 : JPG, PNG, GIF
 						</p>										
@@ -65,19 +65,17 @@ if(!$header_skin) {
 					<?
 					$today = date("Y-m-d");
 					$fileSeq = 0;
+					/*
 					for($inx = 1; $inx <= 5; $inx++){
 						$fileVal = addslashes(get_text($file[$fileSeq]['bf_content']));
-						?>
+						
 						<input type="file" name="bf_file[]" id="upload-01<?= $inx ?>" <? echo 'data-key="'.$today.''.$inx.'"'; ?> value="<? echo $fileVal; ?>">
 						<input type="hidden" name="bf_file_del[]" id="upload-del-01<?= $inx ?>" <? echo 'data-key="'.$today.''.$inx.'"'; ?>>
-						<?
-					} ?>	
+						
+					} 
+					*/
+					?>	
 					<ul class="upImg-list mt5">
-					<!--
-                        <li>
-							<img src="<?php echo $write['as_thumb'] ?>"><span class="del" <? echo 'data-key="'.date("Y-m-d").$i.'"'; ?>></span>
-						</li>
-						-->
 						<?
 						$uploadKey = 0;
 						if ($w == "u") {
@@ -679,6 +677,7 @@ if(!$header_skin) {
 
 
 <script>
+
 //모임형태값이 바뀔때
 function moim_type1_change(val) {
 	if(val == '온라인') {
@@ -961,40 +960,47 @@ $('.fileContainer input[type="file"]').each(function(index) {
 	$(this).parent().parent().find('.upImg-list').attr('id', 'holder_' + index);
 	var holder = document.getElementById('holder_' + index);
 	var last = $(holder).find('li:last');
-	console.log(inp);
 	upload.onchange = function (e) {
 		e.preventDefault();
-		var file = upload.files[0],
-		reader = new FileReader();
-		reader.onload = function (event) {
-			var img = new Image();
-			img.src = event.target.result;
-			img.onload = function(e) {
-				var imgtag = '<img src="' + reader.result + '">';
-				//holder.children('img').remove();
-//				if(img.width != 1000 || img.height != 1000) {
-				if(img.width != img.height) {
-//					alert('가로/세로는 같은 사이즈여야 합니다.');
-					alert('가로/세로는 같은 사이즈를 권장합니다.');
-					console.log(img.width);
-					console.log(img.height);
-                    $('input[type="file"]').val("");
-					upload.files[0] = null;
-					return;
-				} 
-				const key = new Date().getTime();
-				last.before('<li>' + imgtag + '<span class="del" data-key="'+(key)+'"></span></li>');
-				// upload-011
-				$('#upload-01' + uploadKey).attr('data-key', key);
-				uploadKey = uploadKey + 1;
-				$('.upload-btn').attr('for', 'upload-01'+uploadKey);
-				$('.upload-empty').attr('for', 'upload-021'+uploadKey);
-				
-				$('#upload-del-01'+uploadKey).val('1');
-				deleteImageAction('.del');
-			};
-		};			
-		reader.readAsDataURL(file);			
+		var maxFileCnt = 5;
+		var attFileCnt = document.querySelectorAll('.del').length; 
+		var remainFileCnt = maxFileCnt - attFileCnt;
+		var curFileCnt = e.target.files.length;
+		console.log(curFileCnt)
+		if (curFileCnt > remainFileCnt) {
+			alert("첨부파일은 최대 " + maxFileCnt + "개 까지 첨부 가능합니다.");
+		}
+		for (var i = 0; i < Math.min(curFileCnt, remainFileCnt); i++) {
+			var file = e.target.files[i];
+			reader = new FileReader();
+			reader.onload = function (event) {
+				var img = new Image();
+				img.src = event.target.result;
+				img.onload = function(e) {
+					var imgtag = '<img src="' + img.src + '">';
+					if(img.width != img.height) {
+						alert('가로/세로는 같은 사이즈를 권장합니다.');
+						console.log(img.width);
+						console.log(img.height);
+						$('input[type="file"]').val("");
+						upload.files[0] = null;
+						return;
+					} 
+					const key = new Date().getTime();
+					last.before('<li>' + imgtag + '<span class="del" data-key="'+(key)+'"></span></li>');
+					// upload-011
+					$('#upload-01' + uploadKey).attr('data-key', key);
+					uploadKey = uploadKey + 1;
+					$('.upload-btn').attr('for', 'upload-01'+uploadKey);
+					$('.upload-empty').attr('for', 'upload-021'+uploadKey);
+					
+					$('#upload-del-01'+uploadKey).val('1');
+					deleteImageAction('.del');
+				};
+			};	
+			reader.readAsDataURL(file);		
+		}		
+			
 		return false;		
 	};
 });
@@ -1009,6 +1015,11 @@ function deleteImageAction(el) {
 deleteImageAction('.upImg-list .del');
 $('.upload-btn').attr('for', 'upload-01'+uploadKey);
 $('.upload-empty').attr('for', 'upload-01'+uploadKey);
+
+$(document).on('click', '.upload-empty', function(){
+	$('input[name*=bf_file]').trigger('click')
+})
+
 </script>
 
 
@@ -1132,7 +1143,8 @@ function fwrite_submit(f) {
 	if($w == '') {
 		?>
 		var file = $('#upload-011').val();
-		if(!file || file == '') {
+		//if(!file || file == '') {
+		if($('input[name*=bf_file]').val() == '') {
 			alert("모임 대표이미지를 등록해주세요.");
 			return false;
 		}

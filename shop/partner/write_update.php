@@ -668,7 +668,6 @@ if($ap == 'list') {
                      as_map = '$as_map', 
 					 as_icon = '$as_icon' ";
         sql_query($sql);
-
         $wr_id = sql_insert_id();
 
         // 부모 아이디에 UPDATE
@@ -1081,7 +1080,7 @@ if($ap == 'list') {
         }
         unset($wr_data);
     }
-
+    
 	// 태그등록
     $tag_time = ($w == "u") ? $write['wr_datetime'] : G5_TIME_YMDHIS;
     apms_add_tag('', $as_tag, $tag_time, $bo_table, $wr_id, $mb_id);
@@ -1218,11 +1217,14 @@ if($ap == 'list') {
         $reserve_type = 'NORMAL';
         $start_reserve_time = date('Y-m-d H:i:s');
         $reciver = '{"name":"'.$memb['mb_name'].'","mobile":"'.$memb['mb_hp'].'","note1":"'.$wr_subject.'"}';
-        sendBfAlimTalk(66, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+        if ($member['mb_no'] != "58"){
+            sendBfAlimTalk(66, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+        }
     }
 	
     // 사용자 코드 실행
     @include_once($board_skin_path.'/write_update.skin.php');
+    
 	
     @include_once($board_skin_path.'/write_update.tail.skin.php');
 
