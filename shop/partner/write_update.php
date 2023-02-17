@@ -956,14 +956,20 @@ if($ap == 'list') {
                                 and wr_id = '{$wr_id}'
                                 and bf_no = '{$seq}' ";
                 sql_query($sql);
+                
             }else{
-                $sql = " update {$g5['board_file_table']}
-                        set bf_content = '{$bf_content[$i]}'
-                        where bo_table = '{$bo_table}'
-                                  and wr_id = '{$wr_id}'
-                                  and bf_no = '{$i}' ";
+                if ($write_table == "g5_write_class"){
+
+                }else{
+                    $sql = " update {$g5['board_file_table']}
+                    set bf_content = '{$bf_content[$i]}'
+                    where bo_table = '{$bo_table}'
+                              and wr_id = '{$wr_id}'
+                              and bf_no = '{$i}' ";
+                }
                 sql_query($sql);
             }
+            
         }else{
             $sql = " insert into {$g5['board_file_table']}
                     set bo_table = '{$bo_table}',
@@ -1185,6 +1191,7 @@ if($ap == 'list') {
                 if($is_animated)
                     continue;
 
+                    echo "test1";
                 $org = basename($srcfile);
                 $filepath = dirname($srcfile);
                 $thumb = thumbnail($org, $filepath, $filepath, $board['as_resize'], 0, false);
@@ -1196,10 +1203,12 @@ if($ap == 'list') {
                     @copy($thumbfile, $orgfile);
                     @chmod($orgfile, G5_FILE_PERMISSION);
                     @unlink($thumbfile);
+                    echo "test2";
                 }
             }
         }
     }
+    //exit;
 
     include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
     {

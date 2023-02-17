@@ -79,7 +79,8 @@ if(!$header_skin) {
 						<?
 						$uploadKey = 0;
 						if ($w == "u") {
-							for ($i=1; $i<$file['count']; $i++) {
+							echo $file['count'];
+							for ($i=0; $i<$file['count']; $i++) {
 								if($file[$i]['view'] == null || $file[$i]['view'] == '') {
 									continue;
 								}

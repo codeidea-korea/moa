@@ -103,7 +103,7 @@ if($nav_title) {
             <div class="swiper9">
                 <div class="swiper-wrapper">
 						<?php
-						for ($i=1; $i<$file['count']; $i++) {
+						for ($i=0; $i<$file['count']; $i++) {
 							if($file[$i]['view'] == null || $file[$i]['view'] == '') {
 								continue;
 							}
