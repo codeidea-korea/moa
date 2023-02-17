@@ -6596,17 +6596,19 @@ text-align:left;
     white-space: nowrap;
     text-overflow: ellipsis;
     word-break: break-all;
+    border-bottom: 1px solid #E6E7ED;
+    padding-bottom:10px;
 }
 .common_listarea .sale{
-    margin-top: 10px;
+    margin-top: 5px;
     padding-top: 5px;
-    border-top: 1px solid #E6E7ED;
+    border-top: unset!important;
     font-size: 1.1rem;
     text-decoration-line: line-through;
     color: var(--gray-color2);
 }
 .common_listarea .dsc_price{
-    margin-top: 3px;
+    margin-top: 5px!important;
 }
 .common_listarea span{
     font-size: 1.6rem;

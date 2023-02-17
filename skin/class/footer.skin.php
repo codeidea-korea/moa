@@ -11,13 +11,14 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 	}
 
 	footer .f_con {
-		padding: 0px 30px;
+		padding: 25px 15px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		width: 100%;
 		margin: 0 auto;
 		flex-direction: column;
+		background:#f9f9f9;
 	}
 
 	footer .f_con .f_con_t01 {
@@ -61,9 +62,9 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 		background: #4C4438;
 	}
 
-	.sns_btn {
+	/* .sns_btn {
 		margin-top: 25px;
-	}
+	} */
 
 	.sns_btn a {
 		margin-right: 18px;
@@ -74,6 +75,9 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 		margin-left:0!important;
 		font-size: 1.8rem;
 		width:auto!important;
+		display: flex;
+		align-items: center;
+		gap:13px;
 	}
 
 	.info a {
@@ -85,38 +89,39 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 	.f_con_t02 {
 		color: #4C4438;
 		width: 100%;
-		margin-top:25px;
+		margin-top:10px;
+		display: none;
 	}
+
 
 	.f_con_t02 p:nth-child(1) {
-		font-weight: 700;
-		font-size: 15px;
-	}
-
-	.f_con_t02 p:nth-child(2) {
 		font-weight: 500;
 		font-size: 13px;
 		line-height: 20px;
 		margin-top: 16px;
 	}
 
-	.f_con_t02 p:nth-child(3) {
-		font-weight: 700;
-		font-size: 15px;
-		margin-top: 25px;
+	.sns_btn a img{
+		width:40px;
 	}
-
-	.f_con_t02 p:nth-child(4) {
-		font-weight: 500;
-		font-size: 13px;
-		margin-top: 16px;
+	.last_p{
+		font-size:11px!important;
+		font-weight: normal!important;
+		margin-top:20px;
 	}
-
-	.f_con_t02 p:nth-child(5) {
-		font-weight: 300;
-		font-size: 10px;
-		margin-top: 25px;
-		margin-bottom:25px;
+	.business_info{
+		display: flex;
+		align-items: center;
+		transition: all 0.1s;
+	}
+	.business_info img{
+		width:20px;
+	}
+	.business_info.on img{
+		transform: rotate(180deg);
+	}
+	.info{
+		
 	}
 </style>
 
@@ -134,23 +139,20 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 				<button>SUBSCRIBE</button>
 			</div> -->
 			<div class="sns_btn">
-				<a href="https://www.instagram.com/moa.friends/"><img src="../../moa_mobile/images/bi_instagram.svg" alt=""></a>
-				<a href="https://pf.kakao.com/_QxoLtb"><img src="../../moa_mobile/images/simple-icons_kakaotalk.svg" alt=""></a>
+				<a href="https://www.instagram.com/moa.friends/"><img src="../../moa_mobile/images/bi_instagram.png" alt=""></a>
+				<a href="https://pf.kakao.com/_QxoLtb"><img src="../../moa_mobile/images/simple-icons_kakaotalk.png" alt=""></a>
 			</div>
 			<div class="info">
-				<a href="/c_my/my_terms02.php">이용약관</a> | <a href="/c_my/my_terms01.php">개인정보처리방침</a> | <a href="https://moafriendshost.notion.site/moafriendshost/4d5d50f6bf2e4534b178ce6c13235b3b">이용가이드</a>
+				<a href="/c_my/my_terms02.php">이용약관</a>  <a href="/c_my/my_terms01.php">개인정보처리방침</a>  <a href="https://moafriendshost.notion.site/moafriendshost/4d5d50f6bf2e4534b178ce6c13235b3b">이용가이드</a>  <a href="javascript:;" class="business_info">사업자 정보 <img src="../../moa_mobile/images/chevron-down.svg" alt=""></a>
 			</div>
 		</div>
 		<div class="f_con_t02 aos-init aos-animate" data-aos="fade-left" aos-easing="ease-in-quad" data-aos-delay="300">
-			<p>company</p>
-			<p>(주) 모아프렌즈<br>
-				대표자 : 송정화<br>
-				주소 : 충남 아산시 배방읍 희망로 46번길 45-7 4층 <br>
-				사업자등록번호 : 625-87-02322
+			<p>(주) 모아프렌즈<br><br/>
+				대표자 : 송정화 <br/> 주소 : 충남 아산시 배방읍 희망로 46번길 45-7 4층 <br>
+				사업자등록번호 : 625-87-02322 <br/> 통신판매업신고 : 2022-충남아산-0502<br/>
+				이메일 : moa@moa-friends.com <br/> 호스팅 : Amazon web service
 			</p>
-			<p>HOURS</p>
-			<p>평일 10:00~18:00 (점심시간 12:00~13:00)</p>
-			<p>© Moafriends. all rights reserved</p>
+			<p class="last_p">© Moafriends. all rights reserved</p>
 		</div>
 	</div>
 </footer>
@@ -344,4 +346,10 @@ $(function() {
 	    location.reload();	
 	}, 20000 ); //20초에 갱신
 	*/
+	$(function() {
+		$('.business_info').click(function(){
+			$(this).toggleClass('on');
+			$('.f_con_t02').slideToggle();
+		});
+	});
 </script>

@@ -55,7 +55,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 <?php
             }else{
                 ?>
-                <button class="inactive on" onclick="location.href='/shop/partner/register.php'" style="height:62px;">5분안에 호스트 시작하기</button>
+                <button class="inactive on" onclick="location.href='/shop/partner/register.php'" style="height:62px;">1분안에 호스트 시작하기</button>
                 <?php
             }
 
@@ -64,7 +64,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
         <?php 
         } else { ?>
-        <button class="inactive on" onclick="location.href='<?php echo C_MAIN_PATH;?>/main.php'" style="height:62px;">5분안에 호스트 시작하기</button>
+        <button class="inactive on" onclick="location.href='<?php echo C_MAIN_PATH;?>/main.php'" style="height:62px;">1분안에 호스트 시작하기</button>
         <?php } ?>
         </div>
     </div>
