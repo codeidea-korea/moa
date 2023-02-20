@@ -89,7 +89,8 @@ $result = sql_query($sql);
                     <!--
 					<td><?php echo date('Y-m-d', strtotime($row['day'])) . ' confirm_moa_list.php' . date('H시', strtotime($row['time'])); ?></td>
                     -->
-					<td><?php echo date('Y-m-d', strtotime($row['day'])) . ' ' . date('H시', strtotime($row['time'])); ?></td>
+					<!-- <td><?php echo date('Y-m-d', strtotime($row['day'])) . ' ' . date('H시', strtotime($row['time'])); ?></td> -->
+					<td><?php echo date('Y-m-d', strtotime($row['day'])) . ' ' . $row['time'] .'시'; ?></td>
 					<td><?php echo number_format($row['it_price']); ?>원</td>
 <!--					<td>2022.03.14 ~ 2022.05.14</td>-->
 <!--                    --><?php //$apply_info = countAplyerMoaClass($row['it_id']);
