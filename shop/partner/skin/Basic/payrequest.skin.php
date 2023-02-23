@@ -24,7 +24,7 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 			<?php }?>
 		</div>
 		<div class="flex1">
-			<div class="fs16 color-gray">매출 현황 안내</div>
+			<div class="fs16 color-gray">정산 관련 안내</div>
 			<p class="mt15 fs14 color-gray noto400">
 				<!--
 				1. 모임종료 5일 이후 정산가능 금액으로 변경되며, 정산 신청이 가능합니다.<br>
