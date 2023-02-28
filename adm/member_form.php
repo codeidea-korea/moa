@@ -320,10 +320,10 @@ this.form.mb_intercept_date.value=this.form.mb_intercept_date.defaultValue; }">
         <td scope="row">직군</td>
         <td><input type="text" name="job_group" value="<?php echo $mb['job_group'];?>" id="job_group" class="span250"></td>
     </tr>
-	<tr>
+	<!-- <tr>
         <td scope="row">직무</td>
         <td><input type="text" name="job_kind" value="<?php echo $mb['job_kind'];?>" id="job_kind" class="span250"></td>
-    </tr>
+    </tr> -->
     <tr>
         <td scope="row">인증 여부</td>
         <td>

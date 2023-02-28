@@ -630,12 +630,12 @@ $email_msg = $is_exists_email ? '등록할 이메일이 중복되었습니다.�
                             </select>
                         </td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <th scope="row"><label>직무<strong class="sound_only">필수</strong></label></th>
                         <td>
                             <input type="text" name="job_kind" id="job_kind" class="required form-input" placeholder="직무를 입력해 주세요.">
                         </td>
-                    </tr>
+                    </tr> -->
                     <tr>
                         <th scope="row"><label>직장<strong class="sound_only">필수</strong></label></th>
                         <td>
@@ -810,11 +810,11 @@ $email_msg = $is_exists_email ? '등록할 이메일이 중복되었습니다.�
                 alert('직군을 선택하여 주세요.');
                 return false;
             }
-            var job_kind = $("input[name=job_kind]").val();
-            if (!job_kind || job_kind == '') {
-                alert('직무를 입력하여 주세요.');
-                return false;
-            }
+            // var job_kind = $("input[name=job_kind]").val();
+            // if (!job_kind || job_kind == '') {
+            //     alert('직무를 입력하여 주세요.');
+            //     return false;
+            // }
             var company_name = $("input[name=company_name]").val();
             if (!company_name || company_name == '') {
                 alert('직장을 입력하여 주세요.');

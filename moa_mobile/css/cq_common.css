@@ -42,7 +42,7 @@ h3, .h3 {
     text-transform: uppercase;
 }
 h3:first-child {
-    margin-top: 4px;
+    margin-top: -6px;
 }
 h5, .h5 {
     font-size: 1em;

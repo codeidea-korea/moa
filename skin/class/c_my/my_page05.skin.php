@@ -125,12 +125,12 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                                 </select>
                             </div>
                         </li>
-                        <li>
+                        <!-- <li>
                             <p>직무</p>
                             <div class="info_ent">
                                 <input type="text" name="job_kind" placeholder="직무를 입력해 주세요." value="<?php echo $member['job_kind']; ?>">
                             </div>
-                        </li>
+                        </li> -->
                         <li>
                             <p>직장</p>
                             <div class="info_ent">

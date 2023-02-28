@@ -76,10 +76,10 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                             <?php } ?>
                         </select>
                     </div>
-                    <p>직무</p>
+                    <!-- <p>직무</p>
                     <div class="position_layout">
                         <input type="text" name="job_kind" id="job_kind" class="form-input half_input" size="10" placeholder="직무를 입력해 주세요.">
-                    </div>
+                    </div> -->
                     <p>직장</p>
                     <div class="position_layout">
                         <input type="text" name="company_name" class="form-input half_input" size="10" placeholder="직장을 입력해 주세요.">
@@ -842,11 +842,11 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 alert('직군을 선택하여 주세요.');
                 return false;
             }
-            var job_kind = $("input[name=job_kind]").val();
-            if (!job_kind || job_kind == '') {
-                alert('직무를 입력하여 주세요.');
-                return false;
-            }
+            // var job_kind = $("input[name=job_kind]").val();
+            // if (!job_kind || job_kind == '') {
+            //     alert('직무를 입력하여 주세요.');
+            //     return false;
+            // }
             var company_name = $("input[name=company_name]").val();
             if (!company_name || company_name == '') {
                 alert('직장을 입력하여 주세요.');

@@ -19,12 +19,12 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 </select>
 			</div>
 		</div>
-		<div class="wr-list">
+		<!-- <div class="wr-list">
 			<div class="wr-list-label required">직무</div>
 			<div class="wr-list-con">
 				<input type="text" value="<?php echo $member['job_kind'] ?>" required name="job_kind" />
 			</div>
-		</div>
+		</div> -->
 		<div class="wr-list">
 			<div class="wr-list-label required">직장</div>
 			<div class="wr-list-con">

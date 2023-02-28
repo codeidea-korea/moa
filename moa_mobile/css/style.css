@@ -3738,7 +3738,6 @@ span.d_chip{
 .day_list .thumb_box div img{
     width:100%;
     object-fit: cover;
-    height:168px;
     border-radius: 7px;
 }
 .day_list .lctn{
