@@ -17,7 +17,7 @@ $sql = " select item.*, class.wr_id, class.wr_subject, class.moa_addr1, memb.mb_
         where 1=1 
         and class.moa_status != '폐강' and class.moa_status != '5'
         and class.moa_status != '정산' and class.moa_status != '6'
-        and DATE_SUB(item.day, INTERVAL 1 DAY) = '".$today."'";
+        and DATE_ADD(item.day, INTERVAL 1 DAY) = '".$today."'";
 $result = sql_query($sql);
 //and ord.od_status in ('입금', '완료') 
 while($row = sql_fetch_array($result)) {
@@ -29,12 +29,11 @@ for($inx = 0; $inx < count($tags); $inx++){
     // kakao send
     include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
     {
-        $replaceText = '모임 1일전 호스트 알림';
+        $replaceText = '호스트 후기 알림';
         $reserve_type = 'NORMAL';
         $start_reserve_time = date('Y-m-d H:i:s');
-        $reciver = '{"name":"'.$tags[$inx]["mb_name"].'","mobile":"'.$tags[$inx]["mb_hp"].'","note1":"'.$tags[$inx]['wr_subject'].'"
-                    ,"note2":"'.$tags[$inx]['day'] . ' ' . $tags[$inx]['time'] .':' . $tags[$inx]['minute'].'","note3":"'.$tags[$inx]['moa_addr1'].'"}';
-        sendBfAlimTalk(153, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+        $reciver = '{"name":"'.$tags[$inx]["mb_name"].'","mobile":"'.$tags[$inx]["mb_hp"].'"}';
+        sendBfAlimTalk(156, $replaceText, $reserve_type, $reciver, $start_reserve_time);
     }
 
     $sql = " select plyer.*, memb.mb_name, memb.mb_email, memb.mb_hp
@@ -49,12 +48,11 @@ for($inx = 0; $inx < count($tags); $inx++){
         // kakao send
         include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
         {
-            $replaceText = '모임 1일전 게스트 알림';
+            $replaceText = '게스트 후기 알림';
             $reserve_type = 'NORMAL';
             $start_reserve_time = date('Y-m-d H:i:s');
-            $reciver = '{"name":"'.$row["mb_name"].'","mobile":"'.$row["mb_hp"].'","note1":"'.$tags[$inx]['wr_subject'].'"
-                        ,"note2":"'.$tags[$inx]['day'] . ' ' . $tags[$inx]['time'] .':' . $tags[$inx]['minute'].'","note3":"'.$tags[$inx]['moa_addr1'].'","note4":"'.$tags[$inx]['mb_hp'].'"}';
-            sendBfAlimTalk(120, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+            $reciver = '{"name":"'.$row["mb_name"].'","mobile":"'.$row["mb_hp"].'"}';
+            sendBfAlimTalk(123, $replaceText, $reserve_type, $reciver, $start_reserve_time);
         }
     }
 }

@@ -1285,12 +1285,12 @@ function getFavoriteClass($limit = 10, $ca_name)
             WHERE xx.it_id <> '' LIMIT 0, {$limit}";
             */
     // NOTICE: 2022.08.23. 조회 조건시 모임일자가 모두 지난 모임의 경우 비노출 조건이 추가됨에 따라 해당 조인(g5_shop_item, deb_class_item) 강제
-    $today = date('Y-m-d');
+    $today = date('Y-m-d H:i:s');
     $sql = "SELECT * FROM (
                 SELECT
                     distinct class.*, deb.it_id
                 FROM g5_write_class AS class 
-                JOIN (select wr_id, it_id, min(day) as first_day from deb_class_item group by wr_id) AS deb ON class.wr_id = deb.wr_id 
+                JOIN (select wr_id, it_id, DATE_FORMAT(CONCAT(day,' ',time,':',minute,':00'), '%Y-%m-%d %H:%i:%s') as first_day from deb_class_item group by wr_id) AS deb ON class.wr_id = deb.wr_id 
                 WHERE 1=1 
                 {$common} 
                 AND class.moa_status = 1
@@ -1436,13 +1436,14 @@ function moaMemberProfile($mb_id)
     if ($mb_id) {
         if ($config['cf_use_member_icon']) {
             $mb_dir = substr($mb_id, 0, 2);
-            $icon_file = G5_DATA_PATH . '/member/' . $mb_dir . '/' . $mb_id . '.gif';
+            $icon_file = G5_DATA_PATH . '/member_image/' . $mb_dir . '/' . $mb_id . '.gif';
 
             if (is_file($icon_file)) {
                 $width = $config['cf_member_icon_width'];
                 $height = $config['cf_member_icon_height'];
-                $icon_file_url = G5_DATA_URL . '/member/' . $mb_dir . '/' . $mb_id . '.gif';
-                $tmp_name = '<img src="' . $icon_file_url . '" width="' . $width . '" height="' . $height . '" alt=""> ';
+                $icon_file_url = G5_DATA_URL . '/member_image/' . $mb_dir . '/' . $mb_id . '.gif';
+                //$tmp_name = '<img src="' . $icon_file_url . '" width="' . $width . '" height="' . $height . '" alt=""> ';
+                $tmp_name = '<img src="' . $icon_file_url . '" alt=""> ';
             } else {
                 $tmp_name = '<img src="' . $tmp_name . '">';
             }
@@ -1566,7 +1567,7 @@ function getAplyerMoaClass($wr_id) {
             FROM g5_member b join deb_class_aplyer a
             on b.mb_id = a.mb_id join deb_class_item c
             on a.it_id = c.it_id
-            WHERE a.wr_id = '{$wr_id}'
+            WHERE a.wr_id = '{$wr_id}' AND DATE_ADD(DATE_FORMAT(CONCAT(c.day, ' ' , c.time,':', c.minute), '%Y-%m-%d %H:%i:%s'), INTERVAL 1 HOUR) >= NOW()
      ";
 
     $result = sql_query($sql);
@@ -1613,7 +1614,13 @@ function countAplyerMoaClass($it_id, $status = '예약확정') {
             group by a.it_id  
             ";
 
-    $sql = "select count(idx) as cnt from deb_class_aplyer where wr_id=".$tmp_row['wr_id']." and status='예약확정'";
+    $sql = "select count(a.idx) as cnt from 
+            deb_class_aplyer a
+            join deb_class_item c on a.it_id = c.it_id 
+            where 
+                a.wr_id=".$tmp_row['wr_id']." 
+                and a.status='예약확정'
+                and DATE_ADD(DATE_FORMAT(CONCAT(c.day, ' ' , c.time,':', c.minute), '%Y-%m-%d %H:%i:%s'), INTERVAL 1 HOUR) >= NOW()";
     $row = sql_fetch($sql);
     return $row;
 

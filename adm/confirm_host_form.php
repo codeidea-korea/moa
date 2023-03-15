@@ -148,7 +148,7 @@ if($_POST['pt_register']) { // 승인정보가 있을 경우
             $reserve_type = 'NORMAL';
             $start_reserve_time = date('Y-m-d H:i:s');
             $reciver = '{"name":"'.$memb['mb_name'].'","mobile":"'.$memb['mb_hp'].'","note1":"https://moafriendshost.notion.site/0ce44224a51746d2be52e2c05a2303ac"}';
-            sendBfAlimTalk(60, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+            sendBfAlimTalk(132, $replaceText, $reserve_type, $reciver, $start_reserve_time);
         }
     }
 

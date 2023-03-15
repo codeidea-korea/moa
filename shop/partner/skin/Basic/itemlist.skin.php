@@ -404,7 +404,7 @@ $('.aplyInfo').click(function(){
 				applyInfoHtml += '<td>' + data.moims[i].it_id + '</td>';
 				applyInfoHtml += '<td>' + data.moims[i].it_4 + '</td>';
 				if (i == 0){
-					applyInfoHtml += '<td rowspan=' + data.moims.length + '>' + data.moims[i].wr_2 + '/' + data.moims[i].tot + '</td>';
+					applyInfoHtml += '<td rowspan=' + data.moims.length + '>' + data.moims[i].wr_1 + '/' + data.moims[i].wr_2 + '</td>';
 				}
 				applyInfoHtml += '</tr>';
 			}

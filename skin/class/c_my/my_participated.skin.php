@@ -52,8 +52,8 @@ while($row = sql_fetch_array($result)) {
                                 </div>
                             </div>
                             <div class="pymdt2">
-                                <a href="/shop/item.php?it_id=<?php echo $row['it_id']; ?>">모임 상세 내역 보기</a>
-                                <a href="/c_detail/d_review.php?it_id=<?php echo $row['it_id'] ?>">후기작성하기</a>
+                                <a href="/shop/item.php?it_id=<?php echo $row['it_id']; ?>" style="text-align:center">모임 상세 내역 보기</a>
+                                <a href="/c_detail/d_review.php?it_id=<?php echo $row['it_id'] ?>" style="display:none">후기작성하기</a>
                             </div>
                         </li>
                 <?php }
@@ -87,8 +87,8 @@ while($row = sql_fetch_array($result)) {
                                 </div>
                             </div>
                             <div class="pymdt2">
-                                <a href="/shop/item.php?it_id=<?php echo $row['it_id']; ?>">모임 상세 내역 보기</a>
-                                <a href="/c_detail/d_review.php?it_id=<?php echo $row['it_id'] ?>">후기작성하기</a>
+                                <a href="/shop/item.php?it_id=<?php echo $row['it_id']; ?>" style="text-align:center">모임 상세 내역 보기</a>
+                                <a href="/c_detail/d_review.php?it_id=<?php echo $row['it_id'] ?>" style="display:none">후기작성하기</a>
                             </div>
                         </li>
                     <?php }

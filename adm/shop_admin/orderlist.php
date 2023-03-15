@@ -29,7 +29,7 @@ $doc = strip_tags($doc);
 $sort1 = in_array($sort1, array('od_id', 'od_cart_price', 'od_receipt_price', 'od_cancel_price', 'od_misu', 'od_cash')) ? $sort1 : '';
 $sort2 = in_array($sort2, array('desc', 'asc')) ? $sort2 : 'desc';
 $sel_field = get_search_string($sel_field);
-if( !in_array($sel_field, array('od_id', 'mb_id', 'od_name', 'od_tel', 'od_hp', 'od_b_name', 'od_b_tel', 'od_b_hp', 'od_deposit_name', 'od_invoice')) ){   //검색할 필드 대상이 아니면 값을 제거
+if( !in_array($sel_field, array('a.od_id', 'a.mb_id', 'a.od_name', 'a.od_tel', 'a.od_hp', 'od_b_name', 'od_b_tel', 'od_b_hp', 'od_deposit_name', 'od_invoice', 'c.it_name')) ){   //검색할 필드 대상이 아니면 값을 제거
     $sel_field = '';
 }
 $od_status = get_search_string($od_status);
@@ -190,12 +190,12 @@ if(!sql_query(" select mb_id from {$g5['g5_shop_order_delete_table']} limit 1 ",
 
 <label for="sel_field" class="sound_only">검색대상</label>
 <select name="sel_field" id="sel_field">
-    <option value="od_id" <?php echo get_selected($sel_field, 'od_id'); ?>>주문번호</option>
-    <option value="mb_id" <?php echo get_selected($sel_field, 'mb_id'); ?>>사용자 ID</option>
-    <option value="od_name" <?php echo get_selected($sel_field, 'od_name'); ?>>사용자</option>
-    <!-- <option value="od_tel" <?php echo get_selected($sel_field, 'od_tel'); ?>>사용자전화</option> -->
-    <option value="od_hp" <?php echo get_selected($sel_field, 'od_hp'); ?>>사용자핸드폰</option>
-   
+    <option value="a.od_id" <?php echo get_selected($sel_field, 'a.od_id'); ?>>주문번호</option>
+    <option value="a.mb_id" <?php echo get_selected($sel_field, 'a.mb_id'); ?>>사용자 ID</option>
+    <option value="a.od_name" <?php echo get_selected($sel_field, 'a.od_name'); ?>>사용자</option>
+    <!-- <option value="a.od_tel" <?php echo get_selected($sel_field, 'a.od_tel'); ?>>사용자전화</option> -->
+    <option value="a.od_hp" <?php echo get_selected($sel_field, 'a.od_hp'); ?>>사용자핸드폰</option>
+    <option value="c.it_name" <?php echo get_selected($sel_field, 'c.it_name'); ?>>모임명</option>
 </select>
 
 <label for="search" class="sound_only">검색어<strong class="sound_only"> 필수</strong></label>

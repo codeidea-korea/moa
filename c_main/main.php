@@ -15,7 +15,7 @@ $query = "select * from g5_shop_category where ca_id LIKE '10%' order by ca_orde
 $category = sql_query($query);
 // include_once(MOA_MAIN_SKIN."/menu_slide.skin.php");
 
-$joinQuery = "join (select wr_id, it_id, min(day), concat(day,' ',time,':',minute,':00') as first_day from deb_class_item group by wr_id, it_id) as deb on si.it_id = deb.it_id";
+$joinQuery = "join (select wr_id, it_id, min(day), DATE_FORMAT(CONCAT(day,' ',time,':',minute,':00'), '%Y-%m-%d %H:%i:%s') as first_day from deb_class_item group by wr_id, it_id) as deb on si.it_id = deb.it_id";
 $whereQuery = "and (wc.moa_form = '자율형' or (wc.moa_form = '고정형' and deb.first_day >= '".date('Y-m-d H:i:s')."')) ";
 
 

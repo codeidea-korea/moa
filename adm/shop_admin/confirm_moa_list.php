@@ -11,10 +11,13 @@ auth_check($auth[$sub_menu], 'r');
 //     $stx2 = $days;
 
 
-$sql_common = " FROM deb_class_item a join g5_shop_item b on a.it_id = b.it_id join g5_write_class c on b.it_2 = c.wr_id 
-               ";
+$sql_common = " FROM deb_class_item a join g5_shop_item b on a.it_id = b.it_id join g5_write_class c on b.it_2 = c.wr_id ";
 
-$sql_order = " group by c.wr_id order by a.it_id desc ";
+$sql_order_post = "a.it_id desc";
+if($_POST['sql_order'] != ''){
+    $sql_order_post = $_POST['sql_order'];
+}
+$sql_order = " group by c.wr_id order by ".$sql_order_post;
 
 $sql = " select count(*) as cnt {$sql_common} {$sql_order} ";
 $row = sql_fetch($sql);
@@ -38,12 +41,19 @@ $sql = " select * {$sql_common} {$sql_order} limit {$from_record}, {$rows} ";
 $result = sql_query($sql);
 ?>
 
-
+<style>
+    .sort{
+        border-radius: 2px;
+        vertical-align: bottom;
+        width:15px;
+    }
+</style>
 
 <div class="boxContainer">
 
-	<form name="" action="" method="post">
-	<div class="tbl-basic outline th-h2 td-h3 odd line-nth-2">
+	<form id="confirm_form" name="" action="/adm/shop_admin/confirm_moa_list.php" method="post">
+    <input type="hidden" name="sql_order" id="sql_order" value="a.it_id desc"/>
+	<div class="tbl-basic outline th-h2 td-h3 odd line-nth-2" style="font-size:0.9em;">
 		<table>
 			<colgroup>
 				<col width="60">
@@ -68,8 +78,18 @@ $result = sql_query($sql);
 					<th>모임명</th>
 					<th>모임 형태 1</th>					
 					<th>모임 형태 2</th>
-					<th>모임 스케줄 등록일</th>
-					<th>가격</th>
+                    <th scope="col">
+                        <div style="display:flex; align-items:center; gap:5px;">
+                            모임 스케줄 등록일
+                            <div class="sort" data-sortName="a.day asc, a.time asc" style="cursor:pointer">▲</div> <div class="sort" data-sortName="a.day desc, a.time desc" style="cursor:pointer">▼</div>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div style="display:flex; align-items:center; gap:5px;">
+                            가격
+                            <div class="sort" data-sortName="b.it_price asc" style="cursor:pointer">▲</div> <div class="sort" data-sortName="b.it_price desc" style="cursor:pointer">▼</div>
+                        </div>
+                    </th>
 <!--					<th>진행 기간</th>-->
 <!--					<th>모집 인원<br><sub>(최소/최대)</sub></th>-->
 					<th>승인 여부</th>
@@ -187,6 +207,12 @@ function fmemberlist_submit(f)
     return true;
 }
 
+$('.sort').click(function(){
+    const sortName = $(this).data('sortname');
+    $("#sql_order").val(sortName);
+    $("#confirm_form").submit();
+})
+
 $('#all_approval_btn').click(function(){
     if(confirm('상태를 바꾸시겠습니까?')) {
         $.ajax({
@@ -195,7 +221,6 @@ $('#all_approval_btn').click(function(){
             data: {'status': 1},
             cache: false,
             async: false,
-            dataType: "json",
             success: function (data) {
                 alert('상태가 변경되었습니다.');
                 location.reload();
@@ -219,7 +244,6 @@ $('#refuse_btn').click(function(){
             data: {'status': 2, 'wr_id': arr},
             cache: false,
             async: false,
-            dataType: "json",
             success: function (data) {
                 alert('상태가 변경되었습니다.');
                 location.reload();
@@ -243,7 +267,6 @@ $('#approval_btn').click(function(){
             data: {'status': 1, 'wr_id': arr},
             cache: false,
             async: false,
-            dataType: "json",
             success: function (data) {
                 alert('상태가 변경되었습니다.');
                 location.reload();
@@ -267,8 +290,7 @@ $('.moa_status').change(function(){
                 data: {'status': $(this).val(), 'wr_id': $(this).data('wr_id') },
                 cache: false,
                 async: false,
-                dataType: "json",
-                success: function (data) {
+                success: function(data) {
                     alert('상태가 변경되었습니다.');
                     location.reload();
                 }
@@ -278,7 +300,14 @@ $('.moa_status').change(function(){
         }
     }
 });
+
+var ajax_status = false;
+
 function reject(){
+    if(ajax_status){
+        return false;
+    }
+
     let refuse_msg = $('#refuse_msg').val();
     if(refuse_msg == '') {
         alert('반려 사유를 입력해주세요.');
@@ -286,16 +315,18 @@ function reject(){
         return false;
     }
 
+    ajax_status = true;
+
     $.ajax({
         type: "POST",
         url: '/ajax/changeStatus.php',
         data: {'status': $(target).val(), 'wr_id': $(target).data('wr_id'), 'refuse_msg': refuse_msg },
         cache: false,
         async: false,
-        dataType: "json",
-        success: function (data) {
-                alert('상태가 변경되었습니다.');
-                location.reload();
+        success: function(data) {
+            ajax_status = false;
+            alert('상태가 변경되었습니다.');
+            location.reload();
         }
     });
 }

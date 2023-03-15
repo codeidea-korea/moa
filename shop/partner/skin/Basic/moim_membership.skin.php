@@ -118,10 +118,13 @@ include_once($skin_path.'/pop.cancel-reservation.php'); //예약취소
 								취소
 							<?php }else if (empty($row['od_id']) || $row['od_id'] == ''){?>
 								데이터 오류 (주문번호 누락)
-							<?php }else{?>
-								<span data-href="#pop-confirm-reservation" class="pop-inline btn small" data-idx="<?php echo $row['idx']; ?>">예약확정</span>
-								
-								<? if(strtotime($row['aplydate']) > strtotime(date("Y-m-d") . " +1 days")) { ?>
+							<?php }else{
+									if($row['dca_cnt'] < $row['wr_2']){
+								?>
+										<span data-href="#pop-confirm-reservation" class="pop-inline btn small" data-idx="<?php echo $row['idx']; ?>">예약확정</span>
+								<? 
+									}
+									if(strtotime($row['aplydate']) > strtotime(date("Y-m-d") . " +1 days")) { ?>
 								<span data-href="#pop-cancel-reservation" class="pop-inline btn small" onclick="setCancelPup('<?php echo $row['od_id']; ?>', '<?php echo $row['uid']; ?>')" data-orderid="<?php echo $row['od_id']; ?>" data-userid="<?php echo $row['uid']; ?>">취소</span>
 								<? } ?>
 							<?php }?>

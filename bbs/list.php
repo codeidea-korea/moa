@@ -131,7 +131,7 @@ if($bo_table == 'class') {
                 left join (select count(*) cnt_reply, it_id from g5_shop_item_use group by it_id) as reply on reply.it_id = shop.it_id
             where 1=1
                 {$where} 
-            and class.moa_form = '자율형' or (class.moa_form = '고정형' and item.day >= '{$today}') 
+            and class.moa_form = '자율형' or (class.moa_form = '고정형' and DATE_FORMAT(CONCAT(item.day, ' ' , item.time, ':' , item.minute, ':00'), '%Y-%m-%d %h:%i:%s') >= '{$today}')
             group by class.wr_id)";
     } else if($bo_table == 'class'){
         $write_table = "(
@@ -143,7 +143,7 @@ if($bo_table == 'class') {
                 join (select wr_id, it_id, min(day),concat(day,' ',time,':',minute,':00') as first_day from deb_class_item group by wr_id) as deb on shop.it_id = deb.it_id 
             where 1=1
                 {$where} 
-            and class.moa_form = '자율형' or (class.moa_form = '고정형' and deb.first_day >= '{$today}') 
+            and class.moa_form = '자율형' or (class.moa_form = '고정형' and DATE_FORMAT(CONCAT(item.day, ' ' , item.time, ':' , item.minute, ':00'), '%Y-%m-%d %h:%i:%s') >= '{$today}')
             group by class.wr_id)";
     }
 }

@@ -517,7 +517,7 @@ while ($row = sql_fetch_array($item_use)) {
     $item[$i]['mb_img'] = moaMemberProfile($row['mb_id']);
     $i++;
 }
-$qna = sql_query("select * from g5_shop_item_qa where it_id = '{$it_id}' order by it_id desc");
+$qna = sql_query("select siq.*,me.mb_nick from g5_shop_item_qa as siq LEFT JOIN g5_member me ON siq.mb_id = me.mb_id where siq.it_id = '{$it_id}' order by siq.it_id desc");
 //echo "select * from g5_shop_item_qa where it_id = '{$it_id}' order by it_id desc";
 
 

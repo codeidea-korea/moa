@@ -385,7 +385,8 @@ $is_use_partner = (defined('USE_PARTNER') && USE_PARTNER) ? true : false;
 
     <?php
     // 신청금액 = 상품구입금액 + 배송비 + 추가배송비
-    $amount['order'] = $od['od_cart_price'] + $od['od_send_cost'] + $od['od_send_cost2'];
+    //$amount['order'] = $od['od_cart_price'] + $od['od_send_cost'] + $od['od_send_cost2'];
+    $amount['order'] = $od['od_cart_price'];
 
     // 입금액 = 결제금액 + 포인트
     $amount['receipt'] = $od['od_receipt_price'] + $od['od_receipt_point'];

@@ -222,6 +222,21 @@ if($ap == 'list') {
                 include_once(G5_LIB_PATH.'/send_sms.lib.php');
                 $response = sendSMS($oders[$inx]['mb_hp'], $title, $message, $wr_subject);
             }
+            // kakao send
+            {
+                include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
+                $replaceText = '모아 모임 취소
+
+                신청하신 #{비고1} 모임이 호스트님의 사정으로 취소되었어요. 해당 모임에 대한 회원님의 결제 내역은 자동으로 전액 환불 처리됩니다.
+                
+                아쉽지만 다음에 더 즐거운 모아에서 다시 만나요.
+                
+                환불은 카드사에 따라 다를 수 있으며, 영업일 기준 3~7일이 소요될 수 있습니다.';
+                $reserve_type = 'NORMAL';
+                $start_reserve_time = date('Y-m-d H:i:s');
+                $reciver = '{"mobile":"'.$oders[$inx]['mb_hp'].'","note1":"'.$wr_subject.'"}';
+                sendBfAlimTalk(117, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+            }
         }
     }
 
@@ -239,7 +254,7 @@ if($ap == 'list') {
     $status = $_POST['status'];
     $idx = $_POST['idx'];
     
-    $sql = "select member.*, class.wr_subject, class.moa_addr1, player.aplydate, player.aplytime, class.moa_status, player.it_id  
+    $sql = "select member.*, class.wr_subject, class.moa_addr1, class.as_thumb, player.aplydate, player.aplytime, class.moa_status, player.it_id  
             from deb_class_aplyer player, g5_member member, g5_write_class class   
             where player.idx = '{$idx}' and member.mb_id = player.mb_id and class.wr_id = player.wr_id ";
     $row = sql_fetch($sql);
@@ -302,11 +317,13 @@ if($ap == 'list') {
         장소: #{비고3}';
         $reserve_type = 'NORMAL';
         $start_reserve_time = date('Y-m-d H:i:s');
-        $reciver = '{"name":"'.$row['mb_name'].'","mobile":"'.$row['mb_hp'].'",
-            "note1":"'.$row['mb_name'].'",
-            "note2":"'.$row['aplydate'] . ' '. $row['aplytime'].'",
-            "note3":"'.$row['moa_addr1'].'"}';
-        sendBfAlimTalk(39, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+        // $reciver = '{"name":"'.$row['mb_name'].'","mobile":"'.$row['mb_hp'].'",
+        //     "note1":"'.$row['mb_name'].'",
+        //     "note2":"'.$row['aplydate'] . ' '. $row['aplytime'].'",
+        //     "note3":"'.$row['moa_addr1'].'"}';
+        // sendBfAlimTalk(39, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+        $reciver = '{"name":"'.$row['mb_name'].'","mobile":"'.$row['mb_hp'].'","note1":"'.$wr_subject.'"}';
+        sendBfAlimTalk(108, $replaceText, $reserve_type, $reciver, $start_reserve_time);
     }
 
     $sql = " update deb_class_aplyer
@@ -821,6 +838,26 @@ if($ap == 'list') {
 	// 가변 파일 업로드
     $file_upload_msg = '';
     $upload = array();
+    // 삭제에 체크가 되어있다면 파일을 삭제합니다.
+    for ($i=0; $i<count($_POST['bf_file_del']); $i++) {
+        if (isset($_POST['bf_file_del'][$i]) && $_POST['bf_file_del'][$i] != '') {
+
+            $row = sql_fetch(" select bf_file from {$g5['board_file_table']} where bo_table = '{$bo_table}' and wr_id = '{$wr_id}' and bf_no = '".$_POST['bf_file_del'][$i]."' ");
+            
+            @unlink(G5_DATA_PATH.'/file/'.$bo_table.'/'.$row['bf_file']);
+            // 썸네일삭제
+            if(preg_match("/\.({$config['cf_image_extension']})$/i", $row['bf_file'])) {
+                delete_board_thumbnail($bo_table, $row['bf_file']);
+            }
+
+            $sql = " delete from {$g5['board_file_table']} 
+                        where bo_table = '{$bo_table}'
+                                and wr_id = '{$wr_id}'
+                                and bf_no = '".$_POST['bf_file_del'][$i]."' ";
+            sql_query($sql);
+        }
+    }
+
     for ($i=0; $i<count($_FILES['bf_file']['name']); $i++) {
         $upload[$i]['file']     = '';
         $upload[$i]['source']   = '';
@@ -829,21 +866,6 @@ if($ap == 'list') {
         $upload[$i]['image'][0] = '';
         $upload[$i]['image'][1] = '';
         $upload[$i]['image'][2] = '';
-
-        // 삭제에 체크가 되어있다면 파일을 삭제합니다.
-        if (isset($_POST['bf_file_del'][$i]) && $_POST['bf_file_del'][$i]) {
-            $upload[$i]['del_check'] = true;
-
-            $seq = ($i+1) % 5;
-            $row = sql_fetch(" select bf_file from {$g5['board_file_table']} where bo_table = '{$bo_table}' and wr_id = '{$wr_id}' and bf_no = '{$seq}' ");
-            @unlink(G5_DATA_PATH.'/file/'.$bo_table.'/'.$row['bf_file']);
-            // 썸네일삭제
-            if(preg_match("/\.({$config['cf_image_extension']})$/i", $row['bf_file'])) {
-                delete_board_thumbnail($bo_table, $row['bf_file']);
-            }
-        }
-        else
-            $upload[$i]['del_check'] = false;
         
         $tmp_file  = $_FILES['bf_file']['tmp_name'][$i];
         $filesize  = $_FILES['bf_file']['size'][$i];
@@ -924,12 +946,17 @@ if($ap == 'list') {
 	// 나중에 테이블에 저장하는 이유는 $wr_id 값을 저장해야 하기 때문입니다.
     for ($i=0; $i<count($upload); $i++)
     {
-        if (!get_magic_quotes_gpc()) {
-            $upload[$i]['source'] = addslashes($upload[$i]['source']);
-        }
+        //php8.0 버전부터 get_magic_quotes_gpc 함수가 없어져서 주석처리 하였음
+        // if (!get_magic_quotes_gpc()) {
+        //     $upload[$i]['source'] = addslashes($upload[$i]['source']);
+        // }
+
+        $upload[$i]['source'] = addslashes($upload[$i]['source']);
 
         $row = sql_fetch(" select count(*) as cnt from {$g5['board_file_table']} where bo_table = '{$bo_table}' and wr_id = '{$wr_id}' and bf_no = '{$i}' ");
-        if ($row['cnt']){
+        //삭제 후 새로 넣는게 교체 플로우 현재 이 플로우는 필요없음
+        //if ($row['cnt']){
+        if (0){
             // 삭제에 체크가 있거나 파일이 있다면 업데이트를 합니다.
             // 그렇지 않다면 내용만 업데이트 합니다.
 
@@ -971,22 +998,33 @@ if($ap == 'list') {
             }
             
         }else{
-            $sql = " insert into {$g5['board_file_table']}
-                    set bo_table = '{$bo_table}',
-                         wr_id = '{$wr_id}',
-                         bf_no = '{$i}',
-                         bf_source = '{$upload[$i]['source']}',
-                         bf_file = '{$upload[$i]['file']}',
-                         bf_content = '{$bf_content[$i]}',
-                         bf_download = 0,
-                         bf_filesize = '{$upload[$i]['filesize']}',
-                         bf_width = '{$upload[$i]['image']['0']}',
-                         bf_height = '{$upload[$i]['image']['1']}',
-                         bf_type = '{$upload[$i]['image']['2']}',
-                         bf_datetime = '".G5_TIME_YMDHIS."' ";
-            sql_query($sql);
+            if ($upload[$i]['file']){
+                $sql = " insert into {$g5['board_file_table']}
+                        set bo_table = '{$bo_table}',
+                            wr_id = '{$wr_id}',
+                            bf_no = '{$i}',
+                            bf_source = '{$upload[$i]['source']}',
+                            bf_file = '{$upload[$i]['file']}',
+                            bf_content = '{$bf_content[$i]}',
+                            bf_download = 0,
+                            bf_filesize = '{$upload[$i]['filesize']}',
+                            bf_width = '{$upload[$i]['image']['0']}',
+                            bf_height = '{$upload[$i]['image']['1']}',
+                            bf_type = '{$upload[$i]['image']['2']}',
+                            bf_datetime = '".G5_TIME_YMDHIS."' ";
+                sql_query($sql);
+            }
         }
     }
+
+    // 업로드된 파일 내용에서 개수대로 순서를 다시 정렬
+    $sql = "update {$g5['board_file_table']} as bft,
+            (SELECT @rownum :=-1) AS r
+            set bft.bf_no=@rownum:= @rownum + 1
+            where bft.bo_table = '{$bo_table}'
+            and bft.wr_id = '{$wr_id}'
+            order by bft.bf_no;";
+    sql_query($sql);
 
 	// 업로드된 파일 내용에서 가장 큰 번호를 얻어 거꾸로 확인해 가면서
 	// 파일 정보가 없다면 테이블의 내용을 삭제합니다.

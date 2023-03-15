@@ -74,9 +74,18 @@ if($player['status'] == '예약확정') {
     } else {
         $targetTime = strtotime($player['aplydate']);
         echo $targetTime . '<br>';
-        if($targetTime < strtotime('-6 days')) {
+        // if($targetTime < strtotime('-6 days')) {
+        //     $remain_price = 0;
+        // } else if($targetTime > strtotime('-1 days')) {
+        //     $remain_price = 70 * ((int)$cancel_price) / 100;
+        //     $cancel_price = ((int)$cancel_price) - ((int) $remain_price);
+        // } else {
+        //     alert("취소할 수 있는 주문이 아닙니다. (모임 전일부터 취소/환불이 불가능합니다.) ", $sendUrl);
+        // }
+
+        if(strtotime($today) < strtotime($targetTime.' -6 days')) {
             $remain_price = 0;
-        } else if($targetTime > strtotime('-1 days')) {
+        } else if(strtotime($today) > strtotime($targetTime.' -6 days') && strtotime($today) < strtotime($targetTime.' -1 days')) {
             $remain_price = 70 * ((int)$cancel_price) / 100;
             $cancel_price = ((int)$cancel_price) - ((int) $remain_price);
         } else {
@@ -299,6 +308,23 @@ if($type == 'host') {
     $classItems = sql_fetch($sql);
 
     {
+        $sql = "select * from g5_member where mb_id = '{$mb_id}' ";
+        $mem = sql_fetch($sql);
+
+        $replaceText = '모임 취소 알림
+
+        호스트 님의 #{비고1} 모임의 진행이 취소되었습니다. 
+        신청자 게스트 분들께는 모임 취소 안내가 별도 발송될 예정이며, 해당 모임의 결제 내역은 자동으로 환불이 진행됩니다.
+        
+        다음에 또 좋은 모임을 열어주세요 :)';
+        $reserve_type = 'NORMAL';
+        $start_reserve_time = date('Y-m-d H:i:s');
+        $reciver = '{"name":"'.$mem['mb_name'].'","mobile":"'.$mem['mb_hp'].'",
+            "note1":"'.$classItems['wr_subject'].'"}';
+        sendBfAlimTalk(150, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+    }
+
+    {
         $sql = "select mem.*   
         from g5_shop_cart cart 
             join g5_member mem on cart.mb_id = mem.mb_id
@@ -316,10 +342,13 @@ if($type == 'host') {
         감사합니다!';
         $reserve_type = 'NORMAL';
         $start_reserve_time = date('Y-m-d H:i:s');
+        // $reciver = '{"name":"'.$mem['mb_name'].'","mobile":"'.$mem['mb_hp'].'",
+        //     "note1":"'.$classItems['wr_subject'].'",
+        //     "note2":"'.$cancel_memo.'"}';
+        // sendBfAlimTalk(42, $replaceText, $reserve_type, $reciver, $start_reserve_time);
         $reciver = '{"name":"'.$mem['mb_name'].'","mobile":"'.$mem['mb_hp'].'",
-            "note1":"'.$classItems['wr_subject'].'",
-            "note2":"'.$cancel_memo.'"}';
-        sendBfAlimTalk(42, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+            "note1":"'.$classItems['wr_subject'].'"}';
+        sendBfAlimTalk(111, $replaceText, $reserve_type, $reciver, $start_reserve_time);
     }
 } else {
     $sql = "select cart.od_id, wc.wr_subject, mem.mb_name, mem.mb_hp  
@@ -347,8 +376,10 @@ if($type == 'host') {
         
         감사합니다.';
         $start_reserve_time = date('Y-m-d H:i:s');
+        // $reciver = '{"name":"'.$mem['mb_name'].'","mobile":"'.$mem['mb_hp'].'","note1":"'.$classItems['wr_subject'].'"}';
+        // sendBfAlimTalk(45, $replaceText, $reserve_type, $reciver, $start_reserve_time);
         $reciver = '{"name":"'.$mem['mb_name'].'","mobile":"'.$mem['mb_hp'].'","note1":"'.$classItems['wr_subject'].'"}';
-        sendBfAlimTalk(45, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+        sendBfAlimTalk(114, $replaceText, $reserve_type, $reciver, $start_reserve_time);
     }
     {
         $replaceText = ' [모아프렌즈] [게스트 신청 취소]
@@ -360,7 +391,8 @@ if($type == 'host') {
         $reserve_type = 'NORMAL';
         $start_reserve_time = date('Y-m-d H:i:s');
         $reciver = '{"name":"'.$classItems['mb_name'].'","mobile":"'.$classItems['mb_hp'].'","note1":"'.$classItems['wr_subject'].'"}';
-        sendBfAlimTalk(78, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+        // sendBfAlimTalk(78, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+        sendBfAlimTalk(147, $replaceText, $reserve_type, $reciver, $start_reserve_time);
     }
 }
 if($type == 'host') {

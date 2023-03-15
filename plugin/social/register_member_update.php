@@ -272,8 +272,11 @@ if($result) {
         진심으로 감사드립니다~😊';
         $reserve_type = 'NORMAL';
         $start_reserve_time = date('Y-m-d H:i:s');
-        $reciver = '{"name":"'.$mb_name.'","mobile":"'.$mb_hp.'","note1":"https://\"'.$_SERVER['HTTP_HOST'].'}';
-        sendBfAlimTalk(6, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+        // $reciver = '{"name":"'.$mb_name.'","mobile":"'.$mb_hp.'","note1":"https://\"'.$_SERVER['HTTP_HOST'].'}';
+        // sendBfAlimTalk(6, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+        $reciver = '{"name":"'.$mb_name.'","mobile":"'.$mb_hp.'","note1":"https:\/\/moafriendshost.notion.site\/4d5d50f6bf2e4534b178ce6c13235b3b" 
+            ,"note2":"https:\/\/www.notion.so\/moafriendshost\/e484d4e424784198bbd684af3dbc3432#86f3ea5d9ecd45ababd90c1fb32b4a61"}';
+        sendBfAlimTalk(99, $replaceText, $reserve_type, $reciver, $start_reserve_time);
     }
 
     // 사용자 코드 실행

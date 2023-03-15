@@ -2,6 +2,16 @@
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 ?>
 
+<style>
+    .re>div{
+        display: flex;
+        align-items: center;
+    }
+    .re_text{
+        font-weight: 300;
+        margin-top:8px;
+    }
+</style>
 <!-- 후기 리스트 -->
 <section class="wrapper">
     <div class="s_content" style="padding:0!important;position:relative;">
@@ -15,7 +25,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 <div class="tab_content p0 bt" id="host_content" style="border-top:1px solid #eee;">
                     <ul class="qa_list" style="padding:0 5%;">
                 <?php
-                    $sql = "select * from g5_shop_item_qa where mb_id = '{$member['mb_id']}' ";
+                    $sql = "select a.*,b.mb_nick from g5_shop_item_qa a left join g5_member b on a.pt_id = b.mb_id where a.mb_id = '{$member['mb_id']}' ";
                     $query = sql_query($sql);
                     $cnt = sql_num_rows($query);
                     if(sql_num_rows($query) > 0) 
@@ -28,10 +38,17 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                                     <p><? echo $row['iq_subject']; ?></p>
                                 </div>
                                 <div class="review">
-                                    <div class="pro_img"></div>
-                                    <div class="t_area layout">
-                                        <p><? echo $row['iq_name']; ?><span><? echo $reply['iq_time']; ?></span><i 
-                                            <? echo !empty($row['iq_answer']) && $row['iq_answer'] != '' ? 'class="on"' : ''; ?>><? echo !empty($row['iq_answer']) && $row['iq_answer'] != '' ? '답변 완료' : ''; ?></i></p>
+                                    <div class="pro_img"><?php echo moaMemberProfile($row['mb_id']); ?></div>
+                                    <div class="t_area">
+                                        <p>
+                                            <i <? echo !empty($row['iq_answer']) && $row['iq_answer'] != '' ? 'class="on"' : ''; ?>><? echo !empty($row['iq_answer']) && $row['iq_answer'] != '' ? '답변 완료' : ''; ?></i>
+                                        </p>
+                                        <p style="width:200px;">  
+                                            <? echo $row['iq_name']; ?>
+                                        </p>
+                                        <div style="margin-top:4px; font-size:13px; color:#939393">
+                                            <span>  <? echo $row['iq_time']; ?></span>
+                                        </div>
                                         <p class="txt">
                                             <? echo $row['iq_question']; ?>
                                         </p>
@@ -39,9 +56,17 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                                         if(!empty($row['iq_answer']) && $row['iq_answer'] != ''){
                                         ?>
                                         <div class="re">
-                                            <p><? echo $reply['pt_id']; ?><span><? echo $reply['pt_answer_time']; ?></span></p>
+                                            <div>
+                                                <div class="pro_img"><?php echo moaMemberProfile($row['pt_id']); ?></div>
+                                                <div>
+                                                    <? echo $row['mb_nick']?>
+                                                    <div style="margin-top:4px; font-size:13px; color:#939393">
+                                                        <span>   <? echo $row['pt_answer_time']; ?></span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <p class="re_text">
-                                                <? echo $reply['iq_answer']; ?>
+                                                <? echo $row['iq_answer']; ?>
                                             </p>
                                         </div>
                                         <?
@@ -81,9 +106,14 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                                 <div class="review">
                                     <div class="pro_img"></div>
                                     <div class="t_area layout">
-                                        <p><? echo $row['wr_name']; ?><span><? echo $reply['wr_datetime']; ?></span><i 
-                                            <? echo empty($reply) ? '' : 'class="on"'; ?>><? echo empty($reply) ? '' : '답변 완료'; ?></i></p>
-                                        <p class="txt">
+                                        <p>
+                                            <? echo $row['wr_name']; ?>
+                                            <span><? echo $reply['wr_datetime']; ?></span>
+                                            <i <? echo empty($reply) ? '' : 'class="on"'; ?>><? echo empty($reply) ? '' : '답변 완료'; ?></i>
+                                        </p>
+                                        
+                                        
+                                            <p class="txt">
                                             <? echo $row['wr_content']; ?>
                                         </p>
                                         <?

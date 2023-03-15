@@ -96,6 +96,26 @@ if($nav_title) {
 <!-- <link rel="stylesheet" href="/dist/spectre-exp.min.css">
 <link rel="stylesheet" href="/dist/spectre.min.css"> -->
 
+<style>
+    .re>div{
+        display: flex;
+        align-items: center;
+    }
+	.re>div>p{
+		font-weight: 400!important;
+	}
+    .re_text{
+        font-weight: 300!important;
+        margin-top:8px;
+    }
+	.review .re p{
+		font-weight: 300;
+	}
+	.d-flex{
+		float:none!important;
+	}
+</style>
+
 <div class="top_detail_wrap">
 	<div class="wrapper detail_wrap detail_wrap02">
         <!-- 메인 슬라이드 -->
@@ -443,7 +463,7 @@ if($nav_title) {
 								<p>
 									<i <?= $row['iq_answer'] != '' ? 'class="on"' : ''; ?>><?= $row['iq_answer'] != '' ? '답변 완료' : '답변 미완료' ?></i>
 								</p>
-								<p style="width:200px;"><!-- <?= $row['mb_id']; ?> --><?= $row['iq_subject']; ?>
+								<p style="width:200px;"><!-- <?= $row['mb_id']; ?> --><?= $row['mb_nick']; ?>
 								<div style="margin-top:4px; font-size:13px; color:#939393">
 									<span><?= date('y-m-d', strtotime($row['iq_time'])); ?></span>
 								</div>
@@ -456,11 +476,20 @@ if($nav_title) {
 									<?php if($row['iq_secret']) { ?>
 										<span class="secret">비밀글입니다</span>
 									<?php } else { ?>
+										<?= $row['iq_subject']; ?>
 										<?php echo $row['iq_question'] ?>
 									<?php } ?>
 									<?php if($row['iq_answer'] != '') { ?>
 										<div class="re">
-											<p><?= $row['pt_id'] ?></p>
+											<div style="display:flex">
+												<div class="pro_img"><?php echo moaMemberProfile($row['pt_id']); ?></div>
+												<div>
+													<p style="font-weight:400"><?= $result['mb_nick'] ?> </p>
+													<div style="margin-top:4px; font-size:13px; color:#939393">
+														<span><?= date('y-m-d', strtotime($row['pt_answer_time'])); ?></span>
+													</div>
+												</div>
+											</div>
 											<p class="re_text">
 												<?php if($row['iq_secret']) { ?>
 													<span class="secret">비밀글입니다</span>

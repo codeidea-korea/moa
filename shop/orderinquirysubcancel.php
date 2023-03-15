@@ -60,9 +60,20 @@ function get_member_refund_order($mb_id, $type='host', $ment='부분 환불', $o
                 // 자율형이던가, 날짜 미기입 과거건 등 시스템 이슈는 환불처리
             } else {
                 $targetTime = strtotime($player['aplydate']);
-                if($targetTime < strtotime('-6 days')) {
+                // if($targetTime < strtotime('-6 days')) {
+                //     $remain_price = 0;
+                // } else if($targetTime > strtotime('-1 days')) {
+                //     $remain_price = 70 * ((int)$cancel_price) / 100;
+                //     $cancel_price = ((int)$cancel_price) - ((int) $remain_price);
+                // } else {
+                //     $res['error'] = true;
+                //     $res['msg'] = "취소할 수 있는 주문이 아닙니다. (모임 전일부터 취소/환불이 불가능합니다.)";
+                //     return $res;
+                // }
+
+                if(strtotime($today) < strtotime($targetTime.' -6 days')) {
                     $remain_price = 0;
-                } else if($targetTime > strtotime('-1 days')) {
+                } else if(strtotime($today) > strtotime($targetTime.' -6 days') && strtotime($today) < strtotime($targetTime.' -1 days')) {
                     $remain_price = 70 * ((int)$cancel_price) / 100;
                     $cancel_price = ((int)$cancel_price) - ((int) $remain_price);
                 } else {

@@ -336,8 +336,10 @@ echo $filename;
 				☞#{비고1}';
 				$reserve_type = 'NORMAL';
 				$start_reserve_time = date('Y-m-d H:i:s');
-				$reciver = '{"name":"'.$member['mb_name'].'","mobile":"'.$member['mb_hp'].'","note1":"https:\/\/moafriendshost.notion.site\/0ce44224a51746d2be52e2c05a2303ac"}';
-				sendBfAlimTalk(60, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+				// $reciver = '{"name":"'.$member['mb_name'].'","mobile":"'.$member['mb_hp'].'","note1":"https:\/\/moafriendshost.notion.site\/0ce44224a51746d2be52e2c05a2303ac"}';
+				// sendBfAlimTalk(60, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+				$reciver = '{"name":"'.$member['mb_name'].'","mobile":"'.$member['mb_hp'].'"}';
+				sendBfAlimTalk(132, $replaceText, $reserve_type, $reciver, $start_reserve_time);
 			}
 			alert('호스트 등록이 완료되었습니다.', APMS_PARTNER_URL);
 		} else {
@@ -351,8 +353,10 @@ echo $filename;
 				호스트 승인까지 최소 1~3일이 소요될 수 있습니다.';
 				$reserve_type = 'NORMAL';
 				$start_reserve_time = date('Y-m-d H:i:s');
-				$reciver = '{"name":"'.$member['mb_name'].'","mobile":"'.$member['mb_hp'].'","note1":""}';
-				sendBfAlimTalk(57, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+				// $reciver = '{"name":"'.$member['mb_name'].'","mobile":"'.$member['mb_hp'].'","note1":""}';
+				// sendBfAlimTalk(57, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+				$reciver = '{"name":"'.$member['mb_name'].'","mobile":"'.$member['mb_hp'].'"}';
+				sendBfAlimTalk(129, $replaceText, $reserve_type, $reciver, $start_reserve_time);
 			}
 			alert('호스트 등록을 신청하셨습니다.\\n\\n신청내용에 대한 검토 후 등록이 완료됩니다.', G5_URL);
 		}

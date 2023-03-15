@@ -442,8 +442,10 @@ if ($od['kakao_alimtalk_36_75'] == 0){
 		☞#{비고2}';
 		$reserve_type = 'NORMAL';
 		$start_reserve_time = date('Y-m-d H:i:s');
-		$reciver = '{"name":"'.$member['mb_name'].'","mobile":"'.$member['mb_hp'].'","note1":"'.$classItems['wr_subject'].',"note2":"https:\/\/moafriendshost.notion.site\/4d5d50f6bf2e4534b178ce6c13235b3b"}';
-		sendBfAlimTalk(36, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+		// $reciver = '{"name":"'.$member['mb_name'].'","mobile":"'.$member['mb_hp'].'","note1":"'.$classItems['wr_subject'].',"note2":"https:\/\/moafriendshost.notion.site\/4d5d50f6bf2e4534b178ce6c13235b3b"}';
+		// sendBfAlimTalk(36, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+		$reciver = '{"name":"'.$member['mb_name'].'","mobile":"'.$member['mb_hp'].'","note1":"'.$classItems['wr_subject'].'","note2":"https:\/\/www.notion.so\/moafriendshost\/e484d4e424784198bbd684af3dbc3432#46e1db3a2ab1473486c49aaf94640117"}';
+		sendBfAlimTalk(105, $replaceText, $reserve_type, $reciver, $start_reserve_time);
 	}
 	{
 		$replaceText = ' [모아프렌즈] [게스트 신청 알림]
@@ -454,8 +456,11 @@ if ($od['kakao_alimtalk_36_75'] == 0){
 		게스트 님의 예약을 확정지어 주세요!';
 		$reserve_type = 'NORMAL';
 		$start_reserve_time = date('Y-m-d H:i:s');
-		$reciver = '{"name":"'.$classItems['mb_name'].'","mobile":"'.$classItems['mb_hp'].'","note1":"'.$classItems['wr_subject'].'"}';
-		sendBfAlimTalk(75, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+		// $reciver = '{"name":"'.$classItems['mb_name'].'","mobile":"'.$classItems['mb_hp'].'","note1":"'.$classItems['wr_subject'].'"}';
+		// sendBfAlimTalk(75, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+		$reciver = '{"name":"'.$classItems['mb_name'].'","mobile":"'.$classItems['mb_hp'].'","note1":"'.$classItems['wr_subject'].'"
+			,"note2":"https:\/\/www.moa-friends.com\/shop\/partner\/?ap=moim_membership"}';
+		sendBfAlimTalk(144, $replaceText, $reserve_type, $reciver, $start_reserve_time);
 	}
 	
 	$ka_sql = "update g5_shop_order set kakao_alimtalk_36_75=1 where od_id=".$od_id;

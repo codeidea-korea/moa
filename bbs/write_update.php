@@ -956,16 +956,18 @@ delete_cache_latest($bo_table);
 if ($file_upload_msg){
     alert($file_upload_msg, G5_HTTP_BBS_URL.'/board.php?bo_table='.$bo_table);
 }else if($bo_table == 'qa'){
-    include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
-    {
-        $replaceText = ' [모아프렌즈] '.$member['mb_name'].' 님께서 작성해 주신 문의사항에 답변이 작성되었습니다. 
+    // include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
+    // {
+    //     $replaceText = ' [모아프렌즈] '.$member['mb_name'].' 님께서 작성해 주신 문의사항에 답변이 작성되었습니다. 
 
-        [마이페이지] - [나의 문의]에서 답변을 확인해 주세요!';
-        $reserve_type = 'NORMAL';
-        $start_reserve_time = date('Y-m-d H:i:s');
-        $reciver = '{"name":"'.$member['mb_name'].'","mobile":"'.$member['mb_hp'].'","note1":"https://\"'.$_SERVER['HTTP_HOST'].'"}';
-        sendBfAlimTalk(93, $replaceText, $reserve_type, $reciver, $start_reserve_time);
-    }
+    //     [마이페이지] - [나의 문의]에서 답변을 확인해 주세요!';
+    //     $reserve_type = 'NORMAL';
+    //     $start_reserve_time = date('Y-m-d H:i:s');
+    //     // $reciver = '{"name":"'.$member['mb_name'].'","mobile":"'.$member['mb_hp'].'","note1":"https://\"'.$_SERVER['HTTP_HOST'].'"}';
+    //     // sendBfAlimTalk(93, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+    //     $reciver = '{"name":"'.$member['mb_name'].'","mobile":"'.$member['mb_hp'].'"}';
+    //     sendBfAlimTalk(159, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+    // }
         
     alert('문의가 등록되었습니다.', '/c_my/my_setting03.php');
 }else{

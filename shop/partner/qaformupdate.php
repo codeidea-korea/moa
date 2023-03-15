@@ -68,6 +68,15 @@ if(!$iq['iq_answer'] && trim($iq_answer)) {
 
 		mailer($config['cf_title'], $config['cf_admin_email'], $row['iq_email'], $subject, $content, 1);
 	}
+
+	include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
+	{
+		$replaceText = '';
+		$reserve_type = 'NORMAL';
+		$start_reserve_time = date('Y-m-d H:i:s');
+		$reciver = '{"mobile":"'.$row['iq_hp'].'"}';
+		sendBfAlimTalk(159, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+	}
 }
 
 // goto_url('./?ap=qaform&amp;iq_id='.$iq_id.'&amp;sca='.$sca.'&amp;save_opt='.$opt.'&amp;opt='.$opt.'&amp;page='.$page);

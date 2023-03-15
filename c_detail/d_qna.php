@@ -1,7 +1,9 @@
 <?php
 include_once("./_common.php");
 
-
+if($is_guest)
+    alert('회원이시라면 로그인 후 이용해 보십시오.', '/c_login/login.php?url='.urlencode(G5_URL.'/shop/item.php?it_id=' . $_POST['it_id']));
+    
 //로직영역
 $str = "샘플페이지가 정상적으로 나와라";
 /*******************

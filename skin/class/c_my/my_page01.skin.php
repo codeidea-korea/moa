@@ -55,7 +55,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
             </a>
         </div>
         <div class="m_box mt10">
-            <a href="<?php echo MOA_MY_URL;?>/my_review03.php">나의 후기</a>
+            <a href="<?php echo MOA_MY_URL;?>/my_review03.php" style="display:none">나의 후기</a>
             <a href="<?php echo MOA_MY_URL;?>/my_inquiry02.php">나의 문의</a>
             <a href="<?php echo MOA_DETAIL_URL;?>/d_wish.php"><img src="../images/ic_wish.svg" alt="">찜한 목록</a>
         </div>

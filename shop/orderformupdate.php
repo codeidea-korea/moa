@@ -151,8 +151,8 @@ if($is_member) {
                     where cp_id = '{$_POST['od_cp_id']}'
                       and mb_id IN ( '{$member['mb_id']}', '전체회원' )
                       and cp_start <= '".G5_TIME_YMD."'
-                      and cp_end >= '".G5_TIME_YMD."'
-                      and cp_method = '2' ";
+                      and cp_end >= '".G5_TIME_YMD."'";
+                      //and (cp_method = '2' or cp_method = '0') 
         $cp = sql_fetch($sql);
 
         // 사용한 쿠폰인지

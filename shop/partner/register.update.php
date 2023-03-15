@@ -187,6 +187,20 @@ if ($ap == 'register_form_step2') {
 			alert('호스트 등록이 완료되었습니다.', APMS_PARTNER_URL);
 		} else {
 //			alert('호스트 등록을 신청하셨습니다.\\n\\n신청내용에 대한 검토 후 등록이 완료됩니다.', G5_URL);
+			include_once(G5_LIB_PATH."/kakao_alimtalk.lib.php");
+			{
+				$replaceText = ' [모아프렌즈] #{이름} 사원 님!
+				모아 호스트에 지원해 주셔서 감사합니다.
+				빠르게 심사후 승인결과를 안내해드리겠습니다 :)
+				
+				호스트 승인까지 최소 1~3일이 소요될 수 있습니다.';
+				$reserve_type = 'NORMAL';
+				$start_reserve_time = date('Y-m-d H:i:s');
+				// $reciver = '{"name":"'.$member['mb_name'].'","mobile":"'.$member['mb_hp'].'","note1":""}';
+				// sendBfAlimTalk(57, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+				$reciver = '{"name":"'.$member['mb_name'].'","mobile":"'.$member['mb_hp'].'"}';
+				sendBfAlimTalk(129, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+			}
 			alert('호스트 등록을 신청하셨습니다.\\n\\n신청내용에 대한 검토 후 등록이 완료됩니다.', "/shop/partner/login.php");
 		}
 	}

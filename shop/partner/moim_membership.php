@@ -13,7 +13,8 @@ if($is_admin == false) {
 }
 
 if($wr_id == '') {
-    $query = "select distinct a.*, m.mb_name, m.mb_sex, m.mb_birth, m.mb_hp, m.job_group, m.company_name, m.mb_id as uid, i.it_name as it_name, o.od_status  
+    $query = "select distinct a.*, m.mb_name, m.mb_sex, m.mb_birth, m.mb_hp, m.job_group, m.company_name, m.mb_id as uid, i.it_name as it_name, o.od_status, c.wr_2
+    ,(select count(dca.idx) from deb_class_aplyer dca where dca.wr_id = a.wr_id and dca.status = '예약확정') as dca_cnt
         from deb_class_aplyer a 
             left join g5_member m on m.mb_id = a.mb_id 
             left join g5_write_class c on a.wr_id = c.wr_id 
@@ -22,9 +23,10 @@ if($wr_id == '') {
                 select wr_id, it_id, min(day) as first_day from deb_class_item group by wr_id, it_id
             ) as deb on i.it_id = deb.it_id and a.wr_id = deb.wr_id 
             left join g5_shop_order o on o.od_id = a.od_id ";
-    $query .= "WHERE a.it_id != '' and c.mb_id = '" . $member['mb_id'] . "' ". $exculusiveOutofTimeMoimWhenAdmin . " order by a.idx desc";
+    $query .= "WHERE a.it_id != '' and c.mb_id = '" . $member['mb_id'] . "' and DATE_ADD(DATE_FORMAT(CONCAT(a.aplydate, ' ' , a.aplytime), '%Y-%m-%d %H:%i:%s'), INTERVAL 1 HOUR) >= NOW() ". $exculusiveOutofTimeMoimWhenAdmin . " order by a.idx desc";
 } else {
-    $query = "SELECT distinct a.*, m.mb_name, m.mb_sex, m.mb_birth, m.mb_hp, m.job_group, m.company_name, m.mb_id as uid, i.it_name as it_name, o.od_status  
+    $query = "SELECT distinct a.*, m.mb_name, m.mb_sex, m.mb_birth, m.mb_hp, m.job_group, m.company_name, m.mb_id as uid, i.it_name as it_name, o.od_status, c.wr_2
+    ,(select count(dca.idx) from deb_class_aplyer dca where dca.wr_id = a.wr_id and dca.status = '예약확정') as dca_cnt
         FROM deb_class_aplyer a 
             LEFT JOIN g5_member m ON m.mb_id=a.mb_id 
             LEFT JOIN g5_write_class c ON a.wr_id = c.wr_id  
@@ -33,9 +35,9 @@ if($wr_id == '') {
                 select wr_id, it_id, min(day) as first_day from deb_class_item group by wr_id, it_id
             ) as deb on i.it_id = deb.it_id and a.wr_id = deb.wr_id 
             left join g5_shop_order o on o.od_id = a.od_id ";
-    $query .= "WHERE a.it_id != '' and a.wr_id='" . $wr_id . "' ". $exculusiveOutofTimeMoimWhenAdmin . " order by a.idx DESC";
+    $query .= "WHERE a.it_id != '' and a.wr_id='" . $wr_id . "' and DATE_ADD(DATE_FORMAT(CONCAT(a.aplydate, ' ' , a.aplytime), '%Y-%m-%d %H:%i:%s'), INTERVAL 1 HOUR) >= NOW() ". $exculusiveOutofTimeMoimWhenAdmin . " order by a.idx DESC";
 }
-if ($member['mb_no']=="58") { print_r2($query); }
+if ($member['mb_no']=="58" || $member['mb_no']=="255") { print_r2($query); }
 $result = sql_query($query);
 
 // 현재 호스트인 모임 목록

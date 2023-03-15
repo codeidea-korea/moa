@@ -72,13 +72,20 @@ $total_page  = ceil($total_count / $rows);  // 전체 페이지 계산
 if ($page < 1) { $page = 1; } // 페이지가 없으면 첫 페이지 (1 페이지)
 $from_record = ($page - 1) * $rows; // 시작 열을 구함
 
-if (!$sst) {
-    $sst  = "d.wr_id";
-    $sod = "desc";
+$sql_order_post = "d.wr_id desc";
+if($_GET['sql_order'] != ''){
+    $sql_order_post = $_GET['sql_order'];
 }
-$sql_order = "order by $sst $sod";
 
-$sql = " select * " . $sql_common . $sql_order . " limit " . $from_record . ", " . $rows; 
+$sql_order = "order by $sql_order_post";
+
+// if (!$sst) {
+//     $sst  = "d.wr_id";
+//     $sod = "desc";
+// }
+// $sql_order = "order by $sst $sod";
+
+$sql = " select *,(select min(day) from deb_class_item where wr_id = d.wr_id) as a_day  " . $sql_common . $sql_order . " limit " . $from_record . ", " . $rows; 
 //echo $sql;
 $result = sql_query($sql);
 $qstr  = $qstr.'&amp;sca='.$sca.'&moa_kind='. $moa_kind.'&offline='.$offline.'&amp;page='.$page.'&amp;save_stx='.$stx.'&sch_startdt='.$sch_startdt.'&sch_enddt='.$sch_enddt.'&page_su='.$page_su;
@@ -93,9 +100,18 @@ $rday = getSearchDays();
 include_once(G5_ADMIN_PATH.'/_add/pop.cancel-class.php'); //폐강처리
 ?>
 
+<style>
+    .sort{
+        border-radius: 2px;
+        vertical-align: bottom;
+        width:15px;
+    }
+</style>
+
 <div class="boxContainer">
 
-<form action="/adm/shop_admin/itemmoa_list.php" method="get">
+<form id="confirm_form" action="/adm/shop_admin/itemmoa_list.php" method="get">
+<input type="hidden" name="sql_order" id="sql_order" value="d.wr_id desc"/>
 <div class="data-search-wrap fx-wrap label120">
 	<div class="fx-list">
 		<div class="fx-list-label">검색</div>
@@ -256,7 +272,12 @@ include_once(G5_ADMIN_PATH.'/_add/pop.cancel-class.php'); //폐강처리
 		<th scope="col">호스트명</th>		
 		<th scope="col">휴대폰 번호</th>
 		<th scope="col">상태</th>
-		<th scope="col">모임 날짜</th>
+		<th scope="col">
+            <div style="display:flex; align-items:center; gap:5px;">
+                모임 날짜
+                <div class="sort" data-sortName="a_day asc" style="cursor:pointer">▲</div> <div class="sort" data-sortName="a_day desc" style="cursor:pointer">▼</div>
+            </div>
+        </th>
 		<th scope="col">폐강 여부</th>
 		<th scope="col" class="none">
             <label for="chkall" class="sound_only">모임 전체</label>
@@ -500,6 +521,12 @@ $('.btnReset').click(function(){
     $('input[name="stx"]').val('');
     $('input[name="sch_startdt"]').val('');
     $('input[name="sch_enddt"]').val('');
+})
+
+$('.sort').click(function(){
+    const sortName = $(this).data('sortname');
+    $("#sql_order").val(sortName);
+    $("#confirm_form").submit();
 })
 </script>
 

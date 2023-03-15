@@ -8,7 +8,7 @@ $query = "select * from g5_shop_item as i join g5_write_class as c on i.it_2 = c
         join deb_class_item as ci on c.wr_id = ci.wr_id 
         where i.it_id = '" . $it_id . "' order by i.it_id desc";
 */
-$query = "select i.it_name, i.it_time, i.it_id, i.it_4, c.wr_2, 
+$query = "select i.it_name, i.it_time, i.it_id, i.it_4, c.wr_2, c.wr_1, 
         (select count(idx) as tot from deb_class_aplyer where wr_id=".$_POST['wr_id']." and status='예약확정') as tot
         from g5_shop_item as i join g5_write_class as c on i.it_2 = c.wr_id 
         join deb_class_item as ci on c.wr_id = ci.wr_id 

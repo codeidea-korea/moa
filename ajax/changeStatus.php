@@ -80,8 +80,10 @@ if($status == 2) {
             ☞#{비고2}';
             $reserve_type = 'NORMAL';
             $start_reserve_time = date('Y-m-d H:i:s');
-            $reciver = '{"name":"'.$row['mb_name'].'","mobile":"'.$row['mb_hp'].'","note1":"'.$row['wr_subject'].'","note2":"https:\/\/moafriendshost.notion.site\/0ce44224a51746d2be52e2c05a2303ac"}';
-            sendBfAlimTalk(72, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+            // $reciver = '{"name":"'.$row['mb_name'].'","mobile":"'.$row['mb_hp'].'","note1":"'.$row['wr_subject'].'","note2":"https:\/\/moafriendshost.notion.site\/0ce44224a51746d2be52e2c05a2303ac"}';
+            // sendBfAlimTalk(72, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+            $reciver = '{"name":"'.$row['mb_name'].'","mobile":"'.$row['mb_hp'].'"}';
+            sendBfAlimTalk(141, $replaceText, $reserve_type, $reciver, $start_reserve_time);
         }
     }
     
@@ -110,7 +112,8 @@ if($wr_id) {
             $reserve_type = 'NORMAL';
             $start_reserve_time = date('Y-m-d H:i:s');
             $reciver = '{"name":"'.$row['mb_name'].'","mobile":"'.$row['mb_hp'].'","note1":"'.$row['wr_subject'].'"}';
-            sendBfAlimTalk(69, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+            //sendBfAlimTalk(69, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+            sendBfAlimTalk(138, $replaceText, $reserve_type, $reciver, $start_reserve_time);
         }
     }
 

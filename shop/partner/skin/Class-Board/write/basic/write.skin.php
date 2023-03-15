@@ -52,7 +52,6 @@ if(!$header_skin) {
 			<div class="wr-list-con">
 				<div class="fileContainer">									
 					<div class="inner">
-						<input type="file" name="bf_file[]" id="upload-01" class="multiple" accept="image/*" multiple>
 					
 						<!-- <label for="upload-01" class="upload-btn">모임 대표 이미지 업로드</label> -->
 						<p class="help-block fs13">
@@ -65,16 +64,15 @@ if(!$header_skin) {
 					<?
 					$today = date("Y-m-d");
 					$fileSeq = 0;
-					/*
-					for($inx = 1; $inx <= 5; $inx++){
+					for($inx = 0; $inx < 5; $inx++){
 						$fileVal = addslashes(get_text($file[$fileSeq]['bf_content']));
-						
-						<input type="file" name="bf_file[]" id="upload-01<?= $inx ?>" <? echo 'data-key="'.$today.''.$inx.'"'; ?> value="<? echo $fileVal; ?>">
-						<input type="hidden" name="bf_file_del[]" id="upload-del-01<?= $inx ?>" <? echo 'data-key="'.$today.''.$inx.'"'; ?>>
-						
-					} 
-					*/
-					?>	
+					?>
+						<input type="file" name="bf_file[]" id="upload-01<?= $inx ?>" <? echo 'data-key="'.$today.''.$inx.'"'; ?>>
+						<!-- <input type="file" name="bf_file[]" id="upload-01<?= $inx ?>" <? echo 'data-key="'.$today.''.$inx.'"'; ?> value="<? echo $fileVal; ?>">
+						<input type="hidden" name="bf_file_del[]" id="upload-del-01<?= $inx ?>" <? echo 'data-key="'.$today.''.$inx.'"'; ?>> -->
+					<?	
+					}
+					?>
 					<ul class="upImg-list mt5">
 						<?
 						$uploadKey = 0;
@@ -86,12 +84,16 @@ if(!$header_skin) {
 								}
 								echo '
 								<li>
-									'.($file[$i]['view']).'<span class="btn small del" data-key="'.date("Y-m-d").$i.'">삭제</span>
+									'.($file[$i]['view']).'<span class="btn small del" data-key="'.date("Y-m-d").$i.'" data-seq="'.$file[$i]['bf_no'].'">삭제</span>
 								</li>';
+								?>
+									<input type="hidden" name="bf_file_del[]" id="upload-del-01<?= $i ?>" <? echo 'data-key="'.date("Y-m-d").$i.'"'; ?>>
+								<?
 								$uploadKey++;
 							}
 						}
 						?>
+						<!-- <input type="file" name="bf_file[]" id="upload-01" class="multiple" accept="image/*" multiple> -->
                         <li><label for="upload-01" class="upload-empty">사진 추가</label></li>
 					</ul>
 				</div>
@@ -953,7 +955,7 @@ function add_moim_program3_list() {
 	$('select').selectpicker('refresh');
 }
 
-var uploadKey = <? echo ($uploadKey % 5) + 1; ?>;
+var uploadKey = <? echo ($uploadKey % 5); ?>;
 //업로드 이미지 미리보기
 $('.fileContainer input[type="file"]').each(function(index) {
 	var inp = $(this);
@@ -993,7 +995,7 @@ $('.fileContainer input[type="file"]').each(function(index) {
 					$('#upload-01' + uploadKey).attr('data-key', key);
 					uploadKey = uploadKey + 1;
 					$('.upload-btn').attr('for', 'upload-01'+uploadKey);
-					$('.upload-empty').attr('for', 'upload-021'+uploadKey);
+					$('.upload-empty').attr('for', 'upload-01'+uploadKey);
 					
 					$('#upload-del-01'+uploadKey).val('1');
 					deleteImageAction('.del');
@@ -1009,17 +1011,18 @@ function deleteImageAction(el) {
 	$(el).click(function() {
 		$(this).parent('li').remove(); 
 		var key = $(this).attr('data-key');
+		var seq = $(this).attr('data-seq');
 		$('input[type=file][data-key=' + key + ']').val('');
-		$('input[name*=bf_file_del][data-key=' + key + ']').val('1');		
+		$('input[name*=bf_file_del][data-key=' + key + ']').val(seq);		
 	});
 }
 deleteImageAction('.upImg-list .del');
 $('.upload-btn').attr('for', 'upload-01'+uploadKey);
 $('.upload-empty').attr('for', 'upload-01'+uploadKey);
 
-$(document).on('click', '.upload-empty', function(){
-	$('input[name*=bf_file]').trigger('click')
-})
+// $(document).on('click', '.upload-empty', function(){
+// 	$('input[name*=bf_file]').trigger('click')
+// })
 
 </script>
 

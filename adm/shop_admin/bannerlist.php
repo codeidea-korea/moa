@@ -121,7 +121,7 @@ $from_record = ($page - 1) * $rows; // 시작 열을 구함
                                 <button type="button" data-bn_id="<?php echo $row['bn_id']; ?>" onClick="orderUp(<?php echo $row['bn_id']; ?>,<?php echo $row['bn_order']; ?>)" class="order-up">위로</button>
                             <?php }?>
                             <?php if($i+1 != $endCnt){?>
-                                <button type="button" data-bn_id="<?php echo $row['bn_id']; ?>" onClick="orderUp(<?php echo $row['bn_id']; ?>,<?php echo $row['bn_order']; ?>)" class="order-down">아래로</button>
+                                <button type="button" data-bn_id="<?php echo $row['bn_id']; ?>" onClick="orderDown(<?php echo $row['bn_id']; ?>,<?php echo $row['bn_order']; ?>)" class="order-down">아래로</button>
                             <?php }?>
                         </div>
                     </td>

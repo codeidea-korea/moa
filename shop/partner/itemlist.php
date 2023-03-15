@@ -116,7 +116,7 @@ for ($i=0; $row=sql_fetch_array($result); $i++) {
     $moim_start_time = strtotime($list[$i]['day'] . ' ' . $list[$i]['time'] . ':' . $list[$i]['minute']);
     $list[$i]['apply_acc'] = "1";
     $list[$i]['manage_acc'] = "1";
-    $diff = strtotime(date("Y-m-d h:i:s")) - $moim_start_time;
+    $diff = strtotime(date("Y-m-d H:i:s")) - $moim_start_time;
     if ($diff > 0 && $list[$i]['moa_status'] != "0" ) {
         $list[$i]['manage_acc'] = "0";
     }

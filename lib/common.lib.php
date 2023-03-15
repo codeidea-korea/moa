@@ -305,6 +305,7 @@ function get_file($bo_table, $wr_id)
     while ($row = sql_fetch_array($result))
     {
         $no = $row['bf_no'];
+        $file[$no]['bf_no'] = $row['bf_no'];
         $bf_content = $row['bf_content'] ? html_purifier($row['bf_content']) : '';
 		$file[$no]['href'] = G5_BBS_URL."/download.php?bo_table=$bo_table&amp;wr_id=$wr_id&amp;no=$no" . $qstr;
         $file[$no]['download'] = $row['bf_download'];

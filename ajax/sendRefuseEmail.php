@@ -74,8 +74,10 @@ while($row = sql_fetch_array($result)) {
 		2. 회사 명함, 사업자 증빙 서류 등의 기타 증빙 사진이 선명하지 않아요!';
 		$reserve_type = 'NORMAL';
 		$start_reserve_time = date('Y-m-d H:i:s');
-		$reciver = '{"name":"'.$memb['mb_name'].'","mobile":"'.$memb['mb_hp'].'","note1":""}';
-		sendBfAlimTalk(63, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+		// $reciver = '{"name":"'.$memb['mb_name'].'","mobile":"'.$memb['mb_hp'].'","note1":""}';
+		// sendBfAlimTalk(63, $replaceText, $reserve_type, $reciver, $start_reserve_time);
+		$reciver = '{"name":"'.$memb['mb_name'].'","mobile":"'.$memb['mb_hp'].'"}';
+		sendBfAlimTalk(135, $replaceText, $reserve_type, $reciver, $start_reserve_time);
 	} 
 
     $data = $row;

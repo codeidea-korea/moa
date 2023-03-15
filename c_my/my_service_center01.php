@@ -17,7 +17,7 @@ include_once(G5_LIB_PATH.'/thumbnail.lib.php');
             <div class="t_list_area">
                 <?php
                 $i = 1;
-                $sql = "select * from g5_write_notice order by wr_id desc limit 0,5";
+                $sql = "select * from g5_write_notice order by wr_id desc";
                 $query = sql_query($sql);
                 while($row = sql_fetch_array($query)) {
                 ?>
